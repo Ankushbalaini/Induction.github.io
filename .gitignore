@@ -2,3 +2,4 @@
 /node_modules/*
 notes
 .env
+/frontend/node_modules/*
