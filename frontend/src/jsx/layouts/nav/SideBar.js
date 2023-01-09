@@ -247,17 +247,17 @@ const SideBar = () => {
 				</Link>
 				<ul>
 
-          <li><Link className={`${path === "single-induction-view" ? "mm-active" : ""}`} to="/single-induction-view">Single Induction View</Link></li>
+          {/* <li><Link className={`${path === "single-induction-view" ? "mm-active" : ""}`} to="/single-induction-view">Single Induction View</Link></li> */}
 
 
-					<li><Link className={`${path === "courses" ? "mm-active" : ""}`} to="/courses">Inductions</Link></li>
+					{/* <li><Link className={`${path === "courses" ? "mm-active" : ""}`} to="/courses">Inductions</Link></li> */}
 					
 					<li><Link className={`${path === "create-induction" ? "mm-active" : ""}`} to="/create-induction">Create Induction </Link></li>
 
 
           <li><Link className={`${path === "inductions" ? "mm-active" : ""}`} to="/inductions">All Inductions </Link></li>
 
-          <li><Link className={`${path === "induction-detail" ? "mm-active" : ""}`} to="/course-details-2">Induction Detail</Link></li>
+          {/* <li><Link className={`${path === "induction-detail" ? "mm-active" : ""}`} to="/course-details-2">Induction Detail</Link></li> */}
           
 					{/* <li><Link className={`${path === "course-details-2" ? "mm-active" : ""}`} to="/course-details-2">Induction Details </Link></li> */}
 				</ul>

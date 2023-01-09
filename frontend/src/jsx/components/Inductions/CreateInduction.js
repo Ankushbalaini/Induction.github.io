@@ -87,10 +87,15 @@ const CreateInduction = () => {
 		<Fragment>
 			<PageTitle activeMenu="Create Induction" motherMenu="Inductions" />
       
-      <div className="col-xl-6 col-lg-12">
+      <div className="col-xl-12 col-lg-12">
         <div className="card">
             <div className="card-header">
               <h4 className="card-title">Create Induction</h4>
+
+              <div className="col-sm-6">
+                  <button className="btn btn-success" type="submit">Submit</button>
+              </div>
+
             </div>
             <div className="card-body">
               <div className="basic-form">
@@ -165,27 +170,40 @@ const CreateInduction = () => {
                       <div className="mb-3 row">
                         <label className="col-sm-3 col-form-label">Slide Content</label>
                         <div className="col-sm-9">
-                        <textarea
+                        {/* <textarea
                             className="form-control"
                             placeholder=""
                             onChange={e => handleChange(index, e)} 
                             value={element.slideContent} 
-                        name="slideContent"></textarea>
+                        name="slideContent"></textarea> */}
+
+                        <JoditEditor
+                          ref={editor}
+                          value={element.slideContent}
+                          tabIndex={1} // tabIndex of textarea
+                          onBlur={e => handleChange(index, e)} // preferred to use only this option to update the content for performance reasons
+                          onChange={e => handleChange(index, e)}
+                        />
+
+
                         </div>
                       </div>
                       {
                         index ? 
-                        <button type="button"  className="btn btn-primary remove" onClick={() => removeFormFields(index)}>Remove</button> 
+                        <div className="mb-12 row">
+                    <div className="col-sm-12"><button type="button" className="btn btn-primary remove" onClick={() => removeFormFields(index)}>Remove</button> </div></div>
                         : null
                       }
                     </div>
                   ))}
                   
-                  <div className="mb-3 row">
-                    <div className="col-sm-10">
-                        <button className="btn btn-primary" type="button" onClick={() => addFormFields()}>Add New Slide</button>
-                        <button className="btn btn-primary" type="submit">Submit</button>
-                    </div>
+                  <div className="mb-12 row">
+                    <div className="col-sm-12">
+                        <button className="btn btn-primary mx-3" type="button" onClick={() => addFormFields()}>Add New Slide</button>
+                    
+                        <button className="btn btn-success" type="submit">Submit</button>
+                </div>
+
                   </div>
                 </form>
               </div>

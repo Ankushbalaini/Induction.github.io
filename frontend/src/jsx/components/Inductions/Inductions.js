@@ -65,9 +65,9 @@ const Inductions = () =>{
 						<td>{item.induction_department}</td>
 						<td><span className= {`badge  light badge-success`}>Published</span></td>
 						<td>
-						<Link to={`/induction/${item._id}`}>Preview </Link>
+						<Link to={`/single-induction-view/${item._id}`}>Preview </Link>
 
-						<Link to={`/single-induction-view/${item._id}`}>Single Preview </Link>
+						{/* <Link to={`/single-induction-view/${item._id}`}>Single Preview </Link> */}
 
 						</td>
 					</tr>
