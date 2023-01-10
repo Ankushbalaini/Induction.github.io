@@ -176,34 +176,50 @@ exports.findAllPublished = (req, res) => {
 
 // Find a single User with an id
 exports.login = (req, res) => {
-  const {email, password} = req.body;
+  const {userType, email, password} = req.body;
 
-  User.findOne({ email:  email, password: password }).then(function(user){
-    if(user){
-      // create a jwt token for Auth Requests
-      // Create token
-      const token = jwt.sign(
-        { user_id: user._id, email , user_type : user.user_type},
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-        {
-          expiresIn: "2h",
-        }
-      );
-      // save user token
-      user.token = token;
-      
-      res.status(200).send({
-        status: true, 
-        message:"Login Successful",
-        data: user
-      });
-    }else{
-      res.status(404).send({
-          status : false, 
-          message: "Invalid Credentials"
-      });
-    }
-  });
+
+  if(userType == 'company'){
+
+    res.status(404).send({
+        status : false, 
+        message: "User type is company"
+    });
+
+
+  }else{
+
+    User.findOne({ email:  email, password: password , user_type : userType}).then(function(user){
+      if(user){
+        // create a jwt token for Auth Requests
+        // Create token
+        const token = jwt.sign(
+          { user_id: user._id, email , user_type : user.user_type},
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+          {
+            expiresIn: "2h",
+          }
+        );
+        // save user token
+        user.token = token;
+        
+        res.status(200).send({
+          status: true, 
+          message:"Login Successful",
+          data: user
+        });
+      }else{
+        res.status(404).send({
+            status : false, 
+            message: "Invalid Credentials"
+        });
+      }
+    });
+
+
+  }
+
+  
 
   
   return;

@@ -17,6 +17,7 @@ function Login (props) {
     let errorsObj = { email: '', password: '' };
     const [errors, setErrors] = useState(errorsObj);
     const [password, setPassword] = useState('admin1');
+	const [userType, setUserType] = useState('user');
     const dispatch = useDispatch();
 
     function onLogin(e) {
@@ -36,7 +37,7 @@ function Login (props) {
 			return ;
 		}
 		dispatch(loadingToggleAction(true));	
-        dispatch(loginAction(email, password, props.history));
+        dispatch(loginAction(userType, email, password, props.history));
     }
 
   return (
@@ -62,8 +63,7 @@ function Login (props) {
 												<h4 className="fs-20 font-w800 text-black">Sign in your account</h4>
 												<span>Welcome back! Login with your data that you entered<br /> during registration</span>
 												<div className="login-social">
-													{/* <Link to={"#"} className="btn font-w800 d-block my-4"><i className="fab fa-google me-2 text-primary"></i>Login with Google</Link>
-													<Link to={"#"} className="btn font-w800 d-block my-4"><i className="fab fa-facebook-f me-2 facebook-log"></i>Login with Facebook</Link> */}
+													
 												</div>
 												{props.errorMessage && (
 													<div className='bg-red-300 text-red-900 border border-red-900 p-1 my-2'>
@@ -76,6 +76,24 @@ function Login (props) {
 													</div>
 												)}
 												<form onSubmit={onLogin}>
+
+
+													<div className="mb-3">
+														<label className="mb-1"><strong>Select User Type</strong></label>
+
+														<select onChange={(e) => setUserType(e.target.value)}>
+															<option value={`user`}>User</option>
+															<option value={`company`}>Company</option>
+															<option value={`superadmin`}>Super Admin</option>
+
+														</select>
+														{/* <select className="form-control" value={email} onChange={(e) => setUserType(e.target.value)} /> */}
+														{errors.userType && <div className="text-danger fs-12">{errors.userType}</div>}
+													</div>
+
+
+
+
 													<div className="mb-3">
 														<label className="mb-1"><strong>Email</strong></label>
 														<input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -95,12 +113,9 @@ function Login (props) {
 														</div>
 														<div className="mb-3">
 															<Link to="./page-register">Sign up</Link>
-															
+															<br></br>
 															<Link to="./forgot-password">Forgot passwword</Link>
 															
-
-
-
 														</div>
 													</div>
 													<div className="text-center">

@@ -42,9 +42,9 @@ export function logout(history) {
     };
 }
 
-export function loginAction(email, password, history) {
+export function loginAction(userType, email, password, history) {
     return (dispatch) => {
-        login(email, password)
+        login(userType, email, password)
             .then((response) => {
 
                 saveTokenInLocalStorage(response.data.data);
