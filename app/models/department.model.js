@@ -1,6 +1,6 @@
 module.exports = mongoose => {
     const Department = mongoose.model(
-      "departments",
+      "department",
       mongoose.Schema(
         {
           name: { type: String, default : null},
