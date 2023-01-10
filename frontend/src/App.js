@@ -34,7 +34,7 @@ function App (props) {
             <Route path='/login' component={Login} />
             <Route path='/page-register' component={SignUp} />
             <Route path='/forgot-password' component={ForgotPassword} />
-            <Route path='/reset-password' component={ResetPassword} />
+            <Route path='/reset-password/:token' component={ResetPassword} />
         </Switch>
     );
     if (props.isAuthenticated) {
