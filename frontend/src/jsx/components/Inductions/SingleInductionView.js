@@ -32,7 +32,7 @@ const SingleInductionView =(props)=> {
     const [loading, setLoading] = useState(true);
     const [inductionData, setInductionData] = useState();
     const [slideData, setSlideData] = useState();
-    const [currentSlideContent,setCurrentSlideContent] = useState();
+    const [currentSlideContent,setCurrentSlideContent] = useState(null);
     const [isChangeContent, setIsChangeContent]= useState(false);
 
     const { id } = useParams();
@@ -98,7 +98,7 @@ const SingleInductionView =(props)=> {
 
 
         <div className="col-xl-4 col-xxl-5">
-            <InductionSlidesList setStateOfParent={setStateOfParent} slides={slideData} />
+            <InductionSlidesList setStateOfParent={setStateOfParent} setCurrentSlideContent={setCurrentSlideContent} slides={slideData} />
         </div>
 			
 	</>;
