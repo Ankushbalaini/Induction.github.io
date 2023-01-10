@@ -1,12 +1,42 @@
-import React from "react";
+import React, { useState }from "react";
 import { Link } from "react-router-dom";
 // image
-import logo from "../../images/logo-full.png";
+import logo from "../../images/homedelivery.svg";
+import swal from 'sweetalert';
+
+async function resetPassword(email) {
+  return fetch("http://localhost:8081/api/users/reset-password", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(email),
+  }).then((data) => data.json());
+}
+
 const ForgotPassword = ({ history }) => {
-  const onSubmit = (e) => {
+  const [email, setEmail] = useState();
+
+  const handleResetPasswordSubmit = async (e) => {
     e.preventDefault();
-    history.push("/dashboard");
+    const response = await resetPassword({
+      email,
+    });
+
+    if ("status" in response && response.status == true) {
+      swal("Success", response.message, "success", {
+        buttons: false,
+        timer: 2000,
+      }).then((value) => {
+        window.location.href = "/login";
+      });
+    } else {
+      swal("Failed", response.message, "error");
+    }
   };
+
+
+
   return (
     <div className="authincation h-100 p-meddle">
       <div className="container h-100">
@@ -23,24 +53,28 @@ const ForgotPassword = ({ history }) => {
                       </Link>
                     </div>
                     <h4 className="text-center mb-4 ">Forgot Password</h4>
-                    <form onSubmit={(e) => onSubmit(e)}>
-                      <div className="form-group">
+                    <form onSubmit={(e) => handleResetPasswordSubmit(e)}>
+                      <div className="form-group  mb-4">
                         <label className="">
                           <strong>Email</strong>
                         </label>
                         <input
                           type="email"
                           className="form-control"
-                          defaultValue="hello@example.com"
+                          defaultValue=""
+                          onChange={(e)=>setEmail(e.target.value)}
                         />
                       </div>
-                      <div className="text-center">
+                      <div className="text-center  mb-4">
                         <button
                           type="submit"
                           className="btn btn-primary btn-block"
                         >
                           SUBMIT
                         </button>
+
+                        OR 
+                        <Link to="/login">Login</Link>
                       </div>
                     </form>
                   </div>

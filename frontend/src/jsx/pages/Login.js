@@ -95,10 +95,10 @@ function Login (props) {
 														</div>
 														<div className="mb-3">
 															<Link to="./page-register">Sign up</Link>
+															
+															<Link to="./forgot-password">Forgot passwword</Link>
+															
 
-
-
-															<Link to="./single-induction">Single Induction</Link>
 
 
 														</div>

@@ -1,10 +1,9 @@
 const db = require("../models");
 const Company = db.company;
 
-
-
 // Create and Save a new company
 exports.add = (req, res) => {
+
     const {name, address, logo, id_number} = req.body;
 
     // Validate request
@@ -16,11 +15,12 @@ exports.add = (req, res) => {
         return;
     }
 
+    
     // check if company already exist
     Company.findOne({ id_number:  id_number })
     .then(function(result){
         if (result) {
-            res.status(400).send({ 
+            res.status(200).send({ 
                 status: false, 
                 message: "Company already registered.",
                 data: result
@@ -37,15 +37,13 @@ exports.add = (req, res) => {
         id_number: id_number
     });
 
-       
-        
-    // Save User in the database
-    user
-    .save(user)
+    // Save Company in the database
+    company
+    .save(company)
     .then(data => {
         res.send({
         status: true,
-        message: "Signup successful",
+        message: "Company added successfuly",
         data: data
         });
     })

@@ -14,26 +14,27 @@ import "./css/style.css";
 
 const SignUp = lazy(() => import('./jsx/pages/Registration'));
 const ForgotPassword = lazy(() => import('./jsx/pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./jsx/pages/ResetPassword'));
+
 const Login = lazy(() => {
     return new Promise(resolve => {
         setTimeout(() => resolve(import('./jsx/pages/Login')), 500);
     });
 });
-const SingleInduction = lazy(() => import('./jsx/pages/SingleInduction'));
 
 
 function App (props) {
     const dispatch = useDispatch();
     useEffect(() => {
-        checkAutoLogin(dispatch, props.history);
+        // checkAutoLogin(dispatch, props.history);
     }, [dispatch, props.history]);
     
     let routes = (  
         <Switch>
             <Route path='/login' component={Login} />
             <Route path='/page-register' component={SignUp} />
-            <Route path='/page-forgot-password' component={ForgotPassword} />
-            
+            <Route path='/forgot-password' component={ForgotPassword} />
+            <Route path='/reset-password' component={ResetPassword} />
         </Switch>
     );
     if (props.isAuthenticated) {

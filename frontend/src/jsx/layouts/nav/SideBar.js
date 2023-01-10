@@ -82,6 +82,12 @@ const SideBar = () => {
 		"add-department"
 	],
 
+  companies = [
+		"companies",
+		"add-company"
+	],
+
+
   inductions = [
 		"inductions",
 		"add-induction",
@@ -224,12 +230,15 @@ const SideBar = () => {
 						
 				</ul>
 			</li>
+      
+
+
 
 
 			<li className={`${department.includes(path) ? "mm-active" : ""}`}>
 				<Link className="has-arrow" to="#" >
 					<i className="bi bi-book"></i>
-					<span className="nav-text">Department</span>
+					<span className="nav-text"department>Department</span>
 				</Link>
 				<ul>
 					<li><Link className={`${path === "department" ? "mm-active" : ""}`} to="/departments">Departments</Link></li>
@@ -265,9 +274,17 @@ const SideBar = () => {
 			<li className={`${instructor.includes(path) ? "mm-active" : ""}`}>
 				<Link className="has-arrow" to="#"> <i className="bi bi-people"></i> <span className="nav-text">Company</span></Link>
 				<ul>
+          <li><Link className={`${path === "companies" ? "mm-active" : ""}`} to="/companies">Companies</Link></li>
+					
+					<li><Link className={`${path === "add-company" ? "mm-active" : ""}`} to="/add-company">Add Company </Link></li>
+
+          
+
 					<li><Link className={`${path === "instructor-dashboard" ? "mm-active" : ""}`} to="/instructor-dashboard">Dashboard</Link></li>
 					<li><Link className={`${path === "instructor-courses" ? "mm-active" : ""}`} to="/instructor-courses">Inductions</Link></li>
 					<li><Link className={`${path === "instructor-schedule" ? "mm-active" : ""}`} to="/instructor-schedule">Schedule</Link></li>
+
+          
 					<li><Link className={`${path === "instructor-students" ? "mm-active" : ""}`} to="/instructor-students">Users</Link></li>
 					<li><Link className={`${path === "instructor-resources" ? "mm-active" : ""}`} to="/instructor-resources">Resources</Link></li>
 					<li><Link className={`${path === "instructor-transactions" ? "mm-active" : ""}`} to="/instructor-transactions">Transactions</Link></li>

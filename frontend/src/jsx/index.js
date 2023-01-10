@@ -27,6 +27,10 @@ import CoursesMain from './components/Courses/CoursesMain';
 import CourseDetail1 from './components/Courses/CourseDetail1';
 import CourseDetail2 from './components/Courses/CourseDetail2';
 
+//Company----
+import AllCompanies from './components/Companies/ListCompanies';
+import AddCompany from './components/Companies/AddCompany';
+
 
 //Inductions----
 import Inductions from './components/Inductions/Inductions';
@@ -155,6 +159,10 @@ const Markup = () => {
     { url: "course-details-1", component: CourseDetail1 },
     { url: "course-details-2", component: CourseDetail2 },
 	
+    // Companies ----
+    { url: "companies", component:  AllCompanies},
+    { url: "add-company", component: AddCompany },
+
 
     // Inductions ----
     { url: "inductions", component: Inductions },

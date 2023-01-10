@@ -4,16 +4,13 @@ module.exports = app => {
     var router = require("express").Router();
   
     // Add a new company
-    router.get("/add", company.add);
-
-    // Store a new company
-    router.post("/add", company.store);
+    router.post("/add", company.add);
 
     // list all companies
-    router.get("/list", company.list);
+    //router.get("/list", company.list);
 
     // Retrieve a single company with id
-    router.get("/:id", company.findOne ); 
+    //router.get("/:id", company.findOne ); 
     
     // soft delete company 
 
