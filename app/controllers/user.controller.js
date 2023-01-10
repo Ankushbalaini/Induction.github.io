@@ -1,5 +1,7 @@
 const db = require("../models");
 const User = db.users;
+const CompanyDB = db.company;
+
 var jwt = require("jsonwebtoken");
 var nodemailer = require('nodemailer');
 
@@ -178,46 +180,84 @@ exports.findAllPublished = (req, res) => {
 exports.login = (req, res) => {
   const {userType, email, password} = req.body;
 
+  switch (userType) {
+    case 'superadmin':
+      //Statements executed when the
+      //result of expression matches value1
+      break;
+    case 'admin':
+      //Statements executed when the
+      //result of expression matches value2
+      break;
+    case 'company':
+      //Statements executed when the
 
-  if(userType == 'company'){
 
-    res.status(404).send({
-        status : false, 
-        message: "User type is company"
-    });
+      CompanyDB.findOne({ email:  email, password: password }).then(function(user){
+        if(user){
+          // create a jwt token for Auth Requests
+          // Create token
+          const token = jwt.sign(
+            { user_id: user._id, email , user_type : user.user_type},
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+            {
+              expiresIn: "2h",
+            }
+          );
+          // save user token
+          user.token = token;
+          
+          res.status(200).send({
+            status: true, 
+            message:"Login Successful",
+            data: user
+          });
+        }else{
+          res.status(404).send({
+              status : false, 
+              message: "Invalid Credentials"
+          });
+        }
+      });
 
+      
+      break;
 
-  }else{
+    default:
+      //Statements executed when none of
 
-    User.findOne({ email:  email, password: password , user_type : userType}).then(function(user){
-      if(user){
-        // create a jwt token for Auth Requests
-        // Create token
-        const token = jwt.sign(
-          { user_id: user._id, email , user_type : user.user_type},
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-          {
-            expiresIn: "2h",
-          }
-        );
-        // save user token
-        user.token = token;
-        
-        res.status(200).send({
-          status: true, 
-          message:"Login Successful",
-          data: user
-        });
-      }else{
-        res.status(404).send({
-            status : false, 
-            message: "Invalid Credentials"
-        });
-      }
-    });
-
+      User.findOne({ email:  email, password: password , user_type : userType}).then(function(user){
+        if(user){
+          // create a jwt token for Auth Requests
+          // Create token
+          const token = jwt.sign(
+            { user_id: user._id, email , user_type : user.user_type},
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+            {
+              expiresIn: "2h",
+            }
+          );
+          // save user token
+          user.token = token;
+          
+          res.status(200).send({
+            status: true, 
+            message:"Login Successful",
+            data: user
+          });
+        }else{
+          res.status(404).send({
+              status : false, 
+              message: "Invalid Credentials"
+          });
+        }
+      });
+      break;
 
   }
+
+
+    
 
   
 
