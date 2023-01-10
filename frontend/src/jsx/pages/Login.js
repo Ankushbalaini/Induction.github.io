@@ -84,7 +84,7 @@ function Login (props) {
 														<select onChange={(e) => setUserType(e.target.value)}>
 															<option value={`user`}>User</option>
 															<option value={`company`}>Company</option>
-															<option value={`superadmin`}>Super Admin</option>
+															<option value={`super_admin`}>Super Admin</option>
 
 														</select>
 														{/* <select className="form-control" value={email} onChange={(e) => setUserType(e.target.value)} /> */}
