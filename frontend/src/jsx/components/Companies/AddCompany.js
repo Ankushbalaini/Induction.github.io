@@ -5,19 +5,26 @@ import { useHistory } from "react-router-dom";
 
 const AddCompany = () => {
   const navigate = useHistory();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const [name, setName] = useState();
   const [companyID, setCompanyID] = useState();
   const [logo, setLogo] = useState();
   const [address, setAddress] = useState();
+  const [aboutCompany, setAboutCompany] = useState();
   
 
   let handleSubmit = async (event) => {
     event.preventDefault();
     const company = {
+      email: email,
+      password: password,
       name: name,
       companyID: companyID,
       logo: logo,
-      address : address
+      address : address,
+      aboutCompany: aboutCompany
+
     };
 
     const response = await addCompany(company);
@@ -58,6 +65,39 @@ const AddCompany = () => {
           <div className="card-body">
             <div className="basic-form">
               <form onSubmit={handleSubmit}>
+
+                <div className="mb-3 row">
+                  <label className="col-sm-3 col-form-label">
+                    Company Email
+                  </label>
+                  <div className="col-sm-9">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder=""
+                      onChange={(e) => setEmail(e.target.value)}
+                      value={name}
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-3 row">
+                  <label className="col-sm-3 col-form-label">
+                    Company Password
+                  </label>
+                  <div className="col-sm-9">
+                    <input
+                      type="password"
+                      className="form-control"
+                      placeholder=""
+                      onChange={(e) => setPassword(e.target.value)}
+                      value={password}
+                    />
+                  </div>
+                </div>
+
+
+
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
                     Company Name
@@ -93,6 +133,7 @@ const AddCompany = () => {
                       type="text"
                       className="form-control"
                       placeholder=""
+                      defaultValue="logo.png"
                       onChange={(e) => setLogo(e.target.value)}
                       value={logo}
                     />
@@ -111,6 +152,20 @@ const AddCompany = () => {
                     </textarea>
                   </div>
                 </div>
+
+                <div className="mb-3 row">
+                  <label className="col-sm-3 col-form-label">About Company</label>
+                  <div className="col-sm-9">
+                    <textarea
+                      className="form-control"
+                      placeholder=""
+                      onChange={(e) => setAboutCompany(e.target.value)}
+                    >
+                      {aboutCompany}
+                    </textarea>
+                  </div>
+                </div>
+
 
                 <div className="mb-12 row">
                   <div className="col-sm-12">
