@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 
 import { Tab, Nav, Accordion } from "react-bootstrap";
 
-function InductionSlidesList(props) {
-  const [currentSlideContent, setCurrentSlideContent] = useState();
+function InductionSlidesList({setCurrentSlideContent,...props}) {
+  // const [currentSlideContent, setCurrentSlideContent] = useState();
 
-  const handleClick = (slideData) => {};
+  const handleClick = (slideData) => {
+    setCurrentSlideContent(slideData)
+  };
 
-  useEffect(() => {}, [currentSlideContent]);
+  // useEffect(() => {}, [currentSlideContent]);
 
   return (
     <div className="custome-accordion">
@@ -40,7 +42,7 @@ function InductionSlidesList(props) {
                         </span>
                         <h4 className="m-0">{slide.slideTitle}</h4>
                         <h4>
-                          <button onClick={handleClick(slide)}>Change </button>
+                          <button onClick={()=>handleClick(slide)}>Change </button>
                         </h4>
                       </div>
                       {/* <span>1:00</span> */}
