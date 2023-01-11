@@ -47,7 +47,9 @@ const AppProfile = () => {
                   />
                 </div>
                 <div className="profile-details">
-                  <div className="profile-name px-3 pt-2">
+                  
+				  
+				  <div className="profile-name px-3 pt-2">
                     <h4 className="text-primary mb-0">Mitchell C. Shay</h4>
                     <p>UX / UI Designer</p>
                   </div>
@@ -55,6 +57,17 @@ const AppProfile = () => {
                     <h4 className="text-muted mb-0">hello@email.com</h4>
                     <p>Email</p>
                   </div>
+
+
+
+
+
+
+
+
+
+
+
                   <Dropdown className="dropdown ms-auto">
                     <Dropdown.Toggle
                       variant="primary"

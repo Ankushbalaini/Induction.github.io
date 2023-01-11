@@ -15,7 +15,7 @@ import ScrollToTop from "./layouts/ScrollToTop";
 /// Dashboard
 import Home from "./components/Dashboard/Home";
 import DashboardDark from "./components/Dashboard/DashboardDark";
-import Instructors from "./components/Dashboard/Instructors";
+
 import Activity from "./components/Dashboard/Activity";
 import Message from "./components/Dashboard/Message";
 import Schedule from "./components/Dashboard/Schedule";
@@ -41,6 +41,8 @@ import SingleInductionView from './components/Inductions/SingleInductionView';
 
 
 //Instructors
+import Instructors from "./components/Dashboard/Instructors";
+import AddInstructor from "./components/Instructor/AddInstructor";
 import InstructorDashboard from './components/Instructor/InstructorDashboard';
 import InstructorCourses from './components/Instructor/InstructorCourses';
 import InstructorSchedule from './components/Instructor/InstructorSchedule';
@@ -148,7 +150,7 @@ const Markup = () => {
     { url: "", component: Home },
     { url: "dashboard", component: Home },
     { url: "dashboard-dark", component: DashboardDark },
-    { url: "instructors", component: Instructors },
+   
     { url: "schedule", component: Schedule },
     { url: "message", component: Message },
     { url: "activity", component: Activity },
@@ -171,6 +173,8 @@ const Markup = () => {
     { url: "single-induction-view/:id", component: SingleInductionView },
 	
 	///Instructors  Pages path
+    { url: "instructors", component: Instructors },
+    { url: "add-instructor", component: AddInstructor },
     { url: "instructor-dashboard", component: InstructorDashboard },
     { url: "instructor-courses", component: InstructorCourses },
     { url: "instructor-schedule", component: InstructorSchedule },

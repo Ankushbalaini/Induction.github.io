@@ -63,8 +63,8 @@ export function loginAction(user_type, email, password, history) {
           case "company":
             history.push("/company");
             break;
-          case "instuctor":
-            history.push("/instuctor");
+          case "instructor":
+            history.push("/instructor-dashboard");
             break;
           default:
             history.push("/student");
