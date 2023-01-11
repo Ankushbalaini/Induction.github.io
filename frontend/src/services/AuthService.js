@@ -22,9 +22,9 @@ export function signUp(firstName, lastName, email, password) {
     );
 }
 
-export function login(userType, email, password) {
+export function login(user_type, email, password) {
     const postData = {
-        userType,
+        user_type,
         email,
         password,
         returnSecureToken: true,

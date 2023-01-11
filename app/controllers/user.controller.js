@@ -1,4 +1,5 @@
 const db = require("../models");
+const UserCred = db.user_cred;
 const User = db.users;
 const CompanyDB = db.company;
 
@@ -14,76 +15,84 @@ var transport = nodemailer.createTransport({
   },
 });
 
-// Create and Save a new Tutorial
+/*
+ * Signup API
+ *
+ * @ Singh
+ */
 exports.create = (req, res) => {
-  //console.log(req.body);
-  //return res.status(400).send({ req.body });
-
-  const { firstName, lastName, email, password } = req.body;
-
-  // Validate request
-  if (!firstName && !email && !password) {
-    res.status(400).send({
-      status: false,
-      message: "Fields can not be empty!",
-    });
-    return;
-  }
-
-  // check if user already exist
-  // Validate if user exist in our database
-  User.findOne({ email: email }).then(function (result) {
-    if (result) {
-      res.status(400).send({
-        status: false,
-        message: "Email already used.",
-        data: result,
-      });
-      return;
+  try {
+    const { firstName, lastName, email, password, user_type } = req.body;
+    // Validate request
+    if (!firstName && !lastName && !email && !password) {
+      throw new Error("Fields can not be empty!");
     }
-  });
 
-  //encryptedPassword = bcrypt.hash(req.body.password, 10);
-
-  // Create a User
-  const user = new User({
-    first_name: firstName,
-    last_name: lastName,
-    email: email,
-    password: password,
-    user_type: req.body.user_type,
-    published: req.body.published ? req.body.published : false,
-  });
-
-  // Create token
-  const token = jwt.sign(
-    { user_id: user._id, email, user_type: user.user_type },
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-    {
-      expiresIn: "2h",
-    }
-  );
-  // save user token
-  user.token = token;
-
-  // Save User in the database
-  user
-    .save(user)
-    .then((data) => {
-      res.send({
-        status: true,
-        message: "Signup successful",
-        data: data,
+    // check if user already exist with same email id
+    UserCred.findOne({ email: email })
+      .then((result) => {
+        if (result) throw new Error("Email already used.");
+      })
+      .catch((err) => {
+        return res.status(504).send({
+          status: false,
+          message: err.message,
+          data: {},
+        });
       });
-    })
-    .catch((err) => {
-      res.status(500).send({
+
+    const user_cred = new UserCred({ ...req.body });
+    // user_cred.user_type = user_type ? user_type : 'user';
+    // Create token
+    const token = jwt.sign(
+      { user_id: user_cred._id, email, user_type: user_type },
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+      {
+        expiresIn: "2h",
+      }
+    );
+    user_cred.token = token;
+
+    user_cred.save().catch((err) => {
+      return res.status(500).send({
         status: false,
         message: err.message || "Some error occurred while creating the User.",
       });
     });
+
+    const user = new User({ ...req.body });
+    user.user_id = user_cred._id;
+    user
+      .save()
+      .then((data) => {
+        return res.status(201).send({
+          status: true,
+          message: "Signup successful",
+          data: data,
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          status: false,
+          message:
+            err.message || "Some error occurred while creating the User.",
+        });
+      });
+  } catch (e) {
+    return res.status(504).send({
+      status: false,
+      message: e.message,
+      data: {},
+    });
+  }
+  return;
 };
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
   // res.status(400).send({ message: "Superadmin " + process.env.PORT });
@@ -105,28 +114,12 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Retrieve all Users from the database.
-exports.findAllByDept = (req, res) => {
-  res.status(400).send({ message: "Dept Admin " });
-  return;
 
-  const username = req.query.username;
-  var condition = username
-    ? { username: { $regex: new RegExp(username), $options: "i" } }
-    : {};
-
-  User.find(condition)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving users.",
-      });
-    });
-};
-
-// Find a single User with an id
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.findOne = (req, res) => {
   const id = req.params.id;
 
@@ -153,78 +146,45 @@ exports.deleteAll = (req, res) => {};
 // Find all published Tutorials
 exports.findAllPublished = (req, res) => {};
 
-// Find a single User with an id
+/**
+ * @author Singh
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 exports.login = (req, res) => {
-  const { userType, email, password } = req.body;
+  const { user_type, email, password } = req.body;
 
-  switch (userType) {
-    case "company":
-      //Statements executed when the
-      CompanyDB.findOne({ email: email, password: password }).then(function (
-        company
-      ) {
-        if (company) {
-          // create a jwt token for Auth Requests
-          // Create token
-          const token = jwt.sign(
-            { company_id: company._id, email, user_type: "company" },
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-            {
-              expiresIn: "2h",
-            }
-          );
-          // save user token
-          company.token = token;
-
-          res.status(200).send({
-            status: true,
-            message: "Login Successful",
-            data: company,
-          });
-        } else {
-          res.status(404).send({
-            status: false,
-            message: "Invalid Company Credentials",
-          });
+  UserCred.findOne({
+    email: email,
+    password: password,
+    user_type: user_type,
+  }).then(function (user) {
+    //console.log(user);
+    if (user) {
+      // create a jwt token for Auth Requests
+      const token = jwt.sign(
+        { user_id: user._id, email, user_type: user.user_type },
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+        {
+          expiresIn: "2h",
         }
+      );
+      // save user token
+      user.token = token;
+
+      res.status(200).send({
+        status: true,
+        message: "Login Successful",
+        data: user,
       });
-      break;
-
-    default:
-      //Statements executed when none of
-
-      User.findOne({
-        email: email,
-        password: password,
-        user_type: userType,
-      }).then(function (user) {
-        if (user) {
-          // create a jwt token for Auth Requests
-          // Create token
-          const token = jwt.sign(
-            { user_id: user._id, email, user_type: user.user_type },
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-            {
-              expiresIn: "2h",
-            }
-          );
-          // save user token
-          user.token = token;
-
-          res.status(200).send({
-            status: true,
-            message: "Login Successful",
-            data: user,
-          });
-        } else {
-          res.status(404).send({
-            status: false,
-            message: "Invalid Credentials",
-          });
-        }
+    } else {
+      res.status(404).send({
+        status: false,
+        message: "Invalid Credentials",
       });
-      break;
-  }
+    }
+  });
 
   return;
 };
@@ -305,6 +265,7 @@ exports.createPassword = (req, res) => {
         { email: req.user.email },
         { password },
         function (err, res) {
+          user_type;
           if (err) {
             res.status(200).send({
               status: false,

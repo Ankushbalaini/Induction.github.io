@@ -15,10 +15,6 @@ module.exports = mongoose => {
         { timestamps: true }
       )
     );
-
-
-
     
-  
     return User;
   };
