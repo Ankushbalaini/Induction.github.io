@@ -14,6 +14,8 @@ module.exports = app => {
     // Retrieve all users
     router.get("/", [ admin_and_superadmin ], users.findAll); // only superadmin, admin
 
+    router.get("/profile", users.profile); // only superadmin, admin
+    
     // Retrieve all published users
     router.get("/published", [admin_and_superadmin],users.findAllPublished);// only superadmin, admin
   
@@ -43,6 +45,11 @@ module.exports = app => {
     // dashboard
     //router.get("/dashboard",[auth], users.dashboard); 
     
+
+    
+    
+
+
     app.use('/api/users', router);
 
 

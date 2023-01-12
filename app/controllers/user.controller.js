@@ -287,3 +287,27 @@ exports.createPassword = (req, res) => {
     }
   });
 };
+
+
+
+exports.profile = (req, res) => {
+  // token get
+
+  // verify token
+
+  // user detail 
+
+  // data
+
+  
+  // query 
+
+
+
+  res.status(200).send({
+    status: true,
+    message: "Profile data",
+    data: {}
+  });
+  return;
+}
