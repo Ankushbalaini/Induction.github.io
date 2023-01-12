@@ -10,11 +10,7 @@ const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const reducers = combineReducers({
-    posts: PostsReducer,
     auth: AuthReducer,
-		todoReducers,
-	//form: reduxFormReducer,	
-	
 });
 
 //const store = createStore(rootReducers);

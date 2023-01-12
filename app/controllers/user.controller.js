@@ -176,7 +176,13 @@ exports.login = (req, res) => {
       res.status(200).send({
         status: true,
         message: "Login Successful",
-        data: user,
+        data: {
+          id: user._id,
+          email: user.email, 
+          token: user.token,
+          user_type: user.user_type,
+          expiresIn: new Date(Date.now() + 2 * (60 * 60 * 1000) )
+        },
       });
     } else {
       res.status(404).send({

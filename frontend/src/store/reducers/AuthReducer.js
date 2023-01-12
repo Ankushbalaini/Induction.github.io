@@ -10,7 +10,7 @@ import {
 const initialState = {
     auth: {
         email: '',
-        idToken: '',
+        token: '',
         localId: '',
         expiresIn: '',
         refreshToken: '',
@@ -47,7 +47,7 @@ export function AuthReducer(state = initialState, action) {
             successMessage: '',
             auth: {
                 email: '',
-                idToken: '',
+                token: '',
                 localId: '',
                 expiresIn: '',
                 refreshToken: '',
@@ -75,5 +75,3 @@ export function AuthReducer(state = initialState, action) {
     }
     return state;
 }
-
-    

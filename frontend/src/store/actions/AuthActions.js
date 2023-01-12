@@ -17,12 +17,14 @@ export function signupAction(firstName, lastName, email, password, history) {
   return (dispatch) => {
     signUp(firstName, lastName, email, password)
       .then((response) => {
-        saveTokenInLocalStorage(response.data.data);
+        saveTokenInLocalStorage(response.data.data.token);
         // runLogoutTimer(
         //     dispatch,
         //     response.data.expiresIn * 1000,
         //     history,
         // );
+        
+
         dispatch(confirmedSignupAction(response.data.data));
         history.push("/dashboard");
       })
@@ -45,17 +47,13 @@ export function loginAction(user_type, email, password, history) {
   return (dispatch) => {
     login(user_type, email, password)
       .then((response) => {
+        console.log(response);
+
         saveTokenInLocalStorage(response.data.data);
-        // runLogoutTimer(
-        //     dispatch,
-        //     response.data.data.expiresIn * 1000,
-        //     history,
-        // );
-
-        dispatch(loginConfirmedAction(response.data.data));
-
-        // navigate to respective dashboard
         
+        dispatch(loginConfirmedAction(response.data.data));
+        
+        // navigate to respective dashboard
         switch (user_type) {
           case "super_admin":
             history.push("/dashboard");
@@ -71,14 +69,7 @@ export function loginAction(user_type, email, password, history) {
             break;
         }
 
-        // saveTokenInLocalStorage(response.data);
-        // runLogoutTimer(
-        //     dispatch,
-        //     response.data.expiresIn * 1000,
-        //     history,
-        // );
-        //dispatch(loginConfirmedAction(response.data));
-        // history.push('/dashboard');
+        
       })
       .catch((error) => {
         //console.log(error);
