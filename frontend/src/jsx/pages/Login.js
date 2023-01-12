@@ -91,13 +91,12 @@ function Login(props) {
                               <strong>Select User Type</strong>
                             </label>
 
-                            <select
-                              onChange={(e) => setUserType(e.target.value)}
-                            >
-								<option value={`super_admin`}>Super Admin</option>
-								<option value={`company`}>Company</option>
-								<option value={`instructor`}>Instructor</option>
-								<option value={`user`}>User</option>
+                            <select onChange={(e) => setUserType(e.target.value)}
+                            value={userType}>
+                                <option value='super_admin'>Super Admin</option>
+                                <option value='company'>Company</option>
+                                <option value='instructor'>Instructor</option>
+                                <option value='user'>User</option>
                             </select>
                             {errors.userType && (
                               <div className="text-danger fs-12">

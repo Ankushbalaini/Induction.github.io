@@ -1,7 +1,7 @@
 {
-  "name": "GetSkills",
+  "name": "BJS Home Delivery",
   "version": "0.1.0",
-  "homepage": "https://getskills.dexignzone.com/react/demo",
+  "homepage": "https://bjshomedelivery.com/",
   "private": true,
   "dependencies": {
     "@asseinfo/react-kanban": "^2.2.0",
