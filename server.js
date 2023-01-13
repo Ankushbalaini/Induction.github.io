@@ -2,11 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const db = require("./app/models");
 const app = express();
-const acl = require("express-acl");
-const jwt = require("jsonwebtoken");
-
-// app.use(cors(corsOptions));
-
 app.use(cors());
 
 // parse requests of content-type - application/json
@@ -41,12 +36,16 @@ db.mongoose
 // set port, listen for requests
 const PORT = process.env.PORT || 8081;
 
-require("./app/routes/acl.routes")(app);
-require("./app/routes/user.routes")(app);
-require("./app/routes/induction.routes")(app);
-require("./app/routes/slide.routes")(app);
-require("./app/routes/company.routes")(app);
-require("./app/routes/instructor.routes")(app);
+// require("./app/routes/routes")(app);
+
+require("./app/routes/users.routes")(app);
+
+// require("./app/routes/acl.routes")(app);
+// require("./app/routes/user.routes")(app);
+// require("./app/routes/induction.routes")(app);
+// require("./app/routes/slide.routes")(app);
+// require("./app/routes/company.routes")(app);
+// require("./app/routes/instructor.routes")(app);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);

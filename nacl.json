@@ -48,10 +48,47 @@
             "action": "deny"
           },
           {
-            "resource": "users",
+            "resource": ["users"],
+            "methods": ["GET"],
+            "action": "allow"
+          }, 
+          {
+            "resource" : "profile",
             "methods": ["GET"],
             "action": "allow"
           }
+        ]
+      },
+
+      {
+        "group": "guest",
+        "permissions": [
+          {
+            "resource": "users",
+            "methods": ["DELETE"],
+            "action": "deny"
+          },
+          {
+            "resource": "users",
+            "methods": ["GET"],
+            "action": "allow"
+          },
+          {
+            "resource": "users/login",
+            "methods": ["POST"],
+            "action": "allow"
+          },
+          {
+            "resource" : "profile",
+            "methods": ["GET"],
+            "action": "deny"
+          },
+          {
+            "resource" : "users/profile",
+            "methods": ["GET"],
+            "action": "deny"
+          }
+
         ]
       }
   ]
