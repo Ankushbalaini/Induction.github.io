@@ -1,0 +1,57 @@
+[
+    {
+      "group": "super_admin",
+      "permissions": [
+        {
+          "resource": "*",
+          "methods": "*",
+          "action": "allow"
+        }
+      ]
+    },
+    {
+      "group": "company",
+      "permissions": [
+        {
+          "resource": "users",
+          "methods": ["DELETE"],
+          "action": "deny"
+        },
+        {
+          "resource": "users",
+          "methods": ["GET"],
+          "action": "allow"
+        }
+      ]
+    },
+    {
+        "group": "instructor",
+        "permissions": [
+          {
+            "resource": "users",
+            "methods": ["DELETE"],
+            "action": "deny"
+          },
+          {
+            "resource": "users",
+            "methods": ["GET"],
+            "action": "allow"
+          }
+        ]
+      },
+    {
+        "group": "user",
+        "permissions": [
+          {
+            "resource": "users",
+            "methods": ["DELETE"],
+            "action": "deny"
+          },
+          {
+            "resource": "users",
+            "methods": ["GET"],
+            "action": "allow"
+          }
+        ]
+      }
+  ]

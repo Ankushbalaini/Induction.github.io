@@ -49,7 +49,7 @@ exports.add = (req, res) => {
   var user = new userCredModel(data);
   // Create token
   const token = jwt.sign(
-    { user_id: user._id, email, user_type: "company" },
+    { user_id: user._id, email, role: "company" },
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
     {
       expiresIn: "2h",
@@ -59,7 +59,7 @@ exports.add = (req, res) => {
   // save user token
   user.token      = token;
   user.status     = true;
-  user.user_type  = 'company';
+  user.role  = 'company';
   user.save();
 
   data.user_id = user._id;
@@ -115,13 +115,13 @@ exports.add_company = (req, res) => {
     last_name: "",
     email: email,
     password: password,
-    user_type: "company",
+    role: "company",
     published: req.body.published ? req.body.published : false,
   });
 
   // Create token
   const token = jwt.sign(
-    { user_id: user._id, email, user_type: user.user_type },
+    { user_id: user._id, email, role: user.role },
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
     {
       expiresIn: "2h",

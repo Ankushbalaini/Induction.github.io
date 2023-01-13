@@ -1,0 +1,26 @@
+const moduleAccess = [
+    {
+        roles: ["roles.ADMIN"],
+        method: {
+            get: ['/api/country'],
+            post: '*',
+            put: '*',
+            delete: '*',
+        }
+    },
+    {
+        roles: ["roles.USER"],
+        method: {
+            get: ['/api/country'],
+            post: ['/api/country'],
+            put: ['/api/country'],
+            delete: ['/api/country'],
+        }
+    }
+];
+
+
+
+ACL ========================
+
+npm install express-acl --save

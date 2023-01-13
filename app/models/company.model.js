@@ -8,7 +8,6 @@ module.exports = mongoose => {
           logo: { type: String },
           companyID: {type: String, unique: true },
           aboutCompany: {type: String},
-          token: {type: String},
           user_id: {type: String}
         },
         { timestamps: true }

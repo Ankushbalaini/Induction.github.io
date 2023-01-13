@@ -22,7 +22,7 @@ var transport = nodemailer.createTransport({
  */
 exports.create = (req, res) => {
   try {
-    const { firstName, lastName, email, password, user_type } = req.body;
+    const { firstName, lastName, email, password, role } = req.body;
     // Validate request
     if (!firstName && !lastName && !email && !password) {
       throw new Error("Fields can not be empty!");
@@ -42,10 +42,10 @@ exports.create = (req, res) => {
       });
 
     const user_cred = new UserCred({ ...req.body });
-    // user_cred.user_type = user_type ? user_type : 'user';
+    // user_cred.role = role ? role : 'user';
     // Create token
     const token = jwt.sign(
-      { user_id: user_cred._id, email, user_type: user_type },
+      { user_id: user_cred._id, email, role: role },
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
       {
         expiresIn: "2h",
@@ -153,19 +153,19 @@ exports.findAllPublished = (req, res) => {};
  * @returns
  */
 exports.login = (req, res) => {
-  const { user_type, email, password } = req.body;
+  const { role, email, password } = req.body;
 
   UserCred.findOne({
     email: email,
     password: password,
-    user_type: user_type,
+    role: role,
   }).then(function (user) {
     //console.log(user);
     if (user) {
       // create a jwt token for Auth Requests
       const token = jwt.sign(
-        { user_id: user._id, email, user_type: user.user_type },
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+        { user_id: user._id, email, role: user.role },
+        "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
         {
           expiresIn: "2h",
         }
@@ -180,7 +180,7 @@ exports.login = (req, res) => {
           id: user._id,
           email: user.email, 
           token: user.token,
-          user_type: user.user_type,
+          role: user.role,
           expiresIn: new Date(Date.now() + 2 * (60 * 60 * 1000) )
         },
       });
@@ -271,7 +271,6 @@ exports.createPassword = (req, res) => {
         { email: req.user.email },
         { password },
         function (err, res) {
-          user_type;
           if (err) {
             res.status(200).send({
               status: false,

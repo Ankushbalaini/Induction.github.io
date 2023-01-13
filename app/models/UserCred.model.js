@@ -6,7 +6,7 @@ module.exports = mongoose => {
         {
             email: { type: String, unique: true },
             password: { type: String },
-            user_type: { type: String },
+            role: { type: String },
             token : { type: String },
             status: { type: Boolean }
           

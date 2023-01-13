@@ -35,14 +35,14 @@ exports.list = (req, res) => {
  */
 exports.add = (req, res) => {
     try{
-        const { email, user_type } = req.body;
+        const { email, role } = req.body;
 
         var InstructorCred = new userCredTable(req.body);
 
         // Create token
         const token = jwt.sign(
-            { user_id: InstructorCred._id, email, user_type },
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+            { user_id: InstructorCred._id, email, role },
+            "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
             {
             expiresIn: "2h",
             }
