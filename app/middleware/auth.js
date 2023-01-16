@@ -1,12 +1,12 @@
 const jwt = require("jsonwebtoken");
-var ROUTER = require("express").Router();
+var router = require("express").Router();
 
-const verifyToken = (req, res, next) => {
+const auth = (req, res, next) => {
 
-  ROUTER.use(function(req, res, next) {
+  router.use(function(req, res, next) {
       var token = req.headers['x-access-token'];
       if (token) {
-        jwt.verify(token, key, function(err, decoded) {
+        jwt.verify(token, "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1", function(err, decoded) {
           if (err) {
             return res.send(err);
           } else {
@@ -18,4 +18,4 @@ const verifyToken = (req, res, next) => {
     });
 }
 
-module.exports = verifyToken;
+module.exports = auth;

@@ -5,7 +5,7 @@
         {
           "resource": "*",
           "methods": "*",
-          "action": "allow"
+          "action": "deny"
         }
       ]
     },
@@ -13,14 +13,9 @@
       "group": "company",
       "permissions": [
         {
-          "resource": "users",
-          "methods": ["DELETE"],
+          "resource": "*",
+          "methods": "*",
           "action": "deny"
-        },
-        {
-          "resource": "users",
-          "methods": ["GET"],
-          "action": "allow"
         }
       ]
     },
@@ -28,14 +23,9 @@
         "group": "instructor",
         "permissions": [
           {
-            "resource": "users",
-            "methods": ["DELETE"],
+            "resource": "*",
+            "methods": "*",
             "action": "deny"
-          },
-          {
-            "resource": "users",
-            "methods": ["GET"],
-            "action": "allow"
           }
         ]
       },
@@ -44,51 +34,34 @@
         "permissions": [
           {
             "resource": "users",
-            "methods": ["DELETE"],
-            "action": "deny"
+            "methods": ["GET", "POST"],
+            "action": "allow"
           },
           {
-            "resource": ["users"],
+            "resource": "users/profile",
             "methods": ["GET"],
             "action": "allow"
-          }, 
-          {
-            "resource" : "profile",
-            "methods": ["GET"],
-            "action": "allow"
-          }
-        ]
-      },
-
-      {
-        "group": "guest",
-        "permissions": [
-          {
-            "resource": "users",
-            "methods": ["DELETE"],
-            "action": "deny"
           },
           {
-            "resource": "users",
+            "resource": "users/published",
             "methods": ["GET"],
-            "action": "allow"
+            "action": "deny"
           },
           {
             "resource": "users/login",
             "methods": ["POST"],
-            "action": "allow"
-          },
-          {
-            "resource" : "profile",
-            "methods": ["GET"],
-            "action": "deny"
-          },
-          {
-            "resource" : "users/profile",
-            "methods": ["GET"],
             "action": "deny"
           }
-
+        ]
+      },
+      {
+        "group": "guest",
+        "permissions": [
+          {
+            "resource": "users/login",
+            "methods": ["POST"],
+            "action": "deny"
+          }
         ]
       }
   ]
