@@ -266,14 +266,7 @@ const SideBar = () => {
               <span className="nav-text">Students</span>
             </Link>
             <ul>
-              <li>
-                <Link
-                  className={`${path === "add-student" ? "mm-active" : ""}`}
-                  to="/add-student"
-                >
-                  Add Student{" "}
-                </Link>
-              </li>
+              
 
               <li>
                 <Link

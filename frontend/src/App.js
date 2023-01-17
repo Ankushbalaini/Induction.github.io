@@ -26,7 +26,7 @@ const Login = lazy(() => {
 function App (props) {
     const dispatch = useDispatch();
     useEffect(() => {
-        checkAutoLogin(dispatch, props.history);
+        // checkAutoLogin(dispatch, props.history);
     }, [dispatch, props.history]);
     
     let routes = (  

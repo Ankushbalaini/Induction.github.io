@@ -11,7 +11,7 @@ const initialState = {
     auth: {
         email: '',
         token: '',
-        localId: '',
+        role: '',
         expiresIn: '',
         refreshToken: '',
     },
@@ -19,6 +19,7 @@ const initialState = {
     successMessage: '',
     showLoading: false,
 };
+
 
 export function AuthReducer(state = initialState, action) {
     if (action.type === SIGNUP_CONFIRMED_ACTION) {
@@ -48,7 +49,7 @@ export function AuthReducer(state = initialState, action) {
             auth: {
                 email: '',
                 token: '',
-                localId: '',
+                role: '',
                 expiresIn: '',
                 refreshToken: '',
             },

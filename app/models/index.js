@@ -14,5 +14,6 @@ db.induction_slides = require("./slide.model.js")(mongoose);
 db.company = require("./company.model.js")(mongoose);
 db.department = require("./department.model.js")(mongoose);
 db.instructor = require("./instructor.model.js")(mongoose);
+db.images = require("./images.model.js")(mongoose);
 
 module.exports = db;
