@@ -41,6 +41,7 @@ require("./app/routes/users.routes")(app);
 require("./app/routes/induction.routes")(app);
 require("./app/routes/slide.routes")(app);
 require("./app/routes/company.routes")(app);
+require("./app/routes/department.routes")(app);
 require("./app/routes/instructor.routes")(app);
 
 app.listen(PORT, () => {
