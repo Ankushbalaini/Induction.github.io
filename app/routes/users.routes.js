@@ -10,15 +10,20 @@ module.exports = function (app) {
   var key = process.env.JWT_KEY;
   const users = require("../controllers/user.controller.js");
 
+  router.post("/create-password", users.createPassword); // create password
+  
   acl.config({
     filename: "./nacl.json",
     baseUrl: "/api/"
   });
 
-  
-  router.post("/login", users.login);
-  router.post("/reset-password", users.resetPassword);
-  router.post("/create-password", users.createPassword);
+  router.post("/",  users.signUp);  // sign up
+
+
+  // router.post("/",  users.create);  // sign up
+  router.post("/login", users.login); // login
+  router.post("/reset-password", users.resetPassword); // reset password
+ 
 
   router.use(function (req, res, next) {
 

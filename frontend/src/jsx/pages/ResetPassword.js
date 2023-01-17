@@ -48,6 +48,7 @@ function ResetPassword(){
             timer: 2000,
           })
           .then((value) => {
+            
             window.location.href = "/login";
           });
     

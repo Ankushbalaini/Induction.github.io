@@ -13,6 +13,7 @@ function Register(props) {
 	const [lastName, setLastName] 	= useState('');
     const [email, setEmail] 		= useState('');
 	const [password, setPassword] = useState('');
+	const [role, setRole] = useState("user");
 	
     let errorsObj = { firstName: '', lastName: '', email: '', password: '' };
     const [errors, setErrors] = useState(errorsObj);
@@ -38,7 +39,8 @@ function Register(props) {
         if (error) return;
 
         dispatch(loadingToggleAction(true));
-        dispatch(signupAction(firstName, lastName, email, password, props.history));
+        dispatch(signupAction(firstName, lastName, email, password, role, props.history));
+		
     }
 	return (
 		<div className="authincation h-100 p-meddle">

@@ -5,13 +5,14 @@ import {
     logout,
 } from '../store/actions/AuthActions';
 
-export function signUp(firstName, lastName, email, password) {
+export function signUp(firstName, lastName, email, password, role) {
     //axios call
     const postData = {
         firstName,
         lastName,
         email,
         password,
+        role,
         returnSecureToken: true,
     };
     // `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD3RPAp3nuETDn9OQimqn_YF6zdzqWITII`,
@@ -22,14 +23,13 @@ export function signUp(firstName, lastName, email, password) {
     );
 }
 
-export function login(user_type, email, password) {
+export function login(role, email, password) {
     const postData = {
-        user_type,
+        role,
         email,
         password,
         returnSecureToken: true,
     };
-    // http://localhost:8081/api/users/login
     // https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD3RPAp3nuETDn9OQimqn_YF6zdzqWITII
     
     return axios.post(

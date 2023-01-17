@@ -45,32 +45,6 @@ const WidgetBlog = ({changeImage, title}) =>{
 	)
 }
 
-const CurrentCourse = ({bg1, changeClass, title, percent, numb1, numb2}) => {
-	return(
-		<>
-			<div className="col-xl-6 col-sm-6">
-				<div className="card">
-					<div className="card-body">	
-						<div className="students1">
-							<div className="d-inline-block position-relative donut-chart-sale me-4">
-								<DonutChart className="donut1" value={percent} backgroundColor={bg1}
-									backgroundColor2= "rgba(245, 245, 245, 1)"
-								/>
-								<small className={changeClass} >{percent}%</small>
-							</div>
-							<div className="">
-								<span>Class</span>
-								<h4 className="fs-18 mb-3">{title}</h4>
-								<span>Total Courses</span>	
-								<h5 className="fs-18">{numb1} / {numb2}</h5>								
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</>
-	)
-} 
 
 const Profile = () =>{
 	const [dropSelect, setDropSelect] = useState('This Month');
@@ -131,12 +105,7 @@ const Profile = () =>{
 							<h3 className="m-0">Current Courses</h3>
 							<Link to={"./courses"} className="btn btn-primary btn-sm">View all</Link>
 						</div>
-						<CurrentCourse changeclassName="text-secondary"
-							bg1="rgba(76, 188, 154, 1)"  title='UI Design Beginner' percent='80'  numb1='90' numb2='110' 
-						/>
-						<CurrentCourse changeclassName="text-warning"
-							bg1='rgba(254, 198, 79, 1)' title='UX Research' percent='62' numb1='50' numb2='80'  
-						/>
+						
 						
 						<div className="col-xl-12">
 							<div className="card score-active style-1">
@@ -166,7 +135,7 @@ const Profile = () =>{
 											</Dropdown.Menu>
 										</Dropdown>
 										<DropDownBlog />
-									</div>
+									</div> 
 								</div>
 								<div className="card-body pb-1 custome-tooltip pt-0">
 									<ProfileActivityChart />

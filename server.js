@@ -43,6 +43,10 @@ require("./app/routes/slide.routes")(app);
 require("./app/routes/company.routes")(app);
 require("./app/routes/instructor.routes")(app);
 
+require("./app/routes/students.route")(app);
+
+
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

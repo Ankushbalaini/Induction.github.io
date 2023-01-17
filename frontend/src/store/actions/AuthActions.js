@@ -13,11 +13,11 @@ export const LOGIN_FAILED_ACTION = "[login action] failed login";
 export const LOADING_TOGGLE_ACTION = "[Loading action] toggle loading";
 export const LOGOUT_ACTION = "[Logout action] logout action";
 
-export function signupAction(firstName, lastName, email, password, history) {
+export function signupAction(firstName, lastName, email, password,role, history) {
   return (dispatch) => {
-    signUp(firstName, lastName, email, password)
+    signUp(firstName, lastName, email, password, role)
       .then((response) => {
-        saveTokenInLocalStorage(response.data.data.token);
+        saveTokenInLocalStorage(response.data.data);
         // runLogoutTimer(
         //     dispatch,
         //     response.data.expiresIn * 1000,
@@ -27,10 +27,15 @@ export function signupAction(firstName, lastName, email, password, history) {
 
         dispatch(confirmedSignupAction(response.data.data));
         history.push("/dashboard");
+        // window.location.href = "/login";
       })
       .catch((error) => {
-        const errorMessage = formatError(error.response.data);
+        console.log("=======");
+        
+        const errorMessage = formatError(error);
         dispatch(signupFailedAction(errorMessage));
+        history.push("/page-register");
+
       });
   };
 }
@@ -43,9 +48,9 @@ export function logout(history) {
   };
 }
 
-export function loginAction(user_type, email, password, history) {
+export function loginAction(role, email, password, history) {
   return (dispatch) => {
-    login(user_type, email, password)
+    login(role, email, password)
       .then((response) => {
         console.log(response);
 
@@ -54,7 +59,7 @@ export function loginAction(user_type, email, password, history) {
         dispatch(loginConfirmedAction(response.data.data));
         
         // navigate to respective dashboard
-        switch (user_type) {
+        switch (response.data.data.role) {
           case "super_admin":
             history.push("/dashboard");
             break;
@@ -72,8 +77,7 @@ export function loginAction(user_type, email, password, history) {
         
       })
       .catch((error) => {
-        //console.log(error);
-        const errorMessage = formatError(error.response.data);
+        const errorMessage = formatError(error);
         dispatch(loginFailedAction(errorMessage));
       });
   };

@@ -20,33 +20,38 @@ var transport = nodemailer.createTransport({
  *
  * @ Singh
  */
+
 exports.create = (req, res) => {
   try {
     const { firstName, lastName, email, password, role } = req.body;
     // Validate request
-    if (!firstName && !lastName && !email && !password) {
+    if (!firstName || !lastName || !email || !password) {
       throw new Error("Fields can not be empty!");
     }
 
     // check if user already exist with same email id
     UserCred.findOne({ email: email })
       .then((result) => {
-        if (result) throw new Error("Email already used.");
+        if (result) {
+          res.status(504).send({
+            status: false,
+            message: "Email already used.",
+            data: {},
+          });
+        }
       })
       .catch((err) => {
-        return res.status(504).send({
+        res.status(504).send({
           status: false,
           message: err.message,
-          data: {},
         });
       });
 
     const user_cred = new UserCred({ ...req.body });
-    // user_cred.role = role ? role : 'user';
     // Create token
     const token = jwt.sign(
-      { user_id: user_cred._id, email, role: role },
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+      { user_id: user_cred._id, email: user_cred.email, role: user_cred.role },
+      "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
       {
         expiresIn: "2h",
       }
@@ -54,25 +59,30 @@ exports.create = (req, res) => {
     user_cred.token = token;
 
     user_cred.save().catch((err) => {
-      return res.status(500).send({
+      res.status(500).send({
         status: false,
         message: err.message || "Some error occurred while creating the User.",
       });
     });
 
-    const user = new User({ ...req.body });
-    user.user_id = user_cred._id;
+    req.body.user_id = user_cred._id;
+
+    const user_detail = req.body;
+    const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
+
+    const user = new User(userWithoutPwd);
+
     user
       .save()
       .then((data) => {
-        return res.status(201).send({
+        res.status(201).send({
           status: true,
           message: "Signup successful",
-          data: data,
+          data: user_cred,
         });
       })
       .catch((err) => {
-        return res.status(500).send({
+        res.status(500).send({
           status: false,
           message:
             err.message || "Some error occurred while creating the User.",
@@ -82,16 +92,16 @@ exports.create = (req, res) => {
     return res.status(504).send({
       status: false,
       message: e.message,
-      data: {},
     });
   }
+
   return;
 };
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
+ *
+ * @param {*} req
+ * @param {*} res
  */
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
@@ -114,11 +124,10 @@ exports.findAll = (req, res) => {
     });
 };
 
-
 /**
- * 
- * @param {*} req 
- * @param {*} res 
+ *
+ * @param {*} req
+ * @param {*} res
  */
 exports.findOne = (req, res) => {
   const id = req.params.id;
@@ -146,6 +155,13 @@ exports.deleteAll = (req, res) => {};
 // Find all published Tutorials
 exports.findAllPublished = (req, res) => {};
 
+
+
+
+
+
+
+
 /**
  * @author Singh
  * @param {*} req
@@ -155,66 +171,77 @@ exports.findAllPublished = (req, res) => {};
 exports.login = (req, res) => {
   const { role, email, password } = req.body;
 
+
+
   UserCred.findOne({
     email: email,
     password: password,
     role: role,
-  }).then(function (user) {
-    //console.log(user);
-    if (user) {
-      // create a jwt token for Auth Requests
-      const token = jwt.sign(
-        { user_id: user._id, email, role: user.role },
-        "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
-        {
-          expiresIn: "2h",
-        }
-      );
-      // save user token
-      user.token = token;
-
-      res.status(200).send({
-        status: true,
-        message: "Login Successful",
-        data: {
-          id: user._id,
-          email: user.email, 
-          token: user.token,
-          role: user.role,
-          expiresIn: new Date(Date.now() + 2 * (60 * 60 * 1000) )
-        },
-      });
-    } else {
-      res.status(404).send({
+  })
+    .then(function (user) {
+      //console.log(user);
+      if (user) {
+        res.status(200).send({
+          status: true,
+          message: "Login Successful",
+          data: {
+            id: user._id,
+            email: user.email,
+            token: user.token,
+            role: user.role,
+            expiresIn: new Date(Date.now() + 2 * (60 * 60 * 1000)),
+          },
+        });
+      } else {
+        res.status(403).send({
+          status: false,
+          message: "User not found!",
+          data: {}
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
         status: false,
-        message: "Invalid Credentials",
+        message: err.message,
       });
-    }
-  });
+    });
 
   return;
 };
 
-// reset password request
 
+
+
+
+
+
+
+
+
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ */
 exports.resetPassword = (req, res) => {
   const { email } = req.body;
 
-  User.findOne({ email: email }).then(function (user) {
+  UserCred.findOne({ email: email }).then(function (user) {
     if (user) {
-      // send email to user email for creatibng new password based on token
-
       const token = jwt.sign(
-        { user_id: user._id, email },
-        "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
+        { _id: user._id, email },
+        "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1ey",
         {
           expiresIn: "2h",
         }
       );
       // save user token
-      user.token = token;
+      //user.token = token;
 
-      var link = "http://localhost:3000/recovery-password/" + user.token;
+      // save user token
+      var link = "http://localhost:3000/reset-password/" + token;
 
       // sending email code
       var mailOptions = {
@@ -232,29 +259,37 @@ exports.resetPassword = (req, res) => {
         }
       });
 
-      res.status(200).send({
+      return res.status(200).send({
         status: true,
         message: "Please check your email and rest password.",
         token: token,
       });
     } else {
-      res.status(404).send({
+      return res.status(404).send({
         status: false,
         message: "User email not registered with our system.",
       });
     }
   });
+  return;
 };
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
 
 exports.createPassword = (req, res) => {
   const { token, password } = req.body;
 
   const decoded = jwt.verify(
     token,
-    "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
+    "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1ey",
     function (err, decoded) {
       if (err) {
-        res.status(200).send({
+        return res.status(200).send({
           status: false,
           message: err.message,
         });
@@ -265,14 +300,14 @@ exports.createPassword = (req, res) => {
   );
 
   // find user and update password
-  User.findOne({ email: req.user.email }).then(function (user) {
+  UserCred.findOne({ email: req.user.email }).then(function (user) {
     if (user) {
-      User.updateOne(
+      UserCred.updateOne(
         { email: req.user.email },
         { password },
         function (err, res) {
           if (err) {
-            res.status(200).send({
+            return res.status(200).send({
               status: false,
               message: err.message,
             });
@@ -280,12 +315,12 @@ exports.createPassword = (req, res) => {
         }
       );
 
-      res.status(200).send({
+      return res.status(200).send({
         status: true,
         message: "password changed ",
       });
     } else {
-      res.status(404).send({
+      return res.status(404).send({
         status: false,
         message: "Invalid link",
       });
@@ -293,26 +328,109 @@ exports.createPassword = (req, res) => {
   });
 };
 
-
-
 exports.profile = (req, res) => {
-  // token get
+  try {
+    const user = req.decoded;
 
-  // verify token
+    switch (user.role) {
+      case "super_admin":
+        break;
 
-  // user detail 
+      case "instructor":
+        break;
 
-  // data
+      case "company":
+        break;
 
-  
-  // query 
-
-
-
-  res.status(200).send({
-    status: true,
-    message: "Profile data",
-    data: {}
-  });
+      default:
+        User.findOne({ email: user.email })
+          .then(function (user) {
+            if (user) {
+              res.status(200).send({
+                status: true,
+                message: "Profile Api working fine",
+                data: user,
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              status: true,
+              message: "Inside catch request" + err.message,
+            });
+          });
+        break;
+    }
+    return;
+  } catch (e) {
+    res.status(500).send({
+      status: false,
+      message: e.message,
+    });
+  }
   return;
-}
+};
+
+/**
+ *
+ * @param {req} req
+ * @param {} res
+ * @returns
+ */
+exports.signUp = (req, res) => {
+  const { firstName, lastName, email, password, role } = req.body;
+
+  // Validate request
+  if (!firstName || !lastName || !email || !password) {
+    res.status(500).send({
+      status: false,
+      message: "Fields can not be empty!",
+    });
+  }else{
+
+  // Save entry in user cred table
+  const user_cred = new UserCred({ ...req.body });
+  const token = jwt.sign(
+    { user_id: user_cred._id, email: user_cred.email, role: user_cred.role },
+    "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
+    {
+      expiresIn: "2h",
+    }
+  );
+  user_cred.token = token;
+
+  // here call save function
+  user_cred
+    .save()
+    .then((user) => {
+
+      req.body.user_id = user._id;
+
+      const user_detail = req.body;
+      const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
+
+      const newuser = new User(userWithoutPwd);
+
+      newuser.save()
+      .then((data)=>{
+        res.status(200).send({
+          status: true,
+          message: "User registered successfully!",
+          data: user_cred,
+        });
+      }).catch(err=>{
+        res.status(400).send({
+          status: false,
+          message: err.message
+        });
+      })
+    })
+    .catch((err) => {
+      res.status(400).send({
+        status: false,
+        message: err.message,
+      });
+    });
+  }
+  return;
+};
