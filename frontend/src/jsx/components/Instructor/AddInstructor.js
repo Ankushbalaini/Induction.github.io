@@ -7,34 +7,36 @@ const AddInstructor = () => {
   const navigate = useHistory();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [role, setRole] = useState('instructor');
   const [name, setName] = useState();
-  const [companyID, setCompanyID] = useState();
-  const [logo, setLogo] = useState();
+  const [parentCompany, setParentCompany] = useState();
+  const [profilePhoto, setProfilePhoto] = useState();
   const [address, setAddress] = useState();
-  const [aboutCompany, setAboutCompany] = useState();
+  const [aboutMe, setAboutMe] = useState();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const company = {
+    const instructorData = {
       email: email,
       password: password,
       name: name,
-      companyID: companyID,
-      logo: logo,
+      role: role,
+      parentCompany: parentCompany,
+      profilePhoto: profilePhoto,
       address : address,
-      aboutCompany: aboutCompany
+      aboutMe: aboutMe
 
     };
 
-    const response = await addCompany(company);
+    const response = await addInstructor(instructorData);
     
     if ("status" in response && response.status == true) {
       return swal("Success", response.message, "success", {
         buttons: false,
         timer: 2000,
-      }).PageTitlethen((value) => {
-        // return <Navigate to="/inductions" />;
-        navigate.push("/companies");
+      }).then((value) => {
+        // return <Navigate to="/instructors" />;
+        navigate.push("/instructors");
       });
     } else {
       return swal("Failed", "Error message", "error");
@@ -42,8 +44,8 @@ const AddInstructor = () => {
   };
 
   // api call
-  async function addCompany(formValues) {
-    return fetch("http://localhost:8081/api/company/add", {
+  async function addInstructor(formValues) {
+    return fetch("http://localhost:8081/api/instructor/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -75,7 +77,7 @@ const AddInstructor = () => {
                       className="form-control"
                       placeholder=""
                       onChange={(e) => setEmail(e.target.value)}
-                      value={name}
+                      value={email}
                     />
                   </div>
                 </div>
@@ -118,8 +120,8 @@ const AddInstructor = () => {
                       type="text"
                       className="form-control"
                       placeholder=""
-                      onChange={(e) => setCompanyID(e.target.value)}
-                      value={companyID}
+                      onChange={(e) => setParentCompany(e.target.value)}
+                      value={parentCompany}
                     />
                   </div>
                 </div>
@@ -133,8 +135,8 @@ const AddInstructor = () => {
                       className="form-control"
                       placeholder=""
                       defaultValue="logo.png"
-                      onChange={(e) => setLogo(e.target.value)}
-                      value={logo}
+                      onChange={(e) => setProfilePhoto(e.target.value)}
+                      value={profilePhoto}
                     />
                   </div>
                 </div>
@@ -147,9 +149,9 @@ const AddInstructor = () => {
                     <textarea
                       className="form-control"
                       placeholder=""
-                      onChange={(e) => setAboutCompany(e.target.value)}
+                      onChange={(e) => setAboutMe(e.target.value)}
                     >
-                      {aboutCompany}
+                      {aboutMe}
                     </textarea>
                   </div>
                 </div>

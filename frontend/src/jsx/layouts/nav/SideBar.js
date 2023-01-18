@@ -5,11 +5,13 @@ import React, { Component, useContext, useEffect, useState } from "react";
 import PerfectScrollbar from "react-perfect-scrollbar";
 /// Link
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { ThemeContext } from "../../../context/ThemeContext";
 
 import medal from "../../../images/medal.png";
+//import state from "sweetalert/typings/modules/state";
 
 class MM extends Component {
   componentDidMount() {
@@ -29,6 +31,8 @@ class MM extends Component {
 }
 
 const SideBar = () => {
+  const role = useSelector((state) => state.auth.auth.role);
+
   const { iconHover, sidebarposition, headerposition, sidebarLayout } =
     useContext(ThemeContext);
   useEffect(() => {
@@ -60,13 +64,12 @@ const SideBar = () => {
   path = path.split("/");
   path = path[path.length - 1];
   /// Active menu
-  let deshBoard = ["", "profile"],
+  let deshBoard = ["", "instructor-dashboard", "profile"],
     department = ["departments", "add-department"],
     companies = ["companies", "add-company"],
     instructor = [
       "instructors",
       "add-instructor",
-      "instructor-dashboard",
       "instructor-courses",
       "instructor-students",
     ],
@@ -93,15 +96,30 @@ const SideBar = () => {
               <span className="nav-text">Dashboard</span>
             </Link>
             <ul>
-              <li>
-                <Link
-                  className={`${path === "dashboard" ? "mm-active" : ""}`}
-                  to="/dashboard"
-                >
-                  {" "}
-                  Dashboard Light
-                </Link>
-              </li>
+              {role == "instructor" ? (
+                <li>
+                  <Link
+                    className={`${
+                      path === "instructor-dashboard" ? "mm-active" : ""
+                    }`}
+                    to="/instructor-dashboard"
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+              ) : null}
+
+              {role == "super_admin" ? (
+                <li>
+                  <Link
+                    className={`${path === "dashboard" ? "mm-active" : ""}`}
+                    to="/dashboard"
+                  >
+                    {" "}
+                    Dashboard
+                  </Link>
+                </li>
+              ) : null}
 
               <li>
                 <Link
@@ -113,57 +131,66 @@ const SideBar = () => {
               </li>
             </ul>
           </li>
-          <li className={`${department.includes(path) ? "mm-active" : ""}`}>
-            <Link className="has-arrow" to="#">
-              <i className="bi bi-book"></i>
-              <span className="nav-text">Department</span>
-            </Link>
-            <ul>
-              <li>
-                <Link
-                  className={`${path === "department" ? "mm-active" : ""}`}
-                  to="/departments"
-                >
-                  Departments
-                </Link>
-              </li>
 
-              <li>
-                <Link
-                  className={`${path === "add-department" ? "mm-active" : ""}`}
-                  to="/add-department"
-                >
-                  Add Department{" "}
-                </Link>
-              </li>
-            </ul>
-          </li>
-          <li className={`${companies.includes(path) ? "mm-active" : ""}`}>
-            <Link className="has-arrow" to="#">
-              {" "}
-              <i className="bi bi-people"></i>{" "}
-              <span className="nav-text">Company</span>
-            </Link>
-            <ul>
-              <li>
-                <Link
-                  className={`${path === "companies" ? "mm-active" : ""}`}
-                  to="/companies"
-                >
-                  Companies
-                </Link>
-              </li>
+          {role == "company" ? (
+            <li className={`${department.includes(path) ? "mm-active" : ""}`}>
+              <Link className="has-arrow" to="#">
+                <i className="bi bi-book"></i>
+                <span className="nav-text">Department</span>
+              </Link>
+              <ul>
+                <li>
+                  <Link
+                    className={`${path === "department" ? "mm-active" : ""}`}
+                    to="/departments"
+                  >
+                    Departments
+                  </Link>
+                </li>
 
-              <li>
-                <Link
-                  className={`${path === "add-company" ? "mm-active" : ""}`}
-                  to="/add-company"
-                >
-                  Add Company{" "}
-                </Link>
-              </li>
-            </ul>
-          </li>
+                <li>
+                  <Link
+                    className={`${
+                      path === "add-department" ? "mm-active" : ""
+                    }`}
+                    to="/add-department"
+                  >
+                    Add Department{" "}
+                  </Link>
+                </li>
+              </ul>
+            </li>
+          ) : null}
+
+          {role == "super_admin" ? (
+            <li className={`${companies.includes(path) ? "mm-active" : ""}`}>
+              <Link className="has-arrow" to="#">
+                {" "}
+                <i className="bi bi-people"></i>{" "}
+                <span className="nav-text">Company</span>
+              </Link>
+              <ul>
+                <li>
+                  <Link
+                    className={`${path === "companies" ? "mm-active" : ""}`}
+                    to="/companies"
+                  >
+                    Companies
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    className={`${path === "add-company" ? "mm-active" : ""}`}
+                    to="/add-company"
+                  >
+                    Add Company{" "}
+                  </Link>
+                </li>
+              </ul>
+            </li>
+          ) : null}
+
           <li className={`${instructor.includes(path) ? "mm-active" : ""}`}>
             <Link className="has-arrow" to="#">
               {" "}
@@ -171,103 +198,105 @@ const SideBar = () => {
               <span className="nav-text">Instructor</span>
             </Link>
             <ul>
-              <li>
-                <Link
-                  className={`${path === "instructors" ? "mm-active" : ""}`}
-                  to="/instructors"
-                >
-                  instructors
-                </Link>
-              </li>
+              { (role == "company" || role == "super_admin")? (
+                <>
+                  <li>
+                    <Link
+                      className={`${path === "instructors" ? "mm-active" : ""}`}
+                      to="/instructors"
+                    >
+                      instructors
+                    </Link>
+                  </li>
+                  { (role == "company")? (
+                  <li>
+                    <Link
+                      className={`${
+                        path === "add-instructor" ? "mm-active" : ""
+                      }`}
+                      to="/add-instructor"
+                    >
+                      Add Instructor
+                    </Link>
+                  </li>
+                  ) : null}
+                </>
+              ) : null}
 
-              <li>
-                <Link
-                  className={`${path === "add-instructor" ? "mm-active" : ""}`}
-                  to="/add-instructor"
-                >
-                  Add Instructor
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  className={`${
-                    path === "instructor-dashboard" ? "mm-active" : ""
-                  }`}
-                  to="/instructor-dashboard"
-                >
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className={`${
-                    path === "instructor-courses" ? "mm-active" : ""
-                  }`}
-                  to="/instructor-courses"
-                >
-                  Inductions
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  className={`${
-                    path === "instructor-students" ? "mm-active" : ""
-                  }`}
-                  to="/instructor-students"
-                >
-                  Users
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  className={`${
-                    path === "instructor-liveclass" ? "mm-active" : ""
-                  }`}
-                  to="/instructor-liveclass"
-                >
-                  Live Class
-                </Link>
-              </li>
+              {role == "instructor" ? (
+                <>
+                  {/* <li>
+                    <Link
+                      className={`${
+                        path === "instructor-courses" ? "mm-active" : ""
+                      }`}
+                      to="/instructor-courses"
+                    >
+                      Inductions
+                    </Link>
+                  </li> */}
+                  <li>
+                    <Link
+                      className={`${
+                        path === "instructor-students" ? "mm-active" : ""
+                      }`}
+                      to="/instructor-students"
+                    >
+                      Users
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={`${
+                        path === "instructor-liveclass" ? "mm-active" : ""
+                      }`}
+                      to="/instructor-liveclass"
+                    >
+                      Live Class
+                    </Link>
+                  </li>{" "}
+                </>
+              ) : null}
             </ul>
           </li>
-          <li className={`${inductions.includes(path) ? "mm-active" : ""}`}>
-            <Link className="has-arrow" to="#">
-              <i className="bi bi-book"></i>
-              <span className="nav-text">Inductions</span>
-            </Link>
-            <ul>
-              <li>
-                <Link
-                  className={`${
-                    path === "create-induction" ? "mm-active" : ""
-                  }`}
-                  to="/create-induction"
-                >
-                  Create Induction{" "}
-                </Link>
-              </li>
 
-              <li>
-                <Link
-                  className={`${path === "inductions" ? "mm-active" : ""}`}
-                  to="/inductions"
-                >
-                  All Inductions{" "}
-                </Link>
-              </li>
-            </ul>
-          </li>
+          {role == "instructor" ? (
+            <li className={`${inductions.includes(path) ? "mm-active" : ""}`}>
+              <Link className="has-arrow" to="#">
+                <i className="bi bi-book"></i>
+                <span className="nav-text">Inductions</span>
+              </Link>
+              <ul>
+                <li>
+                  <Link
+                    className={`${
+                      path === "create-induction" ? "mm-active" : ""
+                    }`}
+                    to="/create-induction"
+                  >
+                    Create Induction{" "}
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    className={`${path === "inductions" ? "mm-active" : ""}`}
+                    to="/inductions"
+                  >
+                    All Inductions{" "}
+                  </Link>
+                </li>
+              </ul>
+            </li>
+          ) : null}
+
+
           <li className={`${students.includes(path) ? "mm-active" : ""}`}>
             <Link className="has-arrow" to="#">
               <i className="bi bi-book"></i>
               <span className="nav-text">Students</span>
             </Link>
             <ul>
-              
-
               <li>
                 <Link
                   className={`${path === "students" ? "mm-active" : ""}`}
@@ -278,6 +307,9 @@ const SideBar = () => {
               </li>
             </ul>
           </li>
+
+
+
         </MM>
 
         <div className="copyright">

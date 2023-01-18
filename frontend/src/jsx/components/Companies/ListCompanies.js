@@ -18,7 +18,7 @@ const ListCompanies = () => {
 
       if ("status" in response && response.status == true) {
         const rows = response.data.map((row, index) => (
-          // Only do this if items have no stable IDs
+          
           <tr key={index}>
             <td>
               <div className="d-flex align-items-center">
@@ -28,7 +28,9 @@ const ListCompanies = () => {
               </div>
             </td>
             <td>{row.email}</td>
-            <td>{row.aboutCompany}</td>
+            <td>
+              <div className="col-span-3">{ (row.aboutCompany.length > 30 ) ? row.aboutCompany.substring(1, 30)+'...' : row.aboutCompany }</div>
+            </td>
             <td>{row.address}</td>
             <td>
               <span className={`badge  light badge-success`}>{row.status}</span>

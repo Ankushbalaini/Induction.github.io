@@ -62,7 +62,59 @@ exports.index = (req, res) => {
  * 
  * @author Singh
  */
+
+
 exports.store = (req, res) => {
+  try{
+    const idata       = new Induction(req.body.induction);
+    const slidesData  = req.body.slides;
+    
+    idata
+      .save(idata)
+      .then(data => {
+        if(data){
+          slidesData.forEach(row => {
+            row.slideInductionId = data._id;
+
+
+            var slide = new SlideModel(row);
+            slide.save();
+          });
+
+          return res.status(200).send({ 
+            status: true, 
+            message: "Induction created",
+            data: data
+          });
+        }
+
+      })
+      .catch(err=>{        
+        return res.status(500).send({
+          status: false,
+          message:
+            err.message || "Some error occurred while creating new induction."
+        });
+
+      });
+      return;
+      
+
+  }catch(err){
+    return res.status(500).send({
+      status: false,
+      message:
+        err.message || "Some error occurred while creating new induction."
+    });
+  }
+  
+}
+
+
+
+
+
+exports.store_org_17jan = (req, res) => {
   const idata       = new Induction(req.body.induction);
   const slidesData  = req.body.slides;
 

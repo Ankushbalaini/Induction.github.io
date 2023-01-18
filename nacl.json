@@ -3,9 +3,9 @@
       "group": "super_admin",
       "permissions": [
         {
-          "resource": "*",
-          "methods": "*",
-          "action": "deny"
+          "resource": "students",
+          "methods": ["GET"],
+          "action": "allow"
         }
       ]
     },

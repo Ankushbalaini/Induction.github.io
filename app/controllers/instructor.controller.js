@@ -2,11 +2,12 @@ const db = require("../models");
 const InstructorTable = db.instructor;
 const userCredTable = db.user_cred;
 
+
 var jwt = require("jsonwebtoken");
 const { instructor } = require("../models");
 
 // Create and Save a new company
-exports.list = (req, res) => {
+exports.list_org = (req, res) => {
   companyModel
     .find({})
     .then(function (result) {
@@ -27,11 +28,82 @@ exports.list = (req, res) => {
     });
 };
 
+
+
+
+
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
+exports.list = (req, res) => {
+
+  userCredTable.aggregate([
+    {
+      $match: { $expr: { $eq: ["$role", "instructor"] } },
+    },
+    {
+      $lookup: {
+        from: "instructors",
+        localField: "_id",
+        foreignField: "user_id",
+        as: "profile",
+      }
+    },
+    {
+      $unwind: "$profile"
+    },
+    {
+      $project: {
+        _id: 1,
+        email: 1,
+        role: 1,
+        profile: 1,
+        company:1,
+      },
+    },
+  ])
+    .then((data) => {
+      res.status(200).send({
+        status: true,
+        message: "All Instuctor Listing",
+        data: data,
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        status: false,
+        message: err.message,
+        data: {},
+      });
+    });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  *
  * @param {*} req
  * @param {*} res
  * @returns
+ * instructor@gmail.com
  */
 exports.add = (req, res) => {
     try{
@@ -41,7 +113,7 @@ exports.add = (req, res) => {
 
         // Create token
         const token = jwt.sign(
-            { user_id: InstructorCred._id, email, role },
+            { _id: InstructorCred._id, email:email, role:role },
             "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
             {
             expiresIn: "2h",
@@ -83,3 +155,10 @@ exports.add = (req, res) => {
 
   
 };
+
+
+
+
+
+
+

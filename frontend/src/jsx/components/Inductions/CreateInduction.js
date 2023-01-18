@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef } from "react";
+import React, { Fragment, useState, useRef, useEffect } from "react";
 //import Multistep from "react-multistep";
 import { Stepper, Step } from 'react-form-stepper';
 
@@ -13,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import JoditEditor from 'jodit-react';
 
 const CreateInduction = () => {
+
 	const navigate = useHistory();
   const [inductionTitle, setInductionTitle] = useState();
   const [inductionDept, setInductionDept] = useState();
@@ -21,11 +22,17 @@ const CreateInduction = () => {
   const [inductionContent, setInductionContent] = useState();
   const editor = useRef(null);
 
+
+
 	let handleChange = (i, e) => {
     let newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.value;
     setFormValues(newFormValues);
   }
+
+
+
+
     
   let addFormFields = () => {
     setFormValues([...formValues, { slideTitle: "", slideContent: "" }]);
@@ -67,6 +74,13 @@ const CreateInduction = () => {
 
   }
 
+  useEffect(()=>{
+    console.log(formValues,"formValues...");
+
+
+
+  },[]);
+
 
   // api call
   async function saveInduction(formValues) {
@@ -79,6 +93,7 @@ const CreateInduction = () => {
     })
       .then(data => data.json())
   }
+  
 
 
 
@@ -129,20 +144,16 @@ const CreateInduction = () => {
                   <div className="mb-3 row">
                     <label className="col-sm-3 col-form-label">About induction</label>
                     <div className="col-sm-9">
-                      {/* <textarea
-                        className="form-control"
-                        placeholder=""
-                        onChange={(e)=>setInductionDesc(e.target.value)}
-                      >{inductionDesc}</textarea> */}
+                      
 
 
-                  <JoditEditor
-                    ref={editor}
-                    value={inductionDesc}
-                    tabIndex={1} // tabIndex of textarea
-                    onBlur={newContent => setInductionDesc(newContent)} // preferred to use only this option to update the content for performance reasons
-                    onChange={newContent => {setInductionDesc(newContent)}}
-                  />
+                        <JoditEditor
+                          ref={editor}
+                          value={inductionDesc}
+                          tabIndex={1} // tabIndex of textarea
+                          onBlur={newContent => setInductionDesc(newContent)} // preferred to use only this option to update the content for performance reasons
+                          onChange={newContent => {setInductionDesc(newContent)}}
+                        />
 
 
                     </div>
@@ -158,40 +169,39 @@ const CreateInduction = () => {
                   </div>
 
                   {formValues.map((element, index) => (
+                    // console.log(element);
+                  
                     <div className="card-body" key={index} >
                       <div className="mb-3 row">
                           <label className="col-sm-3 col-form-label">Slide Title</label>
                           <div className="col-sm-9">
                               <input type="text"
                               className="form-control"
-                              placeholder=""  onChange={e => handleChange(index, e)} name="slideTitle" value={element.slideTitle}/>
+                              placeholder=""  
+                              onChange={(newContent) => handleChange(index, newContent)} 
+                              name="slideTitle" 
+                              value={element.slideTitle}/>
                           </div>
+
+                          {element.slideTitle}
                       </div>
                       <div className="mb-3 row">
                         <label className="col-sm-3 col-form-label">Slide Content</label>
                         <div className="col-sm-9">
-                        {/* <textarea
-                            className="form-control"
-                            placeholder=""
-                            onChange={e => handleChange(index, e)} 
-                            value={element.slideContent} 
-                        name="slideContent"></textarea> */}
-
-                        <JoditEditor
-                          ref={editor}
-                          value={element.slideContent}
-                          tabIndex={1} // tabIndex of textarea
-                          onBlur={e => handleChange(index, e)} // preferred to use only this option to update the content for performance reasons
-                          onChange={e => handleChange(index, e)}
-                        />
-
-
+                          <JoditEditor
+                            ref={editor}
+                            value={element.slideContent}
+                            tabIndex={2} 
+                            onBlur={(newContent) => handleChange(index, newContent) }
+                            name="slideContent"
+                          />
                         </div>
                       </div>
                       {
                         index ? 
                         <div className="mb-12 row">
-                    <div className="col-sm-12"><button type="button" className="btn btn-primary remove" onClick={() => removeFormFields(index)}>Remove</button> </div></div>
+                          <div className="col-sm-12"><button type="button" className="btn btn-primary remove" onClick={() => removeFormFields(index)}>Remove</button> </div>
+                        </div>
                         : null
                       }
                     </div>
