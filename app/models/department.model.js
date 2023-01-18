@@ -3,8 +3,8 @@ module.exports = mongoose => {
       "department",
       mongoose.Schema(
         {
-          name: { type: String, default : null},
-          department: { type: String }
+          name: { type: String, required : true, unique: true},
+          status:{type:String},
         },
         { timestamps: true }
       )
