@@ -30,7 +30,11 @@ const CreateInduction = () => {
     setFormValues(newFormValues);
   }
 
-
+  const handleJoditEditorChange = (index, newContent) => {
+    let newFormValues = [...formValues];
+    newFormValues[index]["slideContent"] = newContent;
+    setFormValues(newFormValues);
+  };
 
 
     
@@ -192,7 +196,12 @@ const CreateInduction = () => {
                             ref={editor}
                             value={element.slideContent}
                             tabIndex={2} 
-                            onBlur={(newContent) => handleChange(index, newContent) }
+                            onBlur={(newContent) =>
+                              handleJoditEditorChange(index, newContent)
+                            }
+                            onChange={(newContent) => {
+                              handleJoditEditorChange(index, newContent);
+                            }}
                             name="slideContent"
                           />
                         </div>
