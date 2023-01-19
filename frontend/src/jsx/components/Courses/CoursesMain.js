@@ -14,6 +14,7 @@ import course3 from "./../../../images/courses/course3.jpg";
 import course4 from "./../../../images/courses/course4.jpg";
 import course5 from "./../../../images/courses/course5.jpg";
 import course6 from "./../../../images/courses/course6.jpg";
+import { useSelector } from "react-redux";
 
 const widgetData = [
   { image: palette, title: "Graphic" },
@@ -22,44 +23,35 @@ const widgetData = [
   { image: microscope, title: "Science" },
 ];
 
-const cardInfoBlog = [
-  { title: "Fullstack Developer", subtitle: "Karen Hope ", image: course1 },
-  { title: "UI Design Beginner", subtitle: "Jack and Sally", image: course2 },
-  { title: "How to be Freelancer", subtitle: "Cahaya Hikari", image: course3 },
-  { title: "UX Research", subtitle: "Johnny Ahmad", image: course4 },
-  { title: "Basic Web Design", subtitle: "Jordan Nico", image: course5 },
-  {
-    title: "3D Character Design",
-    subtitle: "Samantha William ",
-    image: course6,
-  },
-];
-
 function CoursesMain() {
   const [courses, setCourses] = useState();
   const [loading, setloading] = useState(true);
+  const [page, setPage ] = useState(1);
+
+  const token = useSelector((state) => state.auth.auth.token);
 
   // api call
-  async function getAllInductions() {
-    return fetch("http://localhost:8081/api/induction/", {
+  async function getAllInductions(page) {
+    return fetch("http://localhost:8081/api/induction?page="+page, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "x-access-token": token,
       },
     }).then((data) => data.json());
   }
 
   // use effect
   useEffect(() => {
-    const handleGetInduction = async (e) => {
-      const response = await getAllInductions();
+    const handleGetInduction = async (page) => {
+      const response = await getAllInductions(page);
       if ("status" in response && response.status == true) {
         setCourses(response.data);
         setloading(false);
       }
     };
-    handleGetInduction();
-  }, []);
+    handleGetInduction(page);
+  }, [page]);
 
   const content = loading ? (
     <h1>Loading</h1>
@@ -84,12 +76,10 @@ function CoursesMain() {
                     <div className="dlab-title d-flex justify-content-between">
                       <div>
                         <h4>
-                          <Link to={"./course-details-1"}>
-                            {data.induction_title}
-                          </Link>
+                          <Link to={"./course-details-1"}>{data.title}</Link>
                         </h4>
                         <p className="m-0">
-                          {data.induction_department}
+                          {data.subTitle}
                           <svg
                             className="ms-1"
                             width="4"
@@ -117,9 +107,10 @@ function CoursesMain() {
                           </span>
                         </p>
                       </div>
-                      {/* <h4 className="text-primary">
-                        <span>$</span>50.99
-                      </h4> */}
+                      <h4 className="text-primary">
+
+                        <span>Author</span>
+                      </h4>
                     </div>
                     <div className="d-flex justify-content-between content align-items-center">
                       <span>
@@ -138,8 +129,11 @@ function CoursesMain() {
                         </svg>
                         110+ Content
                       </span>
-                      <Link to={`/course-details-1/${data._id}`} className="btn btn-primary btn-sm">
-                        View 
+                      <Link
+                        to={`/course-details-1/${data._id}`}
+                        className="btn btn-primary btn-sm"
+                      >
+                        View
                       </Link>
                     </div>
                   </div>
@@ -156,23 +150,23 @@ function CoursesMain() {
           </h4>
           <ul>
             <li>
-              <Link to={"#"}>
+              <Link to={"#"} onClick={e=>setPage(page-1)} className={(page<1)?'active' : ""}>
                 <i className="fas fa-chevron-left"></i>
               </Link>
             </li>
             <li>
-              <Link to={"#"} className="active">
+              <Link to={"#"} onClick={e=>setPage(1)}  className={(page==1)?'active' : ""}>
                 1
               </Link>
             </li>
             <li>
-              <Link to={"#"}>2</Link>
+              <Link to={"#"} onClick={e=>setPage(2)} className={(page==2)?'active' : ""}>2</Link>
             </li>
             <li>
-              <Link to={"#"}>3</Link>
+              <Link to={"#"} onClick={e=>setPage(3)} className={(page==3)?'active' : ""}>3</Link>
             </li>
             <li>
-              <Link to={"#"}>
+              <Link to={"#"} onClick={e=>setPage(page+1)} className={(page>3)?'active' : ""}>
                 <i className="fas fa-chevron-right"></i>
               </Link>
             </li>

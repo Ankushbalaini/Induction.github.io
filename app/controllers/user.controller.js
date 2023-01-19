@@ -181,13 +181,34 @@ exports.login = (req, res) => {
     .then(function (user) {
       //console.log(user);
       if (user) {
+
+        // create a new token 
+        const user_cred = new UserCred(user);
+        // Create token
+        const token = jwt.sign(
+          { user_id: user_cred._id, email: user_cred.email, role: user_cred.role, parentCompany: user_cred.parentCompany },
+          "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
+          {
+            expiresIn: "2h",
+          }
+        );
+        user_cred.token = token;
+
+        user_cred.save().catch((err) => {
+          res.status(500).send({
+            status: false,
+            message: err.message || "Some error occurred while creating the User.",
+          });
+        });
+
+        
         res.status(200).send({
           status: true,
           message: "Login Successful",
           data: {
             id: user._id,
             email: user.email,
-            token: user.token,
+            token: user_cred.token,
             role: user.role,
             expiresIn: new Date(Date.now() + 2 * (60 * 60 * 1000)),
           },
