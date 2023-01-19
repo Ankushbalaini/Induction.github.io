@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 
 // React router dom
 import { Switch, Route } from "react-router-dom";
@@ -26,7 +26,7 @@ import ListCompanies from "./components/Companies/ListCompanies";
 import AddCompany from "./components/Companies/AddCompany";
 
 //Department----
-import AllDepartments from "./components/Department/ListDepartment"
+import AllDepartments from "./components/Department/ListDepartment";
 import AddDepartment from "./components/Department/AddDepartment";
 
 //Inductions----
@@ -48,13 +48,12 @@ import AllStudents from "./components/Students/AllStudents";
 // App
 import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
 import { ThemeContext } from "../context/ThemeContext";
-import {store} from '../../src/store/store';
-
+import { store } from "../../src/store/store";
 
 const Markup = () => {
-  var newState =store.getState();
-  
-  const [role, setRole] = useState(newState.auth.auth.role); 
+  var newState = store.getState();
+
+  const [role, setRole] = useState(newState.auth.auth.role);
   const { menuToggle } = useContext(ThemeContext);
   var routes = [
     /// Dashboard
@@ -72,9 +71,8 @@ const Markup = () => {
     { url: "add-company", component: AddCompany },
 
     // Department----
-    { url :"departments", component: AllDepartments},
-    { url: "add-department",component:AddDepartment},
-
+    { url: "departments", component: AllDepartments },
+    { url: "add-department", component: AddDepartment },
 
     // Inductions ----
     { url: "inductions", component: Inductions },
@@ -95,68 +93,12 @@ const Markup = () => {
     { url: "app-profile", component: AppProfile },
   ];
 
-
-  /*
-
-
-  switch(role){
-    case 'super_admin':
-      
-      break;
-
-    case 'company':
-      var routes = [
-        /// Dashboard
-        { url: "", component: Home },
-        { url: "dashboard", component: Home },
-        { url: "profile", component: Profile },
-    
-        // Courses ----
-        { url: "courses", component: CoursesMain },
-        { url: "course-details-1", component: CourseDetail1 },
-        { url: "course-details-2", component: CourseDetail2 },
-    
-        // Companies ----
-        { url: "companies", component: AllCompanies },
-        { url: "add-company", component: AddCompany },
-    
-        // Inductions ----
-        { url: "inductions", component: Inductions },
-        { url: "induction/:id", component: InductionDetail },
-        { url: "create-induction", component: CreateInduction },
-        { url: "single-induction-view/:id", component: SingleInductionView },
-    
-        // Instructors  Pages path
-        { url: "instructors", component: Instructors },
-        { url: "add-instructor", component: AddInstructor },
-        { url: "instructor-dashboard", component: InstructorDashboard },
-        { url: "instructor-courses", component: InstructorCourses },
-        { url: "instructor-students", component: InstructorStudents },
-    
-        { url: "students", component: AllStudents },
-    
-        // Apps
-        { url: "app-profile", component: AppProfile },
-      ];
-
-      break;
-
-      
-      default:
-
-  }
- */
-
-  
-  
-
   let path = window.location.pathname;
   path = path.split("/");
   path = path[path.length - 1];
 
   let pagePath = path.split("-").includes("page");
 
-  
   return (
     <>
       <div

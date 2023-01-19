@@ -131,6 +131,8 @@ const SideBar = () => {
             </ul>
           </li>
 
+
+
             <li className={`${department.includes(path) ? "mm-active" : ""}`}>
               <Link className="has-arrow" to="#">
                 <i className="bi bi-book"></i>
@@ -212,6 +214,22 @@ const SideBar = () => {
                       Add Instructor
                     </Link>
                   </li>
+
+
+                  <li>
+                    <Link
+                      className={`${
+                        path === "instructor-courses" ? "mm-active" : ""
+                      }`}
+                      to="/instructor-courses"
+                    >
+                      instructor courses
+                    </Link>
+                  </li>
+
+
+                  
+
 
               
                   <li>
@@ -297,14 +315,7 @@ const SideBar = () => {
                   All Students{" "}
                 </Link>
 
-                <li>
-                  <Link
-                    className={`${path === "inductions" ? "mm-active" : ""}`}
-                    to="/courses"
-                  >
-                    Courses
-                  </Link>
-                </li>
+                
                 
               </li>
             </ul>

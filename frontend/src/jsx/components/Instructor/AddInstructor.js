@@ -2,14 +2,18 @@ import React, { Fragment, useState, useRef } from "react";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AddInstructor = () => {
   const navigate = useHistory();
+  const loggedrole = useSelector((state) => state.auth.auth.role);
+	const parentCompanyID = useSelector((state) => state.auth.auth.id);
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [role, setRole] = useState('instructor');
   const [name, setName] = useState();
-  const [parentCompany, setParentCompany] = useState();
+  const [parentCompany, setParentCompany] = useState(parentCompanyID);
   const [profilePhoto, setProfilePhoto] = useState();
   const [address, setAddress] = useState();
   const [aboutMe, setAboutMe] = useState();
@@ -120,8 +124,8 @@ const AddInstructor = () => {
                       type="text"
                       className="form-control"
                       placeholder=""
-                      onChange={(e) => setParentCompany(e.target.value)}
                       value={parentCompany}
+                      disabled
                     />
                   </div>
                 </div>

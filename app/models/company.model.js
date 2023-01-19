@@ -9,7 +9,8 @@ module.exports = mongoose => {
           logo: { type: String },
           companyID: {type: String, unique: true },
           aboutCompany: {type: String},
-          user_id: {type: String, required : true}
+          user_id: {type: String, required : true},
+          
         },
         { timestamps: true }
       )

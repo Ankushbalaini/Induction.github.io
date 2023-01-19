@@ -8,8 +8,15 @@ module.exports = mongoose => {
             password: { type: String , required: true},
             role: { type: String , required: true},
             token : { type: String },
-            status: { type: Boolean }
-          
+            status: { type: Boolean },
+            parentCompany: { type: mongoose.Schema.Types.ObjectId },
+            parentInstructor: { type: mongoose.Schema.Types.ObjectId },
+            totalCompanies : { type: String },
+            totalInstructors: { type: String },
+            totalCourses: { type: String },
+            totalUsers: { type: String },
+            createdBy: { type: mongoose.Schema.Types.ObjectId },
+            
         },
         { timestamps: true }
       )
