@@ -23,7 +23,10 @@ function InductionSlidesList({setCurrentSlideContent,...props}) {
             <div className="accordion-body card-body pt-0">
               {props.slides.map((slide, i) => {
                 return (
-                  <div className="acc-courses ">
+                  <div
+                    className="acc-courses "
+                    onClick={() => handleClick(slide)}
+                  >
                     <div className="d-flex justify-content-between align-items-center">
                       <div className="d-flex align-items-center">
                         <span className="acc-icon">
@@ -41,9 +44,9 @@ function InductionSlidesList({setCurrentSlideContent,...props}) {
                           </svg>
                         </span>
                         <h4 className="m-0">{slide.slideTitle}</h4>
-                        <h4>
+                        {/* <h4>
                           <button onClick={()=>handleClick(slide)}>Change </button>
-                        </h4>
+                        </h4> */}
                       </div>
                       {/* <span>1:00</span> */}
                     </div>

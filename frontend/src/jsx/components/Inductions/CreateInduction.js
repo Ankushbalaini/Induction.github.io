@@ -24,27 +24,31 @@ const CreateInduction = () => {
 
 
 
-	let handleChange = (i, e) => {
+	const handleChange = (i, e) => {
     let newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.value;
     setFormValues(newFormValues);
   }
 
-
+  const handleJoditEditorChange = (index, newContent) => {
+    let newFormValues = [...formValues];
+    newFormValues[index]["slideContent"] = newContent;
+    setFormValues(newFormValues);
+  };
 
 
     
-  let addFormFields = () => {
+  const addFormFields = () => {
     setFormValues([...formValues, { slideTitle: "", slideContent: "" }]);
   }
   
-  let removeFormFields = (i) => {
+  const removeFormFields = (i) => {
       let newFormValues = [...formValues];
       newFormValues.splice(i, 1);
       setFormValues(newFormValues);
   }
   
-  let handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
       event.preventDefault();
       const inductionDetail = {
         induction_title: inductionTitle, 
@@ -192,7 +196,12 @@ const CreateInduction = () => {
                             ref={editor}
                             value={element.slideContent}
                             tabIndex={2} 
-                            onBlur={(newContent) => handleChange(index, newContent) }
+                            onBlur={(newContent) =>
+                              handleJoditEditorChange(index, newContent)
+                            }
+                            onChange={(newContent) => {
+                              handleJoditEditorChange(index, newContent);
+                            }}
                             name="slideContent"
                           />
                         </div>
