@@ -24,7 +24,7 @@ const CreateInduction = () => {
 
 
 
-	let handleChange = (i, e) => {
+	const handleChange = (i, e) => {
     let newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.value;
     setFormValues(newFormValues);
@@ -38,17 +38,17 @@ const CreateInduction = () => {
 
 
     
-  let addFormFields = () => {
+  const addFormFields = () => {
     setFormValues([...formValues, { slideTitle: "", slideContent: "" }]);
   }
   
-  let removeFormFields = (i) => {
+  const removeFormFields = (i) => {
       let newFormValues = [...formValues];
       newFormValues.splice(i, 1);
       setFormValues(newFormValues);
   }
   
-  let handleSubmit = async (event) => {
+  const handleSubmit = async (event) => {
       event.preventDefault();
       const inductionDetail = {
         induction_title: inductionTitle, 
