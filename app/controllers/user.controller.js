@@ -50,7 +50,7 @@ exports.create = (req, res) => {
     const user_cred = new UserCred({ ...req.body });
     // Create token
     const token = jwt.sign(
-      { user_id: user_cred._id, email: user_cred.email, role: user_cred.role },
+      { userID: user_cred._id, email: user_cred.email, role: user_cred.role },
       "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
       {
         expiresIn: "2h",
@@ -65,7 +65,7 @@ exports.create = (req, res) => {
       });
     });
 
-    req.body.user_id = user_cred._id;
+    req.body.userID = user_cred._id;
 
     const user_detail = req.body;
     const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
@@ -186,7 +186,7 @@ exports.login = (req, res) => {
         const user_cred = new UserCred(user);
         // Create token
         const token = jwt.sign(
-          { user_id: user_cred._id, email: user_cred.email, role: user_cred.role, parentCompany: user_cred.parentCompany },
+          { userID: user_cred._id, email: user_cred.email, role: user_cred.role, parentCompany: user_cred.parentCompany },
           "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
           {
             expiresIn: "2h",
@@ -412,7 +412,7 @@ exports.signUp = (req, res) => {
   // Save entry in user cred table
   const user_cred = new UserCred({ ...req.body });
   const token = jwt.sign(
-    { user_id: user_cred._id, email: user_cred.email, role: user_cred.role },
+    { userID: user_cred._id, email: user_cred.email, role: user_cred.role },
     "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
     {
       expiresIn: "2h",
@@ -425,7 +425,7 @@ exports.signUp = (req, res) => {
     .save()
     .then((user) => {
 
-      req.body.user_id = user._id;
+      req.body.userID = user._id;
 
       const user_detail = req.body;
       const { ["password"]: pwd, ...userWithoutPwd } = user_detail;

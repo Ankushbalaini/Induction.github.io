@@ -54,7 +54,7 @@ exports.list = (req, res) => {
           $lookup: {
             from: "instructors",
             localField: "_id",
-            foreignField: "user_id",
+            foreignField: "userID",
             as: "profile",
           },
         },
@@ -132,7 +132,7 @@ exports.listByCompany = (req, res) => {
           $lookup: {
             from: "instructors",
             localField: "_id",
-            foreignField: "user_id",
+            foreignField: "userID",
             as: "profile",
           },
         },
@@ -199,7 +199,7 @@ exports.add = (req, res) => {
     InstructorCred.token = token;
     InstructorCred.save();
 
-    req.body.user_id = InstructorCred._id;
+    req.body.userID = InstructorCred._id;
     var instructorData = new InstructorTable(req.body);
 
     instructorData

@@ -71,7 +71,7 @@ exports.add = (req, res) => {
       });
     });
 
-    data.user_id = user._id;
+    data.userID = user._id;
     var company = new companyModel(data);
 
     company
@@ -149,7 +149,7 @@ exports.add_company = (req, res) => {
 
   // Create token
   const token = jwt.sign(
-    { user_id: user._id, email, role: user.role },
+    { userID: user._id, email, role: user.role },
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
     {
       expiresIn: "2h",

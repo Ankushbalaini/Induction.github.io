@@ -28,7 +28,7 @@ exports.index = (req, res) => {
 
     if (user.role == "instructor") {
       // return only own Inductions
-      Induction.find({"createdBy": ObjectId(user.user_id) }).limit(limit)
+      Induction.find({"createdBy": ObjectId(user.userID) }).limit(limit)
         .then((data) => {
           if (!data) {
             res
@@ -91,8 +91,8 @@ exports.store = (req, res) => {
     const secret = "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1";
     const user = jwt.verify(token, secret);
     
-    req.body.induction.dept_id       = ObjectId(user.user_id);
-    req.body.induction.createdBy     = ObjectId(user.user_id);
+    req.body.induction.dept_id       = ObjectId(user.userID);
+    req.body.induction.createdBy     = ObjectId(user.userID);
     req.body.induction.parentCompany = ObjectId(user.parentCompany);
     
     const slidesData = req.body.slides;
