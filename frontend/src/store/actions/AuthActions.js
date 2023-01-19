@@ -64,13 +64,13 @@ export function loginAction(role, email, password, history) {
             history.push("/dashboard");
             break;
           case "company":
-            history.push("/company");
+            history.push("/instructors");
             break;
           case "instructor":
             history.push("/instructor-dashboard");
             break;
           default:
-            history.push("/student");
+            history.push("/courses");
             break;
         }
 

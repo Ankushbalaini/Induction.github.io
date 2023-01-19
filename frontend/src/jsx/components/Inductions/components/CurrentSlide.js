@@ -17,7 +17,6 @@ const CurrentSlideView = (props) => {
 
   return (
     <>
-    {SlideContent}
       <div
         dangerouslySetInnerHTML={createMarkup(
           props.currentSlideContent.slideContent

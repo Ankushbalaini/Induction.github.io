@@ -1,4 +1,4 @@
-import React,{useState}  from 'react';
+import React,{useEffect, useState}  from 'react';
 import {Link} from 'react-router-dom';
 import loadable from "@loadable/component";
 import pMinDelay from "p-min-delay";
@@ -17,6 +17,8 @@ import skill from './../../../images/svg/skill.svg';
 import readingtime from './../../../images/svg/readingtime.svg';
 import certificate from './../../../images/svg/degree-certificate.svg';
 import clock from './../../../images/svg/clock-1.svg';
+
+import { useSelector } from "react-redux";
 
 const ProfileActivityChart = loadable(() =>
 	pMinDelay(import("./Dashboard/ProfileActivityChart"), 1000)
@@ -47,9 +49,15 @@ const WidgetBlog = ({changeImage, title}) =>{
 
 
 const Profile = () =>{
+	const [loading, setLoading] = useState(true);
 	const [dropSelect, setDropSelect] = useState('This Month');
+	const userID = useSelector((state) => state.auth.auth._id);
 
+	// 
+	useEffect(()=>{
+		
 
+	},[])
 	
 	return(
 		<>
