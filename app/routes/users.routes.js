@@ -53,6 +53,8 @@ module.exports = function (app) {
 
   router.get("/", users.findAll);
   router.get("/profile", users.profile);
+  router.get("/getProfile", users.getProfile);
+
   router.get("/published", users.findAllPublished);
   router.get("/:id", users.findOne);
   router.put("/:id", users.update);

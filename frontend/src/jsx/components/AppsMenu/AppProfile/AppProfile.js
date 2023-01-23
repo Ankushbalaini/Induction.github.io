@@ -186,7 +186,45 @@ const AppProfile = () => {
 									</div>
 								</Modal>
 							</div>
-						</div>
+						</div>								<Modal className="modal fade" show={sendMessage}>
+									<div className="modal-content">
+										<div className="modal-header">
+											<h5 className="modal-title">Send Message</h5>
+											<Button variant="" type="button" className="btn-close" data-dismiss="modal" onClick={() => setSendMessage(false)}>
+												
+											</Button>
+										</div>
+										<div className="modal-body">
+											<form className="comment-form" onSubmit={(e) => { e.preventDefault(); setSendMessage(false); }}>
+												<div className="row">
+													<div className="col-lg-6">
+														<div className="form-group mb-3">
+															<label htmlFor="author" className="text-black font-w600">  Name <span className="required">*</span> </label>
+															<input type="text" className="form-control" defaultValue="Author" name="Author" placeholder="Author" />
+														</div>
+													</div>
+													<div className="col-lg-6">
+														<div className="form-group mb-3">
+															<label htmlFor="email" className="text-black font-w600"> Email <span className="required">*</span></label>
+															<input type="text" className="form-control" defaultValue="Email" placeholder="Email" name="Email"/>
+														</div>
+													</div>
+													<div className="col-lg-12">
+														<div className="form-group mb-3">
+															<label htmlFor="comment" className="text-black font-w600">Comment</label>
+															<textarea rows={8} className="form-control" name="comment" placeholder="Comment" defaultValue={""}/>
+														</div>
+													</div>
+													<div className="col-lg-12">
+														<div className="form-group mb-3">
+															<input type="submit" value="Post Comment" className="submit btn btn-primary" name="submit"/>
+														</div>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</Modal>
 					</div>
 				</div>	
 				<div className="col-lg-12">

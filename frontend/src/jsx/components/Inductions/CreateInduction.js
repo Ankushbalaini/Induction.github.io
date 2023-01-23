@@ -14,11 +14,7 @@ import JoditEditor from "jodit-react";
 import { useSelector } from "react-redux";
 import Select from "react-select";
 
-const options = [
-  { id: "PHP", name: "PHP" },
-  { id: "Node JS", name: "Node JS" },
-  { id: "Angular", name: "Angular" },
-];
+import DepartmentDropdown from "../Department/DepartmentDropdown";
 
 const CreateInduction = () => {
   const navigate = useHistory();
@@ -35,6 +31,10 @@ const CreateInduction = () => {
 
   const editor = useRef(null);
   const token = useSelector((state) => state.auth.auth.token);
+
+  // validation messages
+  let errorsObj = { title: "", subTitle: "", deptID: "" };
+  const [errors, setErrors] = useState(errorsObj);
 
   const handleChange = (i, e) => {
     let newFormValues = [...formValues];
@@ -60,10 +60,29 @@ const CreateInduction = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    let error = false;
+    const errorObj = { ...errorsObj };
+    if (title == "") {
+      errorObj.title = "Title is Required";
+      error = true;
+    }
+    if (subTitle == "") {
+      errorObj.subTitle = "Sub title is Required";
+      error = true;
+    }
+
+    if (deptID == "") {
+      errorObj.deptID = "Department is Required";
+      error = true;
+    }
+
+    setErrors(errorObj);
+    if (error) return;
+
     const inductionDetail = {
       title: title,
       subTitle: subTitle,
-      dept_id: deptID,
+      deptID: deptID,
       description: inductionDesc,
       content: "",
       thumbnail: "",
@@ -81,7 +100,7 @@ const CreateInduction = () => {
         timer: 2000,
       }).then((value) => {
         // return <Navigate to="/inductions" />;
-        navigate.push("/inductions");
+        navigate.push("/courses");
       });
     } else {
       return swal("Failed", "Error message", "error");
@@ -89,13 +108,8 @@ const CreateInduction = () => {
   };
 
   useEffect(() => {
-    // console.log(formValues,"formValues...");
-    const depts = getDepartments();
-    if ("status" in depts && depts.status == true) {
-      //setDeptID()
-    }
     setLoading(false);
-  }, [deptID]);
+  }, []);
 
   // api call
   async function saveInduction(formValues) {
@@ -108,22 +122,6 @@ const CreateInduction = () => {
       body: JSON.stringify(formValues),
     }).then((data) => data.json());
   }
-
-  // api call
-  async function getDepartments() {
-    return fetch("http://localhost:8081/api/department/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token,
-      },
-      body: JSON.stringify(),
-    }).then((data) => data.json());
-  }
-
-  const changeDepartment = (e) => {
-    setDeptID(e.target.value);
-  };
 
   const pageContent = loading ? (
     "loading"
@@ -149,7 +147,10 @@ const CreateInduction = () => {
                       onChange={(e) => setTitle(e.target.value)}
                       value={title}
                     />
+                    {errors.title && <div Style="color:red;font-weight:600;padding:5px;">{errors.title}</div>}
                   </div>
+                  
+
                 </div>
 
                 <div className="mb-3 row">
@@ -162,6 +163,7 @@ const CreateInduction = () => {
                       onChange={(e) => setSubTitle(e.target.value)}
                       value={subTitle}
                     />
+                    {errors.subTitle && <div Style="color:red;font-weight:600;padding:5px;">{errors.subTitle}</div>}
                   </div>
                 </div>
 
@@ -172,10 +174,10 @@ const CreateInduction = () => {
                       className="form-control"
                       onChange={(e) => setDeptID(e.target.value)}
                     >
-                      {options.map((dept, index) => {
-                        return <option value={dept.id}>{dept.name}</option>;
-                      })}
+                      <DepartmentDropdown />
                     </select>
+
+                    {errors.deptID && <div Style="color:red;font-weight:600;padding:5px;">{errors.deptID}</div>}
                   </div>
                 </div>
 
@@ -220,8 +222,6 @@ const CreateInduction = () => {
                           value={element.slideTitle}
                         />
                       </div>
-
-                      {element.slideTitle}
                     </div>
                     <div className="mb-3 row">
                       <label className="col-sm-3 col-form-label">

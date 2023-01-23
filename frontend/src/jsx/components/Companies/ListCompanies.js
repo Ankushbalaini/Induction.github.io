@@ -1,15 +1,31 @@
-import React, { Fragment, useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, Fragment,  useRef } from "react";
+// import { Table, Pagination } from "react-bootstrap";
+
+import data from "../table/tableData.js";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory, Link } from "react-router-dom";
 
+
+const columns = [
+    "",
+    "Name",
+    "Department",
+    "Gender",
+    "Education",
+    "Mobile",
+    "Email",
+    "Joining Date",
+    "Action",
+ ];
+
+
 const ListCompanies = () => {
-  const navigate = useHistory();
-  const [name, setName] = useState();
-  const [companyID, setCompanyID] = useState();
-  const [logo, setLogo] = useState();
-  const [address, setAddress] = useState();
-  const [companies, setCompanies] = useState();
+    const [data, setdata] = useState();
+
+  
+
+
 
   useEffect(() => {
     const handlepageLoad = async (event) => {
@@ -17,30 +33,8 @@ const ListCompanies = () => {
       const response = await getCompanies();
 
       if ("status" in response && response.status == true) {
-        const rows = response.data.map((row, index) => (
-          
-          <tr key={index}>
-            <td>
-              <div className="d-flex align-items-center">
-                <h4 className="mb-0 fs-16 font-w500">
-                  {row.name}({row.companyID})
-                </h4>
-              </div>
-            </td>
-            <td>{row.email}</td>
-            <td>
-              <div className="col-span-3">{ (row.aboutCompany.length > 30 ) ? row.aboutCompany.substring(1, 30)+'...' : row.aboutCompany }</div>
-            </td>
-            <td>{row.address}</td>
-            <td>
-              <span className={`badge  light badge-success`}>{row.status}</span>
-            </td>
-            <td>
-              <Link to={`/company-detail/${row._id}`}>View </Link>
-            </td>
-          </tr>
-        ));
-        setCompanies(rows);
+        
+        setdata(response.data);
       } else {
         return swal("Failed", "Error message", "error");
       }
@@ -60,46 +54,147 @@ const ListCompanies = () => {
     }).then((data) => data.json());
   }
 
-  return (
-    <Fragment>
-      <PageTitle activeMenu="All Companies" motherMenu="Company" />
 
-      <div className="row">
-        <div className="col-xl-12">
-          <div className="card students-list">
-            <div className="card-header border-0 flex-wrap pb-0">
-              <h4>Company List</h4>
-            </div>
-            <div className="card-body py-0">
-              <div className="table-responsive">
+    const sort = 3;
+  let paggination = Array(Math.ceil(10 / sort))
+      .fill()
+      .map((_, i) => i + 1);
+
+  const activePag = useRef(0);
+  const jobData = useRef(
+      data.slice(
+      activePag.current * sort,
+      (activePag.current + 1) * sort
+      )
+  );
+  //const [demo, setdemo] = useState();
+  const onClick = (i) => {
+      activePag.current = i;
+
+      jobData.current = data.slice(
+      activePag.current * sort,
+      (activePag.current + 1) * sort
+      );
+      
+  };
+  
+
+
+
+
+
+  return (
+    <div className="col-12">
+      <div className="card">
+        <div className="card-header">
+          <h4 className="card-title">Profile Datatable</h4>
+        </div>
+        <div className="card-body">
+          <div className="w-100 table-responsive">
+            <div id="example_wrapper" className="dataTables_wrapper">
+              <table id="example" className="display w-100 dataTable">
+                <thead>
+                  <tr role="row">
+                    {/* {columns.map((d, i) => (
+                      <th key={i}>{d}</th>
+                    ))} */}
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* {jobData.current.map((d, i) => (
+                    <tr key={i}>
+                      {d.map((da, i) => (
+                        <Fragment key={i}>
+                          <td>
+                            {i === 0 ? (
+                              <img
+                                className="rounded-circle"
+                                width="35"
+                                src={da}
+                                alt=""
+                              />
+                            ) : (
+                              <Fragment>
+                                {da}
+                                {i === 8 && (
+                                  <div className="d-flex">
+                                    <Link
+                                      to="#"
+                                      className="btn btn-primary shadow btn-xs sharp me-1"
+                                    >
+                                      <i className="fas fa-pencil-alt"></i>
+                                    </Link>
+                                    <Link
+                                      to="#"
+                                      className="btn btn-danger shadow btn-xs sharp"
+                                    >
+                                      <i className="fa fa-trash"></i>
+                                    </Link>
+                                  </div>
+                                )}
+                              </Fragment>
+                            )}
+                          </td>
+                        </Fragment>
+                      ))}
+                    </tr>
+                  ))} */}
+                </tbody>
+                
+              </table>
+
+              <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-2">
+                <div className="dataTables_info">
+                  Showing {activePag.current * sort + 1} to{" "}
+                  {data.length > (activePag.current + 1) * sort
+                    ? (activePag.current + 1) * sort
+                    : data.length}{" "}
+                  of {data.length} entries
+                </div>
                 <div
-                  id="student_wrapper"
-                  className="dataTables_wrapper no-footer"
+                  className="dataTables_paginate paging_simple_numbers mb-0"
+                  id="example5_paginate"
                 >
-                  <table
-                    className="table display mb-4 dataTablesCard order-table card-table text-black application "
-                    id="application-tbl1_next"
+                  <Link
+                    className="paginate_button previous disabled"
+                    to="/table-datatable-basic"
+                    onClick={() =>
+                      activePag.current > 0 && onClick(activePag.current - 1)
+                    }
                   >
-                    <thead>
-                      <tr>
-                        <th>Name (ID)</th>
-                        <th>Email</th>
-                        <th>About Company ID</th>
-                        <th>Address</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>{companies}</tbody>
-                  </table>
+                    <i className="fa fa-angle-double-left" aria-hidden="true"></i>
+                  </Link>
+                  <span>
+                    {paggination.map((number, i) => (
+                      <Link
+                        key={i}
+                        to="/table-datatable-basic"
+                        className={`paginate_button  ${
+                          activePag.current === i ? "current" : ""
+                        } `}
+                        onClick={() => onClick(i)}
+                      >
+                        {number}
+                      </Link>
+                    ))}
+                  </span>
+                  <Link
+                    className="paginate_button next"
+                    to="/table-datatable-basic"
+                    onClick={() =>
+                      activePag.current + 1 < paggination.length &&
+                      onClick(activePag.current + 1)
+                    }
+                  >
+                    <i className="fa fa-angle-double-right" aria-hidden="true"></i>
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

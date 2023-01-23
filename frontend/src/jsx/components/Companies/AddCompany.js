@@ -14,8 +14,8 @@ const AddCompany = () => {
   const [aboutCompany, setAboutCompany] = useState();
   
 
-  let handleSubmit = async (event) => {
-    event.preventDefault();
+  let handleSubmit = async (e) => {
+    e.preventDefault();
     const company = {
       email: email,
       password: password,
@@ -47,7 +47,8 @@ const AddCompany = () => {
     return fetch("http://localhost:8081/api/company/add", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        'Accept': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
       body: JSON.stringify(formValues),
     }).then((data) => data.json());
@@ -64,7 +65,7 @@ const AddCompany = () => {
           </div>
           <div className="card-body">
             <div className="basic-form">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} method="POST" enctype="multipart/form-data">
 
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
@@ -76,7 +77,7 @@ const AddCompany = () => {
                       className="form-control"
                       placeholder=""
                       onChange={(e) => setEmail(e.target.value)}
-                      value={name}
+                      value={email}
                     />
                   </div>
                 </div>
@@ -129,14 +130,19 @@ const AddCompany = () => {
                     Company Logo
                   </label>
                   <div className="col-sm-9">
-                    <input
+                  <input
+                      type="file"
+                      className="form-control" name="logo"
+                    />
+
+                    {/* <input
                       type="text"
                       className="form-control"
                       placeholder=""
                       defaultValue="logo.png"
                       onChange={(e) => setLogo(e.target.value)}
                       value={logo}
-                    />
+                    /> */}
                   </div>
                 </div>
 

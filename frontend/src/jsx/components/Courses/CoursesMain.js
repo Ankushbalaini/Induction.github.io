@@ -51,7 +51,9 @@ function CoursesMain() {
       }
     };
     handleGetInduction(page);
-  }, [page]);
+
+    
+  }, [page,loading]);
 
   const content = loading ? (
     <h1>Loading</h1>
@@ -130,7 +132,7 @@ function CoursesMain() {
                         110+ Content
                       </span>
                       <Link
-                        to={`/course-details-1/${data._id}`}
+                        to={`/single-induction-view/${data._id}`}
                         className="btn btn-primary btn-sm"
                       >
                         View

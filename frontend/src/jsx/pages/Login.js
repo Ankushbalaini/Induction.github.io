@@ -20,9 +20,6 @@ function Login(props) {
   const [userType, setUserType] = useState("user");
   const dispatch = useDispatch();
 
-  // console.log(process.env.LOGIN_API_ENDPOINT);
-
-
   function onLogin(e) {
     e.preventDefault();
     let error = false;
@@ -65,7 +62,6 @@ function Login(props) {
                             <img width="200" src={logofull} alt="" />
                           </Link>
                         </div>
-                        
                       </div>
                     </div>
                     <div className="col-xl-6 col-md-6">
@@ -73,6 +69,7 @@ function Login(props) {
                         <h4 className="fs-20 font-w800 text-black">
                           Sign in your account
                         </h4>
+                        
                         <span>
                           Welcome back! Login with your data that you entered
                           <br /> during registration
@@ -94,12 +91,14 @@ function Login(props) {
                               <strong>Select User Type</strong>
                             </label>
 
-                            <select onChange={(e) => setUserType(e.target.value)}
-                            value={userType}>
-                                <option value='super_admin'>Super Admin</option>
-                                <option value='company'>Company</option>
-                                <option value='instructor'>Instructor</option>
-                                <option value='user'>User</option>
+                            <select
+                              onChange={(e) => setUserType(e.target.value)}
+                              value={userType}
+                            >
+                              <option value="super_admin">Super Admin</option>
+                              <option value="company">Company</option>
+                              <option value="instructor">Instructor</option>
+                              <option value="user">User</option>
                             </select>
                             {errors.userType && (
                               <div className="text-danger fs-12">

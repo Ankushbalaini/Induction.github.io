@@ -25,6 +25,16 @@ function Register(props) {
         e.preventDefault();
         let error = false;
         const errorObj = { ...errorsObj };
+
+		if (firstName === '') {
+            errorObj.firstName = 'First Name is Required';
+            error = true;
+        }
+		if (lastName === '') {
+            errorObj.lastName = 'Last name is Required';
+            error = true;
+        }
+
         if (email === '') {
             errorObj.email = 'Email is Required';
             error = true;
@@ -42,6 +52,7 @@ function Register(props) {
         dispatch(signupAction(firstName, lastName, email, password, role, props.history));
 		
     }
+	
 	return (
 		<div className="authincation h-100 p-meddle">
 			<div className="container h-100">
@@ -74,28 +85,24 @@ function Register(props) {
 												</label>
 												<input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}  className="form-control" placeholder="First name"/>
 											</div>
+											{errors.firstName && <div Style="color:red;font-weight:600">{errors.firstName}</div>}
+
 											<div className="form-group mb-3">
 												<label className="mb-1 ">
 													<strong>Last Name</strong>
 												</label>
 												<input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)}  className="form-control" placeholder="Last name"/>
 											</div>
+											{errors.lastName && <div Style="color:red;font-weight:600">{errors.lastName}</div>}
 
-
-
-											{/* <div className="form-group mb-3">
-												<label className="mb-1 ">
-													<strong>Username</strong>
-												</label>
-												<input type="text" className="form-control" placeholder="username"/>
-											</div> */}
 											<div className="form-group mb-3">
 												<label className="mb-1 ">
 												  <strong>Email</strong>
 												</label>
 												<input value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" placeholder="hello@example.com"/>
 											</div>
-											{errors.email && <div>{errors.email}</div>}
+											{errors.email && <div Style="color:red;font-weight:600">{errors.email}</div>}
+
 											<div className="form-group mb-3">
 												<label className="mb-1 ">
 													<strong>Password</strong>
@@ -109,7 +116,7 @@ function Register(props) {
 												  defaultValue="Password"
 												/>
 											</div>
-											{errors.password && <div>{errors.password}</div>}
+											{errors.password && <div Style="color:red;font-weight:600">{errors.password}</div>}
 											<div className="text-center mt-4">
 												<button type="submit" className="btn btn-primary btn-block">Sign me up</button>
 											</div>

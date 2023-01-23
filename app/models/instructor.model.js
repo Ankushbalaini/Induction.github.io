@@ -5,7 +5,7 @@ module.exports = (mongoose) => {
       {
         userID: { type: mongoose.Schema.Types.ObjectId, unique: true, required: true },
         parentCompany: { type: mongoose.Schema.Types.ObjectId, required: true },
-        deptID:{type: mongoose.Schema.Types.ObjectId, required: true},
+        deptID:{type: mongoose.Schema.Types.ObjectId},
         name: { type: String, required: true },
         profilePhoto: { type: String },
         aboutMe: { type: String },
@@ -17,6 +17,7 @@ module.exports = (mongoose) => {
       { timestamps: true }
     )
   );
+  
 
   return Instructor;
   

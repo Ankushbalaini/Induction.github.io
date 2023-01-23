@@ -1,33 +1,11 @@
 const db = require("../models");
 const InstructorTable = db.instructor;
-const userCredTable = db.user_cred;
+const UserCred = db.user_cred;
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 var jwt = require("jsonwebtoken");
 const { instructor } = require("../models");
-
-// Create and Save a new company
-exports.list_org = (req, res) => {
-  companyModel
-    .find({})
-    .then(function (result) {
-      if (result) {
-        res.status(200).send({
-          status: true,
-          message: "Comapny listing",
-          data: result,
-        });
-        return;
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        status: false,
-        message: err.message || "Some error occurred while creating the User.",
-      });
-    });
-};
 
 /**
  * For super Admin
@@ -35,9 +13,7 @@ exports.list_org = (req, res) => {
  */
 exports.list = (req, res) => {
   try {
-    
-
-    userCredTable
+    UserCred
       .aggregate([
         {
           $match: {
@@ -112,7 +88,7 @@ exports.listByCompany = (req, res) => {
       throw new Error("Parent Company Id not exist.");
     }
 
-    userCredTable
+    UserCred
       .aggregate([
         {
           $match: {
@@ -173,6 +149,11 @@ exports.listByCompany = (req, res) => {
   }
 };
 
+
+
+
+
+
 /**
  *
  * @param {*} req
@@ -182,9 +163,43 @@ exports.listByCompany = (req, res) => {
  */
 exports.add = (req, res) => {
   try {
+    // based on role
+    res.status(200).send({
+      status: true,
+      message: "Success",
+      data: response,
+    });
+
+    
+  } catch (e) {
+    return res.status(400).send({
+      status: false,
+      message: "catch" + e.message,
+      data: {},
+    });
+  }
+};
+
+
+
+
+
+
+
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ * instructor@gmail.com
+ */
+exports.add_org = (req, res) => {
+  try {
     const { email, role } = req.body;
 
-    var InstructorCred = new userCredTable(req.body);
+    req.body.parentCompany = ObjectId(req.body.parentCompany);
+    var InstructorCred = new UserCred(req.body);
 
     // Create token
     const token = jwt.sign(
@@ -194,12 +209,12 @@ exports.add = (req, res) => {
         expiresIn: "2h",
       }
     );
-
+    
     // save user token
     InstructorCred.token = token;
     InstructorCred.save();
 
-    req.body.userID = InstructorCred._id;
+    req.body.userID = ObjectId(InstructorCred._id);
     var instructorData = new InstructorTable(req.body);
 
     instructorData
@@ -222,7 +237,7 @@ exports.add = (req, res) => {
   } catch (e) {
     return res.status(400).send({
       status: false,
-      message: "Some error " + e.message,
+      message: "catch" + e.message,
       data: {},
     });
   }

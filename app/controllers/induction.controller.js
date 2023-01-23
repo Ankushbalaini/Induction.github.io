@@ -46,7 +46,7 @@ exports.index = (req, res) => {
           res.status(500).send({ message: "Error retrieving User with id=" });
         });
     } else {
-      const totalRecords = Induction.find({}).count;
+      //const totalRecords = Induction.find({}).count;
 
 
       // return all
@@ -58,10 +58,14 @@ exports.index = (req, res) => {
               .send({ 
                 status: false, message: "Not found User with id " });
           } else {
+
+            var totalrecord = Induction.find().count;
             res.send({
               status: true,
               data: data,
-              message: "All Inductions stored in DB",
+              total: totalrecord,
+              
+              message: "All Inductions stored in DB1",
             });
           }
         })
@@ -91,7 +95,7 @@ exports.store = (req, res) => {
     const secret = "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1";
     const user = jwt.verify(token, secret);
     
-    req.body.induction.dept_id       = ObjectId(user.userID);
+    req.body.induction.deptID       = ObjectId(req.body.deptID);
     req.body.induction.createdBy     = ObjectId(user.userID);
     req.body.induction.parentCompany = ObjectId(user.parentCompany);
     

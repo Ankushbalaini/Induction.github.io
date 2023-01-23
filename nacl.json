@@ -6,6 +6,13 @@
           "resource": "students",
           "methods": ["GET"],
           "action": "allow"
+        },
+        {
+          "resource": "users/getProfile",
+          "methods": ["GET"],
+          "action": "allow"
+
+          
         }
       ]
     },
@@ -13,19 +20,27 @@
       "group": "company",
       "permissions": [
         {
-          "resource": "*",
-          "methods": "*",
-          "action": "deny"
+          "resource": "instructor/*",
+          "methods": ["*"],
+          "action": "allow"
+        },
+        {
+          "resource": "users/getProfile",
+          "methods": ["GET"],
+          "action": "allow"
         }
+
       ]
     },
     {
         "group": "instructor",
         "permissions": [
           {
-            "resource": "*",
-            "methods": "*",
-            "action": "deny"
+            "resource": "users/getProfile",
+            "methods": ["GET"],
+            "action": "allow"
+  
+            
           }
         ]
       },

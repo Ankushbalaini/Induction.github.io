@@ -21,9 +21,11 @@ const RightSideBar = ({onNote}) =>{
 					<Dropdown as="li" className="nav-item dropdown header-profile">
 						<Dropdown.Toggle variant="" as="a" className="nav-link i-false c-pointer">
 							<img src={profile} width={20} alt="" />
+
+							
 						</Dropdown.Toggle>
 						<Dropdown.Menu align="right" className="dropdown-menu dropdown-menu-end">
-							<Link to="/app-profile" className="dropdown-item ai-icon">
+							<Link to="/profile" className="dropdown-item ai-icon">
 								<svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" className="text-primary me-1" width={18} height={18} viewBox="0 0 24 24" fill="none"
 									stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
 								>

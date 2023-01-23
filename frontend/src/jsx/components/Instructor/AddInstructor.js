@@ -4,6 +4,10 @@ import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+
+import CompanyDropdown from '../Companies/CompanyDropdown';
+import e from "cors";
+
 const AddInstructor = () => {
   const navigate = useHistory();
   const loggedrole = useSelector((state) => state.auth.auth.role);
@@ -18,8 +22,44 @@ const AddInstructor = () => {
   const [address, setAddress] = useState();
   const [aboutMe, setAboutMe] = useState();
 
+  // validation messages
+  let errorsObj = { email: "", password: "", cname: "", parentCompany:"" };
+  const [errors, setErrors] = useState(errorsObj);
+
+  const validate = () => {
+    let error = false;
+    const errorObj = { ...errorsObj };
+    if (email == "") {
+      errorObj.email = "Email is Required";
+      error = true;
+    }
+    if (password == "") {
+      errorObj.password = "Password is Required";
+      error = true;
+    }
+    if (name == "") {
+      errorObj.cname = "name is Required";
+      error = true;
+    }
+
+    setErrors(errorObj);
+
+    if (error) {
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
+
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    if(!validate()){
+      return false;
+    }
+
     const instructorData = {
       email: email,
       password: password,
@@ -47,6 +87,12 @@ const AddInstructor = () => {
     }
   };
 
+
+
+
+
+
+
   // api call
   async function addInstructor(formValues) {
     return fetch("http://localhost:8081/api/instructor/add", {
@@ -57,6 +103,12 @@ const AddInstructor = () => {
       body: JSON.stringify(formValues),
     }).then((data) => data.json());
   }
+
+
+  const handleParentCompChange = (e) =>{
+    setParentCompany(e.target.value);
+  }
+
 
   return (
     <Fragment>
@@ -83,6 +135,8 @@ const AddInstructor = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       value={email}
                     />
+                    
+                    {errors.email && <div Style="color:red;font-weight:600;padding:5px;">{errors.email}</div>}
                   </div>
                 </div>
 
@@ -98,6 +152,7 @@ const AddInstructor = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       value={password}
                     />
+                    {errors.password && <div Style="color:red;font-weight:600;padding:5px;">{errors.password}</div>}
                   </div>
                 </div>
 
@@ -112,21 +167,32 @@ const AddInstructor = () => {
                       type="text"
                       className="form-control"
                       placeholder=""
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={(e) => setName(e.target.value) }
                       value={name}
                     />
+                    {errors.cname && <div Style="color:red;font-weight:600;padding:5px;">{errors.cname}</div>}
                   </div>
                 </div>
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">Parent Company</label>
                   <div className="col-sm-9">
+
+                    { (loggedrole == 'super_admin') ? 
+                    <select className="form-control" onChange={ (e) => setParentCompany(e.target.value) }>
+                        <option value="">Select</option>
+                        <CompanyDropdown />
+                    </select> : 
                     <input
-                      type="text"
+                      type="hidden"
                       className="form-control"
                       placeholder=""
                       value={parentCompany}
                       disabled
                     />
+                    
+                    }
+                    {errors.parentCompany && <div Style="color:red;font-weight:600;padding:5px;">{errors.parentCompany}</div>}
+
                   </div>
                 </div>
                 <div className="mb-3 row">

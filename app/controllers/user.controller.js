@@ -2,6 +2,8 @@ const db = require("../models");
 const UserCred = db.user_cred;
 const User = db.users;
 const CompanyDB = db.company;
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 var jwt = require("jsonwebtoken");
 var nodemailer = require("nodemailer");
@@ -155,13 +157,6 @@ exports.deleteAll = (req, res) => {};
 // Find all published Tutorials
 exports.findAllPublished = (req, res) => {};
 
-
-
-
-
-
-
-
 /**
  * @author Singh
  * @param {*} req
@@ -171,8 +166,6 @@ exports.findAllPublished = (req, res) => {};
 exports.login = (req, res) => {
   const { role, email, password } = req.body;
 
-
-
   UserCred.findOne({
     email: email,
     password: password,
@@ -181,12 +174,16 @@ exports.login = (req, res) => {
     .then(function (user) {
       //console.log(user);
       if (user) {
-
-        // create a new token 
+        // create a new token
         const user_cred = new UserCred(user);
         // Create token
         const token = jwt.sign(
-          { userID: user_cred._id, email: user_cred.email, role: user_cred.role, parentCompany: user_cred.parentCompany },
+          {
+            userID: user_cred._id,
+            email: user_cred.email,
+            role: user_cred.role,
+            parentCompany: user_cred.parentCompany,
+          },
           "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
           {
             expiresIn: "2h",
@@ -197,11 +194,11 @@ exports.login = (req, res) => {
         user_cred.save().catch((err) => {
           res.status(500).send({
             status: false,
-            message: err.message || "Some error occurred while creating the User.",
+            message:
+              err.message || "Some error occurred while creating the User.",
           });
         });
 
-        
         res.status(200).send({
           status: true,
           message: "Login Successful",
@@ -217,7 +214,7 @@ exports.login = (req, res) => {
         res.status(403).send({
           status: false,
           message: "User not found!",
-          data: {}
+          data: {},
         });
       }
     })
@@ -230,16 +227,6 @@ exports.login = (req, res) => {
 
   return;
 };
-
-
-
-
-
-
-
-
-
-
 
 /**
  *
@@ -407,51 +394,80 @@ exports.signUp = (req, res) => {
       status: false,
       message: "Fields can not be empty!",
     });
-  }else{
+  } else {
+    // Save entry in user cred table
+    const user_cred = new UserCred({ ...req.body });
+    const token = jwt.sign(
+      { userID: user_cred._id, email: user_cred.email, role: user_cred.role },
+      "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
+      {
+        expiresIn: "2h",
+      }
+    );
+    user_cred.token = token;
 
-  // Save entry in user cred table
-  const user_cred = new UserCred({ ...req.body });
-  const token = jwt.sign(
-    { userID: user_cred._id, email: user_cred.email, role: user_cred.role },
-    "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
-    {
-      expiresIn: "2h",
-    }
-  );
-  user_cred.token = token;
+    // here call save function
+    user_cred
+      .save()
+      .then((user) => {
+        req.body.userID = user._id;
 
-  // here call save function
-  user_cred
-    .save()
-    .then((user) => {
+        const user_detail = req.body;
+        const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
 
-      req.body.userID = user._id;
+        const newuser = new User(userWithoutPwd);
 
-      const user_detail = req.body;
-      const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
-
-      const newuser = new User(userWithoutPwd);
-
-      newuser.save()
-      .then((data)=>{
-        res.status(200).send({
-          status: true,
-          message: "User registered successfully!",
-          data: user_cred,
-        });
-      }).catch(err=>{
+        newuser
+          .save()
+          .then((data) => {
+            res.status(200).send({
+              status: true,
+              message: "User registered successfully!",
+              data: user_cred,
+            });
+          })
+          .catch((err) => {
+            res.status(400).send({
+              status: false,
+              message: err.message,
+            });
+          });
+      })
+      .catch((err) => {
         res.status(400).send({
           status: false,
-          message: err.message
+          message: err.message,
         });
-      })
-    })
-    .catch((err) => {
-      res.status(400).send({
-        status: false,
-        message: err.message,
       });
-    });
   }
   return;
+};
+
+/**
+ *
+ * @param {req} req
+ * @param {} res
+ * @returns
+ */
+exports.getProfile = (req, res) => {
+  try{
+    UserCred.findOne({ _id: ObjectId(req.decoded.userID) })
+      .then((user) => {
+        return res.status(200).send({
+          status: true,
+          data: user,
+        });
+      })
+      .catch((err) => {
+        return res.status(400).send({
+          status: false,
+          message: err.message,
+        });
+      });
+  } catch (err) {
+    return res.status(400).send({
+      status: false,
+      message: err.message,
+    });
+  }
 };
