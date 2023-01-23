@@ -17,89 +17,6 @@ var transport = nodemailer.createTransport({
   },
 });
 
-/*
- * Signup API
- *
- * @ Singh
- */
-
-exports.create = (req, res) => {
-  try {
-    const { firstName, lastName, email, password, role } = req.body;
-    // Validate request
-    if (!firstName || !lastName || !email || !password) {
-      throw new Error("Fields can not be empty!");
-    }
-
-    // check if user already exist with same email id
-    UserCred.findOne({ email: email })
-      .then((result) => {
-        if (result) {
-          res.status(504).send({
-            status: false,
-            message: "Email already used.",
-            data: {},
-          });
-        }
-      })
-      .catch((err) => {
-        res.status(504).send({
-          status: false,
-          message: err.message,
-        });
-      });
-
-    const user_cred = new UserCred({ ...req.body });
-    // Create token
-    const token = jwt.sign(
-      { userID: user_cred._id, email: user_cred.email, role: user_cred.role },
-      "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
-      {
-        expiresIn: "2h",
-      }
-    );
-    user_cred.token = token;
-
-    user_cred.save().catch((err) => {
-      res.status(500).send({
-        status: false,
-        message: err.message || "Some error occurred while creating the User.",
-      });
-    });
-
-    req.body.userID = user_cred._id;
-
-    const user_detail = req.body;
-    const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
-
-    const user = new User(userWithoutPwd);
-
-    user
-      .save()
-      .then((data) => {
-        res.status(201).send({
-          status: true,
-          message: "Signup successful",
-          data: user_cred,
-        });
-      })
-      .catch((err) => {
-        res.status(500).send({
-          status: false,
-          message:
-            err.message || "Some error occurred while creating the User.",
-        });
-      });
-  } catch (e) {
-    return res.status(504).send({
-      status: false,
-      message: e.message,
-    });
-  }
-
-  return;
-};
-
 /**
  *
  * @param {*} req
@@ -146,7 +63,55 @@ exports.findOne = (req, res) => {
 };
 
 // Update a Tutorial by the id in the request
-exports.update = (req, res) => {};
+exports.update = (req, res) => {
+  
+    var userEmail = req.decoded.email; // get from auth token
+    var role = req.decoded.role;
+
+    delete req.body.email;
+    delete req.body.role;
+    delete req.body.password;
+
+    switch(role){
+      case 'company':
+        // company collection update
+        break;
+
+      case 'instructor':
+        // instructor collection
+        break;
+        
+      default:
+        // users colletion
+        User.update({ email: userEmail }, {$set: req.body}, {multi: true}, 
+          function(err, user) {
+            if (err) {
+
+              
+              return res.status(500).send({
+                      status: false, 
+                      message: err.message
+                    });
+            }       
+            if (!user) {
+                return res.status(500).send({
+                  status: false, 
+                  message: "User not found!"
+                });
+            }  
+            else { 
+                return res.status(200).send({
+                  status: true, 
+                  message: 'User has been updated!', 
+                  data: user
+                }) 
+            };
+        });
+        break;
+    }
+};
+
+
 
 // Delete a Tutorial with the specified id in the request
 exports.delete = (req, res) => {};
@@ -385,6 +350,7 @@ exports.profile = (req, res) => {
  * @param {} res
  * @returns
  */
+
 exports.signUp = (req, res) => {
   const { firstName, lastName, email, password, role } = req.body;
 
@@ -396,6 +362,7 @@ exports.signUp = (req, res) => {
     });
   } else {
     // Save entry in user cred table
+
     const user_cred = new UserCred({ ...req.body });
     const token = jwt.sign(
       { userID: user_cred._id, email: user_cred.email, role: user_cred.role },
@@ -451,19 +418,61 @@ exports.signUp = (req, res) => {
  */
 exports.getProfile = (req, res) => {
   try{
-    UserCred.findOne({ _id: ObjectId(req.decoded.userID) })
-      .then((user) => {
-        return res.status(200).send({
+    UserCred.aggregate([
+      {
+        $match: { _id : ObjectId(req.decoded.userID) },
+      },
+      { $limit: 1 },
+      {
+        $lookup: {
+          from: "users",
+          localField: "email",
+          foreignField: "email",
+          as: "profile",
+        },
+      },
+      {
+        $unwind: "$profile"
+      },
+  
+      {
+        $project: {
+          _id: 1,
+          email: 1,
+          role: 1,
+          profile: 1,
+        },
+      },
+    ])
+      .then((data) => {
+        res.status(200).send({
           status: true,
-          data: user,
+          message: "User profile",
+          data: data[0],
         });
       })
       .catch((err) => {
-        return res.status(400).send({
+        res.status(500).send({
           status: false,
           message: err.message,
+          data: {},
         });
       });
+
+
+    // UserCred.findOne({ _id: ObjectId(req.decoded.userID) })
+    //   .then((user) => {
+    //     return res.status(200).send({
+    //       status: true,
+    //       data: user,
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     return res.status(400).send({
+    //       status: false,
+    //       message: err.message,
+    //     });
+    //   });
   } catch (err) {
     return res.status(400).send({
       status: false,

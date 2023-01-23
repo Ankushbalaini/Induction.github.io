@@ -27,13 +27,6 @@ const ProfileActivityChart = loadable(() =>
 );
 
 
-const profileData = {
-  name : "harray",
-  email: "harry@gmail.com"
-};
-
-
-
 const WidgetBlog = ({ changeImage, title }) => {
   
 
@@ -82,7 +75,7 @@ const Profile = () => {
   const [dropSelect, setDropSelect] = useState("This Month");
   const [isModalOpen, setIsModalOpen] = useState(false);	
   const [isOnDelete, setIsOnDelete] = useState(false);	
-  const [profile, setProfile] = useState();
+  const [profileData, setProfileData] = useState();
   
   // callback function to opdate state
   const trackOnclick = (payload) => {
@@ -94,15 +87,15 @@ const Profile = () => {
     if(loading){
 			getProfile();
 		}
-    
   }, []);
 
   //
   const getProfile = async () =>{
     const response = await getProfileApi(token);
     if ("status" in response && response.status == true) {
-			setProfile(response.data);
+			setProfileData(response.data);
 			setLoading(false);
+
 		}
   }
 
@@ -118,16 +111,16 @@ const Profile = () => {
               <div className="instructors-media">
                 <img src={pic2} alt="" />
                 <div className="instructors-media-info mt-4">
-                  <h4 className="mb-1">{profile.email}</h4>
-                  <span className="fs-18">Member Since {new Date(profile.createdAt).getFullYear()}</span>
+                  <h4 className="mb-1">{profileData.email}</h4>
+                  <span className="fs-18">Member Since {new Date(profileData.createdAt).getFullYear()}</span>
                   <div className="d-flex justify-content-center my-3 mt-4">
                     <div className="info-box text-start style-1">
                       <span>Points</span>
-                      <h4>{profile.points || 10}</h4>
+                      <h4>{profileData.points || 10}</h4>
                     </div>
                     <div className="info-box text-start style-1">
                       <span>Certificate</span>
-                      <h4>{profile.certificates || 50}</h4>
+                      <h4>{profileData.certificates || 50}</h4>
                     </div>
                   </div>
                 </div>
@@ -156,7 +149,7 @@ const Profile = () => {
                 <h4 className="mb-3">Bio</h4>
                 <div className="bio-content">
                   <p>
-                    {profile.aboutMe}
+                    {profileData.aboutMe}
                   </p>
                 </div>
               </div>

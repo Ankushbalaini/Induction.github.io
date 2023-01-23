@@ -26,7 +26,7 @@ module.exports = (mongoose) => {
             address: { type: String },
             skills: { type: String },
             phone: { type: String },
-          },
+          }
         ],
         company: [
           {

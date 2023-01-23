@@ -15,6 +15,10 @@ const AddCompany = () => {
   
 
   let handleSubmit = async (e) => {
+
+    //console.log(e.target.logo);
+    //this.setState({[e.target.name]: e.target.value})
+
     e.preventDefault();
     const company = {
       email: email,

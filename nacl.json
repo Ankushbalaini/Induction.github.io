@@ -11,9 +11,13 @@
           "resource": "users/getProfile",
           "methods": ["GET"],
           "action": "allow"
-
-          
+        },
+        {
+          "resource": "users/update",
+          "methods": ["PUT"],
+          "action": "allow"
         }
+
       ]
     },
     {
