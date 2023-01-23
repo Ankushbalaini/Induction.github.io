@@ -7,6 +7,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 var jwt = require("jsonwebtoken");
 var nodemailer = require("nodemailer");
+const e = require("express");
 
 var transport = nodemailer.createTransport({
   host: "smtp.mailtrap.io",
@@ -64,13 +65,31 @@ exports.findOne = (req, res) => {
 
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
-  
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(500).send({
+      status: false,
+      message: "Logo is required!"
+    });
+  }
+
+  let Img = req.files.image;    
+  let uploadPath = 'images/profile/' + Img.name;
+
+  Img.mv(uploadPath, function(err) {
+    if (err){
+      return res.status(500).send({
+        status: false,
+        message: err.message
+      });
+    }
+  });
+
+
     var userEmail = req.decoded.email; // get from auth token
     var role = req.decoded.role;
 
-    delete req.body.email;
-    delete req.body.role;
-    delete req.body.password;
+    req.body.profilePhoto = Img.name;
 
     switch(role){
       case 'company':
@@ -87,7 +106,6 @@ exports.update = (req, res) => {
           function(err, user) {
             if (err) {
 
-              
               return res.status(500).send({
                       status: false, 
                       message: err.message
@@ -301,6 +319,8 @@ exports.createPassword = (req, res) => {
   });
 };
 
+
+
 exports.profile = (req, res) => {
   try {
     const user = req.decoded;
@@ -440,6 +460,7 @@ exports.getProfile = (req, res) => {
           _id: 1,
           email: 1,
           role: 1,
+          createdAt:1,
           profile: 1,
         },
       },

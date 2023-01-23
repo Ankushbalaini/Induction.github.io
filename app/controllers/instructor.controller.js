@@ -153,7 +153,6 @@ exports.listByCompany = (req, res) => {
 
 
 
-
 /**
  *
  * @param {*} req
@@ -162,39 +161,6 @@ exports.listByCompany = (req, res) => {
  * instructor@gmail.com
  */
 exports.add = (req, res) => {
-  try {
-    // based on role
-    res.status(200).send({
-      status: true,
-      message: "Success",
-      data: response,
-    });
-
-    
-  } catch (e) {
-    return res.status(400).send({
-      status: false,
-      message: "catch" + e.message,
-      data: {},
-    });
-  }
-};
-
-
-
-
-
-
-
-
-/**
- *
- * @param {*} req
- * @param {*} res
- * @returns
- * instructor@gmail.com
- */
-exports.add_org = (req, res) => {
   try {
     const { email, role } = req.body;
 

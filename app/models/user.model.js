@@ -8,6 +8,7 @@ module.exports = mongoose => {
           last_name: { type: String, default : null},
           email: { type: String, unique: true , required: true},
           aboutMe: {type: String},
+          profilePhoto : {type: String},
           department: { type: String },
           status:{type: Boolean, default: 0 },
           deleted:{type: Boolean, default: 0 },

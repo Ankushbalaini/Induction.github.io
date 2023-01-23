@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 
 import CompanyDropdown from '../Companies/CompanyDropdown';
-import e from "cors";
+
 
 const AddInstructor = () => {
   const navigate = useHistory();

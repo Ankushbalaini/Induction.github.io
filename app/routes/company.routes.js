@@ -9,6 +9,9 @@ module.exports = (app) => {
   // list all companies
   router.get("/list", company.list);
 
+   //update company values
+   router.put('/edit/:id',company.edit);
+
   // Retrieve a single company with id
   //router.get("/:id", company.findOne );
 

@@ -4,67 +4,74 @@ import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { Last } from "react-bootstrap/esm/PageItem";
-
-// api call 
-async function updateProfileApi (token, formValues){
-  const URL = 'http://localhost:8081/api/users/update';
-	return fetch(URL, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token" : token
-      },
-      body: JSON.stringify(formValues),
-
-    }).then((data) => data.json());
-}
+import { useHistory } from "react-router-dom";
+const images = require.context('../../../../../images/profile', true);
 
 
 const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
+    const navigate = useHistory();
 
-    // console.log(profileData);
     const token = useSelector((state) => state.auth.auth.token);
     
     const [firstName, setFirstName] = useState(profileData.profile.first_name);
     const [lastName, setLastName] = useState(profileData.profile.last_name);
     const [email, setEmail] = useState(profileData.email);
     const [aboutMe, setAboutMe] = useState(profileData.profile.aboutMe);
+    const [image, setImage] = useState({ preview: '', data: '' });
+    const [preview, setPreview] = useState(profileData.profile.profilePhoto);
     
+    const loadImage = (imageName) => {
+      return images(`./${imageName}`);
+    }
+
 
     const handleCallback = () => {
       trackOnclick(false);
     }
 
-    // On Form Submit
-    const handleSubmit = async (e) =>{
-      e.preventDefault();
-      if(firstName == '' || lastName=='' || email =='' || aboutMe == ''){
-        
+    const handleFileChange = async (e) => {
+      const img = {
+        preview: URL.createObjectURL(e.target.files[0]),
+        data: e.target.files[0],
       }
-      const getProfile = async () =>{
-        const formValues = {
-          first_name: firstName,
-          last_name: lastName,
-          email: email,
-          aboutMe: aboutMe
-        };
+      setImage(img)
+    }
 
-        const response = await updateProfileApi(token, formValues);
-        if ("status" in response && response.status == true) {
-          return swal("Success", response.message, "success", {
-            buttons: false,
-            timer: 2000,
-          }).then((value) => {
-            handleCallback();
-          });
+    const handleSubmit = async (e) => {
+      e.preventDefault()
+      let formData = new FormData()
+      formData.append('first_name', firstName);
+      formData.append('last_name', lastName);
+      formData.append('email', email);
+      formData.append('aboutMe', aboutMe);
+      formData.append('image', image.data);
 
-        }else{
-          return swal("Failed", "Error message", "error");
-        }
+      const response = await fetch('http://localhost:8081/api/users/update', {
+        method: 'PUT',
+        body: formData,
+        headers: {
+          "x-access-token" : token
+        },
+      })
+      .then((data) => data.json())
+
+      if ("status" in response && response.status == true) {
+        return swal("Success", response.message, "success", {
+          buttons: false,
+          timer: 2000,
+        }).then((value) => {
+          handleCallback();
+          //profile
+          navigate.push("/profile");
+        });
+
+      }else{
+        return swal("Failed", "Error message", "error");
       }
-      getProfile();
 
     }
+
+
 
 
 
@@ -85,6 +92,7 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
             <form
               className="update-form"
               onSubmit={handleSubmit}
+              encType
             >
               <div className="row">
                 <div className="col-lg-6">
@@ -121,8 +129,29 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
                   </div>
                 </div>
 
+                <div className="col-lg-12">
+                  <div className="form-group mb-3">
+                    <label htmlFor="email" className="text-black font-w600">
+                      {" "}
+                      Profile Pic <span className="required">*</span>
+                    </label>
+                    <div className="instructors-media">
+                    <img src={ loadImage(preview).default } Style="max-height:100px; max-width:100px; padding:10px; border-radius:10px"></img>
+                   
+                    </div> 
+                    <input
+                      type="file"
+                      className="form-control"
+                      name="image"
+                      onChange={handleFileChange}
+                    />
+                  </div>
+                </div>
 
-                <div className="col-lg-6">
+
+
+
+                <div className="col-lg-12">
                   <div className="form-group mb-3">
                     <label htmlFor="email" className="text-black font-w600">
                       {" "}

@@ -16,11 +16,12 @@ import skill from "./../../../images/svg/skill.svg";
 import readingtime from "./../../../images/svg/readingtime.svg";
 import certificate from "./../../../images/svg/degree-certificate.svg";
 import clock from "./../../../images/svg/clock-1.svg";
-
 import { useSelector } from "react-redux";
 
 import { Button, Dropdown, Modal } from "react-bootstrap";
 import UpdateProfile from "./UpdateProfile";
+
+const images = require.context('../../../../../images/profile', true);
 
 const ProfileActivityChart = loadable(() =>
   pMinDelay(import("./Dashboard/ProfileActivityChart"), 1000)
@@ -82,12 +83,14 @@ const Profile = () => {
     setIsModalOpen(payload);
   }
 
+  const loadImage = (imageName) => {
+    return images(`./${imageName}`);
+  }
+
   // hook
   useEffect(()=>{
-    if(loading){
 			getProfile();
-		}
-  }, []);
+  }, [isModalOpen]);
 
   //
   const getProfile = async () =>{
@@ -95,7 +98,6 @@ const Profile = () => {
     if ("status" in response && response.status == true) {
 			setProfileData(response.data);
 			setLoading(false);
-
 		}
   }
 
@@ -109,9 +111,11 @@ const Profile = () => {
             </div>
             <div className="card-body text-center pb-3">
               <div className="instructors-media">
-                <img src={pic2} alt="" />
+                <img src={loadImage(profileData.profile.profilePhoto)} alt="" />
+
+
                 <div className="instructors-media-info mt-4">
-                  <h4 className="mb-1">{profileData.email}</h4>
+                  <h4 className="mb-1">{profileData.profile.first_name +" "+ profileData.profile.last_name} </h4>
                   <span className="fs-18">Member Since {new Date(profileData.createdAt).getFullYear()}</span>
                   <div className="d-flex justify-content-center my-3 mt-4">
                     <div className="info-box text-start style-1">
@@ -149,7 +153,7 @@ const Profile = () => {
                 <h4 className="mb-3">Bio</h4>
                 <div className="bio-content">
                   <p>
-                    {profileData.aboutMe}
+                    {profileData.profile.aboutMe}
                   </p>
                 </div>
               </div>

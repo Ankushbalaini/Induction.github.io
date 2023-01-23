@@ -266,3 +266,54 @@ exports.add_company = (req, res) => {
     });
 };
 */
+
+
+
+
+
+
+//Edit the Company
+/**
+ * @description: Finding company by their ID and then updating the credentials
+ * 
+ * @param req 
+ * @param res 
+ */
+exports.edit = (req, res) => {
+  if (!req.body) {
+    res.status(400).send({
+      message: "Data to be edit can't be empty!"
+    });
+  }
+  const { name, email,address,aboutCompany,companyID,logo,status } = req.body;
+  const id = req.params.id;
+
+  companyModel.findByIdAndUpdate(id, req.body, { useFindAndModify: false }).then(function (user) {
+    if (!user) {
+      res.status(404).send({
+        message: "company not found."
+      });
+    }
+    else {
+      res.send({
+        message: "Company has been updated successfully",
+        name :name,
+        email:email,
+        status: status,
+        address: address,
+        aboutCompany: aboutCompany,
+        companyID: companyID,
+        logo:logo
+      })
+    }
+  })
+   .catch(err => {
+      res.status(500).send({
+        status: false,
+        message:
+          err.message || "Some error occurred while creating the Deparment."
+      });
+    });
+};
+
+
