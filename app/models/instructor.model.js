@@ -3,7 +3,7 @@ module.exports = (mongoose) => {
     "instructor",
     mongoose.Schema(
       {
-        userID: { type: mongoose.Schema.Types.ObjectId, unique: true, required: true },
+        userID: { type: mongoose.Schema.Types.ObjectId },
         parentCompany: { type: mongoose.Schema.Types.ObjectId, required: true },
         deptID:{type: mongoose.Schema.Types.ObjectId},
         name: { type: String, required: true },

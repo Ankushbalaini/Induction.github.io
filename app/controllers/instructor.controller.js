@@ -192,6 +192,7 @@ exports.add = (req, res) => {
           data: response,
         });
       })
+      
       .catch((err) => {
         res.status(400).send({
           status: false,

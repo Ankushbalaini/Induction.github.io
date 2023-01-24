@@ -447,63 +447,106 @@ exports.signUp = (req, res) => {
  * @returns
  */
 exports.getProfile = (req, res) => {
+
   try{
-    UserCred.aggregate([
-      {
-        $match: { _id : ObjectId(req.decoded.userID) },
-      },
-      { $limit: 1 },
-      {
-        $lookup: {
-          from: "users",
-          localField: "email",
-          foreignField: "email",
-          as: "profile",
-        },
-      },
-      {
-        $unwind: "$profile"
-      },
-  
-      {
-        $project: {
-          _id: 1,
-          email: 1,
-          role: 1,
-          createdAt:1,
-          profile: 1,
-        },
-      },
-    ])
-      .then((data) => {
-        res.status(200).send({
-          status: true,
-          message: "User profile",
-          data: data[0],
-        });
-      })
-      .catch((err) => {
-        res.status(500).send({
-          status: false,
-          message: err.message,
-          data: {},
-        });
-      });
+    const userRole =  req.decoded.role;
+    switch(userRole){
+      case 'instructor':
 
+        break;
+      case 'company':
 
-    // UserCred.findOne({ _id: ObjectId(req.decoded.userID) })
-    //   .then((user) => {
-    //     return res.status(200).send({
-    //       status: true,
-    //       data: user,
-    //     });
-    //   })
-    //   .catch((err) => {
-    //     return res.status(400).send({
-    //       status: false,
-    //       message: err.message,
-    //     });
-    //   });
+        UserCred.aggregate([
+          {
+            $match: { _id : ObjectId(req.decoded.userID) },
+          },
+          { $limit: 1 },
+          {
+            $lookup: {
+              from: "companies",
+              localField: "email",
+              foreignField: "email",
+              as: "profile",
+            },
+          },
+          {
+            $unwind: "$profile"
+          },
+      
+          {
+            $project: {
+              _id: 1,
+              email: 1,
+              role: 1,
+              createdAt:1,
+              profile: 1,
+            },
+          },
+        ])
+          .then((data) => {
+            res.status(200).send({
+              status: true,
+              message: "User profile",
+              data: data[0],
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              status: false,
+              message: err.message,
+              data: {},
+            });
+          });
+          
+        
+        break;
+      
+      default: 
+        UserCred.aggregate([
+          {
+            $match: { _id : ObjectId(req.decoded.userID) },
+          },
+          { $limit: 1 },
+          {
+            $lookup: {
+              from: "users",
+              localField: "email",
+              foreignField: "email",
+              as: "profile",
+            },
+          },
+          {
+            $unwind: "$profile"
+          },
+      
+          {
+            $project: {
+              _id: 1,
+              email: 1,
+              role: 1,
+              createdAt:1,
+              profile: 1,
+            },
+          },
+        ])
+          .then((data) => {
+            res.status(200).send({
+              status: true,
+              message: "User profile",
+              data: data[0],
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              status: false,
+              message: err.message,
+              data: {},
+            });
+          });
+
+        break;
+
+    }
   } catch (err) {
     return res.status(400).send({
       status: false,

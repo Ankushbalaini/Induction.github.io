@@ -9,8 +9,12 @@ import LogoutPage from './Logout';
 import United from "../../../images/United.png";
 import avatar from "../../../images/avatar/1.jpg";
 import profile from "../../../images/profile/pic1.jpg";
+import { useSelector } from "react-redux";
 
 const RightSideBar = ({onNote}) =>{
+	const role = useSelector((state) => state.auth.auth.role);
+	
+
 	const [rightSelect, setRightSelect] = useState('Eng');
 	return(
 		<>
@@ -21,9 +25,10 @@ const RightSideBar = ({onNote}) =>{
 					<Dropdown as="li" className="nav-item dropdown header-profile">
 						<Dropdown.Toggle variant="" as="a" className="nav-link i-false c-pointer">
 							<img src={profile} width={20} alt="" />
-
-							
 						</Dropdown.Toggle>
+
+
+						
 						<Dropdown.Menu align="right" className="dropdown-menu dropdown-menu-end">
 							<Link to="/profile" className="dropdown-item ai-icon">
 								<svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" className="text-primary me-1" width={18} height={18} viewBox="0 0 24 24" fill="none"

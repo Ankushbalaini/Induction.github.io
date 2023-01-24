@@ -10,9 +10,6 @@ import { useSelector } from "react-redux";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { ThemeContext } from "../../../context/ThemeContext";
 
-import medal from "../../../images/medal.png";
-//import state from "sweetalert/typings/modules/state";
-
 class MM extends Component {
   componentDidMount() {
     this.$el = this.el;
@@ -64,7 +61,7 @@ const SideBar = () => {
   path = path.split("/");
   path = path[path.length - 1];
   /// Active menu
-  let deshBoard = ["", "instructor-dashboard", "profile"],
+  let deshBoard = ["", "instructor-dashboard", "profile", "company-profile"],
     department = ["departments", "add-department"],
     companies = ["companies", "add-company"],
     instructor = [
@@ -113,26 +110,66 @@ const SideBar = () => {
                   </Link>
                 </li>
               ) : null}
+
               {role == "super_admin" ? (
-                <li>
-                  <Link
-                    className={`${path === "dashboard" ? "mm-active" : ""}`}
-                    to="/dashboard"
-                  >
-                    {" "}
-                    Dashboard
-                  </Link>
-                </li>
+                <>
+                  <li>
+                    <Link
+                      className={`${path === "dashboard" ? "mm-active" : ""}`}
+                      to="/dashboard"
+                    >
+                      {" "}
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={`${path === "profile" ? "mm-active" : ""}`}
+                      to="/profile"
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                </>
+
               ) : null}
 
-              <li>
-                <Link
-                  className={`${path === "profile" ? "mm-active" : ""}`}
-                  to="/profile"
-                >
-                  Profile
-                </Link>
-              </li>
+
+              {role === "company" ? (
+                <>
+                  <li>
+                    <Link
+                      className={`${path === "dashboard" ? "mm-active" : ""}`}
+                      to="/dashboard"
+                    >
+                      {" "}
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={`${path === "company-profile" ? "mm-active" : ""}`}
+                      to="/company-profile"
+                    >
+                      Comp Profile
+                    </Link>
+                  </li>
+                </>
+
+              ) : null}
+
+
+
+
+
+              
+
+
+
+
+
+
+
             </ul>
           </li>
 
