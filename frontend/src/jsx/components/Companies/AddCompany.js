@@ -15,10 +15,6 @@ const AddCompany = () => {
   
 
   let handleSubmit = async (e) => {
-
-    //console.log(e.target.logo);
-    //this.setState({[e.target.name]: e.target.value})
-
     e.preventDefault();
     const company = {
       email: email,
@@ -30,7 +26,7 @@ const AddCompany = () => {
       aboutCompany: aboutCompany
 
     };
-
+    // let formData = new FormData();
     const response = await addCompany(company);
     
     if ("status" in response && response.status == true) {
@@ -51,11 +47,12 @@ const AddCompany = () => {
     return fetch("http://localhost:8081/api/company/add", {
       method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(formValues),
-    }).then((data) => data.json());
+    }).then(
+      (data) => data.json()
+    );
   }
 
   return (

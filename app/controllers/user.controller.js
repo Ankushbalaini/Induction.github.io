@@ -66,30 +66,40 @@ exports.findOne = (req, res) => {
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
 
+  var userEmail = req.decoded.email; // get from auth token
+  var role = req.decoded.role;
+
   if (!req.files || Object.keys(req.files).length === 0) {
-    return res.status(500).send({
-      status: false,
-      message: "Logo is required!"
-    });
-  }
 
-  let Img = req.files.image;    
-  let uploadPath = 'images/profile/' + Img.name;
-
-  Img.mv(uploadPath, function(err) {
-    if (err){
+    if(req.body.profilePhoto === '' ){
       return res.status(500).send({
         status: false,
-        message: err.message
+        message: "Logo is required!"
       });
     }
-  });
+    
+  }else{
+    let Img = req.files.image;    
+    let uploadPath = 'images/profile/' + Img.name;
 
-
-    var userEmail = req.decoded.email; // get from auth token
-    var role = req.decoded.role;
-
+    Img.mv(uploadPath, function(err) {
+      if (err){
+        return res.status(500).send({
+          status: false,
+          message: err.message
+        });
+      }
+    });
     req.body.profilePhoto = Img.name;
+
+  }
+
+  
+
+
+    
+
+    
 
     switch(role){
       case 'company':

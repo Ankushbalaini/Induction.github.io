@@ -39,12 +39,24 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
 
     const handleSubmit = async (e) => {
       e.preventDefault()
+
+      // validate data
+      if(firstName.trim() === '' || lastName.trim() === '' || aboutMe.trim() === '') {
+        return swal("Failed", "All fields are required!", "error");
+        return false;
+      }
+
+
+
+
       let formData = new FormData()
       formData.append('first_name', firstName);
       formData.append('last_name', lastName);
       formData.append('email', email);
       formData.append('aboutMe', aboutMe);
       formData.append('image', image.data);
+      formData.append('profilePhoto', preview)
+
 
       const response = await fetch('http://localhost:8081/api/users/update', {
         method: 'PUT',
@@ -70,9 +82,6 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
       }
 
     }
-
-
-
 
 
     return (
@@ -137,8 +146,8 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
                     </label>
                     <div className="instructors-media">
                     <img src={ loadImage(preview).default } Style="max-height:100px; max-width:100px; padding:10px; border-radius:10px"></img>
-                   
                     </div> 
+                    <input type="hidden" value={preview} name="profilePhoto" />
                     <input
                       type="file"
                       className="form-control"

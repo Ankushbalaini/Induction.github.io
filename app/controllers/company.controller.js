@@ -37,7 +37,7 @@ exports.list = (req, res) => {
  * @method : POST
  * @response JSON
  */
-exports.add = (req, res) => {
+exports.add_nk = (req, res) => {
   // console.log(req.files);
   try{
     let logo;
@@ -60,7 +60,7 @@ exports.add = (req, res) => {
     }
 
     logo = req.files.logo;    
-    uploadPath = 'images/' + logo.name;
+    uploadPath = 'images/company/' + logo.name;
 
     logo.mv(uploadPath, function(err) {
       if (err){
@@ -123,7 +123,7 @@ return;
 
 
 
-exports.add_org = (req, res) => {
+exports.add = (req, res) => {
   try{
     const { email, password, name, address, logo, companyID, aboutCompany } =
     req.body;
@@ -162,6 +162,7 @@ exports.add_org = (req, res) => {
     });
 
     data.userID = user._id;
+    data.logo = '';
     var company = new companyModel(data);
 
     company
@@ -280,30 +281,62 @@ exports.add_company = (req, res) => {
  * @param res 
  */
 exports.edit = (req, res) => {
-  if (!req.body) {
-    res.status(400).send({
+  const id = req.params.id;
+  var saveData = {
+    name: req.body.name,
+    email: req.body.email,
+    logo: req.body.logo_previous,
+    address: req.body.address,
+    aboutCompany: req.body.aboutCompany
+  }
+
+  // empty field validations
+  if(saveData.name ==='' || saveData.email ==='' || saveData.address ==='' || saveData.aboutCompany ===''){
+    return res.status(400).send({
       message: "Data to be edit can't be empty!"
     });
   }
-  const { name, email,address,aboutCompany,companyID,logo,status } = req.body;
-  const id = req.params.id;
 
-  companyModel.findByIdAndUpdate(id, req.body, { useFindAndModify: false }).then(function (user) {
+  // logo validation
+  if (!req.files || Object.keys(req.files).length === 0) {
+
+    if(req.body.logo_previous === ''){
+      return res.status(500).send({
+        status: false,
+        message: "Company Logo is required!"
+      });
+    }
+    
+  }else{
+
+    var Img = req.files.logo;    
+    var uploadPath = 'images/company/' + Img.name;
+
+    Img.mv(uploadPath, function(err) {
+      if (err){
+        return res.status(500).send({
+          status: false,
+          message: err.message
+        });
+      }
+      
+    });
+    saveData.logo = Img.name;
+  }
+
+
+  companyModel.findByIdAndUpdate(id, {...saveData}, { useFindAndModify: true }).then(function (user) {
     if (!user) {
       res.status(404).send({
-        message: "company not found."
+        message: "company not found.",
+        status: false,
       });
     }
     else {
-      res.send({
+      return res.status(200).send({
         message: "Company has been updated successfully",
-        name :name,
-        email:email,
-        status: status,
-        address: address,
-        aboutCompany: aboutCompany,
-        companyID: companyID,
-        logo:logo
+        status: true,
+        data: user
       })
     }
   })
