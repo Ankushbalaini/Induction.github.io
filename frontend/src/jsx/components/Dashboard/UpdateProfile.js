@@ -43,7 +43,7 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
       // validate data
       if(firstName.trim() === '' || lastName.trim() === '' || aboutMe.trim() === '') {
         return swal("Failed", "All fields are required!", "error");
-        return false;
+        
       }
 
 

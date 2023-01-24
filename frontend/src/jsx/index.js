@@ -39,6 +39,8 @@ import SingleInductionView from "./components/Inductions/SingleInductionView";
 //Instructors
 import Instructors from "./components/Dashboard/Instructors";
 import AddInstructor from "./components/Instructor/AddInstructor";
+import InstructorProfile from "./components/Instructor/InstructorProfile";
+
 import InstructorDashboard from "./components/Instructor/InstructorDashboard";
 import InstructorCourses from "./components/Instructor/InstructorCourses";
 import InstructorStudents from "./components/Instructor/InstructorStudents";
@@ -62,6 +64,7 @@ const Markup = () => {
     { url: "dashboard", component: Home },
     { url: "profile", component: Profile },
     { url: "company-profile", component: CompanyProfile},
+    { url: "instructor-profile", component: InstructorProfile},
 
     // Courses ----
     { url: "courses", component: CoursesMain },

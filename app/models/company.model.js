@@ -7,7 +7,7 @@ module.exports = mongoose => {
           name: { type: String, required : true},
           email : { type: String, required : true, unique: true},
           address: { type: String, required : true},
-          logo: { type: String },
+          logo: { type: String , default: 'dummy-user.png'},
           companyID: {type: String},
           aboutCompany: {type: String},
           createdBy: { type: mongoose.Schema.Types.ObjectId },

@@ -6,6 +6,7 @@ import certificate from "./../../../images/svg/degree-certificate.svg";
 import clock from "./../../../images/svg/clock-1.svg";
 
 import { useSelector } from "react-redux";
+import UpdateCompanyProfile from "./UpdateCompanyProfile";
 
 const images = require.context('../../../../../images/company/', true);
 
@@ -45,24 +46,54 @@ async function getProfileApi (token){
       },
     }).then((data) => data.json());
 }
+/**
+ * 
+ * @returns {
+ * "status":true,
+ * "message":"User profile",
+ * "data":{
+ * "_id":"63cea890edb762dfb4abb21f",
+ * "email":"hello@tester.com","role":"company","createdAt":"2023-01-23T15:32:32.321Z",
+ * "profile":{
+      * "_id":"63cea890edb762dfb4abb220",
+      * "userID":"63cea890edb762dfb4abb21f",
+      * "name":"Helloo",
+      * "email":"hello@tester.com",
+      * "address":"Plot no 14, Chandigarh",
+      * "logo":"chart.png",
+      * "companyID":"ijhniuhiu",
+      * "aboutCompany":"Something about company and work cultures.",
+      * "status":false,
+      * "deleted":false,
+      * "createdAt":"2023-01-23T15:32:32.321Z",
+      * "updatedAt":"2023-01-23T18:59:44.656Z",
+      * "__v":0}}}
+}
 
+ */
 
 const CompanyProfile = () => {
   const token = useSelector((state) => state.auth.auth.token);
   const [loading,setLoading] = useState(true);
-  const [company, setCompany] = useState();
+  const [companyData, setCompanyData] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);	
 
   const getProfile = async () =>{
     const response = await getProfileApi(token);
     if ("status" in response && response.status == true) {
-			setCompany(response.data);
+			setCompanyData(response.data);
 			setLoading(false);
 		}
   }
 
+  // callback function to opdate state
+  const trackOnclick = (payload) => {
+    setIsModalOpen(payload);
+  }
+
   useEffect(()=>{
     getProfile();
-  }, []);
+  }, [isModalOpen]);
 
   const loadImage = (imageName) => {
     return images(`./${imageName}`);
@@ -75,17 +106,17 @@ const CompanyProfile = () => {
               <div className="col-xl-4 col-xxl-5 col-lg-12">
                 <div className="card instructors-box">
                   <div className="card-header border-0">
-                    <DropDownBlog />
+                    <DropDownBlog trackOnclick={trackOnclick}/>
                   </div>
                   <div className="card-body text-center pb-3">
                     <div className="instructors-media">
-                    <img src={loadImage(company.profile.logo)} onError={(e) => {
+                    <img src={loadImage(companyData.profile.logo)} onError={(e) => {
                       e.target.src = loadImage('bjs-logo.png'); 
                       e.target.onError = null;
                     } } />
 
                       <div className="instructors-media-info mt-4">
-                        <h4 className="mb-1">{company.profile.name}</h4>
+                        <h4 className="mb-1">{companyData.profile.name}</h4>
                         <span className="fs-18">Member Since 2023</span>
                         {/* <div className="d-flex justify-content-center my-3 mt-4">
                           <div className="info-box text-start style-1">
@@ -104,7 +135,7 @@ const CompanyProfile = () => {
                       <h4 className="mb-3">Bio</h4>
                       <div className="bio-content">
                         <p>
-                          {company.profile.aboutCompany}
+                          {companyData.profile.aboutCompany}
                         </p>
                       </div>
                     </div>
@@ -114,7 +145,7 @@ const CompanyProfile = () => {
                       <h4 className="mb-3">Address</h4>
                       <div className="bio-content">
                         <p>
-                          {company.profile.address}
+                          {companyData.profile.address}
                         </p>
                       </div>
                     </div>
@@ -135,12 +166,22 @@ const CompanyProfile = () => {
                 </div>
               </div>
             </div>
+            <UpdateCompanyProfile 
+              isModalOpen={isModalOpen} 
+              trackOnclick={trackOnclick} 
+              companyData={companyData}
+              />
 
           </>
 
   return (
 
-    <>{pageContent}</>
+    <>
+      {pageContent}
+      
+      
+
+    </>
 
     
   );

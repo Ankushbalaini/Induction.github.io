@@ -63,6 +63,7 @@ const Instructors = (props) =>{
 							<div className="card-body text-center pb-3">
 								<div className="instructors-media">
 									
+									
 									<img src={ loadImage(`1.jpg`) } alt="" />
 									{/* <img src={ loadImage(user.profile.profilePhoto) } alt="" /> */}
 

@@ -65,81 +65,71 @@ exports.findOne = (req, res) => {
 
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
-
   var userEmail = req.decoded.email; // get from auth token
   var role = req.decoded.role;
 
   if (!req.files || Object.keys(req.files).length === 0) {
-
-    if(req.body.profilePhoto === '' ){
+    if (req.body.profilePhoto === "") {
       return res.status(500).send({
         status: false,
-        message: "Logo is required!"
+        message: "Logo is required!",
       });
     }
-    
-  }else{
-    let Img = req.files.image;    
-    let uploadPath = 'images/profile/' + Img.name;
+  } else {
+    let Img = req.files.image;
+    let uploadPath = "images/profile/" + Img.name;
 
-    Img.mv(uploadPath, function(err) {
-      if (err){
+    Img.mv(uploadPath, function (err) {
+      if (err) {
         return res.status(500).send({
           status: false,
-          message: err.message
+          message: err.message,
         });
       }
     });
     req.body.profilePhoto = Img.name;
-
   }
 
-  
+  switch (role) {
+    case "company":
+      // company collection update
 
+      break;
 
-    
+    case "instructor":
+      // instructor collection
+      break;
 
-    
-
-    switch(role){
-      case 'company':
-        // company collection update
-        break;
-
-      case 'instructor':
-        // instructor collection
-        break;
-        
-      default:
-        // users colletion
-        User.update({ email: userEmail }, {$set: req.body}, {multi: true}, 
-          function(err, user) {
-            if (err) {
-
-              return res.status(500).send({
-                      status: false, 
-                      message: err.message
-                    });
-            }       
-            if (!user) {
-                return res.status(500).send({
-                  status: false, 
-                  message: "User not found!"
-                });
-            }  
-            else { 
-                return res.status(200).send({
-                  status: true, 
-                  message: 'User has been updated!', 
-                  data: user
-                }) 
-            };
-        });
-        break;
-    }
+    default:
+      // users colletion
+      User.updateOne(
+        { email: userEmail },
+        { $set: req.body },
+        { multi: true },
+        function (err, user) {
+          if (err) {
+            return res.status(500).send({
+              status: false,
+              message: err.message,
+            });
+          }
+          if (!user) {
+            return res.status(500).send({
+              status: false,
+              message: "User not found!",
+            });
+          } else {
+            return res.status(200).send({
+              status: true,
+              message: "User has been updated!",
+              data: user,
+            });
+          }
+        }
+      );
+      break;
+  }
 };
-
-
 
 // Delete a Tutorial with the specified id in the request
 exports.delete = (req, res) => {};
@@ -192,7 +182,7 @@ exports.login = (req, res) => {
           });
         });
 
-        res.status(200).send({
+        return res.status(200).send({
           status: true,
           message: "Login Successful",
           data: {
@@ -329,8 +319,6 @@ exports.createPassword = (req, res) => {
   });
 };
 
-
-
 exports.profile = (req, res) => {
   try {
     const user = req.decoded;
@@ -447,18 +435,57 @@ exports.signUp = (req, res) => {
  * @returns
  */
 exports.getProfile = (req, res) => {
-
-  try{
-    const userRole =  req.decoded.role;
-    switch(userRole){
-      case 'instructor':
-
-        break;
-      case 'company':
-
+  try {
+    const userRole = req.decoded.role;
+    switch (userRole) {
+      case "instructor":
         UserCred.aggregate([
           {
-            $match: { _id : ObjectId(req.decoded.userID) },
+            $match: { _id: ObjectId(req.decoded.userID) },
+          },
+          { $limit: 1 },
+          {
+            $lookup: {
+              from: "instructors",
+              localField: "_id",
+              foreignField: "userID",
+              as: "profile",
+            },
+          },
+          {
+            $unwind: "$profile",
+          },
+
+          {
+            $project: {
+              _id: 1,
+              email: 1,
+              role: 1,
+              createdAt: 1,
+              profile: 1,
+            },
+          },
+        ])
+          .then((data) => {
+            res.status(200).send({
+              status: true,
+              message: "User profile",
+              data: data[0],
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              status: false,
+              message: err.message,
+              data: {},
+            });
+          });
+
+        break;
+      case "company":
+        UserCred.aggregate([
+          {
+            $match: { _id: ObjectId(req.decoded.userID) },
           },
           { $limit: 1 },
           {
@@ -470,15 +497,15 @@ exports.getProfile = (req, res) => {
             },
           },
           {
-            $unwind: "$profile"
+            $unwind: "$profile",
           },
-      
+
           {
             $project: {
               _id: 1,
               email: 1,
               role: 1,
-              createdAt:1,
+              createdAt: 1,
               profile: 1,
             },
           },
@@ -497,14 +524,13 @@ exports.getProfile = (req, res) => {
               data: {},
             });
           });
-          
-        
+
         break;
-      
-      default: 
+
+      default:
         UserCred.aggregate([
           {
-            $match: { _id : ObjectId(req.decoded.userID) },
+            $match: { _id: ObjectId(req.decoded.userID) },
           },
           { $limit: 1 },
           {
@@ -516,15 +542,15 @@ exports.getProfile = (req, res) => {
             },
           },
           {
-            $unwind: "$profile"
+            $unwind: "$profile",
           },
-      
+
           {
             $project: {
               _id: 1,
               email: 1,
               role: 1,
-              createdAt:1,
+              createdAt: 1,
               profile: 1,
             },
           },
@@ -545,7 +571,6 @@ exports.getProfile = (req, res) => {
           });
 
         break;
-
     }
   } catch (err) {
     return res.status(400).send({

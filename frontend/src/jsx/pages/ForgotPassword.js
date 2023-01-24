@@ -63,6 +63,7 @@ const ForgotPassword = ({ history }) => {
                           className="form-control"
                           defaultValue=""
                           onChange={(e)=>setEmail(e.target.value)}
+                          required
                         />
                       </div>
                       <div className="text-center  mb-4">
@@ -72,9 +73,10 @@ const ForgotPassword = ({ history }) => {
                         >
                           SUBMIT
                         </button>
-
+                        <br></br>
                         OR 
-                        <Link to="/login">Login</Link>
+                        <br></br><br></br>
+                        <h4><Link to="/login" className="text-primary">Login</Link></h4>
                       </div>
                     </form>
                   </div>

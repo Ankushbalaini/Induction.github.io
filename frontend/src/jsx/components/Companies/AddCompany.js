@@ -74,11 +74,13 @@ const AddCompany = () => {
                   </label>
                   <div className="col-sm-9">
                     <input
-                      type="text"
+                      type="email"
+                      name="email"
                       className="form-control"
                       placeholder=""
                       onChange={(e) => setEmail(e.target.value)}
                       value={email}
+                      required
                     />
                   </div>
                 </div>
@@ -90,15 +92,14 @@ const AddCompany = () => {
                   <div className="col-sm-9">
                     <input
                       type="password"
+                      name="password"
                       className="form-control"
-                      placeholder=""
                       onChange={(e) => setPassword(e.target.value)}
                       value={password}
+                      required
                     />
                   </div>
                 </div>
-
-
 
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
@@ -107,15 +108,16 @@ const AddCompany = () => {
                   <div className="col-sm-9">
                     <input
                       type="text"
+                      name="name"
                       className="form-control"
-                      placeholder=""
                       onChange={(e) => setName(e.target.value)}
                       value={name}
+                      required
                     />
                   </div>
                 </div>
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">Company ID</label>
+                  <label className="col-sm-3 col-form-label">Slug</label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -123,6 +125,7 @@ const AddCompany = () => {
                       placeholder=""
                       onChange={(e) => setCompanyID(e.target.value)}
                       value={companyID}
+                      required
                     />
                   </div>
                 </div>
@@ -134,8 +137,8 @@ const AddCompany = () => {
                   <input
                       type="file"
                       className="form-control" name="logo"
+                      accept="image/png,image/jpeg,image/jpg"
                     />
-
                     {/* <input
                       type="text"
                       className="form-control"
@@ -152,8 +155,10 @@ const AddCompany = () => {
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
+                      name="address"
                       placeholder=""
                       onChange={(e) => setAddress(e.target.value)}
+                      required
                     >
                       {address}
                     </textarea>
@@ -165,8 +170,10 @@ const AddCompany = () => {
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
+                      name="aboutCompany"
                       placeholder=""
                       onChange={(e) => setAboutCompany(e.target.value)}
+                      required
                     >
                       {aboutCompany}
                     </textarea>

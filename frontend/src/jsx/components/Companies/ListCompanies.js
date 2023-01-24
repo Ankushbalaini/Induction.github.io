@@ -5,6 +5,8 @@ import Form from "react-bootstrap/Form";
 import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
 
+const images = require.context("../../../../../images/company/", true);
+
 // api call
 async function getCompanies(formValues) {
   return fetch("http://localhost:8081/api/company/list", {
@@ -54,6 +56,11 @@ const ListCompanies = () => {
     margin: "auto",
     display: "flex",
   };
+
+  const loadImage = (imageName) => {
+    return images(`./${imageName}`);
+  }
+
 
   // logo image uploader
   const handleFileChange = async (e) => {
@@ -275,14 +282,9 @@ const ListCompanies = () => {
                 
                 <div className="col-lg-6">
                   <div className="form-group mb-3">
-                  <label htmlFor="author" className="text-black font-w600">
-                      {" "}
-                      Logo {logo} <span className="required">*</span>{" "}
-                    </label>
                     <input type="hidden" name="logo-img" value={logo} />
-
-
-                    <img src={logo} />
+                    {/* <img src={loadImage(logo)} /> */}
+                    {logo}
                   </div>
                 </div>
 

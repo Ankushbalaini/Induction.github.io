@@ -99,16 +99,28 @@ const SideBar = () => {
             </Link>
             <ul>
               {role == "instructor" ? (
-                <li>
-                  <Link
-                    className={`${
-                      path === "instructor-dashboard" ? "mm-active" : ""
-                    }`}
-                    to="/instructor-dashboard"
-                  >
-                    Dashboard
-                  </Link>
-                </li>
+                <>
+                  <li>
+                    <Link
+                      className={`${
+                        path === "instructor-dashboard" ? "mm-active" : ""
+                      }`}
+                      to="/instructor-dashboard"
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className={`${
+                        path === "instructor-profile" ? "mm-active" : ""
+                      }`}
+                      to="/instructor-profile"
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                </>
               ) : null}
 
               {role == "super_admin" ? (
@@ -131,9 +143,7 @@ const SideBar = () => {
                     </Link>
                   </li>
                 </>
-
               ) : null}
-
 
               {role === "company" ? (
                 <>
@@ -148,28 +158,16 @@ const SideBar = () => {
                   </li>
                   <li>
                     <Link
-                      className={`${path === "company-profile" ? "mm-active" : ""}`}
+                      className={`${
+                        path === "company-profile" ? "mm-active" : ""
+                      }`}
                       to="/company-profile"
                     >
                       Comp Profile
                     </Link>
                   </li>
                 </>
-
               ) : null}
-
-
-
-
-
-              
-
-
-
-
-
-
-
             </ul>
           </li>
 

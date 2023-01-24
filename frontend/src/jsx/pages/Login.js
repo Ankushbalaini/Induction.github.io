@@ -94,7 +94,7 @@ function Login(props) {
                             <select
                               onChange={(e) => setUserType(e.target.value)}
                               value={userType}
-                            >
+                              className="form-control">
                               <option value="super_admin">Super Admin</option>
                               <option value="company">Company</option>
                               <option value="instructor">Instructor</option>
@@ -116,6 +116,7 @@ function Login(props) {
                               className="form-control"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
+                              required
                             />
                             {errors.email && (
                               <div className="text-danger fs-12">
@@ -132,6 +133,7 @@ function Login(props) {
                               className="form-control"
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
+                              required
                             />
                             {errors.password && (
                               <div className="text-danger fs-12">
@@ -156,9 +158,9 @@ function Login(props) {
                               </div>
                             </div>
                             <div className="mb-3">
-                              <Link to="./page-register">Sign up</Link>
+                              <Link to="./page-register" className="text-primary">Sign up</Link>
                               <br></br>
-                              <Link to="./forgot-password">
+                              <Link to="./forgot-password" className="text-primary">
                                 Forgot password
                               </Link>
                             </div>
