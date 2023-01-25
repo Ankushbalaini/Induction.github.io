@@ -18,7 +18,8 @@ const AddInstructor = () => {
   const [role, setRole] = useState('instructor');
   const [name, setName] = useState();
   const [parentCompany, setParentCompany] = useState(parentCompanyID);
-  const [profilePhoto, setProfilePhoto] = useState();
+  const [profilePhoto, setProfilePhoto] = useState('dummy-user.png');
+  const [image, setImage] = useState({preview:'', data:''})
   const [address, setAddress] = useState();
   const [aboutMe, setAboutMe] = useState();
 
@@ -26,88 +27,43 @@ const AddInstructor = () => {
   let errorsObj = { email: "", password: "", cname: "", parentCompany:"" };
   const [errors, setErrors] = useState(errorsObj);
 
-  const validate = () => {
-    let error = false;
-    const errorObj = { ...errorsObj };
-    if (email == "") {
-      errorObj.email = "Email is Required";
-      error = true;
+  const handleFileChange = async (e) => {
+    const img = {
+      preview: URL.createObjectURL(e.target.files[0]),
+      data: e.target.files[0],
     }
-    if (password == "") {
-      errorObj.password = "Password is Required";
-      error = true;
-    }
-    if (name == "") {
-      errorObj.cname = "name is Required";
-      error = true;
-    }
-
-    setErrors(errorObj);
-
-    if (error) {
-      return false;
-    }
-    else{
-      return true;
-    }
+    setImage(img)
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    const data = new FormData();
+    data.append('name', name);
+    data.append('email', email);
+    data.append('password', password);
+    data.append('role', role);
+    data.append('parentCompany', parentCompany);
+    data.append('profilePhoto', image.data);
+    data.append('address', address);
+    data.append('aboutMe', aboutMe);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if(!validate()){
-      return false;
-    }
+    const response = await fetch("http://localhost:8081/api/instructor/add", {
+      method: "POST",
+      body: data,
+    }).then((user) => user.json());
 
-    const instructorData = {
-      email: email,
-      password: password,
-      name: name,
-      role: role,
-      parentCompany: parentCompany,
-      profilePhoto: profilePhoto,
-      address : address,
-      aboutMe: aboutMe
-
-    };
-
-    const response = await addInstructor(instructorData);
-    
-    if ("status" in response && response.status == true) {
+    if ("status" in response && response.status === true) {
       return swal("Success", response.message, "success", {
         buttons: false,
         timer: 2000,
       }).then((value) => {
-        // return <Navigate to="/instructors" />;
         navigate.push("/instructors");
       });
     } else {
       return swal("Failed", "Error message", "error");
     }
   };
-
-
-
-
-
-
-
-  // api call
-  async function addInstructor(formValues) {
-    return fetch("http://localhost:8081/api/instructor/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formValues),
-    }).then((data) => data.json());
-  }
-
-
-  const handleParentCompChange = (e) =>{
-    setParentCompany(e.target.value);
-  }
 
 
   return (
@@ -121,7 +77,7 @@ const AddInstructor = () => {
           </div>
           <div className="card-body">
             <div className="basic-form">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={(e)=>handleSubmit(e)} >
 
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
@@ -129,13 +85,13 @@ const AddInstructor = () => {
                   </label>
                   <div className="col-sm-9">
                     <input
-                      type="text"
+                      name="email"
+                      type="email"
                       className="form-control"
-                      placeholder=""
                       onChange={(e) => setEmail(e.target.value)}
                       value={email}
+                      required
                     />
-                    
                     {errors.email && <div Style="color:red;font-weight:600;padding:5px;">{errors.email}</div>}
                   </div>
                 </div>
@@ -146,11 +102,12 @@ const AddInstructor = () => {
                   </label>
                   <div className="col-sm-9">
                     <input
+                      name="password"
                       type="password"
                       className="form-control"
-                      placeholder=""
                       onChange={(e) => setPassword(e.target.value)}
                       value={password}
+                      required
                     />
                     {errors.password && <div Style="color:red;font-weight:600;padding:5px;">{errors.password}</div>}
                   </div>
@@ -164,11 +121,12 @@ const AddInstructor = () => {
                   </label>
                   <div className="col-sm-9">
                     <input
+                      name="name"
                       type="text"
                       className="form-control"
-                      placeholder=""
                       onChange={(e) => setName(e.target.value) }
                       value={name}
+                      required
                     />
                     {errors.cname && <div Style="color:red;font-weight:600;padding:5px;">{errors.cname}</div>}
                   </div>
@@ -178,19 +136,18 @@ const AddInstructor = () => {
                   <div className="col-sm-9">
 
                     { (loggedrole == 'super_admin') ? 
-                    <select className="form-control" onChange={ (e) => setParentCompany(e.target.value) }>
+                    <select name="parentCompany" className="form-control" onChange={ (e) => setParentCompany(e.target.value) }>
                         <option value="">Select</option>
                         <CompanyDropdown />
                     </select> : 
                     <input
+                      name="parentCompany"
                       type="hidden"
                       className="form-control"
-                      placeholder=""
                       value={parentCompany}
-                      disabled
                     />
-                    
                     }
+
                     {errors.parentCompany && <div Style="color:red;font-weight:600;padding:5px;">{errors.parentCompany}</div>}
 
                   </div>
@@ -201,12 +158,11 @@ const AddInstructor = () => {
                   </label>
                   <div className="col-sm-9">
                     <input
-                      type="text"
+                      type="file"
                       className="form-control"
-                      placeholder=""
-                      defaultValue="logo.png"
-                      onChange={(e) => setProfilePhoto(e.target.value)}
-                      value={profilePhoto}
+                      name="profilePhoto"
+                      onChange={handleFileChange}
+                      accept="image/png,image/jpeg,image/jpg"
                     />
                   </div>
                 </div>
@@ -218,8 +174,10 @@ const AddInstructor = () => {
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
-                      placeholder=""
+                      name="aboutMe"
+                      value={aboutMe}
                       onChange={(e) => setAboutMe(e.target.value)}
+                      required
                     >
                       {aboutMe}
                     </textarea>
@@ -231,8 +189,9 @@ const AddInstructor = () => {
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
-                      placeholder=""
+                      name="address"
                       onChange={(e) => setAddress(e.target.value)}
+                      required
                     >
                       {address}
                     </textarea>

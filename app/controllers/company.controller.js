@@ -117,7 +117,7 @@ exports.add_nk = (req, res) => {
 
 exports.add = (req, res) => {
   try {
-    const { email, password, name, address, logo, companyID, aboutCompany } =
+    const { email, password, name, address, companyID, aboutCompany } =
       req.body;
 
     const data = {
@@ -125,10 +125,34 @@ exports.add = (req, res) => {
       password,
       name,
       address,
-      logo,
       companyID,
       aboutCompany,
     };
+
+    // logo validation
+    if (!req.files || Object.keys(req.files).length === 0) {
+      if (req.body.logo === "") {
+        return res.status(500).send({
+          status: false,
+          message: "Company Logo is required!",
+        });
+      }
+    } else {
+      var Img = req.files.logo;
+      var uploadPath = "images/company/" + Img.name;
+
+      Img.mv(uploadPath, function (err) {
+        if (err) {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+          });
+        }
+      });
+      data.logo = Img.name;
+    }
+
+    
 
     var user = new userCredModel(data);
     // Create token
@@ -152,7 +176,6 @@ exports.add = (req, res) => {
     });
 
     data.userID = user._id;
-    data.logo = "";
     var company = new companyModel(data);
 
     company
@@ -276,6 +299,10 @@ exports.edit = (req, res) => {
     return res.status(400).send({
       message: "Data to be edit can't be empty!",
     });
+  }
+
+  if(req.body.companyID !=='' ){
+    saveData.companyID = req.body.companyID;
   }
 
   // logo validation

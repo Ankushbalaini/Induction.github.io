@@ -23,7 +23,6 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
   const [preview, setPreview] = useState(companyData.profile.logo);
   const [userID, setUserID] = useState(companyData.profile._id);
   
-
   const handleCallback = () => {
     trackOnclick(false);
   };
@@ -145,7 +144,12 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
                       Company Logo <span className="required">*</span>
                     </label>
                     <div className="instructors-media">
-                    <img src={ loadImage(preview) } Style="max-height:100px; max-width:100px; padding:10px; border-radius:10px"></img>
+
+
+
+                    {/* <img src={ loadImage(preview) } Style="max-height:100px; max-width:100px; padding:10px; border-radius:10px"></img> */}
+
+
                     </div> 
                     <input type="hidden" value={preview} name="logo" />
                     <input

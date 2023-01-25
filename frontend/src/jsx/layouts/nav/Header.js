@@ -84,6 +84,9 @@ const Header = ({ onNote }) => {
 		if ("status" in response && response.status == true) {
 			if(role === 'company'){
 				setImg(response.data.profile.logo);
+			}else if(role === 'instructor'){
+				setImg(response.data.profile.profilePhoto);
+				
 			}else{
 				setImg(response.data.profile.profilePhoto);
 			}
@@ -327,11 +330,7 @@ const Header = ({ onNote }) => {
 					<ul>
 						<Dropdown as="li" className="nav-item dropdown header-profile">
 							<Dropdown.Toggle variant="" as="a" className="nav-link i-false c-pointer">
-								{
-									(img === '') ? <img src={profile} width={20} alt="" /> : <img src={loadImage(img)} width={20} alt="" />
-									
-								}
-								{/*  */}
+								<img src={loadImage(img)} width={20} alt="" />
 							</Dropdown.Toggle>
 							<Dropdown.Menu align="right" className="dropdown-menu dropdown-menu-end">
 								<Link to={`/${profileLink(role)}`} className="dropdown-item ai-icon">

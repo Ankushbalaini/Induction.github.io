@@ -10,25 +10,40 @@ const AddCompany = () => {
   const [name, setName] = useState();
   const [companyID, setCompanyID] = useState();
   const [logo, setLogo] = useState();
+  const [image, setImage] = useState({preview:'', data:''})
   const [address, setAddress] = useState();
   const [aboutCompany, setAboutCompany] = useState();
-  
+
+  const handleFileChange = async (e) => {
+    const img = {
+      preview: URL.createObjectURL(e.target.files[0]),
+      data: e.target.files[0],
+    }
+    setImage(img)
+  }
 
   let handleSubmit = async (e) => {
     e.preventDefault();
     const company = {
-      email: email,
-      password: password,
-      name: name,
-      companyID: companyID,
       logo: logo,
-      address : address,
-      aboutCompany: aboutCompany
-
+      address: address,
+      aboutCompany: aboutCompany,
     };
+    const data = new FormData();
+    data.append('name', name);
+    data.append('email', email);
+    data.append('password', password);
+    data.append('companyID', companyID);
+    data.append('logo', image.data);
+    data.append('address', address);
+    data.append('aboutCompany', aboutCompany);
+
     // let formData = new FormData();
-    const response = await addCompany(company);
-    
+    const response = await fetch("http://localhost:8081/api/company/add", {
+      method: "POST",
+      body: data,
+    }).then((data) => data.json());
+
     if ("status" in response && response.status == true) {
       return swal("Success", response.message, "success", {
         buttons: false,
@@ -42,19 +57,6 @@ const AddCompany = () => {
     }
   };
 
-  // api call
-  async function addCompany(formValues) {
-    return fetch("http://localhost:8081/api/company/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formValues),
-    }).then(
-      (data) => data.json()
-    );
-  }
-
   return (
     <Fragment>
       <PageTitle activeMenu="Add Company" motherMenu="Company" />
@@ -66,8 +68,11 @@ const AddCompany = () => {
           </div>
           <div className="card-body">
             <div className="basic-form">
-              <form onSubmit={handleSubmit} method="POST" enctype="multipart/form-data">
-
+              <form
+                onSubmit={handleSubmit}
+                method="POST"
+                enctype="multipart/form-data"
+              >
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
                     Company Email
@@ -134,9 +139,11 @@ const AddCompany = () => {
                     Company Logo
                   </label>
                   <div className="col-sm-9">
-                  <input
+                    <input
                       type="file"
-                      className="form-control" name="logo"
+                      className="form-control"
+                      name="logo"
+                      onChange={handleFileChange}
                       accept="image/png,image/jpeg,image/jpg"
                     />
                     {/* <input
@@ -166,7 +173,9 @@ const AddCompany = () => {
                 </div>
 
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">About Company</label>
+                  <label className="col-sm-3 col-form-label">
+                    About Company
+                  </label>
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
@@ -179,7 +188,6 @@ const AddCompany = () => {
                     </textarea>
                   </div>
                 </div>
-
 
                 <div className="mb-12 row">
                   <div className="col-sm-12">

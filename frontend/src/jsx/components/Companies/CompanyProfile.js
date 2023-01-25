@@ -77,12 +77,15 @@ const CompanyProfile = () => {
   const [loading,setLoading] = useState(true);
   const [companyData, setCompanyData] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);	
+  const [profileImg, setProfileImg] = useState('dummy-user.png');
 
   const getProfile = async () =>{
     const response = await getProfileApi(token);
     if ("status" in response && response.status == true) {
 			setCompanyData(response.data);
 			setLoading(false);
+      setProfileImg(response.data.profile.logo);
+      
 		}
   }
 
@@ -93,11 +96,27 @@ const CompanyProfile = () => {
 
   useEffect(()=>{
     getProfile();
-  }, [isModalOpen]);
+    
+  }, [isModalOpen, companyData]);
 
+  
   const loadImage = (imageName) => {
     return images(`./${imageName}`);
   }
+
+
+
+  // useEffect(() => {
+  //   const images = require.context('../../../../../images/company/', true);
+  //   import("./../images/icons/" + props.src + ".png").then(setImage)
+  //   // return image ? <img src={image} /> : 'Loading...'
+  // }, [props.src])
+
+
+
+
+
+
 
 
   const pageContent = (loading) ? <h1>Loading</h1> :
@@ -110,29 +129,17 @@ const CompanyProfile = () => {
                   </div>
                   <div className="card-body text-center pb-3">
                     <div className="instructors-media">
-                    <img src={loadImage(companyData.profile.logo)} onError={(e) => {
-                      e.target.src = loadImage('bjs-logo.png'); 
-                      e.target.onError = null;
-                    } } />
+                      <img src={ loadImage(profileImg)} />
 
                       <div className="instructors-media-info mt-4">
                         <h4 className="mb-1">{companyData.profile.name}</h4>
                         <span className="fs-18">Member Since 2023</span>
-                        {/* <div className="d-flex justify-content-center my-3 mt-4">
-                          <div className="info-box text-start style-1">
-                            <span>Instructors</span>
-                            <h4> 10</h4>
-                          </div>
-                          <div className="info-box text-start style-1">
-                            <span>Inductions</span>
-                            <h4>50</h4>
-                          </div>
-                        </div> */}
+                        
                       </div>
                     </div>
                     
                     <div className="bio text-start my-4">
-                      <h4 className="mb-3">Bio</h4>
+                      {/* <h4 className="mb-3">Bio</h4> */}
                       <div className="bio-content">
                         <p>
                           {companyData.profile.aboutCompany}
@@ -142,7 +149,7 @@ const CompanyProfile = () => {
 
 
                     <div className="bio text-start my-4">
-                      <h4 className="mb-3">Address</h4>
+                      {/* <h4 className="mb-3">Address</h4> */}
                       <div className="bio-content">
                         <p>
                           {companyData.profile.address}

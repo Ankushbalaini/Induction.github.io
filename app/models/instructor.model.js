@@ -7,7 +7,7 @@ module.exports = (mongoose) => {
         parentCompany: { type: mongoose.Schema.Types.ObjectId, required: true },
         deptID:{type: mongoose.Schema.Types.ObjectId},
         name: { type: String, required: true },
-        profilePhoto: { type: String },
+        profilePhoto: { type: String , default: 'dummy-user.png' },
         aboutMe: { type: String },
         address: { type: String },
         createdBy: { type: mongoose.Schema.Types.ObjectId },

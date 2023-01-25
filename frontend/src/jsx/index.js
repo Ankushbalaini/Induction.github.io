@@ -22,7 +22,8 @@ import CourseDetail1 from "./components/Courses/CourseDetail1";
 import CourseDetail2 from "./components/Courses/CourseDetail2";
 
 //Company----
-import ListCompanies from "./components/Companies/ListCompanies";
+// import ListCompanies from "./components/Companies/ListCompanies";
+import ListCompanies from "./components/Companies/Companies";
 import AddCompany from "./components/Companies/AddCompany";
 import CompanyProfile from "./components/Companies/CompanyProfile";
 
@@ -50,6 +51,8 @@ import AllStudents from "./components/Students/AllStudents";
 
 // App
 import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
+import FilteringTable from "./components/table/FilteringTable/FilteringTable";
+
 import { ThemeContext } from "../context/ThemeContext";
 import { store } from "../../src/store/store";
 
@@ -96,6 +99,7 @@ const Markup = () => {
 
     // Apps
     { url: "app-profile", component: AppProfile },
+    { url: "table-filtering", component: FilteringTable}
   ];
 
   let path = window.location.pathname;

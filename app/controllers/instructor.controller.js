@@ -183,10 +183,33 @@ exports.add = (req, res) => {
     req.body.userID = ObjectId(InstructorCred._id);
     var instructorData = new InstructorTable(req.body);
 
+    // logo validation
+    if (!req.files || Object.keys(req.files).length === 0) {
+      if (req.body.profilePhoto === "") {
+        return res.status(500).send({
+          status: false,
+          message: "Profile Photo is required!",
+        });
+      }
+    } else {
+      var Img = req.files.profilePhoto;
+      var uploadPath = "images/instructor/" + Img.name;
+
+      Img.mv(uploadPath, function (err) {
+        if (err) {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+          });
+        }
+      });
+      instructorData.profilePhoto = Img.name;
+    }
+    
     instructorData
       .save()
       .then((response) => {
-        res.status(200).send({
+        return res.status(200).send({
           status: true,
           message: "Success",
           data: response,
@@ -194,13 +217,13 @@ exports.add = (req, res) => {
       })
       
       .catch((err) => {
-        res.status(400).send({
-          status: false,
-          message: "Some error " + err.message,
-          data: {},
-        });
+        return res.status(400).send({
+            status: false,
+            message: err.message,
+            data: req.body,
+          });
       });
-    return;
+
   } catch (e) {
     return res.status(400).send({
       status: false,
