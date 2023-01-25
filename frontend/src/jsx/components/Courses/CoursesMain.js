@@ -27,6 +27,18 @@ function CoursesMain() {
   const [courses, setCourses] = useState();
   const [loading, setloading] = useState(true);
   const [page, setPage ] = useState(1);
+  const [limit, setLimit] = useState(3);
+  const [totalRecords, setTotalRecords] = useState();
+  const [showing, setShowing] = useState();
+
+  // pagination 
+  const [prevLink, setPrevLink] = useState(0);
+  const [firstLink, setFirstLink] = useState(1);
+  const [secondLink, setSecondLink] = useState(2);
+  const [nextLink, setNextLink] = useState(3);
+
+
+
 
   const token = useSelector((state) => state.auth.auth.token);
 
@@ -41,26 +53,71 @@ function CoursesMain() {
     }).then((data) => data.json());
   }
 
+
+
+  const handleGetInduction = async (page) => {
+    const response = await getAllInductions(page);
+    if ("status" in response && response.status == true) {
+      setCourses(response.data);
+      setloading(false);
+      setTotalRecords(response.pagination.totalRecords);
+      setLimit(response.pagination.limit);
+      
+      setPrevLink(<Link to={"#"} onClick={e=>setPage(page-1)} className="">
+        <i className="fas fa-chevron-left"></i>
+      </Link>);
+
+      setFirstLink(<Link to={"#"} onClick={e=>setPage(1)} className={(page===1)?'active' : ""}>
+      <i className="fas fa-chevron-left"></i>
+    </Link>);
+
+      pageNate();
+    }
+  };
+
+
   // use effect
   useEffect(() => {
-    const handleGetInduction = async (page) => {
-      const response = await getAllInductions(page);
-      if ("status" in response && response.status == true) {
-        setCourses(response.data);
-        setloading(false);
-      }
-    };
     handleGetInduction(page);
+  }, [page,loading, totalRecords]);
 
+
+  const pageNate = () =>{
     
-  }, [page,loading]);
+    if(totalRecords > limit){
+      // enable pagination
+      const totalPages = totalRecords / limit;
+
+
+      setShowing(<>
+        <h4 className="sm-mb-0 mb-3">
+          Showing inside <span>{(page===1)? 1 : ((page-1)*limit) } -  {(page===1)? limit : ((page-1)*limit)+limit } </span>from <span>{totalRecords} </span>
+        </h4>
+        
+      </>);
+
+    }
+    else{
+      // only show dummy html
+      setShowing(
+          <h4 className="sm-mb-0 mb-3">
+          Showing Else <span>{(page===0)?1:page*limit} - {(page*limit)+limit} </span>from <span>{totalRecords} </span>
+        </h4>
+          );
+    }
+  }
+
+
+
+
+
 
   const content = loading ? (
     <h1>Loading</h1>
   ) : (
     <>
       <div className="widget-heading d-flex justify-content-between align-items-center">
-        <h3 className="m-0">All Courses ({courses.length})</h3>
+        <h3 className="m-0">All Courses ({totalRecords})</h3>
         <Link to={"./courses"} className="btn btn-primary btn-sm">
           View all
         </Link>
@@ -147,15 +204,17 @@ function CoursesMain() {
       </div>
       <div className="pagination-down">
         <div className="d-flex align-items-center justify-content-between flex-wrap">
-          <h4 className="sm-mb-0 mb-3">
-            Showing <span>1-6 </span>from <span>100 </span>data
-          </h4>
+          {/* <h4 className="sm-mb-0 mb-3">
+            Showing <span>{page * limit}- </span>from <span>{totalRecords} </span>data
+          </h4> */}
+          {showing}
           <ul>
             <li>
               <Link to={"#"} onClick={e=>setPage(page-1)} className={(page<1)?'active' : ""}>
                 <i className="fas fa-chevron-left"></i>
               </Link>
             </li>
+
             <li>
               <Link to={"#"} onClick={e=>setPage(1)}  className={(page==1)?'active' : ""}>
                 1
@@ -167,12 +226,14 @@ function CoursesMain() {
             <li>
               <Link to={"#"} onClick={e=>setPage(3)} className={(page==3)?'active' : ""}>3</Link>
             </li>
+
             <li>
               <Link to={"#"} onClick={e=>setPage(page+1)} className={(page>3)?'active' : ""}>
                 <i className="fas fa-chevron-right"></i>
               </Link>
             </li>
-          </ul>
+
+          </ul> 
         </div>
       </div>
     </>

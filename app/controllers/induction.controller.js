@@ -6,12 +6,20 @@ const { findAll } = require("./user.controller");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
+
+exports.getMyInductionsCount = (req, res) => {
+  
+}
+
+
+
+
 /**
  * @method get
  *
  * @author Singh
  */
-exports.index = (req, res) => {
+exports.index = async (req, res) => {
   // get token
   // verify token
 
@@ -21,12 +29,14 @@ exports.index = (req, res) => {
     const user = jwt.verify(token, secret);
 
     const page = (req.query.page > 0) ? req.query.page :  1;
-    const limit = 6;
-    const skips = 6 * (page-1);
-
+    // const limit = 6;
+    // const skips = 6 * (page-1);
+    const limit = 3;
+    const skips = 3 * (page-1);
 
 
     if (user.role == "instructor") {
+
       // return only own Inductions
       Induction.find({"createdBy": ObjectId(user.userID) }).limit(limit)
         .then((data) => {
@@ -38,6 +48,7 @@ exports.index = (req, res) => {
             res.send({
               status: true,
               data: data,
+              pagination: { totalRecords: 10, limit: limit, page: page},
               message: "My Inductions",
             });
           }
@@ -46,26 +57,24 @@ exports.index = (req, res) => {
           res.status(500).send({ message: "Error retrieving User with id=" });
         });
     } else {
-      //const totalRecords = Induction.find({}).count;
-
+      
+      const Inductions = await Induction.find({});
 
       // return all
       Induction.find({}).skip(skips).limit(limit)
         .then((data) => {
           if (!data) {
-            res
-              .status(404)
+            return res.status(404)
               .send({ 
                 status: false, message: "Not found User with id " });
           } else {
+            //const total = Induction.find({}).count();
 
-            var totalrecord = Induction.find().count;
-            res.send({
+            return res.send({
               status: true,
               data: data,
-              total: totalrecord,
-              
-              message: "All Inductions stored in DB1",
+              pagination: { totalRecords: Inductions.length, limit: limit, page: page},
+              message: "All Inductions 1",
             });
           }
         })
