@@ -1,7 +1,9 @@
 import React, { useMemo } from "react";
 
 import DataTable from "react-data-table-component";
+import DropDownBlog from "../Dashboard/DropDownBlog";
 import FilterComponent from "./FilterComponent";
+
 
 const Table = props => {
   const columns = [
@@ -25,11 +27,11 @@ const Table = props => {
       hide: "sm"
     },
     {
-      name: "actions",
+      name: "Actions",
       button: true,
       cell: row =>
           <>
-            <button
+            {/* <button
               onClick={() => props.actionHandler(row)}
               style={{ marginRight: "5px", minWidth: "80px" }}
               className="btn btn-warning btn "
@@ -37,8 +39,9 @@ const Table = props => {
               Edit
             </button>
 
-            <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button>
-            
+            <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button> */}
+            <DropDownBlog onEdit={()=>props.actionHandler(row)} onDelete={()=>props.deleteClick(row.name)}/>
+
           </>
     }
   ];

@@ -3,6 +3,9 @@ import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory, Link } from "react-router-dom";
 import Table from "./DataTable";
+import DropDownBlog from './../Dashboard/DropDownBlog'; 
+import { Button ,Modal } from "react-bootstrap";
+
 
 
 const ListDepartments =()=>{
@@ -11,12 +14,19 @@ const ListDepartments =()=>{
     const [status , setStatus] =useState();
     const [departments,setDepartments] =useState();
     const [deptData, setdeptData] = useState([{name:'noora'}]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalData, setModalData] = useState({ name: ''});
+    const [editID, setEditID] = useState();
 
 
-        const actionHandler = (company) => {
-        //setName(company.name);
-        
-        // set values
+
+        const actionHandler = (department) => {
+         setIsModalOpen(true);
+         setModalData(department);
+         setName(department.name);
+         setStatus(department.status);
+         setEditID(department._id);
+
       }
     
       const deleteClick = (comp_name) => {
@@ -36,6 +46,34 @@ const ListDepartments =()=>{
           } 
         })
       }
+    
+      // const deleteDepartment= (getId)=>{
+      //   setdeptData
+      // }
+      //Edit Department submit handler
+      const onSubmitHandle = async (e) => {
+        e.preventDefault();
+        const data = new FormData();
+        data.append('name', name);
+        data.append('status',status)
+      //  data.append('companyID', companyID)
+    
+        const response = await fetch(
+          "http://localhost:8081/api/department/edit/" + editID,
+          {
+            method: "PUT",
+            body: data,
+          }
+        ).then((data) => data.json());
+    
+        if ("status" in response && response.status == true) {
+          setIsModalOpen(false);
+          return swal("Success", response.message, "success");
+        } else {
+          return swal("Failed", response.message, "error");
+        }
+      };
+
 
     useEffect(()=>{
         const handlepageLoad = async (event) =>{
@@ -47,22 +85,28 @@ const ListDepartments =()=>{
 
             //const rows = <h1>Here</h1>
             const rows = response.data.map((row,index)=>{
-                return <tr key ={index}>
-                     <td>
-                         <div className="d-flex align-items-center">
-                             <h4 className="mb-0 fs-16 font-w500">
-                                {row.name}
-                             </h4>
-                         </div>
-                     </td>
-                     
-                     <td>
-                         <span classname ={`badge  light badge-success`}>{row.status}</span>
-                     </td>
-                     <td>
-                         <Link to ={`/department-detail/${row._id}`}>View</Link>
-                     </td>
-                 </tr>
+                  // return <tr key ={index}>
+                  //      <td>
+                  //          <div className="d-flex align-items-center">
+                  //              <h4 className="mb-0 fs-16 font-w500">
+                  //                 {row.name}
+                  //              </h4>
+                  //          </div>
+                  //      </td>
+                      
+                  //      <td>
+                  //         {/* // <span classname ={`badge  light badge-success`}>{row.status}</span> */}
+                  //          <span classname ={`badge  light badge-success`}>
+
+                  //                 {row.status==='Active' ? (
+                  //                 <span className="text-success">{row.status}</span>) : 
+                  //                 (<span className="text-danger">{row.status}</span>)} 
+                  //               </span>
+                  //      </td>
+                  //      <td>
+                  //          <Link to ={`/department-detail/${row._id}`}>View</Link>
+                  //      </td>
+                  //  </tr>
              });
             
             setDepartments(rows);
@@ -105,28 +149,95 @@ const ListDepartments =()=>{
                                className="table display mb-4 dataTablesCard order-table card-table text-black application" 
                                id="application-tbl1_next"
                                >
-                                <thead>
+                                {/* <thead>
                                     <tr>
                                         <th>Name </th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
-                                </thead>
+                                </thead> */}
                                 <tbody>
                                 {departments}
-                                </tbody>
-
-                                
+                                </tbody>       
                               </table>
-
                               <Table data={deptData}  actionHandler={actionHandler} deleteClick={deleteClick}/>
-
                             </div> 
                         </div>
                      </div>
                 </div>
             </div>
         </div>
+
+        <Modal className="modal fade" show={isModalOpen}>
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">
+              Edit Department Details
+              </h5> 
+              <Button
+              variant=""
+              type="button"
+              className="btn-close"
+              data-dismiss="modal"
+              onClick={() => setIsModalOpen(false)}
+            ></Button>
+            </div>
+            <div className="modal-body">
+              <form className="company-form" onSubmit={(e) => onSubmitHandle(e)}>
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div className="form-group mb-3">
+                      <label htmlFor="author" className="text-black font-w600">
+                      {" "}
+                      Name <span className="required"></span>*
+                      </label>
+                      <input
+                      type="text"
+                      className="form-control"
+                      name="name"
+                      value={name}
+                      onChange={(e)=>setName(e.target.value)}
+                      required
+                    />
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="form-group mb-3">
+                      <label htmlFor="author" className="text-black font-w600">
+                      {" "}
+                      Department Status<span className="required">*</span>{" "}
+                    </label>
+                    <select className="form-control" onChange={(e) =>setStatus(e.target.value)}>
+                                    <option value="Active">Active</option>
+                                    <option value="In active">Inactive</option>
+                                    </select>
+                    {/* <input
+                      type="text"
+                      className="form-control"
+                      name="status"
+                      placeholder="status"
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
+                      required
+                    /> */}
+                    </div>
+                  </div>
+                  <div className="col-lg-12">
+                  <div className="form-group mb-3">
+                    <Button
+                      type="submit"
+                      value="Submit"
+                      className="submit btn btn-primary"
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </Modal>
     </Fragment>
   );
 };
