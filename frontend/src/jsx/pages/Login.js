@@ -10,7 +10,9 @@ import {
 import loginbg from "../../images/bg-1.jpg";
 import logo from "../../images/log.png";
 //import logofull from '../../images/logo-full.png';
-import logofull from "../../images/homedelivery.svg";
+import BJSLogo from "../../images/BJSLogo.png";
+//import BJSLogo from "../../images/BJSLogo.jpg";
+
 
 function Login(props) {
   const [email, setEmail] = useState("super@admin.com");
@@ -19,9 +21,6 @@ function Login(props) {
   const [password, setPassword] = useState("admin");
   const [userType, setUserType] = useState("user");
   const dispatch = useDispatch();
-
-  // console.log(process.env.LOGIN_API_ENDPOINT);
-
 
   function onLogin(e) {
     e.preventDefault();
@@ -60,12 +59,16 @@ function Login(props) {
                   <div className="row m-0">
                     <div className="col-xl-6 col-md-6 sign text-center">
                       <div>
-                        <div className="text-center my-5">
-                          <Link to="/dashboard">
-                            <img width="200" src={logofull} alt="" />
-                          </Link>
-                        </div>
+                        <div className="text-center my-5" Style="margin-top:25% !important">
                         
+
+
+                        
+                        <img width="400" src={BJSLogo} alt="" />
+                          {/* <Link to="/dashboard">
+                            <img width="200" src={logofull} alt="" />
+                          </Link> */}
+                        </div>
                       </div>
                     </div>
                     <div className="col-xl-6 col-md-6">
@@ -73,6 +76,7 @@ function Login(props) {
                         <h4 className="fs-20 font-w800 text-black">
                           Sign in your account
                         </h4>
+                        
                         <span>
                           Welcome back! Login with your data that you entered
                           <br /> during registration
@@ -94,12 +98,14 @@ function Login(props) {
                               <strong>Select User Type</strong>
                             </label>
 
-                            <select onChange={(e) => setUserType(e.target.value)}
-                            value={userType}>
-                                <option value='super_admin'>Super Admin</option>
-                                <option value='company'>Company</option>
-                                <option value='instructor'>Instructor</option>
-                                <option value='user'>User</option>
+                            <select
+                              onChange={(e) => setUserType(e.target.value)}
+                              value={userType}
+                              className="form-control">
+                              <option value="super_admin">Super Admin</option>
+                              <option value="company">Company</option>
+                              <option value="instructor">Instructor</option>
+                              <option value="user">User</option>
                             </select>
                             {errors.userType && (
                               <div className="text-danger fs-12">
@@ -117,6 +123,7 @@ function Login(props) {
                               className="form-control"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
+                              required
                             />
                             {errors.email && (
                               <div className="text-danger fs-12">
@@ -133,6 +140,7 @@ function Login(props) {
                               className="form-control"
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
+                              required
                             />
                             {errors.password && (
                               <div className="text-danger fs-12">
@@ -157,9 +165,9 @@ function Login(props) {
                               </div>
                             </div>
                             <div className="mb-3">
-                              <Link to="./page-register">Sign up</Link>
+                              <Link to="./page-register" className="text-primary">Sign up</Link>
                               <br></br>
-                              <Link to="./forgot-password">
+                              <Link to="./forgot-password" className="text-primary">
                                 Forgot password
                               </Link>
                             </div>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 
 // React router dom
 import { Switch, Route } from "react-router-dom";
@@ -22,8 +22,14 @@ import CourseDetail1 from "./components/Courses/CourseDetail1";
 import CourseDetail2 from "./components/Courses/CourseDetail2";
 
 //Company----
-import AllCompanies from "./components/Companies/ListCompanies";
+// import ListCompanies from "./components/Companies/ListCompanies";
+import ListCompanies from "./components/Companies/Companies";
 import AddCompany from "./components/Companies/AddCompany";
+import CompanyProfile from "./components/Companies/CompanyProfile";
+
+//Department----
+import AllDepartments from "./components/Department/ListDepartment";
+import AddDepartment from "./components/Department/AddDepartment";
 
 //Inductions----
 import Inductions from "./components/Inductions/Inductions";
@@ -34,6 +40,8 @@ import SingleInductionView from "./components/Inductions/SingleInductionView";
 //Instructors
 import Instructors from "./components/Dashboard/Instructors";
 import AddInstructor from "./components/Instructor/AddInstructor";
+import InstructorProfile from "./components/Instructor/InstructorProfile";
+
 import InstructorDashboard from "./components/Instructor/InstructorDashboard";
 import InstructorCourses from "./components/Instructor/InstructorCourses";
 import InstructorStudents from "./components/Instructor/InstructorStudents";
@@ -43,19 +51,23 @@ import AllStudents from "./components/Students/AllStudents";
 
 // App
 import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
+import FilteringTable from "./components/table/FilteringTable/FilteringTable";
+
 import { ThemeContext } from "../context/ThemeContext";
+import { store } from "../../src/store/store";
 
 const Markup = () => {
+  var newState = store.getState();
+
+  const [role, setRole] = useState(newState.auth.auth.role);
   const { menuToggle } = useContext(ThemeContext);
-
-
-
-  
-  const routes = [
+  var routes = [
     /// Dashboard
     { url: "", component: Home },
     { url: "dashboard", component: Home },
     { url: "profile", component: Profile },
+    { url: "company-profile", component: CompanyProfile},
+    { url: "instructor-profile", component: InstructorProfile},
 
     // Courses ----
     { url: "courses", component: CoursesMain },
@@ -63,8 +75,12 @@ const Markup = () => {
     { url: "course-details-2", component: CourseDetail2 },
 
     // Companies ----
-    { url: "companies", component: AllCompanies },
+    { url: "companies", component: ListCompanies },
     { url: "add-company", component: AddCompany },
+
+    // Department----
+    { url: "departments", component: AllDepartments },
+    { url: "add-department", component: AddDepartment },
 
     // Inductions ----
     { url: "inductions", component: Inductions },
@@ -83,6 +99,7 @@ const Markup = () => {
 
     // Apps
     { url: "app-profile", component: AppProfile },
+    { url: "table-filtering", component: FilteringTable}
   ];
 
   let path = window.location.pathname;
@@ -90,6 +107,7 @@ const Markup = () => {
   path = path[path.length - 1];
 
   let pagePath = path.split("-").includes("page");
+
   return (
     <>
       <div

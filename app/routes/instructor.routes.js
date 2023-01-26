@@ -6,8 +6,12 @@ module.exports = (app) => {
   // Add a new instructor
   router.post("/add", instructor.add);
 
-  // list all companies
+  // list all instructors
   router.get("/list", instructor.list);
+
+  //listByCompany
+  router.get("/listByCompany", instructor.listByCompany);
+
 
   // Retrieve a single instructor with id
   //router.get("/:id", instructor.findOne );

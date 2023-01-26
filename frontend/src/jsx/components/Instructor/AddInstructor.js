@@ -2,55 +2,69 @@ import React, { Fragment, useState, useRef } from "react";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+
+import CompanyDropdown from '../Companies/CompanyDropdown';
+
 
 const AddInstructor = () => {
   const navigate = useHistory();
+  const loggedrole = useSelector((state) => state.auth.auth.role);
+	const parentCompanyID = useSelector((state) => state.auth.auth.id);
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [role, setRole] = useState('instructor');
   const [name, setName] = useState();
-  const [companyID, setCompanyID] = useState();
-  const [logo, setLogo] = useState();
+  const [parentCompany, setParentCompany] = useState(parentCompanyID);
+  const [profilePhoto, setProfilePhoto] = useState('dummy-user.png');
+  const [image, setImage] = useState({preview:'', data:''})
   const [address, setAddress] = useState();
-  const [aboutCompany, setAboutCompany] = useState();
+  const [aboutMe, setAboutMe] = useState();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const company = {
-      email: email,
-      password: password,
-      name: name,
-      companyID: companyID,
-      logo: logo,
-      address : address,
-      aboutCompany: aboutCompany
+  // validation messages
+  let errorsObj = { email: "", password: "", cname: "", parentCompany:"" };
+  const [errors, setErrors] = useState(errorsObj);
 
-    };
+  const handleFileChange = async (e) => {
+    const img = {
+      preview: URL.createObjectURL(e.target.files[0]),
+      data: e.target.files[0],
+    }
+    setImage(img)
+  }
 
-    const response = await addCompany(company);
-    
-    if ("status" in response && response.status == true) {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const data = new FormData();
+    data.append('name', name);
+    data.append('email', email);
+    data.append('password', password);
+    data.append('role', role);
+    data.append('parentCompany', parentCompany);
+    data.append('profilePhoto', image.data);
+    data.append('address', address);
+    data.append('aboutMe', aboutMe);
+
+    const response = await fetch("http://localhost:8081/api/instructor/add", {
+      method: "POST",
+      body: data,
+    }).then((user) => user.json());
+
+    if ("status" in response && response.status === true) {
       return swal("Success", response.message, "success", {
         buttons: false,
         timer: 2000,
-      }).PageTitlethen((value) => {
-        // return <Navigate to="/inductions" />;
-        navigate.push("/companies");
+      }).then((value) => {
+        navigate.push("/instructors");
       });
     } else {
       return swal("Failed", "Error message", "error");
     }
   };
 
-  // api call
-  async function addCompany(formValues) {
-    return fetch("http://localhost:8081/api/company/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formValues),
-    }).then((data) => data.json());
-  }
 
   return (
     <Fragment>
@@ -63,7 +77,7 @@ const AddInstructor = () => {
           </div>
           <div className="card-body">
             <div className="basic-form">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={(e)=>handleSubmit(e)} >
 
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
@@ -71,12 +85,14 @@ const AddInstructor = () => {
                   </label>
                   <div className="col-sm-9">
                     <input
-                      type="text"
+                      name="email"
+                      type="email"
                       className="form-control"
-                      placeholder=""
                       onChange={(e) => setEmail(e.target.value)}
-                      value={name}
+                      value={email}
+                      required
                     />
+                    {errors.email && <div Style="color:red;font-weight:600;padding:5px;">{errors.email}</div>}
                   </div>
                 </div>
 
@@ -86,12 +102,14 @@ const AddInstructor = () => {
                   </label>
                   <div className="col-sm-9">
                     <input
+                      name="password"
                       type="password"
                       className="form-control"
-                      placeholder=""
                       onChange={(e) => setPassword(e.target.value)}
                       value={password}
+                      required
                     />
+                    {errors.password && <div Style="color:red;font-weight:600;padding:5px;">{errors.password}</div>}
                   </div>
                 </div>
 
@@ -103,24 +121,35 @@ const AddInstructor = () => {
                   </label>
                   <div className="col-sm-9">
                     <input
+                      name="name"
                       type="text"
                       className="form-control"
-                      placeholder=""
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={(e) => setName(e.target.value) }
                       value={name}
+                      required
                     />
+                    {errors.cname && <div Style="color:red;font-weight:600;padding:5px;">{errors.cname}</div>}
                   </div>
                 </div>
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">Parent Company</label>
                   <div className="col-sm-9">
+
+                    { (loggedrole == 'super_admin') ? 
+                    <select name="parentCompany" className="form-control" onChange={ (e) => setParentCompany(e.target.value) }>
+                        <option value="">Select</option>
+                        <CompanyDropdown />
+                    </select> : 
                     <input
-                      type="text"
+                      name="parentCompany"
+                      type="hidden"
                       className="form-control"
-                      placeholder=""
-                      onChange={(e) => setCompanyID(e.target.value)}
-                      value={companyID}
+                      value={parentCompany}
                     />
+                    }
+
+                    {errors.parentCompany && <div Style="color:red;font-weight:600;padding:5px;">{errors.parentCompany}</div>}
+
                   </div>
                 </div>
                 <div className="mb-3 row">
@@ -129,12 +158,11 @@ const AddInstructor = () => {
                   </label>
                   <div className="col-sm-9">
                     <input
-                      type="text"
+                      type="file"
                       className="form-control"
-                      placeholder=""
-                      defaultValue="logo.png"
-                      onChange={(e) => setLogo(e.target.value)}
-                      value={logo}
+                      name="profilePhoto"
+                      onChange={handleFileChange}
+                      accept="image/png,image/jpeg,image/jpg"
                     />
                   </div>
                 </div>
@@ -146,10 +174,12 @@ const AddInstructor = () => {
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
-                      placeholder=""
-                      onChange={(e) => setAboutCompany(e.target.value)}
+                      name="aboutMe"
+                      value={aboutMe}
+                      onChange={(e) => setAboutMe(e.target.value)}
+                      required
                     >
-                      {aboutCompany}
+                      {aboutMe}
                     </textarea>
                   </div>
                 </div>
@@ -159,8 +189,9 @@ const AddInstructor = () => {
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
-                      placeholder=""
+                      name="address"
                       onChange={(e) => setAddress(e.target.value)}
+                      required
                     >
                       {address}
                     </textarea>

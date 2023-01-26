@@ -9,8 +9,12 @@ module.exports = (app) => {
   // list all companies
   router.get("/list", company.list);
 
-  // Retrieve a single company with id
-  //router.get("/:id", company.findOne );
+   //update company values
+   router.put('/edit/:id',company.edit);
+
+  // need token for this request
+  router.put('/update',company.update);
+
 
   // soft delete company
 

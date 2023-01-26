@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import pic3 from "./../../../images/courses/pic3.jpg";
 import pic2 from "./../../../images/courses/pic2.jpg";
 import pic4 from "./../../../images/courses/pic4.jpg";
+import { useSelector } from "react-redux";
 
 const inductionTableData = [
   {
@@ -35,6 +36,7 @@ const Inductions = () => {
   const [test, settest] = useState(0);
   const [user, setUser] = useState([]);
   const [inductionData, setInductionData] = useState(0);
+  const token = useSelector((state) => state.auth.auth.token);
 
   // Active data
   const chageData = (frist, sec) => {
@@ -54,6 +56,7 @@ const Inductions = () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "x-access-token" : token,
       },
     }).then((data) => data.json());
   }
@@ -68,13 +71,13 @@ const Inductions = () => {
           <tr key={index}>
             <td>
               <div className="d-flex align-items-center">
-                <h4 className="mb-0 fs-16 font-w500">{item.induction_title}</h4>
+                <h4 className="mb-0 fs-16 font-w500">{item.title}</h4>
               </div>
             </td>
-            <td>{item.induction_description}</td>
-            <td>{item.induction_department}</td>
+            <td>{item.description}</td>
+            <td>{item.dept_id}</td>
             <td>
-              <span className={`badge  light badge-success`}>Published</span>
+              <span className={`badge ${(item.status)?`badge-success`:`badge-danger`}`}>{(item.status)?'Active':'Inactive'}</span>
             </td>
             <td>
               <Link to={`/single-induction-view/${item._id}`}>Preview </Link>
@@ -148,7 +151,7 @@ const Inductions = () => {
                       <tr>
                         <th>Title</th>
                         <th>Description</th>
-                        <th>Department</th>
+                        <th>Department ID</th>
                         <th>Status</th>
                         <th></th>
                       </tr>

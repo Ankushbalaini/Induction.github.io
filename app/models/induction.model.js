@@ -3,10 +3,20 @@ module.exports = mongoose => {
       "induction",
       mongoose.Schema(
         {
-          induction_title: { type: String, default : null},
-          induction_department: { type: String, default : null},
-          induction_content: { type: String },
-         
+          title: { type: String, required : true},
+          subTitle:{type: String, required : true},
+          deptID:{ type: mongoose.Schema.Types.ObjectId },
+          description:{type: String, required : true},
+          content: { type: String },
+          thumbnail: {type:String},
+          createdBy:{type: mongoose.Schema.Types.ObjectId, required: true},
+          parentCompany:{type: mongoose.Schema.Types.ObjectId, required: true},
+          totalSildes:{type: String},
+          currentSlide:{type: String},
+          totalReviews:{type: String},
+          noOfAttempts:{type: String, default: 10},
+          status:{type: Boolean, default: 0 },
+          deleted:{type: Boolean, default: 0 },
         },
         { timestamps: true }
       )

@@ -3,16 +3,22 @@ module.exports = (mongoose) => {
     "instructor",
     mongoose.Schema(
       {
-        user_id: { type: String, unique: true },
-        company_id: { type: String, unique: true },
+        userID: { type: mongoose.Schema.Types.ObjectId },
+        parentCompany: { type: mongoose.Schema.Types.ObjectId, required: true },
+        deptID:{type: mongoose.Schema.Types.ObjectId},
         name: { type: String, required: true },
-        profile_pic: { type: String },
-        about_me: { type: String },
-        address: { type: String, required: true },
+        profilePhoto: { type: String , default: 'dummy-user.png' },
+        aboutMe: { type: String },
+        address: { type: String },
+        createdBy: { type: mongoose.Schema.Types.ObjectId },
+        status:{type: Boolean, default: 0 },
+        deleted:{type: Boolean, default: 0 },
       },
       { timestamps: true }
     )
   );
+  
 
   return Instructor;
+  
 };

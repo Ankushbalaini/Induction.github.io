@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { ThemeContext } from "../../../context/ThemeContext";
 import Logo from '../../../images/homedelivery.svg';
-
+import BJSLogo from '../../../images/BJSLogo.png';
 
 const NavHader = () => {
   const [toggle, setToggle] = useState(false);
@@ -15,11 +15,11 @@ const NavHader = () => {
       <Link to="/dashboard" className="brand-logo">
         {background.value === "dark" || navigationHader !== "color_1" ? (
 			<>
-        <img alt="images" width={30} src={Logo} />
+        <img alt="images" width={40} src={BJSLogo} />
 			</>
         ) : (
 			<>
-       <img alt="images" width={30} src={Logo} />
+       <img alt="images" width={40} src={BJSLogo} />
       </>
         )}
       </Link>

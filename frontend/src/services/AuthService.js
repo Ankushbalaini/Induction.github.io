@@ -8,8 +8,8 @@ import {
 export function signUp(firstName, lastName, email, password, role) {
     //axios call
     const postData = {
-        firstName,
-        lastName,
+        first_name: firstName,
+        last_name: lastName,
         email,
         password,
         role,

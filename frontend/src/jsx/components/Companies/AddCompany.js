@@ -10,25 +10,40 @@ const AddCompany = () => {
   const [name, setName] = useState();
   const [companyID, setCompanyID] = useState();
   const [logo, setLogo] = useState();
+  const [image, setImage] = useState({preview:'', data:''})
   const [address, setAddress] = useState();
   const [aboutCompany, setAboutCompany] = useState();
-  
 
-  let handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleFileChange = async (e) => {
+    const img = {
+      preview: URL.createObjectURL(e.target.files[0]),
+      data: e.target.files[0],
+    }
+    setImage(img)
+  }
+
+  let handleSubmit = async (e) => {
+    e.preventDefault();
     const company = {
-      email: email,
-      password: password,
-      name: name,
-      companyID: companyID,
       logo: logo,
-      address : address,
-      aboutCompany: aboutCompany
-
+      address: address,
+      aboutCompany: aboutCompany,
     };
+    const data = new FormData();
+    data.append('name', name);
+    data.append('email', email);
+    data.append('password', password);
+    data.append('companyID', companyID);
+    data.append('logo', image.data);
+    data.append('address', address);
+    data.append('aboutCompany', aboutCompany);
 
-    const response = await addCompany(company);
-    
+    // let formData = new FormData();
+    const response = await fetch("http://localhost:8081/api/company/add", {
+      method: "POST",
+      body: data,
+    }).then((data) => data.json());
+
     if ("status" in response && response.status == true) {
       return swal("Success", response.message, "success", {
         buttons: false,
@@ -42,17 +57,6 @@ const AddCompany = () => {
     }
   };
 
-  // api call
-  async function addCompany(formValues) {
-    return fetch("http://localhost:8081/api/company/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formValues),
-    }).then((data) => data.json());
-  }
-
   return (
     <Fragment>
       <PageTitle activeMenu="Add Company" motherMenu="Company" />
@@ -64,19 +68,24 @@ const AddCompany = () => {
           </div>
           <div className="card-body">
             <div className="basic-form">
-              <form onSubmit={handleSubmit}>
-
+              <form
+                onSubmit={handleSubmit}
+                method="POST"
+                enctype="multipart/form-data"
+              >
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
                     Company Email
                   </label>
                   <div className="col-sm-9">
                     <input
-                      type="text"
+                      type="email"
+                      name="email"
                       className="form-control"
                       placeholder=""
                       onChange={(e) => setEmail(e.target.value)}
-                      value={name}
+                      value={email}
+                      required
                     />
                   </div>
                 </div>
@@ -88,15 +97,14 @@ const AddCompany = () => {
                   <div className="col-sm-9">
                     <input
                       type="password"
+                      name="password"
                       className="form-control"
-                      placeholder=""
                       onChange={(e) => setPassword(e.target.value)}
                       value={password}
+                      required
                     />
                   </div>
                 </div>
-
-
 
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
@@ -105,15 +113,16 @@ const AddCompany = () => {
                   <div className="col-sm-9">
                     <input
                       type="text"
+                      name="name"
                       className="form-control"
-                      placeholder=""
                       onChange={(e) => setName(e.target.value)}
                       value={name}
+                      required
                     />
                   </div>
                 </div>
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">Company ID</label>
+                  <label className="col-sm-3 col-form-label">Slug</label>
                   <div className="col-sm-9">
                     <input
                       type="text"
@@ -121,6 +130,7 @@ const AddCompany = () => {
                       placeholder=""
                       onChange={(e) => setCompanyID(e.target.value)}
                       value={companyID}
+                      required
                     />
                   </div>
                 </div>
@@ -130,13 +140,20 @@ const AddCompany = () => {
                   </label>
                   <div className="col-sm-9">
                     <input
+                      type="file"
+                      className="form-control"
+                      name="logo"
+                      onChange={handleFileChange}
+                      accept="image/png,image/jpeg,image/jpg"
+                    />
+                    {/* <input
                       type="text"
                       className="form-control"
                       placeholder=""
                       defaultValue="logo.png"
                       onChange={(e) => setLogo(e.target.value)}
                       value={logo}
-                    />
+                    /> */}
                   </div>
                 </div>
 
@@ -145,8 +162,10 @@ const AddCompany = () => {
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
+                      name="address"
                       placeholder=""
                       onChange={(e) => setAddress(e.target.value)}
+                      required
                     >
                       {address}
                     </textarea>
@@ -154,18 +173,21 @@ const AddCompany = () => {
                 </div>
 
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">About Company</label>
+                  <label className="col-sm-3 col-form-label">
+                    About Company
+                  </label>
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
+                      name="aboutCompany"
                       placeholder=""
                       onChange={(e) => setAboutCompany(e.target.value)}
+                      required
                     >
                       {aboutCompany}
                     </textarea>
                   </div>
                 </div>
-
 
                 <div className="mb-12 row">
                   <div className="col-sm-12">
