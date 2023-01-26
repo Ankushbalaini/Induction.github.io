@@ -28,7 +28,7 @@ const ProfileActivityChart = loadable(() =>
 );
 
 
-const WidgetBlog = ({ changeImage, title }) => {
+const WidgetBlog = ({ changeImage, title, link }) => {
   
 
   return (
@@ -44,7 +44,7 @@ const WidgetBlog = ({ changeImage, title }) => {
                   <span>{title}</span>
                 </div>
               </div>
-              <Link to={"./courses"}>
+              <Link to={link}>
                 <i className="las la-angle-right text-primary"></i>
               </Link>
             </div>
@@ -117,7 +117,7 @@ const Profile = () => {
                 <div className="instructors-media-info mt-4">
                   <h4 className="mb-1">{profileData.profile.first_name +" "+ profileData.profile.last_name} </h4>
                   <span className="fs-18">Member Since {new Date(profileData.createdAt).getFullYear()}</span>
-                  <div className="d-flex justify-content-center my-3 mt-4">
+                  {/* <div className="d-flex justify-content-center my-3 mt-4">
                     <div className="info-box text-start style-1">
                       <span>Points</span>
                       <h4>{profileData.points || 10}</h4>
@@ -126,10 +126,10 @@ const Profile = () => {
                       <span>Certificate</span>
                       <h4>{profileData.certificates || 50}</h4>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
-              <div className="achievements ">
+              {/* <div className="achievements ">
                 <h4 className="text-start mb-3">Achievements</h4>
                 <div className="achievements-content flex-wrap">
                   <span>
@@ -148,9 +148,9 @@ const Profile = () => {
                     <img src={readingtime} alt="" />
                   </span>
                 </div>
-              </div>
+              </div> */}
               <div className="bio text-start my-4">
-                <h4 className="mb-3">Bio</h4>
+                {/* <h4 className="mb-3">Bio</h4> */}
                 <div className="bio-content">
                   <p>
                     {profileData.profile.aboutMe}
@@ -162,11 +162,11 @@ const Profile = () => {
         </div>
         <div className="col-xl-8 col-xxl-7 col-lg-12 ">
           <div className="row">
-            <WidgetBlog changeImage={certificate} title="Completed" />
-            <WidgetBlog changeImage={clock} title="Progress" />
+            <WidgetBlog changeImage={certificate} title="Companies" link="companies" />
+            <WidgetBlog changeImage={clock} title="Students" link="students" />
             <div className="widget-heading d-flex justify-content-between align-items-center">
-              <h3 className="m-0">Current Courses</h3>
-              <Link to={"./courses"} className="btn btn-primary btn-sm">
+              <h3 className="m-0">Current Companies</h3>
+              <Link to={"./companies"} className="btn btn-primary btn-sm">
                 View all
               </Link>
             </div>

@@ -10,7 +10,9 @@ import {
 import loginbg from "../../images/bg-1.jpg";
 import logo from "../../images/log.png";
 //import logofull from '../../images/logo-full.png';
-import logofull from "../../images/homedelivery.svg";
+import BJSLogo from "../../images/BJSLogo.png";
+//import BJSLogo from "../../images/BJSLogo.jpg";
+
 
 function Login(props) {
   const [email, setEmail] = useState("super@admin.com");
@@ -57,10 +59,15 @@ function Login(props) {
                   <div className="row m-0">
                     <div className="col-xl-6 col-md-6 sign text-center">
                       <div>
-                        <div className="text-center my-5">
-                          <Link to="/dashboard">
+                        <div className="text-center my-5" Style="margin-top:25% !important">
+                        
+
+
+                        
+                        <img width="400" src={BJSLogo} alt="" />
+                          {/* <Link to="/dashboard">
                             <img width="200" src={logofull} alt="" />
-                          </Link>
+                          </Link> */}
                         </div>
                       </div>
                     </div>

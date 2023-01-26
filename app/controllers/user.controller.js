@@ -370,10 +370,10 @@ exports.profile = (req, res) => {
  */
 
 exports.signUp = (req, res) => {
-  const { firstName, lastName, email, password, role } = req.body;
+  const { first_name, last_name, email, password, role } = req.body;
 
   // Validate request
-  if (!firstName || !lastName || !email || !password) {
+  if (!first_name || !last_name || !email || !password) {
     res.status(500).send({
       status: false,
       message: "Fields can not be empty!",

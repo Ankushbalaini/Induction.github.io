@@ -43,8 +43,11 @@
             "resource": "users/getProfile",
             "methods": ["GET"],
             "action": "allow"
-  
-            
+          },
+          {
+            "resource": "users/update",
+            "methods": ["PUT"],
+            "action": "allow"
           }
         ]
       },
@@ -59,6 +62,16 @@
           {
             "resource": "users/profile",
             "methods": ["GET"],
+            "action": "allow"
+          },
+          {
+            "resource": "users/getProfile",
+            "methods": ["GET"],
+            "action": "allow"
+          },
+          {
+            "resource": "users/update",
+            "methods": ["PUT"],
             "action": "allow"
           },
           {
