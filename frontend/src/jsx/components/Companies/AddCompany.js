@@ -24,11 +24,7 @@ const AddCompany = () => {
 
   let handleSubmit = async (e) => {
     e.preventDefault();
-    const company = {
-      logo: logo,
-      address: address,
-      aboutCompany: aboutCompany,
-    };
+    
     const data = new FormData();
     data.append('name', name);
     data.append('email', email);
@@ -146,14 +142,7 @@ const AddCompany = () => {
                       onChange={handleFileChange}
                       accept="image/png,image/jpeg,image/jpg"
                     />
-                    {/* <input
-                      type="text"
-                      className="form-control"
-                      placeholder=""
-                      defaultValue="logo.png"
-                      onChange={(e) => setLogo(e.target.value)}
-                      value={logo}
-                    /> */}
+                    
                   </div>
                 </div>
 
