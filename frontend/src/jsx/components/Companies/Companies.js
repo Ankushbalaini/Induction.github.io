@@ -141,7 +141,7 @@ const Companies = () => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h4>Company List here</h4>
+              <h4>Company List</h4>
             </div>
             <div className="card-body py-0">
               <div className="table-responsive">
@@ -298,9 +298,6 @@ const Companies = () => {
                     </Button>
                   </div>
                 </div>
-
-
-
 
 
               </div>

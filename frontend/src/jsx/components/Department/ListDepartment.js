@@ -2,12 +2,40 @@ import React, { Fragment, useState, useRef, useEffect } from "react";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory, Link } from "react-router-dom";
+import Table from "./DataTable";
+
 
 const ListDepartments =()=>{
     const navigate = useHistory();
     const [name,setName] = useState();
     const [status , setStatus] =useState();
     const [departments,setDepartments] =useState();
+    const [deptData, setdeptData] = useState([{name:'noora'}]);
+
+
+        const actionHandler = (company) => {
+        //setName(company.name);
+        
+        // set values
+      }
+    
+      const deleteClick = (comp_name) => {
+        // show delete confirmation msg
+        swal({
+          title: "Are you sure?",
+          text:
+            `Once deleted, you will not be able to recover ${comp_name} company!`,
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        }).then((willDelete) => {
+          if (willDelete) {
+            swal("Poof! Your company has been deleted!", {
+              icon: "success",
+            });
+          } 
+        })
+      }
 
     useEffect(()=>{
         const handlepageLoad = async (event) =>{
@@ -15,6 +43,7 @@ const ListDepartments =()=>{
            const response = await getDepartments();
             const a =1;
            if ("status" in response && response.status == true){
+            
 
             //const rows = <h1>Here</h1>
             const rows = response.data.map((row,index)=>{
@@ -37,8 +66,7 @@ const ListDepartments =()=>{
              });
             
             setDepartments(rows);
-            console.log("===========");
-
+            setdeptData(response.data);
 
            }else{
             return swal ("Failed","Error message","error");
@@ -90,6 +118,9 @@ const ListDepartments =()=>{
 
                                 
                               </table>
+
+                              <Table data={deptData}  actionHandler={actionHandler} deleteClick={deleteClick}/>
+
                             </div> 
                         </div>
                      </div>
