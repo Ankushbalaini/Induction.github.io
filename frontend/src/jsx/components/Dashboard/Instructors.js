@@ -3,7 +3,8 @@ import {Link} from 'react-router-dom';
 import { useSelector } from "react-redux";
 import DropDownBlog  from './DropDownBlog';
 
-const images = require.context('./../../../images/customers/', true);
+
+const images = require.context("../../../../../images/profile/", true);
 
 // api call 
 async function getInstructorApi (role,companyID){
@@ -14,7 +15,7 @@ async function getInstructorApi (role,companyID){
 	return fetch(getInstructorsApi, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
     }).then((data) => data.json());
 }
@@ -64,7 +65,8 @@ const Instructors = (props) =>{
 								<div className="instructors-media">
 									
 									
-									<img src={ loadImage(`1.jpg`) } alt="" />
+									<img src={ loadImage(user.profile.profilePhoto) } alt="" />
+
 									{/* <img src={ loadImage(user.profile.profilePhoto) } alt="" /> */}
 
 									<div className="instructors-media-info">

@@ -77,6 +77,8 @@ const Header = ({ onNote }) => {
 	const token = useSelector((state) => state.auth.auth.token);
 	const role = useSelector((state) => state.auth.auth.role);
 	const [img, setImg] = useState("dummy-user.png");
+	const [profileLink, setProfileLink] = useState();
+
 
 	//
 	const getProfile = async () =>{
@@ -84,21 +86,19 @@ const Header = ({ onNote }) => {
 		if ("status" in response && response.status == true) {
 			if(role === 'company'){
 				setImg(response.data.profile.logo);
+				setProfileLink("company-profile");
+
 			}else if(role === 'instructor'){
 				setImg(response.data.profile.profilePhoto);
-				
+				setProfileLink("instructor-profile");
+
 			}else{
 				setImg(response.data.profile.profilePhoto);
+				setProfileLink("profile");
 			}
 		}
 	}
 
-	const profileLink = (role) =>{
-		if(role==='company'){
-			return 'company-profile';
-		}
-		return 'profile';
-	}
 
 	const loadImage = (imageName) => {
 		return images(`./${imageName}`);
@@ -333,7 +333,7 @@ const Header = ({ onNote }) => {
 								<img src={loadImage(img)} width={20} alt="" />
 							</Dropdown.Toggle>
 							<Dropdown.Menu align="right" className="dropdown-menu dropdown-menu-end">
-								<Link to={`/${profileLink(role)}`} className="dropdown-item ai-icon">
+								<Link to={`/${profileLink}`} className="dropdown-item ai-icon">
 									<svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" className="text-primary me-1" width={18} height={18} viewBox="0 0 24 24" fill="none"
 										stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
 									>

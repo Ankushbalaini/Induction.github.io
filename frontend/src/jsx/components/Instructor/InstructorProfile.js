@@ -93,7 +93,7 @@ const InstructorProfile = () => {
 
               <div className="instructors-media-info mt-4">
                 <h4 className="mb-1">{instructorData.profile.name}</h4>
-                <span className="fs-18">Member Since {new Date(instructorData.createdAt).getFullYear()}</span>
+                <span className="fs-18">Member Since1 {new Date(instructorData.createdAt).getFullYear()}</span>
               </div>
             </div>
 
