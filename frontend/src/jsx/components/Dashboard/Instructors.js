@@ -56,7 +56,7 @@ const Instructors = (props) =>{
 		<>
 			
 				{ instructorsData.map((user, index)=>(
-					<div className="col-xl-4 col-xxl-6 col-md-6" key={index}>
+					<div className="col-xl-3 col-xxl-4 col-md-4" key={index}>
 						<div className="card instructors-box">
 							<div className="card-header border-0">
 								<DropDownBlog />
@@ -72,16 +72,20 @@ const Instructors = (props) =>{
 									<div className="instructors-media-info">
 										<h4>{user.profile.name}</h4>
 										<h5>{user.email}</h5>
-										<h5>{user.parentCompany}</h5>
-										<ul className="d-flex align-items-center raiting my-0 justify-content-center">
+
+										<h4>Parent company name</h4>
+
+										<h4>Department Name</h4>
+										{/* <h5>{user.parentCompany}</h5> */}
+										{/* <ul className="d-flex align-items-center raiting my-0 justify-content-center">
 											<li><span className="font-w500">5.0</span><i className="fas fa-star text-orange ms-2"></i></li>
 											<li>Review (1k)</li>
-										</ul>
-										<div className="custome-badge">
+										</ul> */}
+										{/* <div className="custome-badge">
 											<Link to={"#"}><span className="badge badge-xl">Users (10)</span></Link>
 											<Link to={"#"}><span className="badge badge-xl">Inductions (2)</span></Link>
 											<Link to={"#"}><span className="badge badge-xl">Departments (1)</span></Link>
-										</div>
+										</div> */}
 										
 									</div>
 								</div>
