@@ -91,35 +91,11 @@ exports.startTest = (req, res) => {
       inductionID: inductionID,
     })
       .then((user) => {
-        if (user.length > 0) {
-          const query = { userID: userID, inductionID: inductionID };
-          const update = { $inc: { attemps: 1 } };
-
-          const options = {};
-          UserInductions.updateOne(query, update, options)
-            .then((user) => {
-              return res.status(200).send({
-                status: true,
-                message: `Find and Updated`,
-                data: user,
-              });
-            })
-            .catch((err) => {
-              return res.status(500).send({
-                status: false,
-                message: err.message,
-              });
-            });
-        } else {
-          const idata = new UserInductions(req.body);
-          idata.save(idata).then((data) => {
-            return res.status(200).send({
-              status: true,
-              message: `New Entry`,
-              data: user,
-            });
-          });
-        }
+        return res.status(200).send({
+          status: true,
+          message: `Success`,
+          data: user,
+        });
       })
       .catch((err) => {
         return res.status(500).send({
@@ -141,12 +117,43 @@ exports.startTest = (req, res) => {
  * @param {*} res
  * @returns
  */
-exports.submitTest = (req, res) => {
+exports.submitTest = async (req, res) => {
   try {
+    // const testID = ObjectId(req.params.testID);
+    // save this testID inside user_induction details
+    const inductionID = ObjectId(req.body.inductionID);
+    var verifiedData  = { total: 0, correct : 0, incorrect: 0, skiped: 0 };
+    let response      = req.body.response;
+    
+    response.forEach((row) => {
+        const questionID = ObjectId(row.questionID);
+        // check response is correct or inccorect here
+        // return object with same values and make a scroe formula
+
+        if(row.answer ===''){
+          verifiedData.skiped++;
+
+        }else{
+          
+          verifiedData.correct++;
+        }
+        
+        verifiedData.total++;
+    });    
+
+    return res.status(200).send({
+      status: true,
+      message: `Success`,
+      data: verifiedData,
+    });
+
   } catch (err) {
+    
     return res.status(500).send({
       status: false,
       message: err.message,
     });
+
   }
 };
+
