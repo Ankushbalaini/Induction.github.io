@@ -95,6 +95,10 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
     }
   }
 
+  const buttonsty={
+    margin:"auto",
+    display:"flex"
+  }
 
   return (
     <Modal className="modal fade" show={isModalOpen}>
@@ -118,7 +122,7 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                   <div className="form-group mb-3">
                     <label htmlFor="name" className="text-black font-w600">
                       {" "}
-                      Instructor Name <span className="required">*</span>{" "}
+                      Instructor Name <span className="required"></span>{" "}
                     </label>
                     <input
                       type="text"
@@ -134,7 +138,7 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                   <div className="form-group mb-3">
                     <label htmlFor="email" className="text-black font-w600">
                       {" "}
-                      Email <span className="required">*</span>{" "}
+                      Email <span className="required"></span>{" "}
                     </label>
                     <input
                       type="text"
@@ -153,7 +157,7 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                   <div className="form-group mb-3">
                     <label htmlFor="image" className="text-black font-w600">
                       {" "}
-                      instructor Logo <span className="required">*</span>
+                      instructor Logo <span className="required"></span>
                     </label>
                     <div className="instructors-media">
 
@@ -177,7 +181,7 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                   <div className="form-group mb-3">
                     <label htmlFor="last_name" className="text-black font-w600">
                       {" "}
-                      About instructor <span className="required">*</span>
+                      About instructor <span className="required"></span>
                     </label>
                     
                      <textarea
@@ -197,7 +201,7 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                   <div className="form-group mb-3">
                     <label htmlFor="last_name" className="text-black font-w600">
                       {" "}
-                      Address <span className="required">*</span>
+                      Address <span className="required"></span>
                     </label>
                     
                      <textarea
@@ -214,12 +218,14 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
 
                 <div className="col-lg-12">
                   <div className="form-group mb-3">
-                    <input
-                      type="submit"
-                      value="Update Profile"
-                      className="submit btn btn-primary"
-                      name="submit"
-                    />
+                  <Button
+                  type="submit"
+                  value="Submit"
+                  className="submit btn btn-primary"
+                  style={buttonsty}
+                >
+                  Update Profile
+                </Button>
                   </div>
                 </div>
 

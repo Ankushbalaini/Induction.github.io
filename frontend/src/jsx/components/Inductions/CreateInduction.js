@@ -123,6 +123,10 @@ const CreateInduction = () => {
     }).then((data) => data.json());
   }
 
+  const buttonsty={
+    float:"right"
+  }
+
   const pageContent = loading ? (
     "loading"
   ) : (
@@ -260,17 +264,19 @@ const CreateInduction = () => {
 
                 <div className="mb-12 row">
                   <div className="col-sm-12">
+                  <button className="btn btn-success" type="submit" style={buttonsty}>
+                  Submit
+                </button>
                     <button
                       className="btn btn-primary mx-3"
                       type="button"
                       onClick={() => addFormFields()}
+                      style={buttonsty}
                     >
                       Add New Slide
                     </button>
 
-                    <button className="btn btn-success" type="submit">
-                      Submit
-                    </button>
+
                   </div>
                 </div>
               </form>

@@ -125,6 +125,10 @@ const Companies = () => {
     }
   };
 
+  const buttonsty={
+    margin:"auto",
+    display:"flex"
+  }
 
   
   const pageContent = (loading) ? <h1>loading</h1>: 
@@ -176,7 +180,7 @@ const Companies = () => {
                   <div className="form-group mb-3">
                     <label htmlFor="author" className="text-black font-w600">
                       {" "}
-                      Name <span className="required"></span>*
+                      Name <span className="required"></span>
                     </label>
 
                     <input
@@ -194,7 +198,7 @@ const Companies = () => {
                   <div className="form-group mb-3">
                     <label htmlFor="author" className="text-black font-w600">
                       {" "}
-                      Company Email<span className="required">*</span>{" "}
+                      Company Email<span className="required"></span>{" "}
                     </label>
                     <input
                       type="email"
@@ -212,7 +216,7 @@ const Companies = () => {
                   <div className="form-group mb-3">
                     <label htmlFor="author" className="text-black font-w600">
                       {" "}
-                      Company Slug<span className="required">*</span>{" "}
+                      Company Slug<span className="required"></span>{" "}
                     </label>
                     <input
                       type="text"
@@ -231,7 +235,7 @@ const Companies = () => {
                   <div className="form-group mb-3">
                     <label htmlFor="author" className="text-black font-w600">
                       {" "}
-                      Company Logo<span className="required">*</span>{" "}
+                      Company Logo<span className="required"></span>{" "}
                       ({logo})
                       <input type="hidden" name="logo-img" value={logo} />
                     </label>
@@ -287,6 +291,7 @@ const Companies = () => {
                       type="submit"
                       value="Submit"
                       className="submit btn btn-primary"
+                      style={buttonsty}
                     >
                       Submit
                     </Button>

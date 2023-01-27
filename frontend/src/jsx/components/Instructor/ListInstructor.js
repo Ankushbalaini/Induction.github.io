@@ -81,20 +81,20 @@ const Instructors = () => {
             <td>
               <div className="d-flex align-items-center">
                 <img src={loadImage(row.profile.profilePhoto)} alt="" />
-                <h4 className="mb-0 fs-16 font-w500">
-                  {row.profile?.name}
-                </h4>
+                <td className="mb-0 fs-16 font-w500">
+                  {row.profile.name}
+                  </td>
               </div>
             </td>
             <td>{row.email}</td>
-            <td>{row.createdAt}             </td>
+            <td>{row.createdAt}</td>
             <td>
               <span className={`badge  light badge-success`}>{`Active`}</span>
             </td>
             <td>
             <ActionDropDown trackOnclick={trackOnclick} userData={row} />
-              {/* <DropDownBlog /> */}
             </td>
+
           </tr>
         ));
         setStudents(rows);
@@ -123,6 +123,7 @@ const Instructors = () => {
     settest(i);
   };
 
+
   return (
     <>
       <div className="row">
@@ -144,11 +145,12 @@ const Instructors = () => {
                   >
                     <thead>
                       <tr>
-                        <th>Name</th>
+                        <th>Profile(Name)</th>
                         <th>Email ID</th>
                         <th>Join Date</th>
                         <th>Status</th>
-                        <th></th>
+                        
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>

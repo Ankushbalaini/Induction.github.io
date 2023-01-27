@@ -1,8 +1,9 @@
-import React, { useMemo } from "react";
+import React, { Fragment, useMemo } from "react";
 
 import DataTable from "react-data-table-component";
 import FilterComponent from "../Companies/FilterComponent";
 import DropDownBlog from "../Dashboard/DropDownBlog";
+import Button from 'react-bootstrap/Button';
 
 const Table = props => {
   const columns = [
@@ -15,26 +16,41 @@ const Table = props => {
     },
     {
       name : "Status",
-      selector:"status",
-      sortable:true,
-      hide: "sm"
+      // selector:"status",
+      // sortable:true,
+      hide: "sm",
+      cell: row => (
+        <div>
+          <span className={`badge badge-rounded ${row.status === 'In active' ?  "badge-primary" : "badge-success"}`}>
+            {row.status}
+          </span>
+        </div>
+        )
     },
     {
       name: "Actions",
       button: true,
       cell: row =>
-          <>
-            {/* <button
-              onClick={() => props.actionHandler(row)}
-              style={{ marginRight: "5px", minWidth: "80px" }}
-              className="btn btn-warning btn "
+          <Fragment>
+            <div className="d-flex">
+            <Button onClick={()=>props.actionHandler(row)}
+              href="#"
+              className="btn btn-primary shadow btn-xs sharp me-1"
+             
             >
-              Edit
-            </button>
+              <i className="fas fa-pencil-alt"></i>
+            </Button>
+            
+            <Button onClick={()=>props.deleteClick(row.name)}
+              href="#"
+              className="btn btn-danger shadow btn-xs sharp"
+            >
+              <i className="fa fa-trash"></i>
+            </Button>
+          </div>
 
-            <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button> */}
-            <DropDownBlog onEdit={()=>props.actionHandler(row)} onDelete={()=>props.deleteClick(row.name)}/>
-          </>
+           
+          </Fragment>
     }
   ];
 
@@ -84,3 +100,10 @@ const Table = props => {
 };
 
 export default Table;
+
+
+
+
+ // <DropDownBlog onEdit={()=>props.actionHandler(row)} onDelete={()=>props.deleteClick(row.name) 
+            
+            // }/>

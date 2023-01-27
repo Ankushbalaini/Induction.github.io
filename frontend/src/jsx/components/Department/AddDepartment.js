@@ -59,6 +59,9 @@ const AddDepartment =() =>{
      }). then ((data)=> data.json());
  }
 
+ const buttonsty={
+    float:"right"
+  }
 
  return (
      <Fragment>
@@ -108,7 +111,7 @@ const AddDepartment =() =>{
  
                              <div className="mb-12 row">
                                 <div className="col-sm-12">
-                                 <button className="btn btn-success" type="submit">
+                                 <button className="btn btn-success" type="submit" style={buttonsty}>
                                    Submit
                                  </button>
                                </div>
