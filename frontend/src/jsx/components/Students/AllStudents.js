@@ -71,6 +71,10 @@ const AllStudents = () => {
     //console.log("========================");
     seteditHere(true);
   }
+  // const loadImage = (imageName) => {
+	// 	return images(`./${imageName}`);
+	// }	
+
   // use effect
   useEffect(() => {
     const handlepageLoad = async (event) => {
@@ -83,12 +87,13 @@ const AllStudents = () => {
               <div className="d-flex align-items-center">
                 <img src={pic2} alt="" />
                 <h4 className="mb-0 fs-16 font-w500"></h4>
+                
+                
               </div>
             </td>
             <td>{row.firstName}</td>
             <td>{row.email}</td>
-            <td> - </td>
-            <td>January 2, 2020 </td>
+            <td>{row.createdAt}             </td>
             <td>
               <span className={`badge  light badge-success`}>{`Active`}</span>
             </td>
@@ -132,7 +137,7 @@ const AllStudents = () => {
       }
     };
     handlepageLoad();
-  }, [test]);
+  }, []);
 
   // api call
   async function getStudents() {
@@ -188,7 +193,6 @@ const AllStudents = () => {
                         <th>Profile</th>
                         <th>Name</th>
                         <th>Student ID</th>
-                        <th>Courses</th>
                         <th>Join Date</th>
                         <th>Status</th>
                         <th>Action</th>

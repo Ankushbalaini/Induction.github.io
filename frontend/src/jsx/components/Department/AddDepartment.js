@@ -44,12 +44,12 @@ const AddDepartment =() =>{
           });
     }
     const status = formValues.status;
-    if (status.trim() == '' || status == undefined) {
-        return swal("Error", 'Status is required.', "error", {
-            buttons: false,
-            timer: 2000,
-          });
-    }
+    // if (status.trim() == '' || status == undefined) {
+    //     return swal("Error", 'Status is required.', "error", {
+    //         buttons: false,
+    //         timer: 2000,
+    //       });
+    // }
      return fetch ("http://localhost:8081/api/department/add" ,{
          method : "POST",
          headers :{
@@ -99,13 +99,17 @@ const AddDepartment =() =>{
                                      Department Status
                                  </label>
                                  <div className="col-sm-9">
-                                      <input 
+                                 <select className="form-control" onChange={(e) =>setStatus(e.target.value)}>
+                                    <option value="Active">Active</option>
+                                    <option value="In active">Inactive</option>
+                                    </select>
+                                      {/* <input 
                                        type="text"
                                        className="form-control"
                                        placeholder=""
                                        onChange={(e) =>setStatus(e.target.value)}
                                        value={status}
-                                       />
+                                       /> */}
                                  </div>
                              </div>
  

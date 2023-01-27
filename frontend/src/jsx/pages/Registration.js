@@ -118,18 +118,18 @@ function Register(props) {
 													<strong>Password</strong>
 												</label>
 												<input
+												type="password"
 													value={password}
 													onChange={(e) =>
 														setPassword(e.target.value)
 													}
 												  className="form-control"
-												  defaultValue="Password"
 												/>
 												{errors.password && <div Style="color:red;font-weight:400">{errors.password}</div>}
 											</div>
 											
 											<div className="text-center mt-4">
-												<button type="submit" className="btn btn-primary btn-block">Sign up</button>
+												<button type="submit" className="btn btn-primary btn-block">Register</button>
 											</div>
 										</form>
 										<div className="new-account mt-3">

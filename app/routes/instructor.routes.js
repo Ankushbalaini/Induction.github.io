@@ -14,7 +14,7 @@ module.exports = (app) => {
 
 
   // Retrieve a single instructor with id
-  //router.get("/:id", instructor.findOne );
+   router.put("/edit/:id", instructor.edit );
 
   // soft delete instructor
 

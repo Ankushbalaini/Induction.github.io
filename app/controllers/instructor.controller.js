@@ -24,8 +24,11 @@ exports.list = (req, res) => {
                 }
               ],
             },
+            
           },
+          
         },
+        { $sort: { createdAt: -1 } },
         {
           $lookup: {
             from: "instructors",
@@ -44,6 +47,7 @@ exports.list = (req, res) => {
             role: 1,
             parentCompany: 1,
             profile: 1,
+            createdAt: 1
           },
         },
       ])
@@ -122,6 +126,7 @@ exports.listByCompany = (req, res) => {
             role: 1,
             parentCompany: 1,
             profile: 1,
+            createdAt: 1,
           },
         },
       ])
@@ -232,3 +237,76 @@ exports.add = (req, res) => {
     });
   }
 };
+
+
+
+/**
+ * 
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ * instructor@gmail.com
+ */
+exports.edit = (req, res) => {
+ try{
+  
+  const id = ObjectId(req.params.id);
+  
+
+  // logo validation
+  if (!req.files || Object.keys(req.files).length === 0) {
+    if (req.body.profilePhoto === "") {
+      return res.status(500).send({
+        status: false,
+        message: "Profile photo is required!",
+      });
+    }
+  } else {
+    var Img = req.files.image;
+    var uploadPath = "images/instructor/" + Img.name;
+
+    Img.mv(uploadPath, function (err) {
+      if (err) {
+        return res.status(500).send({
+          status: false,
+          message: err.message,
+        });
+      }
+    });
+    req.body.profilePhoto = Img.name;
+  }
+
+  InstructorTable
+    .findByIdAndUpdate(id, { ...req.body }, { useFindAndModify: true })
+    .then(function (user) {
+      if (!user) {
+        res.status(404).send({
+          message: "User not found!",
+          status: false,
+        });
+      } else {
+        return res.status(200).send({
+          message: "Instructor has been updated successfully!",
+          status: true,
+          data: user,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        status: false,
+        message:
+          err.message || "Some error occurred while creating the Deparment.",
+      });
+    });
+
+ }catch(err){
+  res.status(500).send({
+    status: false,
+    message: err.message,
+  });
+
+ }
+
+
+}

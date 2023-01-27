@@ -2,6 +2,8 @@ import React, { useMemo } from "react";
 
 import DataTable from "react-data-table-component";
 import FilterComponent from "../Companies/FilterComponent";
+import DropDownBlog from "../Dashboard/DropDownBlog";
+import { Link } from "react-router-dom";
 
 const Table = props => {
   const columns = [
@@ -12,13 +14,18 @@ const Table = props => {
       grow: 1,
       className: 'col-3'
     },
-    
     {
-      name: "actions",
+      name : "Status",
+      selector:"status",
+      sortable:true,
+      hide: "sm"
+    },
+    {
+      name: "Actions",
       button: true,
       cell: row =>
           <>
-            <button
+            {/* <button
               onClick={() => props.actionHandler(row)}
               style={{ marginRight: "5px", minWidth: "80px" }}
               className="btn btn-warning btn "
@@ -26,8 +33,22 @@ const Table = props => {
               Edit
             </button>
 
-            <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button>
-            
+            <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button> */}
+            // <DropDownBlog onEdit={()=>props.actionHandler(row)} onDelete={()=>props.deleteClick(row.name)}/>
+            <div className="d-flex">
+            <Link
+              href="#"
+              className="btn btn-primary shadow btn-xs sharp me-1"
+            >
+              <i className="fas fa-pencil-alt"></i>
+            </Link>
+            <Link
+              href="#"
+              className="btn btn-danger shadow btn-xs sharp"
+            >
+              <i className="fa fa-trash"></i>
+            </Link>
+          </div>
           </>
     }
   ];

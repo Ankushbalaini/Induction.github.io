@@ -8,22 +8,23 @@ import {
   loginAction,
 } from "../../store/actions/AuthActions";
 
+//
 import loginbg from "../../images/bg-1.jpg";
 import logo from "../../images/log.png";
+//import logofull from '../../images/logo-full.png';
 import BJSLogo from "../../images/BJSLogo.png";
+//import BJSLogo from "../../images/BJSLogo.jpg";
 
 
 function Login(props) {
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("admin");
-  const [userType, setUserType] = useState("super_admin");
-
+  const [email, setEmail] = useState("super@admin.com");
   let errorsObj = { email: "", password: "" };
   const [errors, setErrors] = useState(errorsObj);
-
+  const [password, setPassword] = useState("admin");
+  const [userType, setUserType] = useState("user");
   const dispatch = useDispatch();
 
+  
 
   function onLogin(e) {
     e.preventDefault();
@@ -42,12 +43,11 @@ function Login(props) {
       return;
     }
     dispatch(loadingToggleAction(true));
-        dispatch(loginAction(email, password, props.history));
-    
-   
+    dispatch(loginAction(userType, email, password, props.history));
   }
-  //css for button
-  const right = {
+
+   //css for button
+   const right = {
     float: 'right'
   };
 
@@ -68,18 +68,18 @@ function Login(props) {
                   <div className="row m-0">
                     <div className="col-xl-6 col-md-6 sign text-center">
                       <div>
-                        <div className="text-center my-5" Style="margin-top:25% !important">
-                        <img width="500" src={BJSLogo} alt="BJS" />
+                        <div className="text-center my-5" Style="margin-top:15% !important">
+                        <img width="400" src={BJSLogo} alt="" />
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-6 col-md-6">
+                    <div className="col-xl-6 col-md-6 m-auto">
                       <div className="sign-in-your">
                       <Row className="mb-4">
-                        <span className="fs-26 font-w600 text-black text-center">
-                          Login to Your Account
+                        <span className="fs-22 font-w600 text-black text-center">
+                          Log In To Your Account
                         </span>
-                      </Row>
+                        </Row>
                         <div className="login-social"></div>
                         {props.errorMessage && (
                           <div className="bg-red-300 text-red-900 border border-red-900 p-1 my-2">
@@ -92,7 +92,8 @@ function Login(props) {
                           </div>
                         )}
                         <form onSubmit={onLogin}>
-                          <div className="mb-3">
+                          
+                          {/* <div className="mb-3">
                             <label className="mb-1">
                               <strong>Select User Type</strong>
                             </label>
@@ -111,7 +112,7 @@ function Login(props) {
                                 {errors.userType}
                               </div>
                             )}
-                          </div>
+                          </div> */}
 
                           <div className="mb-3">
                             <label className="mb-1">
@@ -122,25 +123,31 @@ function Login(props) {
                               className="form-control"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
+                              required
                             />
-                            {errors.email && <div Style="color:red;font-weight:400">{errors.email}</div>}
-                           
+                            {errors.email && (
+                              <div className="text-danger fs-12">
+                                {errors.email}
+                              </div>
+                            )}
                           </div>
-                        
                           <div className="mb-3">
                             <label className="mb-1">
                               <strong>Password</strong>
                             </label>
-                          
                             <input
                               type="password"
                               className="form-control"
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
+                              required
                             />
-                            {errors.password && <div Style="color:red;font-weight:400">{errors.password}</div>}
+                            {errors.password && (
+                              <div className="text-danger fs-12">
+                                {errors.password}
+                              </div>
+                            )}
                           </div>
-
                           <div className="row d-flex justify-content-between mt-4 mb-2">
                             <div className="mb-3">
                               <div className="form-check custom-checkbox ms-1">
@@ -153,33 +160,31 @@ function Login(props) {
                                   className="form-check-label"
                                   htmlFor="basic_checkbox_1"
                                 >
-                                  Remember me
+                                  Remember my preference
                                 </label>
                               </div>
                             </div>
                             <div className="container">
-                              <Row>
-                                <Col>
-                                  <div className="mb-3">
-                                    <Link to="./page-register" className="text-primary">Sign up</Link>
-                                  </div>
-                                </Col>
-                              <Col >
-                              <Link to="./forgot-password" className="text-primary" style={right}>
-                              Forgot password
-                            </Link>
+                            <Row>
+                              <Col>
+                                <div className="mb-3">
+                                  <Link to="./page-register" className="text-primary">Sign up</Link>
+                                </div>
                               </Col>
-                            </Row>
-                            </div>
-                            
-                            
+                            <Col >
+                            <Link to="./forgot-password" className="text-primary" style={right}>
+                            Forgot password
+                          </Link>
+                            </Col>
+                          </Row>
+                          </div>
                           </div>
                           <div className="text-center">
                             <button
                               type="submit"
                               className="btn btn-primary btn-block"
                             >
-                              Sign In
+                              Log In
                             </button>
                           </div>
                         </form>
@@ -195,6 +200,7 @@ function Login(props) {
     </div>
   );
 }
+
 const mapStateToProps = (state) => {
   return {
     errorMessage: state.auth.errorMessage,

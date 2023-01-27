@@ -1,7 +1,7 @@
 module.exports = (mongoose) => {
     // Stats for superadmin
     const Stats = mongoose.model(
-      "stats",
+      "dashboard",
       mongoose.Schema(
         {
           totalCompanies:{ type: String},

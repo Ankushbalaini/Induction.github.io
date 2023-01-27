@@ -35,6 +35,8 @@ const AddInstructor = () => {
     setImage(img)
   }
 
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -61,7 +63,7 @@ const AddInstructor = () => {
         navigate.push("/instructors");
       });
     } else {
-      return swal("Failed", "Error message", "error");
+      return swal("Failed", response.message, "error");
     }
   };
 
@@ -96,7 +98,9 @@ const AddInstructor = () => {
                       className="form-control"
                       onChange={(e) => setEmail(e.target.value)}
                       value={email}
+                      autocomplete="off"
                       required
+                      Role="presentation"
                     />
                     {errors.email && <div Style="color:red;font-weight:600;padding:5px;">{errors.email}</div>}
                   </div>
@@ -137,27 +141,30 @@ const AddInstructor = () => {
                     {errors.cname && <div Style="color:red;font-weight:600;padding:5px;">{errors.cname}</div>}
                   </div>
                 </div>
+                { (loggedrole == 'super_admin') ?
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">Parent Company</label>
                   <div className="col-sm-9">
 
-                    { (loggedrole == 'super_admin') ? 
+                     
                     <select name="parentCompany" className="form-control" onChange={ (e) => setParentCompany(e.target.value) }>
                         <option value="">Select</option>
                         <CompanyDropdown />
-                    </select> : 
-                    <input
-                      name="parentCompany"
-                      type="hidden"
-                      className="form-control"
-                      value={parentCompany}
-                    />
-                    }
+                    </select> 
 
                     {errors.parentCompany && <div Style="color:red;font-weight:600;padding:5px;">{errors.parentCompany}</div>}
 
                   </div>
                 </div>
+                : 
+                <input
+                  name="parentCompany"
+                  type="hidden"
+                  className="form-control"
+                  value={parentCompany}
+                />
+                }
+
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
                     Photo
