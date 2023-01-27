@@ -1,5 +1,7 @@
 import React,{useState} from "react";
 import { Link } from "react-router-dom";
+import BJSLogo from "../../images/BJSLogo.png";
+import loginbg from "../../images/bg-1.jpg";
 import { connect, useDispatch } from 'react-redux';
 import {
     loadingToggleAction,
@@ -7,6 +9,7 @@ import {
 } from '../../store/actions/AuthActions';
 // image
 import logo from '../../images/homedelivery.svg';
+import { Row } from "react-bootstrap";
 
 function Register(props) {
 	const [firstName, setFirstName] = useState('');
@@ -54,7 +57,10 @@ function Register(props) {
     }
 	
 	return (
-		<div className="authincation h-100 p-meddle">
+		<div className="authincation h-100 p-meddle" style={{
+			backgroundImage: "url(" + loginbg + ")",
+			backgroundSize: "cover",
+		  }}>
 			<div className="container h-100">
 				<div className="row justify-content-center h-100 align-items-center">
 					<div className="col-md-6">
@@ -63,11 +69,12 @@ function Register(props) {
 								<div className="col-xl-12">
 									<div className="auth-form">
 										<div className="text-center mb-3">
-											<Link to="/login">
-												<img src={logo} alt="" />
-											</Link>
+											<img width="600" src={BJSLogo} alt="BJS" />
 										</div>
-										<h4 className="text-center mb-4 ">Sign up your account</h4>
+										<Row>
+										<span className="text-center mb-4 fs-26 font-w600 text-black text-center ">Create an Account</span>
+										</Row>
+										
 										{props.errorMessage && (
 											<div className=''>
 												{props.errorMessage}
@@ -83,25 +90,28 @@ function Register(props) {
 												<label className="mb-1 ">
 													<strong>First Name</strong>
 												</label>
-												<input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}  className="form-control" placeholder="First name"/>
+												<input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}  className="form-control"/>
+												{errors.firstName && <div Style="color:red;font-weight:400">{errors.firstName}</div>}
 											</div>
-											{errors.firstName && <div Style="color:red;font-weight:600">{errors.firstName}</div>}
+											
 
 											<div className="form-group mb-3">
 												<label className="mb-1 ">
 													<strong>Last Name</strong>
 												</label>
-												<input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)}  className="form-control" placeholder="Last name"/>
+												<input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)}  className="form-control" />
+												{errors.lastName && <div Style="color:red;font-weight:400">{errors.lastName}</div>}
 											</div>
-											{errors.lastName && <div Style="color:red;font-weight:600">{errors.lastName}</div>}
+											
 
 											<div className="form-group mb-3">
 												<label className="mb-1 ">
 												  <strong>Email</strong>
 												</label>
-												<input value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" placeholder="hello@example.com"/>
+												<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" />
+												{errors.email && <div Style="color:red;font-weight:400">{errors.email}</div>}
 											</div>
-											{errors.email && <div Style="color:red;font-weight:600">{errors.email}</div>}
+											
 
 											<div className="form-group mb-3">
 												<label className="mb-1 ">
@@ -114,11 +124,13 @@ function Register(props) {
 														setPassword(e.target.value)
 													}
 												  className="form-control"
+												  defaultValue="Password"
 												/>
+												{errors.password && <div Style="color:red;font-weight:400">{errors.password}</div>}
 											</div>
-											{errors.password && <div Style="color:red;font-weight:600">{errors.password}</div>}
+											
 											<div className="text-center mt-4">
-												<button type="submit" className="btn btn-primary btn-block">Register</button>
+												<button type="submit" className="btn btn-primary btn-block">Sign up</button>
 											</div>
 										</form>
 										<div className="new-account mt-3">
@@ -149,4 +161,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Register);
-
