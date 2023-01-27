@@ -75,6 +75,7 @@ const SideBar = () => {
       "create-induction",
       "single-induction-view",
       "courses",
+      "start-test"
     ],
     students = ["students", "add-student"];
 
@@ -254,7 +255,7 @@ const SideBar = () => {
                   }`}
                   to="/instructor-courses"
                 >
-                  instructor courses
+                  Instructor courses
                 </Link>
               </li>
               <li>
@@ -314,6 +315,19 @@ const SideBar = () => {
                   Inductions{" "}
                 </Link>
               </li>
+
+              <li>
+                <Link
+                  className={`${path === "courses" ? "mm-active" : ""}`}
+                  to="/start-test"
+                >
+                  Start Test{" "}
+                </Link>
+              </li>
+
+
+              
+
             </ul>
           </li>
 
