@@ -76,48 +76,24 @@ const ListDepartments =()=>{
 
 
     useEffect(()=>{
-        const handlepageLoad = async (event) =>{
-            
-           const response = await getDepartments();
-            const a =1;
-           if ("status" in response && response.status == true){
-            
-
-            //const rows = <h1>Here</h1>
-            const rows = response.data.map((row,index)=>{
-                  // return <tr key ={index}>
-                  //      <td>
-                  //          <div className="d-flex align-items-center">
-                  //              <h4 className="mb-0 fs-16 font-w500">
-                  //                 {row.name}
-                  //              </h4>
-                  //          </div>
-                  //      </td>
-                      
-                  //      <td>
-                  //         {/* // <span classname ={`badge  light badge-success`}>{row.status}</span> */}
-                  //          <span classname ={`badge  light badge-success`}>
-
-                  //                 {row.status==='Active' ? (
-                  //                 <span className="text-success">{row.status}</span>) : 
-                  //                 (<span className="text-danger">{row.status}</span>)} 
-                  //               </span>
-                  //      </td>
-                  //      <td>
-                  //          <Link to ={`/department-detail/${row._id}`}>View</Link>
-                  //      </td>
-                  //  </tr>
-             });
-            
-            setDepartments(rows);
-            setdeptData(response.data);
-
-           }else{
-            return swal ("Failed","Error message","error");
-           }
-        };
+        
         handlepageLoad();
-    },[]);
+    },[isModalOpen]);
+
+
+    const handlepageLoad = async (event) =>{
+            
+      const response = await getDepartments();
+     const a =1;
+      if ("status" in response && response.status == true){
+       
+       setdeptData(response.data);
+
+      }else{
+       return swal ("Failed","Error message","error");
+      }
+   };
+
 
   // api call
   async function getDepartments(formValues){
@@ -208,8 +184,8 @@ const ListDepartments =()=>{
                       Department Status<span className="required">*</span>{" "}
                     </label>
                     <select className="form-control" onChange={(e) =>setStatus(e.target.value)}>
-                                    <option value="Active">Active</option>
-                                    <option value="In active">Inactive</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
                                     </select>
                     {/* <input
                       type="text"

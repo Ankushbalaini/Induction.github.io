@@ -14,11 +14,16 @@ const Table = props => {
       className: 'col-3'
     },
     {
-      name : "Status",
-      selector:"status",
-      sortable:true,
-      hide: "sm"
+      name: "Status",
+      button: true,
+      sortable: true,
+      cell: row =>
+          <>
+            {row.status ? 'Active': 'Inactive'}
+            
+          </>
     },
+
     {
       name: "Actions",
       button: true,

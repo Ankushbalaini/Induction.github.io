@@ -4,7 +4,7 @@ module.exports = mongoose => {
       mongoose.Schema(
         {
           name: { type: String, required : true, unique: true},
-          status:{type:String},
+          status:{type: Boolean, default: 1}, // 1=active, 0= inactive
         },
         { timestamps: true }
       )
