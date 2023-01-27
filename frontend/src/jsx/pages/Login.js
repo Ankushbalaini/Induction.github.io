@@ -6,12 +6,11 @@ import {
   loginAction,
 } from "../../store/actions/AuthActions";
 
-//
 import loginbg from "../../images/bg-1.jpg";
-import logo from "../../images/log.png";
-//import logofull from '../../images/logo-full.png';
+
+
 import BJSLogo from "../../images/BJSLogo.png";
-//import BJSLogo from "../../images/BJSLogo.jpg";
+
 
 
 function Login(props) {
@@ -79,10 +78,7 @@ function Login(props) {
                           Sign in your account
                         </h4>
                         
-                        <span>
-                          Welcome back! Login with your data that you entered
-                          <br /> during registration
-                        </span>
+                        
                         <div className="login-social"></div>
                         {props.errorMessage && (
                           <div className="bg-red-300 text-red-900 border border-red-900 p-1 my-2">
