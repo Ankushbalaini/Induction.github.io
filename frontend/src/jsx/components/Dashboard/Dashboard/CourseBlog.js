@@ -37,13 +37,13 @@ function BulbIcon(){
 }
 
 const CourseBlogData = [
-	{ coloumClass:'col-sm-6',classChange:'bg-secondary', image: Check, 	imgClass:'',	 title: 'All Courses', number:'1.500', svgicon: <RightIcon />, },
-	{ coloumClass:'col-sm-6',	  image: Bookmarks,	imgClass:'bookmarks', title: 'Upcoming', number:'1.112', svgicon: <BookIcon /> },
+	{ coloumClass:'col-sm-6', classChange:'bg-secondary', image: Check, 	imgClass:'',	 title: 'All Courses', number:'1.500', svgicon: <RightIcon />, },
+	{ coloumClass:'col-sm-6', image: Bookmarks,	imgClass:'bookmarks', title: 'Upcoming', number:'1.112', svgicon: <BookIcon /> },
 	{ coloumClass:'col-sm-12',classChange:'bg-primary',   image: Bulb, 		imgClass:'bulb',	title: 'Progress Courses', number:'903', svgicon: <BulbIcon /> }
 ];
 
  
-export default function CourseBlog(){
+export default function CourseBlog(props){
 	return(
 		<>
 			<div className="row">
@@ -55,7 +55,7 @@ export default function CourseBlog(){
 									{item.svgicon}
 								</span>	
 								<div className="ms-2">
-									<h4 className="mb-0">{item.number}</h4>
+									<h4 className="mb-0">{item.number} -- {props.dashboard.courses}</h4>
 									<span>{item.title}</span>
 								</div>
 							</div>

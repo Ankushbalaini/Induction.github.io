@@ -30,8 +30,6 @@ export function signupAction(firstName, lastName, email, password,role, history)
         // window.location.href = "/login";
       })
       .catch((error) => {
-        console.log("=======");
-        
         const errorMessage = formatError(error);
         dispatch(signupFailedAction(errorMessage));
         history.push("/page-register");
@@ -52,8 +50,7 @@ export function loginAction(role, email, password, history) {
   return (dispatch) => {
     login(role, email, password)
       .then((response) => {
-        console.log(response);
-
+        
         saveTokenInLocalStorage(response.data.data);
         
         dispatch(loginConfirmedAction(response.data.data));
@@ -73,7 +70,6 @@ export function loginAction(role, email, password, history) {
             history.push("/courses");
             break;
         }
-
         
       })
       .catch((error) => {

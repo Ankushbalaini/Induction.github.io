@@ -3,6 +3,7 @@
       "group": "super_admin",
       "permissions": [
         {
+
           "resource": "students",
           "methods": ["GET"],
           "action": "allow"
@@ -13,10 +14,22 @@
           "action": "allow"
         },
         {
+          "resource": "users/*",
+          "methods": ["GET"],
+          "action": "allow"
+        },
+        {
           "resource": "users/update",
           "methods": ["PUT"],
           "action": "allow"
+        },
+        
+        {
+          "resource": "getProfile",
+          "methods": ["GET"],
+          "action": "allow"
         }
+        
 
       ]
     },
@@ -86,6 +99,7 @@
           }
         ]
       },
+
       {
         "group": "guest",
         "permissions": [
@@ -93,6 +107,11 @@
             "resource": "users/login",
             "methods": ["POST"],
             "action": "deny"
+          },
+          {
+            "resource": "users/getProfile",
+            "methods": ["GET"],
+            "action": "allow"
           }
         ]
       }

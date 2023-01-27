@@ -30,8 +30,6 @@ export function login(role, email, password) {
         password,
         returnSecureToken: true,
     };
-    // https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD3RPAp3nuETDn9OQimqn_YF6zdzqWITII
-    
     return axios.post(
         `http://localhost:8081/api/users/login`,
         postData,
@@ -56,7 +54,7 @@ export function formatError(errorResponse) {
             return 'User Disabled';
         
         default:
-            swal("Oops", errorResponse.message, "error",{ button: "Try Again!",});
+            swal("Oops", "Network Error!. Please try again later.", "error",{ button: "Try Again!",});
             break;
     }
 }

@@ -7,11 +7,11 @@ module.exports = function (app) {
   
   require("dotenv").config();
   var router = require("express").Router();
-  var key = process.env.JWT_KEY;
+  var key = 'eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1' || process.env.JWT_KEY;
   const users = require("../controllers/user.controller.js");
 
   router.post("/create-password", users.createPassword); // create password
-  
+
   acl.config({
     filename: "./nacl.json",
     baseUrl: "/api/"
@@ -45,11 +45,11 @@ module.exports = function (app) {
   });
   
 
-  router.use(
-    acl.authorize.unless({
-      path: ["/login"],
-    })
-  );
+  // router.use(
+  //   acl.authorize.unless({
+  //     path: ["/login"],
+  //   })
+  // );
 
   router.get("/", users.findAll);
   router.get("/profile", users.profile);
