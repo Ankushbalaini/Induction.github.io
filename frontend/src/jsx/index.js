@@ -53,6 +53,7 @@ import AllStudents from "./components/Students/AllStudents";
 import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
 import FilteringTable from "./components/table/FilteringTable/FilteringTable";
 
+import Mcq from "./components/Inductions/Mcq";
 import { ThemeContext } from "../context/ThemeContext";
 import { store } from "../../src/store/store";
 
@@ -87,6 +88,8 @@ const Markup = () => {
     { url: "induction/:id", component: InductionDetail },
     { url: "create-induction", component: CreateInduction },
     { url: "single-induction-view/:id", component: SingleInductionView },
+    { url: "mcq", component: Mcq },
+  
 
     // Instructors  Pages path
     { url: "instructors", component: Instructors },
