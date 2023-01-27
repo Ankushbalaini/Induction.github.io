@@ -1,14 +1,11 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { Row } from "react-bootstrap";
 import { connect, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useHistory } from "react-router-dom";
-
 
 function Mcq(props) {
-  const navigate = useHistory();
  const [question,setQuestion]=useState();
  const [option1,setOption1]=useState();
  const [option2,setOption2]=useState();
@@ -25,16 +22,6 @@ function Mcq(props) {
  function onCreate(e){
   e.preventDefault();
   let error = false;
-  const mcq ={
-    question: question,
-    option1:option1,
-    option2:option2,
-    option3:option3,
-    option4:option4,
-    answer: answer
-  }
-  
-  const response = AddMcq(mcq);
 
   const errorObj ={ ...errorObj};
   if (question === ''){
@@ -67,13 +54,13 @@ if (answer=== ''){
     const option3 = formvalues.option3;
     const option4 = formvalues.option4;
 
-    return fetch ("http://localhost:8081/api/mcq/add",{
+    return fetch ("url......",{
       method:"POST",
       headers :{
         "Content-Type" : "application/json",
-      },
-      body : JSON.stringify(formvalues),
-    }).then ((data)=>data.json());
+      }
+    })
+
   }
 
   const formstyle = {
@@ -81,8 +68,7 @@ if (answer=== ''){
   }
 
   return (
-    <Fragment>
-     <div className="row">
+    <div className="row">
         <div className="col-xl-12 col-lg-12 col-md-12">
         <div className="card">
           <div className="card-header">
@@ -99,7 +85,6 @@ if (answer=== ''){
                       id="comment"
                       name="question"
                       placeholder="Enter question ...."
-                      onChange={(e)=>setQuestion(e.target.value)}
                     ></textarea>
                     {errors.question && <div Style="color:red;font-weight:600">{errors.question}</div>}
                   </div>
@@ -108,7 +93,7 @@ if (answer=== ''){
           </div>
           <div className="card-body">
             <div className="basic-form">
-              <form onSubmit={onCreate}>
+              <form onSubmit={(e) => e.preventDefault()}>
               <div className="form-group ">
                 <h4 className="card-title mb-3">Enter your Choices</h4>
                   <div className="form-group mb-3">
@@ -117,7 +102,6 @@ if (answer=== ''){
                       name="option1"
                       className="form-control input-rounded"
                       placeholder="Option 1"
-                      onChange={(e)=>setOption1(e.target.value)}
                     />
                   {errors.option1 && <div Style="color:red;font-weight:600">{errors.option1}</div>}
 
@@ -128,7 +112,6 @@ if (answer=== ''){
                       name="option2"
                       className="form-control input-rounded"
                       placeholder="Option 2"
-                      onChange={(e)=>setOption2(e.target.value)}
                     />
                   {errors.option2 && <div Style="color:red;font-weight:600">{errors.option2}</div>}
 
@@ -139,7 +122,6 @@ if (answer=== ''){
                       name="option3"
                       className="form-control input-rounded"
                       placeholder="Option 3"
-                      onChange={(e)=>setOption3(e.target.value)}
                     />
                      {errors.option3 && <div Style="color:red;font-weight:600">{errors.option3}</div>}
 
@@ -150,7 +132,6 @@ if (answer=== ''){
                       name="option4"
                       className="form-control input-rounded"
                       placeholder="Option 4"
-                      onChange={(e)=>setOption4(e.target.value)}
                     />
                     {errors.option4 && <div Style="color:red;font-weight:600">{errors.option4}</div>}
 
@@ -161,23 +142,25 @@ if (answer=== ''){
                       name="answer "
                       className="form-control input-rounded"
                       placeholder="Correct Answer"
-                      onChange={(e)=>setAnswer(e.target.value)}
                     />
                   {errors.answer && <div Style="color:red;font-weight:600">{errors.question}</div>}
 
                   </div>
                 </div>
-                  <Button  className="btn btn-success" variant="primary" size="lg" style={formstyle} type="submit">
-                   Create
-                  </Button>{' '}
+
+                    <Button variant="primary" size="lg" style={formstyle}>
+                    Create
+                   </Button>{' '}
+                
+                
               </form>
             </div>
           </div>
         </div>
       </div>
       </div>
-   </Fragment>
-  );
+
+       );
 }
 export default Mcq;
 
