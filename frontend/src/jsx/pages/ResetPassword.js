@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import BJSLogo from "../../images/BJSLogo.png";
 import swal from 'sweetalert';
 import { useParams, Link } from 'react-router-dom';
 import logo from "../../images/homedelivery.svg";

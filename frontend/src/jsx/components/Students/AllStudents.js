@@ -31,27 +31,27 @@ const AllStudents = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState();
 
-  const actionHandler = (students) => {
-    setIsModalOpen(true);
-    setModalData(students);
-    setFirstName(students.name);
-    setLastName(students.name);
-    setEmail(students.email);
-    setAddress(students.address);
-    setAboutStudent(student.aboutStudent);
-    // set values
-  }
+  // const actionHandler = (students) => {
+  //   setIsModalOpen(true);
+  //   setModalData(students);
+  //   setFirstName(students.name);
+  //   setLastName(students.name);
+  //   setEmail(students.email);
+  //   setAddress(students.address);
+  //   setAboutStudent(student.aboutStudent);
+  //   // set values
+  // }
 
-  // Edit company submit handler
-  const onSubmitHandle = async (e) => {
-    e.preventDefault();
-    const data = new FormData();
-    data.append('name', firstName);
-    data.append('email', email);
-    data.append('address', address);
-    data.append('aboutStudent', aboutStudent);
-    data.append('profile_previous', profile);
-  }
+  // // Edit company submit handler
+  // const onSubmitHandle = async (e) => {
+  //   e.preventDefault();
+  //   const data = new FormData();
+  //   data.append('name', firstName);
+  //   data.append('email', email);
+  //   data.append('address', address);
+  //   data.append('aboutStudent', aboutStudent);
+  //   data.append('profile_previous', profile);
+  // }
   
   // Active data
   const chageData = (frist, sec) => {
