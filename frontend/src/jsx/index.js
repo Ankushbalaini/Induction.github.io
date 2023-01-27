@@ -38,7 +38,8 @@ import CreateInduction from "./components/Inductions/CreateInduction";
 import SingleInductionView from "./components/Inductions/SingleInductionView";
 
 //Instructors
-import Instructors from "./components/Dashboard/Instructors";
+//import Instructors from "./components/Dashboard/Instructors";
+import Instructors from "./components/Instructor/ListInstructor";
 import AddInstructor from "./components/Instructor/AddInstructor";
 import InstructorProfile from "./components/Instructor/InstructorProfile";
 

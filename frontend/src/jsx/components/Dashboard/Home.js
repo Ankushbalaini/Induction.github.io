@@ -28,7 +28,10 @@ const ProgressChart = loadable(() =>
 
 const Home = () => {
 	const { changeBackground } = useContext(ThemeContext);
+	const [dashboard, setDashboard] = useState({courses:300});
+
 	useEffect(() => {
+
 		changeBackground({ value: "light", label: "Light" });
 	}, []);
 	const [dropSelect, setDropSelect] = useState('This Month');
@@ -57,7 +60,7 @@ const Home = () => {
 							</div>
 						</div>
 						<div className="col-xl-12 bt-order">
-							<CourseBlog /> 
+							<CourseBlog dashboard={dashboard}/> 
 						</div>
 						<div className="col-xl-12 col-xxl-6">
 							<div className="card score-active">

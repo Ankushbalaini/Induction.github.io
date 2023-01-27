@@ -151,11 +151,9 @@ exports.login = (req, res) => {
 
   UserCred.findOne({
     email: email,
-    password: password,
-    role: role,
+    password: password
   })
     .then(function (user) {
-      //console.log(user);
       if (user) {
         // create a new token
         const user_cred = new UserCred(user);
@@ -164,8 +162,7 @@ exports.login = (req, res) => {
           {
             userID: user_cred._id,
             email: user_cred.email,
-            role: user_cred.role,
-            parentCompany: user_cred.parentCompany,
+            role: user_cred.role
           },
           "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
           {
@@ -178,7 +175,7 @@ exports.login = (req, res) => {
           res.status(500).send({
             status: false,
             message:
-              err.message || "Some error occurred while creating the User.",
+              err.message,
           });
         });
 
@@ -194,21 +191,19 @@ exports.login = (req, res) => {
           },
         });
       } else {
-        res.status(403).send({
+        return res.status(403).send({
           status: false,
-          message: "User not found!",
+          message: "INVALID_PASSWORD",
           data: {},
         });
       }
     })
     .catch((err) => {
-      res.status(500).send({
+      return res.status(500).send({
         status: false,
-        message: err.message,
+        message: "INVALID_PASSWORD",
       });
     });
-
-  return;
 };
 
 /**

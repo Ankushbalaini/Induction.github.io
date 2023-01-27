@@ -5,23 +5,8 @@ import pMinDelay from "p-min-delay";
 import swal from "sweetalert";
 
 import DropDownBlog from "./../Dashboard/DropDownBlog";
-//import StudentApexLineChart from './Instructor/StudentApexLineChart';
-//import UserApexLineChart from './Instructor/UserApexLineChart';
-//import StudentsActivityApex from './Instructor/StudentsActivityApex';
 
-import pic3 from "./../../../images/courses/pic3.jpg";
-import pic2 from "./../../../images/courses/pic2.jpg";
-import pic4 from "./../../../images/courses/pic4.jpg";
-
-// const studentTableBlog =[
-// 	{image: pic3,
-// 		title: 'Karen Hope',
-// 		status:'On Progress',
-// 		changeClass:'badge-warning'
-// 	},
-// 	{image: pic2 , title: 'Jordan Nico', status:'No Progress', changeClass:'badge-primary' },
-// 	{image: pic4, title: 'Johnny Ahmad', status:'Completed', changeClass:'badge-success'},
-// ];
+const images = require.context("../../../../../images/profile/", true);
 
 const AllStudents = () => {
   const [data, setData] = useState(
@@ -42,6 +27,11 @@ const AllStudents = () => {
       }
     }
   };
+
+  const loadImage = (imageName) => {
+		return images(`./${imageName}`);
+	}	
+
   // use effect
   useEffect(() => {
     const handlepageLoad = async (event) => {
@@ -52,15 +42,14 @@ const AllStudents = () => {
           <tr key={index}>
             <td>
               <div className="d-flex align-items-center">
-                <img src={pic3} alt="" />
+                <img src={loadImage(row.profile.profilePhoto)} alt="" />
                 <h4 className="mb-0 fs-16 font-w500">
                   {row.profile?.first_name}
                 </h4>
               </div>
             </td>
             <td>{row.email}</td>
-            <td> - </td>
-            <td>January 2, 2020 </td>
+            <td>{row.createdAt}             </td>
             <td>
               <span className={`badge  light badge-success`}>{`Active`}</span>
             </td>
@@ -76,7 +65,7 @@ const AllStudents = () => {
       }
     };
     handlepageLoad();
-  }, [test]);
+  }, []);
 
   // api call
   async function getStudents() {
@@ -125,7 +114,6 @@ const AllStudents = () => {
                       <tr>
                         <th>Name</th>
                         <th>Student ID</th>
-                        <th>Courses</th>
                         <th>Join Date</th>
                         <th>Status</th>
                         <th></th>
