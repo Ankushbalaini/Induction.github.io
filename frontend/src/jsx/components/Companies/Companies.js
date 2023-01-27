@@ -6,12 +6,6 @@ import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
 
 import Table from './DataTable';
-import data from './data';
-import UpdateCompanyProfile from './UpdateCompanyProfile';
-import e from "cors";
-
-
-const images = require.context("../../../../../images/company/", true);
 
 // api call
 async function getCompanies(formValues) {

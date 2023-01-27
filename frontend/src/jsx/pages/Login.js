@@ -22,6 +22,8 @@ function Login(props) {
   const [userType, setUserType] = useState("user");
   const dispatch = useDispatch();
 
+  
+
   function onLogin(e) {
     e.preventDefault();
     let error = false;
@@ -93,7 +95,8 @@ function Login(props) {
                           </div>
                         )}
                         <form onSubmit={onLogin}>
-                          <div className="mb-3">
+                          
+                          {/* <div className="mb-3">
                             <label className="mb-1">
                               <strong>Select User Type</strong>
                             </label>
@@ -112,7 +115,7 @@ function Login(props) {
                                 {errors.userType}
                               </div>
                             )}
-                          </div>
+                          </div> */}
 
                           <div className="mb-3">
                             <label className="mb-1">
