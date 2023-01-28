@@ -12,6 +12,7 @@ module.exports = mongoose => {
           department: { type: String },
           status:{type: Boolean, default: 0 },
           deleted:{type: Boolean, default: 0 },
+          address:{type:String}
         },
         { timestamps: true }
       )

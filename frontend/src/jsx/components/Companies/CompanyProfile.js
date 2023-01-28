@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import DropDownBlog from "../Dashboard/DropDownBlog";
+//import DropDownBlog from "../Dashboard/DropDownBlog";
+import DropDownBlog from "../Dashboard/ActionDropDown";
+
+
 
 import certificate from "./../../../images/svg/degree-certificate.svg";
 import clock from "./../../../images/svg/clock-1.svg";
@@ -46,31 +49,6 @@ async function getProfileApi (token){
       },
     }).then((data) => data.json());
 }
-/**
- * 
- * @returns {
- * "status":true,
- * "message":"User profile",
- * "data":{
- * "_id":"63cea890edb762dfb4abb21f",
- * "email":"hello@tester.com","role":"company","createdAt":"2023-01-23T15:32:32.321Z",
- * "profile":{
-      * "_id":"63cea890edb762dfb4abb220",
-      * "userID":"63cea890edb762dfb4abb21f",
-      * "name":"Helloo",
-      * "email":"hello@tester.com",
-      * "address":"Plot no 14, Chandigarh",
-      * "logo":"chart.png",
-      * "companyID":"ijhniuhiu",
-      * "aboutCompany":"Something about company and work cultures.",
-      * "status":false,
-      * "deleted":false,
-      * "createdAt":"2023-01-23T15:32:32.321Z",
-      * "updatedAt":"2023-01-23T18:59:44.656Z",
-      * "__v":0}}}
-}
-
- */
 
 const CompanyProfile = () => {
   const token = useSelector((state) => state.auth.auth.token);
@@ -95,9 +73,11 @@ const CompanyProfile = () => {
   }
 
   useEffect(()=>{
-    getProfile();
+    //if(loading){
+      getProfile();
+    //}
     
-  }, [isModalOpen, companyData]);
+  }, [isModalOpen]);
 
   
   const loadImage = (imageName) => {

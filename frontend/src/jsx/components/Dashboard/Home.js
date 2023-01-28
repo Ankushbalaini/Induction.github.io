@@ -14,7 +14,7 @@ import CalendarBlog from './Dashboard/CalendarBlog';
 import Educat from './../../../images/egucation-girl.png';
 import Calpng from './../../../images/vector/calpng.png';
 import Book from './../../../images/vector/book.png';
-
+import { useSelector } from "react-redux";
 
 const LearningActivityChart = loadable(() =>
 	pMinDelay(import("./Dashboard/LearningActivityChart"), 1000)
@@ -26,19 +26,44 @@ const ProgressChart = loadable(() =>
 	pMinDelay(import("./Dashboard/ProgressChart"), 1000)
 );
 
+
 const Home = () => {
 	const { changeBackground } = useContext(ThemeContext);
-	const [dashboard, setDashboard] = useState({courses:300});
+	const [loading, setLoading] = useState(true);
+	const [dashboard, setDashboard] = useState();
+	const token = useSelector((state) => state.auth.auth.token);
+	
+	// 
+	const getDashboardData = async () => {
+		var ApiURL = "http://localhost:8081/api/dashboard/";
+		const response = await fetch(ApiURL, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"x-access-token" : token,
+			  },
+		  }).then((data) => data.json());
+
+		if ("status" in response && response.status == true) {
+			setDashboard(response.data);
+			setLoading(false);
+		}
+	}
 
 	useEffect(() => {
 
+		getDashboardData();
 		changeBackground({ value: "light", label: "Light" });
-	}, []);
+
+	}, [loading]);
+
+	
+
 	const [dropSelect, setDropSelect] = useState('This Month');
 	return(
 		<>
-			<div className="row">
-				<div className="col-xl-6 col-xxl-12">
+			{ (loading) ? <h4>Loading</h4> : <div className="row">
+				<div className="col-xl-12 col-xxl-12">
 					<div className="row">
 						<div className="col-xl-12 col-xxl-6">
 							<div className="card dlab-join-card h-auto">
@@ -62,7 +87,7 @@ const Home = () => {
 						<div className="col-xl-12 bt-order">
 							<CourseBlog dashboard={dashboard}/> 
 						</div>
-						<div className="col-xl-12 col-xxl-6">
+						{/* <div className="col-xl-12 col-xxl-6">
 							<div className="card score-active">
 								<div className="card-header border-0 flex-wrap">
 									<h4>Learning Activity</h4>
@@ -85,12 +110,12 @@ const Home = () => {
 									<LearningActivityChart />
 								</div>
 							</div>
-						</div>
+						</div> */}
 					</div>
 				</div>
 				<div className="col-xl-6 col-xxl-12">
 					<div className="row">
-						<div className="col-xl-12">
+						{/* <div className="col-xl-12">
 							<div className="card score-active">
 								<div className="card-header border-0 pb-2 flex-wrap">
 									<h4>Score Activity</h4>
@@ -124,8 +149,8 @@ const Home = () => {
 									<ScoreActivityChart />									
 								</div>
 							</div>
-						</div>
-						<div className="col-xl-4 col-lg-6">
+						</div> */}
+						{/* <div className="col-xl-4 col-lg-6">
 							<div className="card">
 								<div className="card-body pt-3">									
 									<ProgressChart />
@@ -136,8 +161,8 @@ const Home = () => {
 									</div>
 								</div>
 							</div>
-						</div>
-						<div className="col-xl-8 col-lg-6">
+						</div> */}
+						<div className="col-xl-12 col-lg-8">
 							<div className="card">
 								<div className="card-body card-calendar home-calendar">								
 									<CalendarBlog />
@@ -148,7 +173,8 @@ const Home = () => {
 				</div>
 				
 				
-			</div>	
+			</div>
+			}
 		</>
 	)
 }

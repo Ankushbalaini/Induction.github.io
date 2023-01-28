@@ -40,7 +40,7 @@ const Table = props => {
             </button>
 
             <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button> */}
-            <DropDownBlog onEdit={()=>props.actionHandler(row)} onDelete={()=>props.deleteClick(row.name)}/>
+            <DropDownBlog />
 
           </>
     }

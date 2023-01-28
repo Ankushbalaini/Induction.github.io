@@ -46,7 +46,7 @@ const CourseBlogData = [
 export default function CourseBlog(props){
 	return(
 		<>
-			<div className="row">
+			{/* <div className="row">
 				{CourseBlogData.map((item, ind)=>(
 					<div className={`col-xl-4 ${item.coloumClass}`} key={ind} >
 						<div className={`dlab-cource ${item.classChange}`}>
@@ -63,7 +63,59 @@ export default function CourseBlog(props){
 						</div>
 					</div>
 				))}
-			</div>		
+			</div>	 */}
+
+			<div className="row">
+					<div className={`col-xl-4 col-sm-6`} >
+						<div className={`dlab-cource bg-secondary`}>
+							<div className="d-flex align-items-center">
+								<span className="course-icon">
+									<RightIcon />
+								</span>	
+								<div className="ms-2">
+									<h4 className="mb-0">{props.dashboard.totalCompanies}</h4>
+									<span>Companies</span>
+								</div>
+							</div>
+							<img src={Check} alt="" className='' />
+						</div>
+					</div>
+			
+					<div className={`col-xl-4 col-sm-6`} >
+						<div className={`dlab-cource`}>
+							<div className="d-flex align-items-center">
+								<span className="course-icon">
+									<BookIcon />
+								</span>	
+								<div className="ms-2">
+									<h4 className="mb-0">{props.dashboard.totalUsers}</h4>
+									<span>Users</span>
+								</div>
+							</div>
+							<img src={Bookmarks} alt="" className='bookmarks' />
+						</div>
+					</div>
+
+
+					<div className={`col-xl-4 col-sm-6`} >
+						<div className={`dlab-cource bg-primary`}>
+							<div className="d-flex align-items-center">
+								<span className="course-icon">
+									<BulbIcon />
+								</span>	
+								<div className="ms-2">
+									<h4 className="mb-0">{props.dashboard.totalInductions}</h4>
+									<span>Inductions</span>
+								</div>
+							</div>
+							<img src={Bulb} alt="" className='bulb' />
+						</div>
+					</div>
+
+			</div>	
+
+			
+
 		</>
 	)
 }

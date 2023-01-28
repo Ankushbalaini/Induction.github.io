@@ -1,10 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import loadable from "@loadable/component";
-import pMinDelay from "p-min-delay";
 import swal from "sweetalert";
-
-import DropDownBlog from "./../Dashboard/DropDownBlog";
+import ActionDropDown from "./ActionDropDown";
+import UpdateProfile from "./UpdateStudentModal";
 
 const images = require.context("../../../../../images/profile/", true);
 
@@ -12,10 +10,22 @@ const AllStudents = () => {
   const [data, setData] = useState(
     document.querySelectorAll("#student_wrapper tbody tr")
   );
-  const sort = 3;
+  const sort = 5;
   const activePag = useRef(0);
+  const [loading, setLoading] = useState(true);
   const [test, settest] = useState(0);
   const [students, setStudents] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);	
+  const [profileData, setProfileData] = useState({
+    email:'',
+    createdAt:'',
+    profile:{ 
+      first_name: 'here', 
+      last_name: '', 
+      profilePhoto:'dummy-user.png',
+      aboutMe:'',
+      address:''
+    }});
 
   // Active data
   const chageData = (frist, sec) => {
@@ -28,54 +38,74 @@ const AllStudents = () => {
     }
   };
 
+  
+
   const loadImage = (imageName) => {
 		return images(`./${imageName}`);
 	}	
 
-  // use effect
-  useEffect(() => {
-    const handlepageLoad = async (event) => {
-      const response = await getStudents();
+    // callback function to opdate state
+    const trackOnclick = (payload, pdata) => {
+      if(pdata){
+        setProfileData(pdata);
+        console.log(pdata);
+      } 
+      setIsModalOpen(payload);
+    }
 
-      if ("status" in response && response.status == true) {
-        const rows = response.data.map((row, index) => (
-          <tr key={index}>
-            <td>
-              <div className="d-flex align-items-center">
-                <img src={loadImage(row.profile.profilePhoto)} alt="" />
-                <h4 className="mb-0 fs-16 font-w500">
-                  {row.profile?.first_name}
-                </h4>
-              </div>
-            </td>
-            <td>{row.email}</td>
-            <td>{row.createdAt}             </td>
-            <td>
-              <span className={`badge  light badge-success`}>{`Active`}</span>
-            </td>
-            <td>
-              <DropDownBlog />
-            </td>
-          </tr>
-        ));
-        setStudents(rows);
-        setData(document.querySelectorAll("#student_wrapper tbody tr"));
-      } else {
-        return swal("Failed", "Error message", "error");
-      }
-    };
-    handlepageLoad();
-  }, []);
+    // callback function to opdate state
+    const trackDeleteClick = () => {
+      swal({
+        title: "Are you sure?",
+        text:
+          "Once deleted, you will not be able to recover this record!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          swal("Poof! Your record has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your record is safe!");
+        }
+      })
+    }
 
-  // api call
-  async function getStudents() {
-    return fetch("http://localhost:8081/api/students/", {
+  const handlepageLoad = async (event) => {
+     
+    const response = await fetch("http://localhost:8081/api/students/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     }).then((data) => data.json());
-  }
+
+
+    if ("status" in response && response.status == true) {
+      setStudents(response.data);
+      setLoading(false);
+      setData(document.querySelectorAll("#student_wrapper tbody tr"));
+    } else {
+      return swal("Failed", "Error message", "error");
+    }
+  };
+  
+
+  
+  // use effect
+  useEffect(() => {
+    //if(loading){
+    handlepageLoad();
+
+    setData(document.querySelectorAll("#student_wrapper tbody tr"));
+
+    //}
+
+  }, [profileData,isModalOpen]);
+
+
 
   // Active pagginarion
   activePag.current === 0 && chageData(0, sort);
@@ -93,6 +123,7 @@ const AllStudents = () => {
 
   return (
     <>
+     { (loading) ? <h3>Loading</h3> : 
       <div className="row">
         <div className="col-xl-12">
           <div className="card students-list">
@@ -120,7 +151,28 @@ const AllStudents = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {students}
+                    { 
+                    students.map((row, index) => (
+                        <tr key={index}>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <img src={loadImage(row.profile.profilePhoto)} alt="" />
+                              <h4 className="mb-0 fs-16 font-w500">
+                              {row.profile?.first_name} {row.profile?.last_name} 
+                              </h4>
+                            </div>
+                          </td>
+                          <td>{row.email}</td>
+                          <td>{row.createdAt}             </td>
+                          <td>
+                            <span className={`badge  light badge-success`}>{`Active`}</span>
+                          </td>
+                          <td>
+                            <ActionDropDown trackOnclick={trackOnclick} profileData={row} trackDeleteClick={trackDeleteClick}/>
+                          </td>
+                        </tr>
+                      ))
+                    }
                     </tbody>
                   </table>
                   <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
@@ -184,6 +236,11 @@ const AllStudents = () => {
           </div>
         </div>
       </div>
+      }
+      
+      <UpdateProfile  isModalOpen={isModalOpen} trackOnclick={trackOnclick} profileData={profileData} />
+
+
     </>
   );
 };

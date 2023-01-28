@@ -12,17 +12,30 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
     const navigate = useHistory();
 
     const token = useSelector((state) => state.auth.auth.token);
-    
-    const [firstName, setFirstName] = useState(profileData.profile.first_name);
-    const [lastName, setLastName] = useState(profileData.profile.last_name);
-    const [email, setEmail] = useState(profileData.email);
-    const [aboutMe, setAboutMe] = useState(profileData.profile.aboutMe);
+    const [userID, setUserID] = useState();
+
+    const [firstName, setFirstName] = useState();
+    const [lastName, setLastName] = useState();
+    const [email, setEmail] = useState();
+    const [aboutMe, setAboutMe] = useState();
     const [image, setImage] = useState({ preview: '', data: '' });
-    const [preview, setPreview] = useState(profileData.profile.profilePhoto);
+    const [preview, setPreview] = useState('dummy-user.png');
+    const [address, setAddress] = useState();
     
     const loadImage = (imageName) => {
       return images(`./${imageName}`);
     }
+
+    useEffect(() => {
+        setUserID(profileData.profile._id);
+        setFirstName(profileData.profile.first_name);
+        setLastName(profileData.profile.last_name);
+        setAboutMe(profileData.profile.aboutMe);
+        setAddress(profileData.profile.address);
+        setPreview(profileData.profile.profilePhoto);
+        setEmail(profileData.email);
+        
+    },[profileData, isModalOpen]);
 
 
     const handleCallback = () => {
@@ -41,13 +54,10 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
       e.preventDefault()
 
       // validate data
-      if(firstName.trim() === '' || lastName.trim() === '' || aboutMe.trim() === '') {
+      if(firstName === '' || lastName === '' || aboutMe === '') {
         return swal("Failed", "All fields are required!", "error");
-        
+        return false;
       }
-
-
-
 
       let formData = new FormData()
       formData.append('first_name', firstName);
@@ -55,10 +65,11 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
       formData.append('email', email);
       formData.append('aboutMe', aboutMe);
       formData.append('image', image.data);
-      formData.append('profilePhoto', preview)
+      formData.append('profilePhoto', preview);
+      formData.append('address', address);
 
 
-      const response = await fetch('http://localhost:8081/api/users/update', {
+      const response = await fetch('http://localhost:8081/api/users/edit/'+userID, {
         method: 'PUT',
         body: formData,
         headers: {
@@ -74,7 +85,7 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
         }).then((value) => {
           handleCallback();
           //profile
-          navigate.push("/profile");
+          navigate.push("/students");
         });
 
       }else{
@@ -88,7 +99,7 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
         <Modal className="modal fade" show={isModalOpen}>
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Update Profile</h5>
+            <h5 className="modal-title">Update Profile </h5>
             <Button
               variant=""
               type="button"
@@ -152,6 +163,7 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
                       type="file"
                       className="form-control"
                       name="image"
+                      accept="image/*"
                       onChange={handleFileChange}
                     />
                   </div>
@@ -189,13 +201,30 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
                       className="form-control"
                       name="aboutMe"
                       placeholder=""
-                      defaultValue={""}
                       value={aboutMe}
                       onChange={(e)=>setAboutMe(e.target.value)}
 
                     />
                   </div>
                 </div>
+
+                <div className="col-lg-12">
+                  <div className="form-group mb-3">
+                    <label htmlFor="address" className="text-black font-w600">
+                      Address
+                    </label>
+                    <textarea
+                      rows={3}
+                      className="form-control"
+                      name="address"
+                      placeholder="Enter your current address"
+                      value={address}
+                      onChange={(e)=>setAddress(e.target.value)}
+
+                    />
+                  </div>
+                </div>
+
                 <div className="col-lg-12">
                   <div className="form-group mb-3">
                     <input

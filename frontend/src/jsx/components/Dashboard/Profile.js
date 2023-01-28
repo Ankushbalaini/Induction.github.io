@@ -2,18 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import loadable from "@loadable/component";
 import pMinDelay from "p-min-delay";
-import DropDownBlog from "./DropDownBlog";
+//import DropDownBlog from "./DropDownBlog";
+import DropDownBlog from "./ActionDropDown";
 
-import DonutChart from "./Dashboard/DonutChart";
-//import ProfileActivityChart from './Dashboard/ProfileActivityChart';
 
-//images
-import pic2 from "./../../../images/courses/pic2.jpg";
-import cup from "./../../../images/svg/cup.svg";
-import puzzle from "./../../../images/svg/puzzle.svg";
-import planet from "./../../../images/svg/planet.svg";
-import skill from "./../../../images/svg/skill.svg";
-import readingtime from "./../../../images/svg/readingtime.svg";
 import certificate from "./../../../images/svg/degree-certificate.svg";
 import clock from "./../../../images/svg/clock-1.svg";
 import { useSelector } from "react-redux";
@@ -83,6 +75,11 @@ const Profile = () => {
     setIsModalOpen(payload);
   }
 
+  // 
+  const trackOndeleteClick = () => {
+    // 
+  }
+
   const loadImage = (imageName) => {
     return images(`./${imageName}`);
   }
@@ -107,7 +104,7 @@ const Profile = () => {
         <div className="col-xl-4 col-xxl-5 col-lg-12">
           <div className="card instructors-box">
             <div className="card-header border-0">
-              <DropDownBlog	trackOnclick={trackOnclick} />
+              <DropDownBlog	trackOnclick={trackOnclick} trackOndeleteClick={trackOndeleteClick}/>
             </div>
             <div className="card-body text-center pb-3">
               <div className="instructors-media">
