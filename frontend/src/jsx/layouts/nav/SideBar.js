@@ -305,7 +305,7 @@ const SideBar = () => {
             </Link>
             <ul>
 
-              { (role ==='company' || role ==='instructor') ? 
+              { (role ==='company' || role ==='super_admin' || role ==='instructor') ? 
               <li>
                 <Link
                   className={`${
