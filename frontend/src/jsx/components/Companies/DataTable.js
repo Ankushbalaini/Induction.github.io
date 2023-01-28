@@ -2,10 +2,13 @@ import React, { useMemo } from "react";
 
 import DataTable from "react-data-table-component";
 import DropDownBlog from "../Dashboard/DropDownBlog";
+import ActionDropDown from "../Dashboard/ActionDropDown";
 import FilterComponent from "./FilterComponent";
-
+import { Dropdown } from "react-bootstrap";
 
 const Table = props => {
+
+  
   const columns = [
     {
       name: "Name",
@@ -40,9 +43,12 @@ const Table = props => {
             </button>
 
             <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button> */}
-            <DropDownBlog />
+            {/* <DropDownBlog /> */}
+            <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick}/>
 
-          </>
+            
+              
+            </>
     }
   ];
 
