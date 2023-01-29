@@ -724,3 +724,15 @@ button.react-calendar__tile.react-calendar__tile--active.react-calendar__tile--r
   bottom: 0;
   z-index: 1000;
 }
+
+.acknowledgement-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.acknowledgement-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
