@@ -37,7 +37,7 @@ import Inductions from "./components/Inductions/Inductions";
 import InductionDetail from "./components/Inductions/InductionDetail";
 import CreateInduction from "./components/Inductions/CreateInduction";
 import SingleInductionView from "./components/Inductions/SingleInductionView";
-import StarTest from './components/Inductions/StartTest';
+import StarTest from './components/Inductions/test/StartTest';
 
 //Instructors
 //import Instructors from "./components/Dashboard/Instructors";
