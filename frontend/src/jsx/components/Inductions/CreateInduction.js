@@ -103,7 +103,7 @@ const CreateInduction = () => {
         navigate.push("/courses");
       });
     } else {
-      return swal("Failed", "Error message", "error");
+      return swal("Failed",  response.message , "error");
     }
   };
 
@@ -124,7 +124,7 @@ const CreateInduction = () => {
   }
 
   const pageContent = loading ? (
-    "loading"
+    <i className="fas fa-atom fa-spin"></i>
   ) : (
     <Fragment>
       <PageTitle activeMenu="Create Induction" motherMenu="Inductions" />

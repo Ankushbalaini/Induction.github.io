@@ -239,7 +239,7 @@ const SideBar = () => {
           <li className={`${companies.includes(path) ? "mm-active" : ""}`}>
             <Link className="has-arrow" to="#">
               {" "}
-              <i className="bi bi-people"></i>{" "}
+              <i class="bi bi-building"></i>{" "}
               <span className="nav-text">Company</span>
             </Link>
             <ul>
@@ -272,7 +272,7 @@ const SideBar = () => {
           <li className={`${instructor.includes(path) ? "mm-active" : ""}`}>
             <Link className="has-arrow" to="#">
               {" "}
-              <i className="bi bi-people"></i>{" "}
+              <i className="bi bi-heart"></i>{" "}
               <span className="nav-text">Instructor</span>
             </Link>
             <ul>
@@ -332,7 +332,7 @@ const SideBar = () => {
 
           <li className={`${students.includes(path) ? "mm-active" : ""}`}>
             <Link className="has-arrow" to="#">
-              <i className="bi bi-book"></i>
+              <i className="bi bi-people"></i>
               <span className="nav-text">Students</span>
             </Link>
             <ul>
