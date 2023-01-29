@@ -36,6 +36,7 @@ import AddDepartment from "./components/Department/AddDepartment";
 import Inductions from "./components/Inductions/Inductions";
 import InductionDetail from "./components/Inductions/InductionDetail";
 import CreateInduction from "./components/Inductions/CreateInduction";
+import CreateInductionNew from "./components/Inductions/CreateInductionNew";
 import SingleInductionView from "./components/Inductions/SingleInductionView";
 import StarTest from './components/Inductions/StartTest';
 
@@ -90,6 +91,7 @@ const Markup = () => {
     { url: "inductions", component: Inductions },
     { url: "induction/:id", component: InductionDetail },
     { url: "create-induction", component: CreateInduction },
+    { url: "create-induction-new", component: CreateInductionNew },
     { url: "single-induction-view/:id", component: SingleInductionView },
     { url: "start-test/:id", component: StarTest },
 

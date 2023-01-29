@@ -75,6 +75,7 @@ const SideBar = () => {
     inductions = [
       "inductions",
       "create-induction",
+      "create-induction-new",
       "single-induction-view",
       "courses",
       "start-test"
@@ -316,6 +317,18 @@ const SideBar = () => {
                   Create Induction{" "}
                 </Link>
               </li> : null }
+
+              <li>
+                <Link
+                  className={`${
+                    path === "create-induction-new" ? "mm-active" : ""
+                  }`}
+                  to="/create-induction-new"
+                >
+                  Create Induction New{" "}
+                </Link>
+              </li>
+
 
               <li>
                 <Link

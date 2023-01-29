@@ -62,7 +62,7 @@ const Home = () => {
 	const [dropSelect, setDropSelect] = useState('This Month');
 	return(
 		<>
-			{ (loading) ? <h4>Loading</h4> : <div className="row">
+			{ (loading) ? <i className="fas fa-atom fa-spin"></i> : <div className="row">
 				<div className="col-xl-12 col-xxl-12">
 					<div className="row">
 						<div className="col-xl-12 col-xxl-6">

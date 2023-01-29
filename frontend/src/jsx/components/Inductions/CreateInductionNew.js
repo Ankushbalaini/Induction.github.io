@@ -10,6 +10,8 @@ import DepartmentDropdown from "../Department/DepartmentDropdown";
 const CreateInduction = () => {
   const navigate = useHistory();
   const [loading, setLoading] = useState(true);
+  
+  const [image, setImage] = useState({preview:'', data:''})
   const [title, setTitle] = useState("Fullstack Developer");
   const [subTitle, setSubTitle] = useState("nodejs, mongo, react , express");
   const [deptID, setDeptID] = useState();
@@ -26,6 +28,14 @@ const CreateInduction = () => {
   // validation messages
   let errorsObj = { title: "", subTitle: "", deptID: "" };
   const [errors, setErrors] = useState(errorsObj);
+
+  const handleFileChange = async (e) => {
+    const img = {
+      preview: URL.createObjectURL(e.target.files[0]),
+      data: e.target.files[0],
+    }
+    setImage(img)
+  }
 
   const handleChange = (i, e) => {
     let newFormValues = [...formValues];
@@ -49,20 +59,20 @@ const CreateInduction = () => {
     setFormValues(newFormValues);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     let error = false;
     const errorObj = { ...errorsObj };
-    if (title === "") {
+    if (title === '') {
       errorObj.title = "Title is Required";
       error = true;
     }
-    if (subTitle === "") {
+    if (subTitle === '') {
       errorObj.subTitle = "Sub title is Required";
       error = true;
     }
 
-    if (deptID === "") {
+    if (deptID === '') {
       errorObj.deptID = "Department is Required";
       error = true;
     }
@@ -70,19 +80,30 @@ const CreateInduction = () => {
     setErrors(errorObj);
     if (error) return;
 
-    const inductionDetail = {
-      title: title,
-      subTitle: subTitle,
-      deptID: deptID,
-      description: inductionDesc,
-      content: "",
-      thumbnail: "",
-    };
-    const combinedFormValues = {
-      induction: inductionDetail,
-      slides: formValues,
-    };
-    const response = await saveInduction(combinedFormValues);
+	const inductionDetail = {
+		title: title,
+		subTitle: subTitle,
+		deptID: deptID,
+		description: inductionDesc,
+		content: ""
+	};
+
+
+	let formData = new FormData();
+	formData.append('induction', JSON.stringify(inductionDetail));
+	formData.append('thumbnail', image.data);
+	
+	for (var i = 0; i < formValues.length; i++) {
+		formData.append('slides', JSON.stringify(formValues[i]));
+	}
+
+	const response = await fetch("http://localhost:8081/api/induction/store", {
+      method: "POST",
+      headers: {
+        "x-access-token": token,
+      },
+      body: formData,
+    }).then((data) => data.json());
 
     if ("status" in response && response.status == true) {
       return swal("Success", response.message, "success", {
@@ -95,6 +116,8 @@ const CreateInduction = () => {
     } else {
       return swal("Failed",  response.message , "error");
     }
+
+
   };
 
   useEffect(() => {
@@ -133,7 +156,7 @@ const CreateInduction = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder=""
+                      name="title"
                       onChange={(e) => setTitle(e.target.value)}
                       value={title}
                     />
@@ -149,7 +172,7 @@ const CreateInduction = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder=""
+                      name="subTitle"
                       onChange={(e) => setSubTitle(e.target.value)}
                       value={subTitle}
                     />
@@ -157,10 +180,27 @@ const CreateInduction = () => {
                   </div>
                 </div>
 
+				<div className="mb-3 row">
+                  <label className="col-sm-3 col-form-label">
+                    Thumbnail
+                  </label>
+                  <div className="col-sm-9">
+                    <input
+                      type="file"
+                      className="form-control"
+                      name="thumbnail"
+                      onChange={handleFileChange}
+                      accept="image/png,image/jpeg,image/jpg"
+                    />
+                  </div>
+                </div>
+
+
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">Department</label>
                   <div className="col-sm-9">
                     <select
+					name="deptID"
                       className="form-control"
                       onChange={(e) => setDeptID(e.target.value)}
                     >
