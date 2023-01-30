@@ -5,10 +5,14 @@ import { Link } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from "react-router-dom";
+import PageTitle from "../../layouts/PageTitle";
+import { useSelector } from "react-redux";
 
 
-function Mcq(props) {
-  const navigate = useHistory();
+
+const AddMcq = (props)=> {
+ const navigate = useHistory();
+ const token = useSelector((state) => state.auth.auth.token);
  const [question,setQuestion]=useState();
  const [option1,setOption1]=useState();
  const [option2,setOption2]=useState();
@@ -18,23 +22,31 @@ function Mcq(props) {
   
 
  
-
+// validation message
  let errorObj ={ question :'',option1 :'',option2:'',option3 :'',option4 :'',answer:''}
  const [errors, setErrors] = useState(errorObj);
 
- function onCreate(e){
+const onCreate = async (e)=>{
   e.preventDefault();
   let error = false;
-  const mcq ={
-    question: question,
-    option1:option1,
-    option2:option2,
-    option3:option3,
-    option4:option4,
-    answer: answer
-  }
+  const data = new FormData()
+    data.append('question',question);
+    data.append('option1',option1);
+    data.append('option2',option2);
+    data.append('option3',option3);
+    data.append('option4',option4);
+    data.append('answer', answer);
   
-  const response = AddMcq(mcq);
+   
+    //api call
+  const response = await fetch (token)("http://localhost:8081/api/mcq/add",{
+    method :"POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token" : token
+    },
+    body:data,
+  }).then((user)=>user.json());
 
   const errorObj ={ ...errorObj};
   if (question === ''){
@@ -59,22 +71,7 @@ if (answer=== ''){
  if(error) return;
  }
 
- // api call
-  async function AddMcq(formvalues){
-    const question = formvalues.question;
-    const option1 = formvalues.option1;
-    const option2 = formvalues.option2;
-    const option3 = formvalues.option3;
-    const option4 = formvalues.option4;
 
-    return fetch ("http://localhost:8081/api/mcq/add",{
-      method:"POST",
-      headers :{
-        "Content-Type" : "application/json",
-      },
-      body : JSON.stringify(formvalues),
-    }).then ((data)=>data.json());
-  }
 
   const formstyle = {
     float:"right"
@@ -82,6 +79,8 @@ if (answer=== ''){
 
   return (
     <Fragment>
+     <PageTitle activeMenu="Add MCQ's" motherMenu="Inductions" />
+
      <div className="row">
         <div className="col-xl-12 col-lg-12 col-md-12">
         <div className="card">
@@ -108,7 +107,7 @@ if (answer=== ''){
           </div>
           <div className="card-body">
             <div className="basic-form">
-              <form onSubmit={onCreate}>
+              <form onSubmit={(e)=>onCreate(e)}>
               <div className="form-group ">
                 <h4 className="card-title mb-3">Enter your Choices</h4>
                   <div className="form-group mb-3">
@@ -179,7 +178,7 @@ if (answer=== ''){
    </Fragment>
   );
 }
-export default Mcq;
+export default AddMcq;
 
 // display: flex;
 // flex-direction: column;
