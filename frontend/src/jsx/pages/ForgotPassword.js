@@ -93,7 +93,6 @@ const ForgotPassword = ({ history }) => {
                             className="form-control"
                             defaultValue=""
                             onChange={(e)=>setEmail(e.target.value)}
-                            required
                           />
                           {errors.email && <div Style="color:red;font-weight:400">{errors.email}</div>}
                         </div>
