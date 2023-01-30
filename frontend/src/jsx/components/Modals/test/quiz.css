@@ -1,0 +1,8 @@
+.quiz-container ul .selected-answer {
+    background: #ffd6ff;
+    border: 1px solid #800080;
+  }
+
+.background-modal{
+    background-color:crimson;
+}
