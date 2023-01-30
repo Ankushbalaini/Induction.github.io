@@ -1,54 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
 //images
-import palette from "./../../../images/svg/color-palette.svg";
-import education from "./../../../images/svg/education-website.svg";
-import brain from "./../../../images/svg/brain.svg";
-import microscope from "./../../../images/svg/microscope.svg";
 import course1 from "./../../../images/courses/course1.jpg";
-import course2 from "./../../../images/courses/course2.jpg";
-import course3 from "./../../../images/courses/course3.jpg";
-import course4 from "./../../../images/courses/course4.jpg";
-import course5 from "./../../../images/courses/course5.jpg";
-import course6 from "./../../../images/courses/course6.jpg";
 
 import { useSelector } from "react-redux";
 
 const images = require.context("../../../../../images/inductions/", true);
 
-
-const widgetData = [
-  { image: palette, title: "Graphic" },
-  { image: education, title: "Coading" },
-  { image: brain, title: "Soft Skill" },
-  { image: microscope, title: "Science" },
-];
-
 function CoursesMain() {
   const [courses, setCourses] = useState();
   const [loading, setloading] = useState(true);
-  const [page, setPage ] = useState(1);
+  const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(3);
   const [totalRecords, setTotalRecords] = useState();
   const [showing, setShowing] = useState();
 
-  // pagination 
+  // pagination
   const [prevLink, setPrevLink] = useState(0);
   const [firstLink, setFirstLink] = useState(1);
   const [secondLink, setSecondLink] = useState(2);
   const [nextLink, setNextLink] = useState(3);
 
-
-
-
   const token = useSelector((state) => state.auth.auth.token);
 
   // api call
   async function getAllInductions(page) {
-    return fetch("http://localhost:8081/api/induction?page="+page, {
+    return fetch("http://localhost:8081/api/induction?page=" + page, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -58,9 +37,8 @@ function CoursesMain() {
   }
 
   const loadImage = (imageName) => {
-		return images(`./${imageName}`);
-	}	
-
+    return images(`./${imageName}`);
+  };
 
   const handleGetInduction = async (page) => {
     const response = await getAllInductions(page);
@@ -69,55 +47,62 @@ function CoursesMain() {
       setloading(false);
       setTotalRecords(response.pagination.totalRecords);
       setLimit(response.pagination.limit);
-      
-      setPrevLink(<Link to={"#"} onClick={e=>setPage(page-1)} className="">
-        <i className="fas fa-chevron-left"></i>
-      </Link>);
 
-      setFirstLink(<Link to={"#"} onClick={e=>setPage(1)} className={(page===1)?'active' : ""}>
-      <i className="fas fa-chevron-left"></i>
-    </Link>);
+      setPrevLink(
+        <Link to={"#"} onClick={(e) => setPage(page - 1)} className="">
+          <i className="fas fa-chevron-left"></i>
+        </Link>
+      );
+
+      setFirstLink(
+        <Link
+          to={"#"}
+          onClick={(e) => setPage(1)}
+          className={page === 1 ? "active" : ""}
+        >
+          <i className="fas fa-chevron-left"></i>
+        </Link>
+      );
 
       pageNate();
     }
   };
 
-
   // use effect
   useEffect(() => {
     handleGetInduction(page);
-  }, [page,loading, totalRecords]);
+  }, [page, loading, totalRecords]);
 
-
-  const pageNate = () =>{
-    
-    if(totalRecords > limit){
+  const pageNate = () => {
+    if (totalRecords > limit) {
       // enable pagination
       const totalPages = totalRecords / limit;
 
-
-      setShowing(<>
-        <h4 className="sm-mb-0 mb-3">
-          Showing inside <span>{(page===1)? 1 : ((page-1)*limit) } -  {(page===1)? limit : ((page-1)*limit)+limit } </span>from <span>{totalRecords} </span>
-        </h4>
-        
-      </>);
-
-    }
-    else{
+      setShowing(
+        <>
+          <h4 className="sm-mb-0 mb-3">
+            Showing inside{" "}
+            <span>
+              {page === 1 ? 1 : (page - 1) * limit} -{" "}
+              {page === 1 ? limit : (page - 1) * limit + limit}{" "}
+            </span>
+            from <span>{totalRecords} </span>
+          </h4>
+        </>
+      );
+    } else {
       // only show dummy html
       setShowing(
-          <h4 className="sm-mb-0 mb-3">
-          Showing Else <span>{(page===0)?1:page*limit} - {(page*limit)+limit} </span>from <span>{totalRecords} </span>
+        <h4 className="sm-mb-0 mb-3">
+          Showing Else{" "}
+          <span>
+            {page === 0 ? 1 : page * limit} - {page * limit + limit}{" "}
+          </span>
+          from <span>{totalRecords} </span>
         </h4>
-          );
+      );
     }
-  }
-
-
-
-
-
+  };
 
   const content = loading ? (
     <h1>Loading</h1>
@@ -136,11 +121,11 @@ function CoursesMain() {
               <div className="card-body">
                 <div className="courses-bx">
                   <div className="dlab-media">
-                    { 
-                    data.thumbnail !== '' ?
-                    <img src={loadImage(data.thumbnail)} alt="" />
-                    : <img src={course1} />
-                    }
+                    {data.thumbnail !== "" ? (
+                      <img src={loadImage(data.thumbnail)} alt="" />
+                    ) : (
+                      <img src={course1} />
+                    )}
                   </div>
                   <div className="dlab-info">
                     <div className="dlab-title d-flex justify-content-between">
@@ -178,8 +163,7 @@ function CoursesMain() {
                         </p>
                       </div>
                       <h4 className="text-primary">
-
-                        <span>Author</span>
+                        <span></span>
                       </h4>
                     </div>
                     <div className="d-flex justify-content-between content align-items-center">
@@ -221,30 +205,54 @@ function CoursesMain() {
           {showing}
           <ul>
             <li>
-              <Link to={"#"} onClick={e=>setPage(page-1)} className={(page<1)?'active' : ""}>
+              <Link
+                to={"#"}
+                onClick={(e) => setPage(page - 1)}
+                className={page < 1 ? "active" : ""}
+              >
                 <i className="fas fa-chevron-left"></i>
               </Link>
             </li>
 
             <li>
-              <Link to={"#"} onClick={e=>setPage(1)}  className={(page==1)?'active' : ""}>
+              <Link
+                to={"#"}
+                onClick={(e) => setPage(1)}
+                className={page == 1 ? "active" : ""}
+              >
                 1
               </Link>
+              
             </li>
             <li>
-              <Link to={"#"} onClick={e=>setPage(2)} className={(page==2)?'active' : ""}>2</Link>
+              <Link
+                to={"#"}
+                onClick={(e) => setPage(2)}
+                className={page == 2 ? "active" : ""}
+              >
+                2
+              </Link>
             </li>
-            <li>
-              <Link to={"#"} onClick={e=>setPage(3)} className={(page==3)?'active' : ""}>3</Link>
-            </li>
+            {/* <li>
+              <Link
+                to={"#"}
+                onClick={(e) => setPage(3)}
+                className={page == 3 ? "active" : ""}
+              >
+                3
+              </Link>
+            </li> */}
 
             <li>
-              <Link to={"#"} onClick={e=>setPage(page+1)} className={(page>3)?'active' : ""}>
+              <Link
+                to={"#"}
+                onClick={(e) => setPage(page + 1)}
+                className={page > 2 ? "active" : ""}
+              >
                 <i className="fas fa-chevron-right"></i>
               </Link>
             </li>
-
-          </ul> 
+          </ul>
         </div>
       </div>
     </>
