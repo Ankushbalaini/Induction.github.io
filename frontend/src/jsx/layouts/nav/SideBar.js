@@ -206,7 +206,7 @@ const SideBar = () => {
             </ul>
           </li>
 
-          {role === "company" ? (
+          {role === "super_admin" || role === "company" ? (
           <li className={`${department.includes(path) ? "mm-active" : ""}`}>
             <Link className="has-arrow" to="#">
               <i className="bi bi-book"></i>
