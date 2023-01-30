@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { Tab, Nav, Accordion } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Mcq from "../Mcq";
 
 function InductionSlidesList({setCurrentSlideContent,...props}) {
   // const [currentSlideContent, setCurrentSlideContent] = useState();
@@ -12,7 +14,25 @@ function InductionSlidesList({setCurrentSlideContent,...props}) {
   // useEffect(() => {}, [currentSlideContent]);
 
   return (
+
+    // <div className="custome-accordion">
+    //   <button> Create MCQ</button>
+    // </div>
+    
     <div className="custome-accordion">
+      <div className="accordion accordion">
+        <div class="card accordion-item">
+          <Link className="btn btn-primary" to ="../viewmcq">View Quiz</Link>
+        </div>
+      </div>
+         
+      <div className="accordion accordion">
+        <div class="card accordion-item">
+          <Link className="btn btn-primary" to ="../mcq">Create Quiz</Link>
+        </div>
+      </div>
+         
+
       <Accordion className="accordion" defaultActiveKey="0">
         <Accordion.Item className="card">
           <Accordion.Header as="h2" className="accordion-header border-0">

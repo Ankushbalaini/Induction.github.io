@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 
-export default function DropDownBlog({trackOnclick}) {
-    
-  const handleCallback = () => {
-    trackOnclick(true);
-  }
+export default function DropDownBlog(props) {
+  const {onEdit, onDelete} = props;
 
   return (
     <>
@@ -31,8 +28,8 @@ export default function DropDownBlog({trackOnclick}) {
           className="dropdown-menu dropdown-menu-end"
           align="right"
         >
-          <Dropdown.Item>Delete</Dropdown.Item>
-          <Dropdown.Item onClick={handleCallback}>Edit</Dropdown.Item>
+            <Dropdown.Item onClick={()=>onDelete(true)}>Delete</Dropdown.Item>
+            <Dropdown.Item onClick={()=>onEdit(true)}>Edit</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </>

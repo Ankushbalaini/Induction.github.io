@@ -54,8 +54,10 @@ import AllStudents from "./components/Students/AllStudents";
 import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
 import FilteringTable from "./components/table/FilteringTable/FilteringTable";
 
+import Mcq from "./components/Inductions/Mcq";
 import { ThemeContext } from "../context/ThemeContext";
 import { store } from "../../src/store/store";
+import ViewMcq from "./components/Inductions/Viewquiz";
 
 const Markup = () => {
   var newState = store.getState();
@@ -88,6 +90,9 @@ const Markup = () => {
     { url: "induction/:id", component: InductionDetail },
     { url: "create-induction", component: CreateInduction },
     { url: "single-induction-view/:id", component: SingleInductionView },
+    { url: "mcq", component: Mcq },
+    { url : "viewmcq", component :ViewMcq},
+  
 
     // Instructors  Pages path
     { url: "instructors", component: Instructors },

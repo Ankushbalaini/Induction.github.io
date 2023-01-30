@@ -80,7 +80,7 @@ const InstructorProfile = () => {
       <div className="col-xl-4 col-xxl-5 col-lg-12">
         <div className="card instructors-box">
           <div className="card-header border-0">
-            <DropDownBlog />
+            <DropDownBlog onEdit={setIsModalOpen(true)} />
           </div>
           <div className="card-body text-center pb-3">
             <div className="instructors-media">
