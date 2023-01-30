@@ -4,6 +4,8 @@ import Modal from "react-bootstrap/Modal";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 
+
+
 const TestAcknowledgeModal = (props) => {
   // In Progress
 
@@ -46,7 +48,7 @@ const TestAcknowledgeModal = (props) => {
               <b>I Acknowledge  </b>
             </label>
           </div>
-          <Button className="btn btn-success m-3" onClick={props.onHide} disabled={!isAcknowledged}>
+          <Button className="btn btn-success m-3" onClick={props.startClick} disabled={!isAcknowledged}>
             Start
           </Button>
 
