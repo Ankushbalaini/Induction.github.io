@@ -37,28 +37,6 @@ const AllStudents = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState();
 
-  // const actionHandler = (students) => {
-  //   setIsModalOpen(true);
-  //   setModalData(students);
-  //   setFirstName(students.name);
-  //   setLastName(students.name);
-  //   setEmail(students.email);
-  //   setAddress(students.address);
-  //   setAboutStudent(student.aboutStudent);
-  //   // set values
-  // }
-
-  // // Edit company submit handler
-  // const onSubmitHandle = async (e) => {
-  //   e.preventDefault();
-  //   const data = new FormData();
-  //   data.append('name', firstName);
-  //   data.append('email', email);
-  //   data.append('address', address);
-  //   data.append('aboutStudent', aboutStudent);
-  //   data.append('profile_previous', profile);
-  // }
-  
   // Active data
   const chageData = (frist, sec) => {
     for (var i = 0; i < data.length; ++i) {
@@ -69,8 +47,6 @@ const AllStudents = () => {
       }
     }
   };
-
-  
 
   const loadImage = (imageName) => {
 		return images(`./${imageName}`);
@@ -124,20 +100,11 @@ const AllStudents = () => {
     }
   };
   
-
-  
   // use effect
   useEffect(() => {
-    //if(loading){
     handlepageLoad();
-
     setData(document.querySelectorAll("#student_wrapper tbody tr"));
-
-    //}
-
   }, [profileData,isModalOpen]);
-
-
 
   // Active pagginarion
   activePag.current === 0 && chageData(0, sort);
@@ -181,12 +148,12 @@ const AllStudents = () => {
                   >
                     <thead>
                       <tr>
-                        <th>Profile</th>
+                        
                         <th>Name</th>
                         <th>Student ID</th>
                         <th>Join Date</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th Style="text-align: end">Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -202,7 +169,7 @@ const AllStudents = () => {
                             </div>
                           </td>
                           <td>{row.email}</td>
-                          <td>{row.createdAt}             </td>
+                          <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
                           <td>
                             <span className={`badge  light badge-success`}>{`Active`}</span>
                           </td>

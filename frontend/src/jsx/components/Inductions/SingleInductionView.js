@@ -111,6 +111,7 @@ const SingleInductionView = (props) => {
           setStateOfParent={setStateOfParent}
           setCurrentSlideContent={setCurrentSlideContent}
           slides={slideData}
+          inductionID={id}
         />
       </div>
   

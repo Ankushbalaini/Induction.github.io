@@ -104,7 +104,7 @@ const Instructors = () => {
               </div>
             </td>
             <td>{row.email}</td>
-            <td>{row.createdAt}             </td>
+            <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
             <td>
               <span className={`badge  light badge-success`}>{`Active`}</span>
             </td>
