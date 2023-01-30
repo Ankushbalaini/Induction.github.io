@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 
-
 const TestAcknowledgeModal = (props) => {
   // In Progress
   const [isAcknowledged, setIsAcknowledged] = useState(false);
@@ -42,7 +41,6 @@ const TestAcknowledgeModal = (props) => {
           <Button onClick={props.onHide} disabled={!isAcknowledged}>
             Agree
           </Button>
-          <br></br>
         
         </div>
       </Modal.Footer>
