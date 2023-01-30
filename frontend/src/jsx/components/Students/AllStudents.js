@@ -15,7 +15,6 @@ const AllStudents = () => {
   const [loading, setLoading] = useState(true);
   const [test, settest] = useState(0);
   const [students, setStudents] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);	
   const [profileData, setProfileData] = useState({
     email:'',
     createdAt:'',
@@ -27,6 +26,39 @@ const AllStudents = () => {
       address:''
     }});
 
+  // model popup usestate
+  const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] 	= useState('');
+  const [email, setEmail] 		= useState('');
+	const [password, setPassword] = useState('');
+  const [image, setImage] = useState({ preview: "", data: "" });
+  const [address, setAddress] = useState();
+  const [aboutStudent, setAboutStudent] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState();
+
+  // const actionHandler = (students) => {
+  //   setIsModalOpen(true);
+  //   setModalData(students);
+  //   setFirstName(students.name);
+  //   setLastName(students.name);
+  //   setEmail(students.email);
+  //   setAddress(students.address);
+  //   setAboutStudent(student.aboutStudent);
+  //   // set values
+  // }
+
+  // // Edit company submit handler
+  // const onSubmitHandle = async (e) => {
+  //   e.preventDefault();
+  //   const data = new FormData();
+  //   data.append('name', firstName);
+  //   data.append('email', email);
+  //   data.append('address', address);
+  //   data.append('aboutStudent', aboutStudent);
+  //   data.append('profile_previous', profile);
+  // }
+  
   // Active data
   const chageData = (frist, sec) => {
     for (var i = 0; i < data.length; ++i) {
@@ -121,6 +153,12 @@ const AllStudents = () => {
     settest(i);
   };
 
+   //css for button
+   const buttonStyle = {
+    margin: "auto",
+    display: "flex",
+  };
+
   return (
     <>
      { (loading) ? <h3>Loading</h3> : 
@@ -143,11 +181,12 @@ const AllStudents = () => {
                   >
                     <thead>
                       <tr>
+                        <th>Profile</th>
                         <th>Name</th>
                         <th>Student ID</th>
                         <th>Join Date</th>
                         <th>Status</th>
-                        <th></th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -245,3 +284,12 @@ const AllStudents = () => {
   );
 };
 export default AllStudents;
+
+
+// <Form.Group as={Col}controlId="formGridState" className="form-group mb-3 text-black font-w600">
+// <Form.Label>Status</Form.Label>
+// <Form.Select defaultValue="Choose...">
+//   <option>Active</option>
+//   <option>Inactive</option>
+// </Form.Select>
+// </Form.Group>

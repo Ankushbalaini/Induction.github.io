@@ -53,6 +53,14 @@ const AddCompany = () => {
     }
   };
 
+
+   //css for button
+   const buttonStyle = {
+    margin: "auto",
+    display: "flex",
+    float: 'right'
+  };
+
   return (
     <Fragment>
       <PageTitle activeMenu="Add Company" motherMenu="Company" />
@@ -180,7 +188,7 @@ const AddCompany = () => {
 
                 <div className="mb-12 row">
                   <div className="col-sm-12">
-                    <button className="btn btn-success" type="submit">
+                    <button className="btn btn-success" type="submit" style={buttonStyle}>
                       Submit
                     </button>
                   </div>

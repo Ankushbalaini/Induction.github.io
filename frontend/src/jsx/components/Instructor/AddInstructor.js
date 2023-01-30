@@ -67,6 +67,12 @@ const AddInstructor = () => {
     }
   };
 
+   //css for button
+   const buttonStyle = {
+    margin: "auto",
+    display: "flex",
+    float: 'right'
+  };
 
   return (
     <Fragment>
@@ -79,7 +85,7 @@ const AddInstructor = () => {
           </div>
           <div className="card-body">
             <div className="basic-form">
-              <form onSubmit={(e)=>handleSubmit(e)} >
+              <form onSubmit={(e)=>handleSubmit(e)}>
 
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
@@ -208,7 +214,7 @@ const AddInstructor = () => {
 
                 <div className="mb-12 row">
                   <div className="col-sm-12">
-                    <button className="btn btn-success" type="submit">
+                    <button className="btn btn-success" type="submit" style={buttonStyle} >
                       Submit
                     </button>
                   </div>
