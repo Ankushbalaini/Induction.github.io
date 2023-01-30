@@ -16,13 +16,13 @@ function InductionSlidesList({setCurrentSlideContent,...props}) {
     <div className="custome-accordion">
       <div className="accordion accordion">
         <div class="card accordion-item">
-          <Link className="btn btn-primary" to ={`../viewmcq/${inductionID}`}>View Quiz</Link>
+          <Link className="btn btn-primary" to ={`../viewmcq/${inductionID}`} activeClassName="active">View Quiz</Link>
         </div>
       </div>
          
       <div className="accordion accordion">
         <div class="card accordion-item">
-          <Link className="btn btn-primary" to={`../mcq/${inductionID}`}>Create Quiz</Link>
+          <Link className="btn btn-primary" to={`../mcq/${inductionID}`} name=" Create Qioz">Create Quiz</Link>
         </div>
       </div>
          
