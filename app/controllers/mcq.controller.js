@@ -81,9 +81,13 @@ exports.add_org = (req, res) => {
  */
 exports.index = (req, res) => {
   try {
+
     const id = ObjectId(req.params.id);
+
+
     MCQs.find({ inductionID: id })
       .then((data) => {
+        
         if (data) {
           return res.status(200).send({
             status: true,
