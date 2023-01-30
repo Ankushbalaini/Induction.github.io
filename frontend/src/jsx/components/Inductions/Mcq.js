@@ -22,7 +22,7 @@ const AddMcq = (props) => {
   const [option2, setOption2] = useState("");
   const [option3, setOption3] = useState("");
   const [option4, setOption4] = useState("");
-  const [answer, setAnswer] = useState();
+  const [answer, setAnswer] = useState("");
 
   // validation message
   let errorObj = {
