@@ -34,20 +34,21 @@ const Table = props => {
             </button>
 
             <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button> */}
-            // <DropDownBlog onEdit={()=>props.actionHandler(row)} onDelete={()=>props.deleteClick(row.name)}/>
+            {/* <DropDownBlog onEdit={()=>props.actionHandler(row)} onDelete={()=>props.deleteClick(row.name)}/> */}
+            
             <div className="d-flex">
-            <Link
+            <button onClick={()=>props.actionHandler(row)}
               href="#"
               className="btn btn-primary shadow btn-xs sharp me-1"
             >
               <i className="fas fa-pencil-alt"></i>
-            </Link>
-            <Link
+            </button>
+            <button onClick={() => props.deleteClick(row.name)}
               href="#"
               className="btn btn-danger shadow btn-xs sharp"
             >
               <i className="fa fa-trash"></i>
-            </Link>
+            </button>
           </div>
           </>
     }
