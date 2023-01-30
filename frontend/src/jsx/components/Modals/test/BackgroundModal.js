@@ -1,7 +1,10 @@
 import React from "react";
 import './quiz.css';
-import { useState } from "react";
+import bjslogo from "/home/user/Desktop/Quizpage/Induction/frontend/src/images/bg-1.jpg";
 
+
+
+import { useState } from "react";
 
 const BackgroundModal = (props) => {
 
@@ -101,7 +104,11 @@ const BackgroundModal = (props) => {
   
 
   return (
-    <div className="background-modal">
+    <div className="background-modal" style={{
+      backgroundImage: "url(" + bjslogo + ")",
+      backgroundSize: "cover",
+    }}
+  >
      {props.children}
 
  
@@ -119,19 +126,19 @@ const BackgroundModal = (props) => {
         <div className="card-body">
           <div className="basic-form">
           
-              <h3>{questions[activeQuestion].question}</h3>
+              <h3>{question}</h3>
               <ul>
                {choices.map((answer, index) => (
-                <li  
+                <li 
                 onClick={() => onAnswerSelected(answer, index)}
                  key={answer}
-                 className={selectedAnswerIndex === index ? 'selected-answer' : null}>
+                 className={selectedAnswerIndex === index ? 'selected-answer' : null} >
                  {answer}
              </li>
               ))}
             </ul>
             
-              <div className="mb-3 row">
+              <div className="m-4 row">
                 <div className="col-sm-12">
                   <button 
                   onClick={onClickNext}
