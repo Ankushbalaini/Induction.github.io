@@ -106,7 +106,7 @@ const SingleInductionView = (props) => {
       </div> */}
 
       <div className="col-xl-4 col-xxl-5">
-      <Link to="/start-test/:xyz">Start Test</Link>
+        <Link className="btn btn-primary mb-3"  to={`/start-test/${id}`}>Start Test</Link>
         <InductionSlidesList
           setStateOfParent={setStateOfParent}
           setCurrentSlideContent={setCurrentSlideContent}
