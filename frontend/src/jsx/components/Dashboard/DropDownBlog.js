@@ -28,8 +28,8 @@ export default function DropDownBlog(props) {
           className="dropdown-menu dropdown-menu-end"
           align="right"
         >
-          <Dropdown.Item onClick={()=>onDelete(true)}>Delete</Dropdown.Item>
-          <Dropdown.Item onClick={()=>onEdit(true)}>Edit</Dropdown.Item>
+            <Dropdown.Item onClick={()=>onDelete(true)}>Delete</Dropdown.Item>
+            <Dropdown.Item onClick={()=>onEdit(true)}>Edit</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </>

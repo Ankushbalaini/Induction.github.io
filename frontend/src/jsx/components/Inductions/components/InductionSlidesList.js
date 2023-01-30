@@ -1,22 +1,36 @@
 import React, { useEffect, useState } from "react";
 
 import { Tab, Nav, Accordion } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function InductionSlidesList({setCurrentSlideContent,...props}) {
-  // const [currentSlideContent, setCurrentSlideContent] = useState();
+  const inductionID = props.inductionID;
 
   const handleClick = (slideData) => {
     setCurrentSlideContent(slideData)
   };
 
-  // useEffect(() => {}, [currentSlideContent]);
 
   return (
+    
     <div className="custome-accordion">
+      <div className="accordion accordion">
+        <div class="card accordion-item">
+          <Link className="btn btn-primary" to ={`../viewmcq/${inductionID}`}>View Quiz</Link>
+        </div>
+      </div>
+         
+      <div className="accordion accordion">
+        <div class="card accordion-item">
+          <Link className="btn btn-primary" to={`../mcq/${inductionID}`}>Create Quiz</Link>
+        </div>
+      </div>
+         
+
       <Accordion className="accordion" defaultActiveKey="0">
         <Accordion.Item className="card">
           <Accordion.Header as="h2" className="accordion-header border-0">
-            <span className="acc-heading">Video Courses</span>
+            <span className="acc-heading">Courses Slides</span>
             <span className="ms-auto">(1/2)</span>
           </Accordion.Header>
           <Accordion.Collapse id="collapseOne">
