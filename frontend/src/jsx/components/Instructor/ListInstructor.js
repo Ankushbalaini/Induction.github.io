@@ -8,7 +8,7 @@ import DropDownBlog from "./../Dashboard/DropDownBlog";
 import ActionDropDown from "./../Dashboard/ActionDropDown";
 import UpdateProfile from "./UpdateProfile";
 
-const images = require.context("../../../../../images/profile/", true);
+const images = require.context("../../../../../images/instructor/", true);
 
 
 // api call
@@ -37,7 +37,7 @@ const Instructors = () => {
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const sort = 3;
+  const sort = 5;
   const activePag = useRef(0);
   const [test, settest] = useState(0);
   const [students, setStudents] = useState(0);
@@ -59,11 +59,28 @@ const Instructors = () => {
   const trackOnclick = (payload, userData) => {
     setIsModalOpen(payload);  
     if(payload){
-      //console.log(userData);
       setInstructorData(userData);
     }
-    
   }
+    // callback function to opdate state
+    const trackDeleteClick = () => {
+      swal({
+        title: "Are you sure?",
+        text:
+          "Once deleted, you will not be able to recover this record!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          swal("Poof! Your record has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your record is safe!");
+        }
+      })
+    }
 
 
   const loadImage = (imageName) => {
@@ -92,7 +109,7 @@ const Instructors = () => {
               <span className={`badge  light badge-success`}>{`Active`}</span>
             </td>
             <td>
-            <ActionDropDown trackOnclick={trackOnclick} userData={row} />
+            <ActionDropDown trackOnclick={trackOnclick} userData={row} trackDeleteClick={trackDeleteClick}/>
               {/* <DropDownBlog /> */}
             </td>
           </tr>
@@ -104,7 +121,7 @@ const Instructors = () => {
       }
     };
     handlepageLoad();
-  }, []);
+  }, [isModalOpen]);
 
   // api call
   

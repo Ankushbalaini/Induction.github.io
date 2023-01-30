@@ -69,15 +69,16 @@ exports.edit = (req, res) => {
 
   Department.findByIdAndUpdate(id, req.body, { useFindAndModify: false }).then(function (department) {
     if (!department) {
-      res.status(404).send({
+      return res.status(500).send({
+        status: false,
         message: "Deparment not found."
       });
     }
     else {
-      res.send({
+      return res.status(200).send({
         message: "Deparment has been updated successfully",
         name :name,
-        status: status
+        status: true
       })
     }
   })
@@ -113,11 +114,13 @@ exports.getDepartment =( async (req, res) => {
     const data = await Department.findById(id);
     res.status(200).send({
     message:"Getting department",
-    data:data
+    data:data,
+    status:true,
    })
  }
  catch{
   res.status(404).send({
+    status:false,
     message: "Department not found."
   });
  }
@@ -138,6 +141,7 @@ exports.delete = (req, res) => {
   Department.findByIdAndRemove(id).then(data => {
     if (!data) {
       res.status(404).send({
+        status: false,
         message: "Deparment not found."
       })
     }
@@ -148,6 +152,7 @@ exports.delete = (req, res) => {
     }
   }).catch(err => {
     res.status(500).send({
+      status: false,
       message: err.message
     });
   });
@@ -173,7 +178,8 @@ exports.getAll=( async (req, res) => {
     });
   }
   catch (err) {
-    res.status(404).send({
+    res.status(500).send({
+      status: false,
       message: err.message || "Some error occurred."
     });
 

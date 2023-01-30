@@ -198,7 +198,7 @@ exports.add = (req, res) => {
       }
     } else {
       var Img = req.files.profilePhoto;
-      var uploadPath = "images/instructor/" + Img.name;
+      var uploadPath = "images/profile/" + Img.name;
 
       Img.mv(uploadPath, function (err) {
         if (err) {
@@ -263,7 +263,7 @@ exports.edit = (req, res) => {
     }
   } else {
     var Img = req.files.image;
-    var uploadPath = "images/instructor/" + Img.name;
+    var uploadPath = "images/profile/" + Img.name;
 
     Img.mv(uploadPath, function (err) {
       if (err) {
@@ -281,7 +281,7 @@ exports.edit = (req, res) => {
     .then(function (user) {
       if (!user) {
         res.status(404).send({
-          message: "User not found!",
+          message: "Instructor not found!",
           status: false,
         });
       } else {

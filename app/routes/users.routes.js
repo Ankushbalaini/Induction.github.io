@@ -58,10 +58,15 @@ module.exports = function (app) {
   router.get("/published", users.findAllPublished);
   router.get("/:id", users.findOne);
   router.put("/update", users.update);
+
+  router.put("/edit/:id", users.edit);
   
   router.delete("/:id", users.delete);
   router.delete("/", users.deleteAll);
   
+  
+  router.put("/setting", users.setting);
+
   
   app.use("/api/users", router);
 };

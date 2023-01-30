@@ -6,13 +6,9 @@ const { findAll } = require("./user.controller");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
+var path = require("path");
 
-exports.getMyInductionsCount = (req, res) => {
-  
-}
-
-
-
+exports.getMyInductionsCount = (req, res) => {};
 
 /**
  * @method get
@@ -28,17 +24,17 @@ exports.index = async (req, res) => {
     const secret = "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1";
     const user = jwt.verify(token, secret);
 
-    const page = (req.query.page > 0) ? req.query.page :  1;
+    const page = req.query.page > 0 ? req.query.page : 1;
     // const limit = 6;
     // const skips = 6 * (page-1);
     const limit = 3;
-    const skips = 3 * (page-1);
-
+    const skips = 3 * (page - 1);
 
     if (user.role == "instructor") {
-
       // return only own Inductions
-      Induction.find({"createdBy": ObjectId(user.userID) }).limit(limit)
+      Induction.find({ createdBy: ObjectId(user.userID) })
+        .sort({ createdAt: -1 })
+        .limit(limit)
         .then((data) => {
           if (!data) {
             res
@@ -48,7 +44,7 @@ exports.index = async (req, res) => {
             res.send({
               status: true,
               data: data,
-              pagination: { totalRecords: 10, limit: limit, page: page},
+              pagination: { totalRecords: 10, limit: limit, page: page },
               message: "My Inductions",
             });
           }
@@ -57,57 +53,134 @@ exports.index = async (req, res) => {
           res.status(500).send({ message: "Error retrieving User with id=" });
         });
     } else {
-      
+      // .populate('eventsAttended')
+
       const Inductions = await Induction.find({});
 
       // return all
-      Induction.find({}).skip(skips).limit(limit)
+      Induction.find({})
+        .sort({ createdAt: -1 })
+        .skip(skips)
+        .limit(limit)
         .then((data) => {
           if (!data) {
-            return res.status(404)
-              .send({ 
-                status: false, message: "Not found User with id " });
+            return res.status(404).send({
+              status: false,
+              message: "Not found User with id ",
+            });
           } else {
             //const total = Induction.find({}).count();
 
             return res.send({
               status: true,
               data: data,
-              pagination: { totalRecords: Inductions.length, limit: limit, page: page},
-              message: "All Inductions 1",
+              pagination: {
+                totalRecords: Inductions.length,
+                limit: limit,
+                page: page,
+              },
+              message: "All Inductions",
             });
           }
         })
         .catch((err) => {
-          res.status(500).send({ status:false, message: err.message });
+          res.status(500).send({ status: false, message: err.message });
         });
     }
 
     return;
-
   } catch (error) {
     return res.status(403).json({ error: error.message });
   }
-
-
 };
 
 /**
  * @method post
- *
+ * change: added thumbnail in this version
  * @author Singh
  */
-
 exports.store = (req, res) => {
   try {
     const token = req.headers["x-access-token"];
     const secret = "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1";
     const user = jwt.verify(token, secret);
-    
-    req.body.induction.deptID       = ObjectId(req.body.deptID);
-    req.body.induction.createdBy     = ObjectId(user.userID);
+
+    let iData = JSON.parse(req.body.induction);
+
+    // logo validation
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(500).send({
+        status: false,
+        message: "Thumbnail is required!",
+      });
+    } else {
+      var Img = req.files.thumbnail;
+      var extension = path.extname(Img.name);
+      var file_name = "img-" + Date.now() + extension;
+      var uploadPath = "images/inductions/" + file_name;
+      Img.mv(uploadPath, file_name, function (err) {
+        if (err) {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+          });
+        }
+      });
+      iData.thumbnail = file_name;
+    }
+
+    iData.deptID = ObjectId(req.body.deptID);
+    iData.createdBy = ObjectId(user.userID);
+    iData.parentCompany = ObjectId(user.parentCompany);
+
+    const slidesData = req.body.slides;
+
+    const idata = new Induction(iData);
+    idata
+      .save(idata)
+      .then((data) => {
+        if (data) {
+          slidesData.forEach((row) => {
+            row = JSON.parse(row);
+            row.slideInductionId = ObjectId(data._id);
+            var slide = new SlideModel(row);
+            slide.save();
+          });
+        }
+
+        return res.status(200).send({
+          status: true,
+          message: "Induction created",
+          data: data,
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          status: false,
+          message:
+            err.message || "Some error occurred while creating new induction.",
+        });
+      });
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      message:
+        err.message || "Some error occurred while creating new induction.",
+    });
+  }
+};
+
+// without thumbnail
+exports.store_29Jan = (req, res) => {
+  try {
+    const token = req.headers["x-access-token"];
+    const secret = "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1";
+    const user = jwt.verify(token, secret);
+
+    req.body.induction.deptID = ObjectId(req.body.deptID);
+    req.body.induction.createdBy = ObjectId(user.userID);
     req.body.induction.parentCompany = ObjectId(user.parentCompany);
-    
+
     const slidesData = req.body.slides;
 
     const idata = new Induction(req.body.induction);
@@ -115,13 +188,11 @@ exports.store = (req, res) => {
       .save(idata)
       .then((data) => {
         if (data) {
-
           slidesData.forEach((row) => {
             row.slideInductionId = ObjectId(data._id);
             var slide = new SlideModel(row);
             slide.save();
           });
-
 
           return res.status(200).send({
             status: true,
@@ -146,9 +217,6 @@ exports.store = (req, res) => {
     });
   }
 };
-
-
-
 
 exports.store_19Jan = (req, res) => {
   try {
@@ -267,10 +335,3 @@ exports.findOne = (req, res) => {
         .send({ message: "Error retrieving Induction with id=" + id });
     });
 };
-
-
-
-
-
-
-

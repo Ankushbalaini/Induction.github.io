@@ -151,7 +151,7 @@ exports.login = (req, res) => {
 
   UserCred.findOne({
     email: email,
-    password: password
+    password: password,
   })
     .then(function (user) {
       if (user) {
@@ -162,7 +162,7 @@ exports.login = (req, res) => {
           {
             userID: user_cred._id,
             email: user_cred.email,
-            role: user_cred.role
+            role: user_cred.role,
           },
           "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
           {
@@ -174,8 +174,7 @@ exports.login = (req, res) => {
         user_cred.save().catch((err) => {
           res.status(500).send({
             status: false,
-            message:
-              err.message,
+            message: err.message,
           });
         });
 
@@ -571,6 +570,104 @@ exports.getProfile = (req, res) => {
     return res.status(400).send({
       status: false,
       message: err.message,
+    });
+  }
+};
+
+//Edit the Students
+/**
+ * @description: Finding student by their ID and then updating the profile details
+ *
+ * @param req
+ * @param res
+ */
+exports.edit = (req, res) => {
+  const id = req.params.id;
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    if (req.body.profilePhoto === "") {
+      return res.status(500).send({
+        status: false,
+        message: "Profile image is required!",
+      });
+    }
+  } else {
+    let Img = req.files.image;
+    let uploadPath = "images/profile/" + Img.name;
+
+    Img.mv(uploadPath, function (err) {
+      if (err) {
+        return res.status(500).send({
+          status: false,
+          message: err.message,
+        });
+      }
+    });
+    req.body.profilePhoto = Img.name;
+  }
+
+  // users colletion
+  User.updateOne(
+    { _id: id },
+    { $set: req.body },
+    { multi: true },
+    function (err, user) {
+      if (err) {
+        return res.status(500).send({
+          status: false,
+          message: err.message,
+        });
+      }
+      if (!user) {
+        return res.status(500).send({
+          status: false,
+          message: "User not found!",
+        });
+      } else {
+        return res.status(200).send({
+          status: true,
+          message: "User has been updated1!",
+          data: user,
+        });
+      }
+    }
+  );
+};
+
+exports.setting = (req, res) => {
+  try {
+    const id = ObjectId(req.decoded.userID);
+
+    UserCred.findOneAndUpdate({ _id: id , password:req.body.currentPassword },
+      {password: req.body.newPassword},
+      (error, user)=>{
+        // if error
+        if(error){
+          return res.status(500).send({
+            status: false,
+            message: error.message,
+         });
+        }
+
+        // if user 
+        if(user){
+          return res.status(200).send({
+            status: true,
+            message: "User has been updated!",
+            data: user.value,
+          });
+        }else{
+          return res.status(500).send({
+            status: false,
+            message: "Invalid details"
+         });
+        }
+    });
+    
+  } catch (err) {
+    return res.status(500).send({
+      message: err.message,
+      status: false,
     });
   }
 };

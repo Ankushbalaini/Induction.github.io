@@ -48,23 +48,40 @@ const Companies = () => {
     // set values
   }
 
-  const deleteClick = (comp_name) => {
-    // show delete confirmation msg
-    swal({
-      title: "Are you sure?",
-      text:
-        `Once deleted, you will not be able to recover ${comp_name} company!`,
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        swal("Poof! Your company has been deleted!", {
-          icon: "success",
-        });
-      } 
-    })
+  // callback function to opdate state
+  const trackOnclick = (payload, company) => {
+    setIsModalOpen(payload);
+    if(payload){
+      setModalData(company);
+      setName(company.name);
+      setEmail(company.email);
+      setLogo(company.logo);
+      setAddress(company.address);
+      setAboutCompany(company.aboutCompany);
+      setCompanyID(company.companyID)
+      setEditID(company._id);
+    }
   }
+    // callback function to opdate state
+    const trackDeleteClick = () => {
+      swal({
+        title: "Are you sure?",
+        text:
+          "Once deleted, you will not be able to recover this record!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          swal("Poof! Your record has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your record is safe!");
+        }
+      })
+    }
+    
 
   // Edit company submit handler
   const onSubmitHandle = async (e) => {
@@ -109,10 +126,7 @@ const Companies = () => {
     handlepageLoad();
   }, [loading,isModalOpen]);
 
-  // callback function to opdate state
-  const trackOnclick = (payload) => {
-    setIsModalOpen(payload);
-  }
+ 
 
   // on List companies page first render
   const handlepageLoad = async (event) => {
@@ -144,7 +158,7 @@ const Companies = () => {
                   className="dataTables_wrapper no-footer"
                 >
                   {/* <Table data={data} click={clickhandler} /> */}
-                  <Table data={companies} actionHandler={actionHandler} deleteClick={deleteClick}/>
+                  <Table data={companies} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick}/>
                 </div>
               </div>
             </div>

@@ -14,7 +14,11 @@ import course3 from "./../../../images/courses/course3.jpg";
 import course4 from "./../../../images/courses/course4.jpg";
 import course5 from "./../../../images/courses/course5.jpg";
 import course6 from "./../../../images/courses/course6.jpg";
+
 import { useSelector } from "react-redux";
+
+const images = require.context("../../../../../images/inductions/", true);
+
 
 const widgetData = [
   { image: palette, title: "Graphic" },
@@ -53,6 +57,9 @@ function CoursesMain() {
     }).then((data) => data.json());
   }
 
+  const loadImage = (imageName) => {
+		return images(`./${imageName}`);
+	}	
 
 
   const handleGetInduction = async (page) => {
@@ -129,7 +136,11 @@ function CoursesMain() {
               <div className="card-body">
                 <div className="courses-bx">
                   <div className="dlab-media">
-                    <img src={course1} alt="" />
+                    { 
+                    data.thumbnail !== '' ?
+                    <img src={loadImage(data.thumbnail)} alt="" />
+                    : <img src={course1} />
+                    }
                   </div>
                   <div className="dlab-info">
                     <div className="dlab-title d-flex justify-content-between">

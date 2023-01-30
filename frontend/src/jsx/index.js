@@ -15,6 +15,7 @@ import ScrollToTop from "./layouts/ScrollToTop";
 // Dashboard
 import Home from "./components/Dashboard/Home";
 import Profile from "./components/Dashboard/Profile";
+import Setting from "./components/Dashboard/Setting";
 
 //Courses----
 import CoursesMain from "./components/Courses/CoursesMain";
@@ -35,7 +36,9 @@ import AddDepartment from "./components/Department/AddDepartment";
 import Inductions from "./components/Inductions/Inductions";
 import InductionDetail from "./components/Inductions/InductionDetail";
 import CreateInduction from "./components/Inductions/CreateInduction";
+import CreateInductionNew from "./components/Inductions/CreateInductionNew";
 import SingleInductionView from "./components/Inductions/SingleInductionView";
+import StarTest from './components/Inductions/test/StartTest';
 
 //Instructors
 //import Instructors from "./components/Dashboard/Instructors";
@@ -71,6 +74,7 @@ const Markup = () => {
     { url: "profile", component: Profile },
     { url: "company-profile", component: CompanyProfile},
     { url: "instructor-profile", component: InstructorProfile},
+    { url: "setting", component: Setting },
 
     // Courses ----
     { url: "courses", component: CoursesMain },
@@ -89,10 +93,13 @@ const Markup = () => {
     { url: "inductions", component: Inductions },
     { url: "induction/:id", component: InductionDetail },
     { url: "create-induction", component: CreateInduction },
+    { url: "create-induction-new", component: CreateInductionNew },
     { url: "single-induction-view/:id", component: SingleInductionView },
     { url: "mcq", component: Mcq },
     { url : "viewmcq", component :ViewMcq},
   
+    { url: "start-test/:id", component: StarTest },
+
 
     // Instructors  Pages path
     { url: "instructors", component: Instructors },

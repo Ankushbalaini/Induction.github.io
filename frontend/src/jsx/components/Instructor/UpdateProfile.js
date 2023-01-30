@@ -10,14 +10,14 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [AboutMe, setAboutMe] = useState();
-  const [address, setAddress] = useState();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [AboutMe, setAboutMe] = useState('');
+  const [address, setAddress] = useState('');
   const [image, setImage] = useState({ preview: '', data: '' });
-  const [profilePhoto, setProfilePhoto] = useState();
+  const [profilePhoto, setProfilePhoto] = useState('');
 
-  const [preview, setPreview] = useState();
+  const [preview, setPreview] = useState('');
   const [userID, setUserID] = useState(instructorData.profile._id);
   
   const handleCallback = () => {
@@ -137,9 +137,8 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                       Email <span className="required">*</span>{" "}
                     </label>
                     <input
-                      type="text"
+                      type="email"
                       className="form-control"
-                      defaultValue=''
                       name="email"
                       placeholder=""
                       value={email}
@@ -153,7 +152,7 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                   <div className="form-group mb-3">
                     <label htmlFor="image" className="text-black font-w600">
                       {" "}
-                      instructor Logo <span className="required">*</span>
+                      Image <span className="required">*</span>
                     </label>
                     <div className="instructors-media">
 
@@ -185,7 +184,6 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                       className="form-control"
                       name="AboutMe"
                       placeholder=""
-                      defaultValue={""}
                       value={AboutMe}
                       onChange={(e)=>setAboutMe(e.target.value)}
                       />
@@ -205,7 +203,6 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                       className="form-control"
                       name="address"
                       placeholder=""
-                      defaultValue={""}
                       value={address}
                       onChange={(e)=>setAddress(e.target.value)}
                       />

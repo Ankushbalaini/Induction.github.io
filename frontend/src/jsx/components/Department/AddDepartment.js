@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 const AddDepartment =() =>{
     const navigate = useHistory();
     const [name,setName] = useState();
-    const [status , setStatus] =useState();
+    const [status , setStatus] = useState(1);
 
 
  let handleSubmit = async (event)=>{
@@ -28,7 +28,7 @@ const AddDepartment =() =>{
           });
      }
      else {
-        return swal ("Failed", "Error message", "error")
+        return swal ("Failed", response.message, "error")
      }
  };
 
@@ -100,8 +100,8 @@ const AddDepartment =() =>{
                                  </label>
                                  <div className="col-sm-9">
                                  <select className="form-control" onChange={(e) =>setStatus(e.target.value)}>
-                                    <option value="Active">Active</option>
-                                    <option value="In active">Inactive</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
                                     </select>
                                       {/* <input 
                                        type="text"
