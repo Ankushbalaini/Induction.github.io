@@ -3,29 +3,38 @@ import React, { useEffect, useState } from "react";
 import { Tab, Nav, Accordion } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-function InductionSlidesList({setCurrentSlideContent,...props}) {
+function InductionSlidesList({ setCurrentSlideContent, ...props }) {
   const inductionID = props.inductionID;
 
   const handleClick = (slideData) => {
-    setCurrentSlideContent(slideData)
+    setCurrentSlideContent(slideData);
   };
 
-
   return (
-    
     <div className="custome-accordion">
       <div className="accordion accordion">
         <div class="card accordion-item">
-          <Link className="btn btn-primary" to ={`../viewmcq/${inductionID}`}>View Quiz</Link>
+          <Link
+            className="btn btn-primary"
+            to={`../viewmcq/${inductionID}`}
+            activeClassName="active"
+          >
+            View Quiz
+          </Link>
         </div>
       </div>
-         
+
       <div className="accordion accordion">
         <div class="card accordion-item">
-          <Link className="btn btn-primary" to={`../mcq/${inductionID}`}>Create Quiz</Link>
+          <Link
+            className="btn btn-primary"
+            to={`../mcq/${inductionID}`}
+            name=" Create Qioz"
+          >
+            Create Quiz
+          </Link>
         </div>
       </div>
-         
 
       <Accordion className="accordion" defaultActiveKey="0">
         <Accordion.Item className="card">
@@ -58,20 +67,11 @@ function InductionSlidesList({setCurrentSlideContent,...props}) {
                           </svg>
                         </span>
                         <h4 className="m-0">{slide.slideTitle}</h4>
-                        {/* <h4>
-                          <button onClick={()=>handleClick(slide)}>Change </button>
-                        </h4> */}
                       </div>
-                      {/* <span>1:00</span> */}
                     </div>
                   </div>
                 );
               })}
-
-              {/* <SmallCardBlog title='Getting Started' />
-                            <SmallCardBlog title='Tools' />
-                            <SmallCardBlog title='Install Tools' />
-                            <SmallCardBlog title='Plugins' />	 */}
             </div>
           </Accordion.Collapse>
         </Accordion.Item>
