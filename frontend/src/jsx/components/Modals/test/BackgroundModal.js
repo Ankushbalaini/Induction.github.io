@@ -149,6 +149,7 @@ const BackgroundModal = (props) => {
 
       </div>
     </div>
+    //quiz page
   );
 };
 
