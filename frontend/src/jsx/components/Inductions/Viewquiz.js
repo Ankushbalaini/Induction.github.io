@@ -7,14 +7,13 @@ import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import DropDownBlog from "../Dashboard/DropDownBlog";
 import ActionDropDown from "../Dashboard/ActionDropDown";
-
-
-
-
+import { useParams } from "react-router";
 
 const ViewMcq = () => {
 
   const navigate = useHistory();
+
+  const {id} = useParams();
   const [question, setQuestion] = useState();
   const [mcqData, setMcqData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,15 +27,9 @@ const ViewMcq = () => {
     //setEditID(mcq.inductionID);
 
   }
-  useEffect(() => {
-    if(loading) {
-      handlepageLoad();
-    }
-    
-  }, [loading]);
-
+  
   const handlepageLoad = async (e) => {
-    const response = await fetch("http://localhost:8081/api/mcq/63d36618b28aaa3dbb672d97", {
+    const response = await fetch("http://localhost:8081/api/mcq/"+id, {
       method: "GET"
     }).then((user) => user.json());
 
@@ -44,11 +37,11 @@ const ViewMcq = () => {
 
     if ("status" in response && response.status === true) {
       const rows = response.data.map((row, index) => {
-        <tr key={index}>
-
-          <td> first </td>
-          <td>here</td>
-        </tr>
+        return <tr key={index}>
+                    <td> {index+1} </td>
+                    <td> {row.question} </td>
+                    <td></td>
+                </tr>
       });
       
       setMcqData(rows);
@@ -58,6 +51,14 @@ const ViewMcq = () => {
       return swal("Failed", response.message, "error");
     }
   };
+
+  useEffect(() => {
+    if(loading) {
+      handlepageLoad();
+    }
+    
+  }, [mcqData]);
+
 
 
   return (
@@ -78,7 +79,7 @@ const ViewMcq = () => {
                   >
                     <thead>
                       <tr>
-                        
+                        <th>Sr. No</th>
                         <th>Questions</th>
                         <th>Actions</th>
                       </tr>

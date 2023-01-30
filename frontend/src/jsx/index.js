@@ -96,7 +96,7 @@ const Markup = () => {
     { url: "create-induction-new", component: CreateInductionNew },
     { url: "single-induction-view/:id", component: SingleInductionView },
     { url: "mcq/:inductionID", component: Mcq },
-    { url : "viewmcq", component :ViewMcq},
+    { url : "viewmcq/:id", component :ViewMcq},
   
     { url: "start-test/:id", component: StarTest },
 
