@@ -1,0 +1,33 @@
+.quiz-container {
+    max-width: 800px;
+    min-width: 450px;
+    min-height: 500px;
+    background: #ffffff;
+    border-radius: 10px;
+    margin-top: 80px;
+    padding: 30px 60px;
+  }
+
+.quiz-container ul .selected-answer {
+    background-color:whitesmoke;
+    border: 1px solid cornflowerblue;
+    border-radius: 4px;
+  }
+
+.background-modal{
+    
+    background-color:cornflowerblue;
+    color: #11052c;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0 30px;
+}
+
+.quiz-container .active-question-no {
+    font-size: 32px;
+    font-weight: 500;
+    color:cornflowerblue;
+  }
+
+  /* css file of quiz */
