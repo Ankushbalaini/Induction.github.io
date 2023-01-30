@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import {
   loadingToggleAction,
   loginAction,
 } from "../../store/actions/AuthActions";
 
-//
 import loginbg from "../../images/bg-1.jpg";
-import logo from "../../images/log.png";
-//import logofull from '../../images/logo-full.png';
+
+
 import BJSLogo from "../../images/BJSLogo.png";
-//import BJSLogo from "../../images/BJSLogo.jpg";
+
 
 
 function Login(props) {
@@ -44,6 +45,11 @@ function Login(props) {
     dispatch(loginAction(userType, email, password, props.history));
   }
 
+   //css for button
+   const right = {
+    float: 'right'
+  };
+
   return (
     <div
       className="login-main-page"
@@ -61,28 +67,18 @@ function Login(props) {
                   <div className="row m-0">
                     <div className="col-xl-6 col-md-6 sign text-center">
                       <div>
-                        <div className="text-center my-5" Style="margin-top:25% !important">
-                        
-
-
-                        
+                        <div className="text-center my-5" Style="margin-top:15% !important">
                         <img width="400" src={BJSLogo} alt="" />
-                          {/* <Link to="/dashboard">
-                            <img width="200" src={logofull} alt="" />
-                          </Link> */}
                         </div>
                       </div>
                     </div>
-                    <div className="col-xl-6 col-md-6">
+                    <div className="col-xl-6 col-md-6 m-auto">
                       <div className="sign-in-your">
-                        <h4 className="fs-20 font-w800 text-black">
-                          Sign in your account
-                        </h4>
-                        
-                        <span>
-                          Welcome back! Login with your data that you entered
-                          <br /> during registration
+                      <Row className="mb-4">
+                        <span className="fs-22 font-w600 text-black text-center">
+                          Log In To Your Account
                         </span>
+                        </Row>
                         <div className="login-social"></div>
                         {props.errorMessage && (
                           <div className="bg-red-300 text-red-900 border border-red-900 p-1 my-2">
@@ -167,20 +163,27 @@ function Login(props) {
                                 </label>
                               </div>
                             </div>
-                            <div className="mb-3">
-                              <Link to="./page-register" className="text-primary">Sign up</Link>
-                              <br></br>
-                              <Link to="./forgot-password" className="text-primary">
-                                Forgot password
-                              </Link>
-                            </div>
+                            <div className="container">
+                            <Row>
+                              <Col>
+                                <div className="mb-3">
+                                  <Link to="./page-register" className="text-primary">Sign up</Link>
+                                </div>
+                              </Col>
+                            <Col >
+                            <Link to="./forgot-password" className="text-primary" style={right}>
+                            Forgot password
+                          </Link>
+                            </Col>
+                          </Row>
+                          </div>
                           </div>
                           <div className="text-center">
                             <button
                               type="submit"
                               className="btn btn-primary btn-block"
                             >
-                              Sign Me In
+                              Log In
                             </button>
                           </div>
                         </form>
