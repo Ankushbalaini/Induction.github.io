@@ -2,6 +2,7 @@ import React from "react";
 import "./quiz.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import bjslogo from "./../../../../../src/images/bg-1.jpg";
 
 const TestQuestions = (props) => {
   const [activeQuestion, setActiveQuestion] = useState(0);
@@ -63,15 +64,22 @@ const TestQuestions = (props) => {
   const addLeadingZero = (number) => (number > 9 ? number : `0${number}`);
 
   return (
-    <div className="background-modal">
+    <div className="background-modal" style={{
+      backgroundImage: "url(" + bjslogo + ")",
+      backgroundSize: "cover",
+    }}
+  >
+
       {props.children}
 
       {showResult ? (
         <>
-          {/* <h3>My Score : {result.score}</h3>
-            <h3>Correct : {result.correctAnswers}</h3>
-            <h3>Wrong : {result.wrongAnswers}</h3> */}
+          
           <div className="quiz-container text-justify display-6">
+          <h3>My Score : {result.score}</h3>
+            <h3>Correct : {result.correctAnswers}</h3>
+            <h3>Wrong : {result.wrongAnswers}</h3>
+
             <h3>
               Thanks For Attempting the test your test results will be shared
               with you shortly!
@@ -118,7 +126,7 @@ const TestQuestions = (props) => {
               </ul>
 
               <div className="mb-3 row">
-                <div className="col-sm-12">
+                <div className="col-sm-12 mt-3">
                   <button
                     type="submit"
                     onClick={onClickNext}
