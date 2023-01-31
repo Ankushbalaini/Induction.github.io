@@ -76,6 +76,14 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
           </Accordion.Collapse>
         </Accordion.Item>
       </Accordion>
+
+      <div className="accordion accordion">
+        <div class="card accordion-item">
+          <Link className="btn btn-primary" to={`/start-test/${inductionID}`}>
+            Start Test
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

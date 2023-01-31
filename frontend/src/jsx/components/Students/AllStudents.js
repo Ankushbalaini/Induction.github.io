@@ -19,7 +19,7 @@ const AllStudents = () => {
     email:'',
     createdAt:'',
     profile:{ 
-      first_name: 'here', 
+      first_name: '', 
       last_name: '', 
       profilePhoto:'dummy-user.png',
       aboutMe:'',

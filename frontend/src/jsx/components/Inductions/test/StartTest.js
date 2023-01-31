@@ -13,6 +13,8 @@ const StartTest = () => {
   const [isQuesScreen, setIsQuesScreen] = useState(false);
   const [testFinished, setTestFinised] = useState(false);
   const [questions, setQuestions] = useState(false);
+  const [startTest, setStartTest] = useState(false);
+  
   const { id } = useParams();
 
 
@@ -33,12 +35,31 @@ const StartTest = () => {
     }
   }
 
+
+  const startTestApi = async () => {
+    const response = await fetch("http://localhost:8081/api/mcq/start/"+id, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token" : token,
+      },
+    }).then((data) => data.json());
+
+    if("status" in response && response.status == true) {
+      setStartTest(true);
+    }
+  }
+
   // handle start test
   const handleStartClick = () =>{
     
     getQuestions();
+
     setIsAcknowledgementModalOpen(false);
     setIsQuesScreen(true);
+    startTestApi();
+    // http://localhost:8081/api/mcq/start/63d290bab4e4e9bb1725bbfa
+    //call api for Db entry
     
   }
 
@@ -60,7 +81,7 @@ const StartTest = () => {
       {
         (questions)?
           <TestQuestions show={isQuesScreen} Questions={questions} />
-          : <h1>Question not set</h1>
+          : <h1><i className="fas fa-atom fa-spin"></i> </h1>
       }
       
     </>
