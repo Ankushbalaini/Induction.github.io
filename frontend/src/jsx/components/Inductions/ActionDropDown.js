@@ -8,7 +8,7 @@ export default function ActionDropDown(props) {
     
   }
 
-  const trackDeleteClick =() => {
+  const trackDDeleteClick =() => {
     props.trackDeleteClick();
   }
 
@@ -36,8 +36,8 @@ export default function ActionDropDown(props) {
           className="dropdown-menu dropdown-menu-end"
           align="right"
         >
-          <Dropdown.Item onClick={trackDeleteClick}>Delete</Dropdown.Item>
           <Dropdown.Item onClick={handleCallback}>Edit</Dropdown.Item>
+          <Dropdown.Item onClick={trackDDeleteClick}>Delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </>

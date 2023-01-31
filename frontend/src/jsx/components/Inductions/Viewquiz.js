@@ -145,6 +145,7 @@ const ViewMcq = () => {
       <UpdateMcq
         isModalOpen={isModalOpen}
         trackOnclick={trackOnclick}
+        trackDeleteClick={trackDeleteClick}
         mcqData={mcqData}
       />
     </>
