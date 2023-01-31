@@ -131,7 +131,7 @@ function CoursesMain() {
                     <div className="dlab-title d-flex justify-content-between">
                       <div>
                         <h4>
-                          <Link to={"./course-details-1"}>{data.title}</Link>
+                          <Link to={`/single-induction-view/${data._id}`}>{data.title}</Link>
                         </h4>
                         <p className="m-0">
                           {data.subTitle}

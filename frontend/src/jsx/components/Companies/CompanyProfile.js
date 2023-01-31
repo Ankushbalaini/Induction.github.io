@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 //import DropDownBlog from "../Dashboard/DropDownBlog";
-import DropDownBlog from "../Dashboard/ActionDropDown";
-
+import ActionDropDown from "../Dashboard/ActionDropDown";
+import swal from "sweetalert";
 
 
 import certificate from "./../../../images/svg/degree-certificate.svg";
@@ -72,6 +72,27 @@ const CompanyProfile = () => {
     setIsModalOpen(payload);
   }
 
+  
+  const trackDeleteClick = () => {
+    swal({
+      title: "Are you sure?",
+      text:
+        "Once deleted, you will not be able to recover this record!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal("Poof! Your record has been deleted!", {
+          icon: "success",
+        });
+      } else {
+        swal("Your record is safe!");
+      }
+    })
+  }
+
+
   useEffect(()=>{
     //if(loading){
       getProfile();
@@ -105,7 +126,7 @@ const CompanyProfile = () => {
               <div className="col-xl-4 col-xxl-5 col-lg-12">
                 <div className="card instructors-box">
                   <div className="card-header border-0">
-                    <DropDownBlog trackOnclick={trackOnclick}/>
+                    <ActionDropDown trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick}/>
                   </div>
                   <div className="card-body text-center pb-3">
                     <div className="instructors-media">

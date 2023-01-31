@@ -87,7 +87,7 @@ const AddMcq = (props) => {
         buttons: false,
         timer: 2000,
       }).then((value) => {
-        navigate.push("/single-induction-view/63d6bc15163abe901a4758e1");
+        navigate.push("/viewmcq/"+inductionID);
       });
     } else {
       return swal("Failed", response.message, "error");
