@@ -2,9 +2,18 @@ import React, { useEffect, useState } from "react";
 
 import { Tab, Nav, Accordion } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
 
 function InductionSlidesList({ setCurrentSlideContent, ...props }) {
   const inductionID = props.inductionID;
+  const role = useSelector((state) => state.auth.auth.role);
 
   const handleClick = (slideData) => {
     setCurrentSlideContent(slideData);
@@ -12,29 +21,48 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
 
   return (
     <div className="custome-accordion">
-      <div className="accordion accordion">
-        <div class="card accordion-item">
-          <Link
-            className="btn btn-primary"
-            to={`../viewmcq/${inductionID}`}
-            activeClassName="active"
-          >
-            View Quiz
-          </Link>
-        </div>
-      </div>
+      {USER_ROLES.USER === role ? (
+        <>
+          <div className="accordion accordion">
+            <div class="card accordion-item">
+              <Link
+                className="btn btn-primary"
+                to={`/start-test/${inductionID}`}
+              >
+                Start Test
+              </Link>
+            </div>
+          </div>
+        </>
+      ) : null}
 
-      <div className="accordion accordion">
-        <div class="card accordion-item">
-          <Link
-            className="btn btn-primary"
-            to={`../mcq/${inductionID}`}
-            name=" Create Qioz"
-          >
-            Create Quiz
-          </Link>
-        </div>
-      </div>
+      {USER_ROLES.COMPANY === role || USER_ROLES.INSTRUCTOR === role ? (
+        <>
+          <div className="accordion accordion">
+            <div class="card accordion-item">
+              <Link
+                className="btn btn-primary"
+                to={`../viewmcq/${inductionID}`}
+                activeClassName="active"
+              >
+                View Quiz
+              </Link>
+            </div>
+          </div>
+
+          <div className="accordion accordion">
+            <div class="card accordion-item">
+              <Link
+                className="btn btn-primary"
+                to={`../mcq/${inductionID}`}
+                name=" Create Qioz"
+              >
+                Create Quiz
+              </Link>
+            </div>
+          </div>
+        </>
+      ) : null}
 
       <Accordion className="accordion" defaultActiveKey="0">
         <Accordion.Item className="card">
@@ -76,14 +104,6 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
           </Accordion.Collapse>
         </Accordion.Item>
       </Accordion>
-
-      <div className="accordion accordion">
-        <div class="card accordion-item">
-          <Link className="btn btn-primary" to={`/start-test/${inductionID}`}>
-            Start Test
-          </Link>
-        </div>
-      </div>
     </div>
   );
 }

@@ -92,15 +92,20 @@ const CreateInduction = () => {
 	let formData = new FormData();
 	formData.append('induction', JSON.stringify(inductionDetail));
 	formData.append('thumbnail', image.data);
-	
+	// formData.append('slides', JSON.stringify(formValues));
+  let slides_json = [];
 	for (var i = 0; i < formValues.length; i++) {
-		formData.append('slides', JSON.stringify(formValues[i]));
+    slides_json.push( formValues[i]);
+		
 	}
+  formData.append('slides', JSON.stringify(slides_json) );
+  
 
 	const response = await fetch("http://localhost:8081/api/induction/store", {
       method: "POST",
       headers: {
         "x-access-token": token,
+        
       },
       body: formData,
     }).then((data) => data.json());

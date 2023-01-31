@@ -133,15 +133,17 @@ exports.store = (req, res) => {
     iData.createdBy = ObjectId(user.userID);
     iData.parentCompany = ObjectId(user.parentCompany);
 
-    const slidesData = req.body.slides;
-
+    // added slides
+    var slidesData = req.body.slides;
+    slidesData = JSON.parse(slidesData);
+    
     const idata = new Induction(iData);
     idata
       .save(idata)
       .then((data) => {
         if (data) {
           slidesData.forEach((row) => {
-            row = JSON.parse(row);
+            //row = JSON.parse(row);
             row.slideInductionId = ObjectId(data._id);
             var slide = new SlideModel(row);
             slide.save();
