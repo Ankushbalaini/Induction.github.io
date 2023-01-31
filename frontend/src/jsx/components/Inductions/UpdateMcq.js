@@ -52,7 +52,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
                   <div className="form-group mb-6">
                     <label htmlFor="question" className="text-black font-w600">
                       {" "}
-                      Question  <span className="required"></span>{" "}
+                      Question  <span className="required">*</span>{" "}
                     </label>
                     <input
                       type="text"
@@ -70,7 +70,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
                   <div className="form-group mb-3">
                     <label htmlFor="option1" className="text-black font-w600">
                       {" "}
-                      Option 1 <span className="required"></span>
+                      Option 1 <span className="required">*</span>
                     </label>
                     <input
                       type="text"
@@ -87,7 +87,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
                   <div className="form-group mb-3">
                     <label htmlFor="option2" className="text-black font-w600">
                       {" "}
-                      Option 2 <span className="required"></span>
+                      Option 2 <span className="required">*</span>
                     </label>
                     <input
                       type="text"
@@ -108,7 +108,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
                   <div className="form-group mb-3">
                     <label htmlFor="option3" className="text-black font-w600">
                       {" "}
-                      Option 3 <span className="required"></span>
+                      Option 3 <span className="required">*</span>
                     </label>
                     <input
                       type="text"
@@ -145,7 +145,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
                           <div className="form-group mb-3">
                             <label htmlFor="answer" className="text-black font-w600">
                               {" "}
-                              Correct Answer <span className="required"></span>
+                              Correct Answer <span className="required">*</span>
                             </label>
                             <input
                               type="text"

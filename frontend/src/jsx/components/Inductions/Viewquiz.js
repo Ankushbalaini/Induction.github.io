@@ -16,9 +16,7 @@ const ViewMcq = () => {
   const [loading, setLoading] = useState(true);
   const [editID, setEditID] = useState();
 
-  //  const trackOnclick = (payload) => {
-  //   setIsModalOpen(payload);
-  // }
+
   const trackOnclick = (payload, pdata) => {
     if (pdata) {
       setMcqData(pdata);
