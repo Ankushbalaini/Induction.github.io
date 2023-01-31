@@ -6,9 +6,9 @@ const CurrentSlideView = (props) => {
   );
 
   useEffect(() => {
-    console.log("start inside current slide view");
-    console.log(props.currentSlideContent);
-    console.log("end inside current slide view");
+    //console.log("start inside current slide view");
+    //console.log(props.currentSlideContent);
+    //console.log("end inside current slide view");
   }, []);
 
   const createMarkup = (theExactHtmlWithTag) => {

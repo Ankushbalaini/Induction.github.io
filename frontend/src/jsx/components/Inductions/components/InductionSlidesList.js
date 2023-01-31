@@ -1,22 +1,73 @@
 import React, { useEffect, useState } from "react";
 
 import { Tab, Nav, Accordion } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-function InductionSlidesList({setCurrentSlideContent,...props}) {
-  // const [currentSlideContent, setCurrentSlideContent] = useState();
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
+
+function InductionSlidesList({ setCurrentSlideContent, ...props }) {
+  const inductionID = props.inductionID;
+  const role = useSelector((state) => state.auth.auth.role);
 
   const handleClick = (slideData) => {
-    setCurrentSlideContent(slideData)
+    setCurrentSlideContent(slideData);
   };
-
-  // useEffect(() => {}, [currentSlideContent]);
 
   return (
     <div className="custome-accordion">
+      {USER_ROLES.USER === role ? (
+        <>
+          <div className="accordion accordion">
+            <div class="card accordion-item">
+              <Link
+                className="btn btn-primary"
+                to={`/start-test/${inductionID}`}
+              >
+                Start Test
+              </Link>
+            </div>
+          </div>
+        </>
+      ) : null}
+
+      {USER_ROLES.COMPANY === role || USER_ROLES.INSTRUCTOR === role ? (
+        <>
+          <div className="accordion accordion">
+            <div class="card accordion-item">
+              <Link
+                className="btn btn-primary"
+                to={`../viewmcq/${inductionID}`}
+                activeClassName="active"
+              >
+                View Quiz
+              </Link>
+            </div>
+          </div>
+
+          <div className="accordion accordion">
+            <div class="card accordion-item">
+              <Link
+                className="btn btn-primary"
+                to={`../mcq/${inductionID}`}
+                name=" Create Qioz"
+              >
+                Create Quiz
+              </Link>
+            </div>
+          </div>
+        </>
+      ) : null}
+
       <Accordion className="accordion" defaultActiveKey="0">
         <Accordion.Item className="card">
           <Accordion.Header as="h2" className="accordion-header border-0">
-            <span className="acc-heading">Video Courses</span>
+            <span className="acc-heading">Courses Slides</span>
             <span className="ms-auto">(1/2)</span>
           </Accordion.Header>
           <Accordion.Collapse id="collapseOne">
@@ -44,20 +95,11 @@ function InductionSlidesList({setCurrentSlideContent,...props}) {
                           </svg>
                         </span>
                         <h4 className="m-0">{slide.slideTitle}</h4>
-                        {/* <h4>
-                          <button onClick={()=>handleClick(slide)}>Change </button>
-                        </h4> */}
                       </div>
-                      {/* <span>1:00</span> */}
                     </div>
                   </div>
                 );
               })}
-
-              {/* <SmallCardBlog title='Getting Started' />
-                            <SmallCardBlog title='Tools' />
-                            <SmallCardBlog title='Install Tools' />
-                            <SmallCardBlog title='Plugins' />	 */}
             </div>
           </Accordion.Collapse>
         </Accordion.Item>

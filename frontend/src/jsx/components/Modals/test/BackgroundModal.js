@@ -1,6 +1,7 @@
 import React from "react";
 import './quiz.css';
-import bjslogo from "/home/user/Desktop/Quizpage/Induction/frontend/src/images/bg-1.jpg";
+import bjslogo from "./../../../../../src/images/bg-1.jpg";
+// import bjslogo from "/home/user/Desktop/Quizpage/Induction/frontend/src/images/bg-1.jpg";
 
 
 //changes

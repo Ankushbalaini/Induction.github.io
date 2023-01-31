@@ -11,9 +11,41 @@ const ObjectId = mongoose.Types.ObjectId;
  *
  * @author Singh
  */
-
 exports.add = (req, res) => {
   try {
+    req.body.inductionID = ObjectId(req.body.inductionID);
+
+    var mcqData = new MCQs(req.body);
+
+    mcqData.save()
+      .then((data) => {
+        return res.status(200).send({
+          status: true,
+          message: "MCQ created",
+        });
+      })
+      .catch((error) => {
+        return res.status(500).send({
+          status: false,
+          message: error.message || "Some error occurred while adding MCQs.",
+        });
+      });
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      message: err.message,
+    });
+  }
+};
+
+
+
+/**
+ * Working fine for multiple ques add
+ */
+exports.add_org = (req, res) => {
+  try {
+
     req.body.inductionID = ObjectId(req.body.inductionID);
     let questions = req.body.questions;
     questions.forEach((element) => {
@@ -49,9 +81,13 @@ exports.add = (req, res) => {
  */
 exports.index = (req, res) => {
   try {
+
     const id = ObjectId(req.params.id);
+
+
     MCQs.find({ inductionID: id })
       .then((data) => {
+        
         if (data) {
           return res.status(200).send({
             status: true,

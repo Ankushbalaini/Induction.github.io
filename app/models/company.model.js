@@ -8,7 +8,7 @@ module.exports = mongoose => {
           email : { type: String, required : true, unique: true},
           address: { type: String, required : true},
           logo: { type: String , default: 'dummy-user.png'},
-          companyID: {type: String},
+          companyID: {type: String, unique: true},
           aboutCompany: {type: String},
           createdBy: { type: mongoose.Schema.Types.ObjectId },
           status:{type: Boolean, default: 0 },
