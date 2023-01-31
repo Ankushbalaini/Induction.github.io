@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 
 
-
 const TestAcknowledgeModal = (props) => {
   // In Progress
 
@@ -51,11 +50,7 @@ const TestAcknowledgeModal = (props) => {
           <Button className="btn btn-success m-3" onClick={props.startClick} disabled={!isAcknowledged}>
             Start
           </Button>
-
-          <Link className="btn btn-primary m-3" to={`../single-induction-view/${id}`}>
-            Cancel
-          </Link>
-
+        
         </div>
       </Modal.Footer>
     </Modal>

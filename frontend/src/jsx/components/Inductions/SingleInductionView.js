@@ -5,9 +5,9 @@ import "react-modal-video/css/modal-video.min.css";
 import CurrentSlide from "./components/CurrentSlide";
 import InductionSlidesList from "./components/InductionSlidesList";
 import InductionTitle from "./components/InductionTitle";
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const getInductionDetailById = async (id) => {
   return await fetch("http://localhost:8081/api/induction/" + id, {
@@ -53,7 +53,6 @@ const SingleInductionView = (props) => {
     if (loading) {
       handleGetInductionDetail();
     }
-    
   }, []);
 
   const PageContent = loading ? (
@@ -91,12 +90,10 @@ const SingleInductionView = (props) => {
             <CurrentSlide currentSlideContent={currentSlideContent} />
 
             {/* About Induction Area with tabs */}
-            
           </div>
         </div>
       </div>
 
-      
       {/* <div className="col-xl-8 col-xxl-7">
         <div className="card">
           <div className="card-body">
@@ -106,7 +103,9 @@ const SingleInductionView = (props) => {
       </div> */}
 
       <div className="col-xl-4 col-xxl-5">
-        <Link className="btn btn-primary mb-3"  to={`/start-test/${id}`}>Start Test</Link>
+        <Link className="btn btn-primary mb-3" to={`/start-test/${id}`}>
+          Start Test
+        </Link>
         <InductionSlidesList
           setStateOfParent={setStateOfParent}
           setCurrentSlideContent={setCurrentSlideContent}
@@ -114,7 +113,6 @@ const SingleInductionView = (props) => {
           inductionID={id}
         />
       </div>
-  
     </>
   );
 
