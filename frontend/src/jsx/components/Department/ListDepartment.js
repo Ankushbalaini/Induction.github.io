@@ -7,7 +7,6 @@ import DropDownBlog from './../Dashboard/DropDownBlog';
 import { Button ,Modal } from "react-bootstrap";
 
 
-
 const ListDepartments =()=>{
     const navigate = useHistory();
     const [name,setName] = useState();
@@ -84,7 +83,7 @@ const ListDepartments =()=>{
     const handlepageLoad = async (event) =>{
             
       const response = await getDepartments();
-     const a =1;
+     const a = 1;
       if ("status" in response && response.status == true){
        
        setdeptData(response.data);
@@ -106,6 +105,10 @@ const ListDepartments =()=>{
     }).then ((data)=>data.json());
   }
 
+  const buttonsty={
+    margin:"auto",
+    display:"flex"
+  }
   return (
     <Fragment>
         <PageTitle activeMenu="All Departments" motherMenu= "Department" />
@@ -161,11 +164,11 @@ const ListDepartments =()=>{
             <div className="modal-body">
               <form className="company-form" onSubmit={(e) => onSubmitHandle(e)}>
                 <div className="row">
-                  <div className="col-lg-6">
+                  <div className="col-lg-12">
                     <div className="form-group mb-3">
                       <label htmlFor="author" className="text-black font-w600">
                       {" "}
-                      Name <span className="required"></span>*
+                      Name <span className="required"></span>
                       </label>
                       <input
                       type="text"
@@ -177,34 +180,27 @@ const ListDepartments =()=>{
                     />
                     </div>
                   </div>
-                  <div className="col-lg-6">
+                  <div className="col-lg-12">
                     <div className="form-group mb-3">
                       <label htmlFor="author" className="text-black font-w600">
                       {" "}
-                      Department Status<span className="required">*</span>{" "}
+                      Department Status<span className="required"></span>{" "}
                     </label>
                     <select className="form-control" onChange={(e) =>setStatus(e.target.value)}>
-                                    <option value="1">Active</option>
-                                    <option value="0">Inactive</option>
+                                    <option value={1}>Active</option>
+                                    <option value={0}>Inactive</option>
                                     </select>
-                    {/* <input
-                      type="text"
-                      className="form-control"
-                      name="status"
-                      placeholder="status"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                      required
-                    /> */}
                     </div>
                   </div>
                   <div className="col-lg-12">
                   <div className="form-group mb-3">
                     <Button
+                    style={buttonsty}
                       type="submit"
                       value="Submit"
                       className="submit btn btn-primary"
                     >
+
                       Submit
                     </Button>
                   </div>
