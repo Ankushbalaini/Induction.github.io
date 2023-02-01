@@ -8,16 +8,26 @@ import { useHistory } from "react-router-dom";
 
 
 const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
+        console.log(mcqData,"mcqData...");
+
     const navigate = useHistory();
 
     const token = useSelector((state) => state.auth.auth.token);
     
-    const [question, setQuestion] = useState(mcqData.question);
-    const [option1, setOption1] = useState(mcqData.option1);
-    const [option2, setOption2] = useState(mcqData.option2);
-    const [option3, setOption3] = useState(mcqData.option3);
-    const [option4, setOption4] = useState(mcqData.option4);
+    const [question, setQuestion] = useState();
+    const [option1, setOption1] = useState();
+    const [option2, setOption2] = useState();
+    const [option3, setOption3] = useState();
+    const [option4, setOption4] = useState();
     const [answer, setAnswer] = useState(mcqData.answer);
+  useEffect(()=>{
+    setQuestion(mcqData.question)
+    setOption1(mcqData.option1)
+    setOption2(mcqData.option2)
+    setOption3(mcqData.option3)
+    setOption4(mcqData.option4)
+    setAnswer(mcqData.answer)
+  },[mcqData])
     // const []
 
 

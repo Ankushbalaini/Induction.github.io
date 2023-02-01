@@ -38,6 +38,18 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
 
       {USER_ROLES.COMPANY === role || USER_ROLES.INSTRUCTOR === role ? (
         <>
+        <div className="accordion accordion">
+            <div class="card accordion-item">
+              <Link
+                className="btn btn-primary"
+                to={`../attemptquiz/${inductionID}`}
+                activeClassName="active"
+              >
+                Attempted Quiz
+              </Link>
+            </div>
+        </div>
+
           <div className="accordion accordion">
             <div class="card accordion-item">
               <Link

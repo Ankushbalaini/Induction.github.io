@@ -62,7 +62,7 @@ module.exports = function (app) {
   router.put("/edit/:id", users.edit);
   
   router.delete("/:id", users.delete);
-  router.delete("/", users.deleteAll);
+  // router.delete("/", users.deleteAll); 
   
   
   router.put("/setting", users.setting);

@@ -12,6 +12,7 @@ const ViewMcq = () => {
   const { id } = useParams();
   const [question, setQuestion] = useState();
   const [mcqData, setMcqData] = useState({});
+  const [tableData, setTableData] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [editID, setEditID] = useState();
@@ -20,7 +21,7 @@ const ViewMcq = () => {
   const trackOnclick = (payload, pdata) => {
     if (pdata) {
       setMcqData(pdata);
-      console.log(pdata);
+      //console.log(pdata);
 
     }
     setIsModalOpen(payload);
@@ -71,7 +72,7 @@ const ViewMcq = () => {
         );
       });
 
-      setMcqData(rows);
+      setTableData(rows);
       setLoading(false);
     } else {
       return swal("Failed", response.message, "error");
@@ -131,7 +132,7 @@ const ViewMcq = () => {
                           <th>Actions</th>
                         </tr>
                       </thead>
-                      <tbody>{mcqData}</tbody>
+                      <tbody>{tableData}</tbody>
                     </table>
                   </div>
                 </div>
