@@ -122,9 +122,9 @@ function CoursesMain() {
                 <div className="courses-bx">
                   <div className="dlab-media">
                     {data.thumbnail !== "" ? (
-                      <img src={loadImage(data.thumbnail)} alt="" />
+                      <img className="img-fluid" src={loadImage(data.thumbnail)} alt="" />
                     ) : (
-                      <img src={course1} />
+                      <img className="img-fluid" src={course1} />
                     )}
                   </div>
                   <div className="dlab-info">
@@ -145,7 +145,7 @@ function CoursesMain() {
                           >
                             <circle cx="2" cy="2.5" r="2" fill="#DBDBDB" />
                           </svg>
-                          <span>
+                          {/* <span>
                             5.0
                             <svg
                               width="16"
@@ -159,7 +159,7 @@ function CoursesMain() {
                                 fill="#FEC64F"
                               />
                             </svg>
-                          </span>
+                          </span> */}
                         </p>
                       </div>
                       <h4 className="text-primary">

@@ -23,10 +23,15 @@
           "methods": ["PUT"],
           "action": "allow"
         },
-        
         {
           "resource": "getProfile",
           "methods": ["GET"],
+          "action": "allow"
+        },
+
+        {
+          "resource": "induction/*",
+          "methods": ["GET","POST","PUT"],
           "action": "allow"
         }
         
@@ -96,7 +101,13 @@
             "resource": "users/login",
             "methods": ["POST"],
             "action": "deny"
+          },
+          {
+            "resource": "mcq/submit",
+            "methods": ["POST"],
+            "action": "allow"
           }
+
         ]
       },
 

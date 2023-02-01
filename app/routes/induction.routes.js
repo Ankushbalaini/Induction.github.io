@@ -1,17 +1,56 @@
-module.exports = app => {
-    const induction = require("../controllers/induction.controller.js");
+const routes = require("./routes.js");
+
+module.exports = function (app) {
   
-    var router = require("express").Router();
+  const acl = require("express-acl");
+  const jwt = require("jsonwebtoken");
   
-    // Create a new User
-    router.get("/", induction.index);
+  require("dotenv").config();
+  const induction = require("../controllers/induction.controller.js");
+  var router = require("express").Router();
+  var key = 'eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1' || process.env.JWT_KEY;
+  const users = require("../controllers/user.controller.js");
 
-    // Create a new Induction
-    router.post("/store", induction.store);
+  acl.config({
+    filename: "./nacl.json",
+    baseUrl: "/api/"
+  });
 
-    // Retrieve a single User with id
-    router.get("/:id", induction.findOne ); 
-    
+  router.use(function (req, res, next) {
 
-    app.use('/api/induction', router);
-}
+    var token = req.headers["x-access-token"];
+    if (token) {
+
+      jwt.verify(token, key, function (err, decoded) {
+        if (err) {
+          return res.send({
+            status: false,
+            error: err,
+          });
+        } else {
+          req.decoded = decoded;
+          next();
+        }
+      });
+    }
+  });
+  
+
+  router.get("/", induction.index);
+
+  // Create a new Induction
+  router.post("/store", induction.store);
+
+  // router.post("/add", induction.add);
+
+  // Retrieve a single User with id
+  router.get("/:id", induction.findOne ); 
+
+  router.get("/_new/:id", induction.findOne_new ); 
+
+  
+  
+
+  app.use('/api/induction', router);
+};
+

@@ -1,9 +1,8 @@
 module.exports = mongoose => {
-    const MCQs = mongoose.model(
+    const UserInductions = mongoose.model(
       "user_inductions",
       mongoose.Schema(
         {
-
           userID: {type: mongoose.Schema.Types.ObjectId, required: true},
           inductionID : {type: mongoose.Schema.Types.ObjectId, required: true},
           attempts: {type: Number, min: 1, max:100 },
@@ -14,5 +13,5 @@ module.exports = mongoose => {
       )
     );
     
-    return MCQs;
+    return UserInductions;
   };

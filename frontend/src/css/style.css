@@ -282,6 +282,11 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   :root {
     scroll-behavior: smooth; } }
 
+ #slideDataDiv img {
+      width: 100%;
+  }
+
+
 body {
   margin: 0;
   font-family: "Roboto", sans-serif;

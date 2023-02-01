@@ -10,6 +10,13 @@ import { useSelector } from "react-redux";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { ThemeContext } from "../../../context/ThemeContext";
 
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
+
 class MM extends Component {
   componentDidMount() {
     this.$el = this.el;
@@ -290,6 +297,18 @@ const SideBar = () => {
                   Inductions{" "}
                 </Link>
               </li>
+
+              { USER_ROLES.USER === role ?
+              <li>
+                <Link
+                  className={`${path === "attempted-inductions" ? "mm-active" : ""}`}
+                  to="/attempted-inductions"
+                >
+                  Attempted Inductions{" "}
+
+                </Link>
+              </li> : null }
+
             </ul>
           </li>
 

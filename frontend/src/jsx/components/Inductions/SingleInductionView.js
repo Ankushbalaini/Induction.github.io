@@ -8,12 +8,14 @@ import InductionTitle from "./components/InductionTitle";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { useSelector } from "react-redux";
 
-const getInductionDetailById = async (id) => {
+const getInductionDetailById = async (id, token) => {
   return await fetch("http://localhost:8081/api/induction/" + id, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      "x-access-token" : token
     },
   })
     .then((data) => data.json())
@@ -28,12 +30,12 @@ const SingleInductionView = (props) => {
   const [slideData, setSlideData] = useState();
   const [currentSlideContent, setCurrentSlideContent] = useState(null);
   const [isChangeContent, setIsChangeContent] = useState(false);
-
+  const token = useSelector((state) => state.auth.auth.token);
   const { id } = useParams();
 
   // API call for fetching all induction details with slides
   const handleGetInductionDetail = async (e) => {
-    const response = await getInductionDetailById(id);
+    const response = await getInductionDetailById(id, token);
     if ("status" in response && response.status == true) {
       setInductionData(response.data);
       setSlideData(response.slides);

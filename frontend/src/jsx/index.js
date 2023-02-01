@@ -61,6 +61,7 @@ import Mcq from "./components/Inductions/Mcq";
 import { ThemeContext } from "../context/ThemeContext";
 import { store } from "../../src/store/store";
 import ViewMcq from "./components/Inductions/Viewquiz";
+import AttemptedInductions from "./components/Students/AttemptedInductions";
 
 const Markup = () => {
   var newState = store.getState();
@@ -109,6 +110,7 @@ const Markup = () => {
     { url: "instructor-students", component: InstructorStudents },
 
     { url: "students", component: AllStudents },
+    { url : "attempted-inductions", component : AttemptedInductions},
 
     // Apps
     { url: "app-profile", component: AppProfile },

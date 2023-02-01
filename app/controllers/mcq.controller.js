@@ -1,6 +1,7 @@
 const db = require("../models/");
 const MCQs = db.mcqs;
 const UserInductions = db.user_inductions;
+const UserInductionResults = db.user_induction_results;
 
 var jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
@@ -153,34 +154,45 @@ exports.startTest = (req, res) => {
  * @param {*} res
  * @returns
  */
-exports.submitTest = async (req, res) => {
+exports.submitTest = (req, res) => {
   try {
-    // const testID = ObjectId(req.params.testID);
-    // save this testID inside user_induction details
-    const inductionID = ObjectId(req.body.inductionID);
-    var verifiedData  = { total: 0, correct : 0, incorrect: 0, skiped: 0 };
-    let response      = req.body.response;
+    const userID = req.decoded.userID;
+    const testID = ObjectId(req.params.testID);
+    // return res.status(200).send({
+    //   status: true,
+    //   message: `Success`,
+    //   data: req.decoded
+    // });
+
+    // const inductionID = ObjectId(req.body.inductionID);
+    // const userID = ObjectId(req.body.userID);
     
-    response.forEach((row) => {
-        const questionID = ObjectId(row.questionID);
-        // check response is correct or inccorect here
-        // return object with same values and make a scroe formula
+    const submitDataObj = {
+        userID : userID,
+        inductionID : testID,
+        score: req.body.score,
+        correctAnswers: req.body.correctAnswers,
+        wrongAnswers: req.body.wrongAnswers,
+        testStatus: 'Pass'
+    };
 
-        if(row.answer ===''){
-          verifiedData.skiped++;
+    Result = new UserInductionResults(submitDataObj);
 
-        }else{
-          
-          verifiedData.correct++;
-        }
-        
-        verifiedData.total++;
-    });    
-
-    return res.status(200).send({
-      status: true,
-      message: `Success`,
-      data: verifiedData,
+    Result.save()
+    .then((resp)=>{
+      return res.status(200).send({
+        status: true,
+        message: `Success`,
+        data: resp,
+        myid: userID
+      });
+    })
+    .catch((err)=>{
+      return res.status(500).send({
+        status: false,
+        message: err.message,
+      });
+  
     });
 
   } catch (err) {
