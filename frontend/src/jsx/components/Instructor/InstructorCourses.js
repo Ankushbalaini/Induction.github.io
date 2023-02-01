@@ -16,7 +16,7 @@ import pic4 from './../../../images/courses/pic4.jpg';
 
 
 const widgetBlog = [
-	{changeClass:'bg-primary', percent:'75', title:'Courses', svgBlog:'', number:'23,940', redirectLink:'./courses'},
+	{changeClass:'bg-primary', percent:'75', title:'Courses', svgBlog:'', number:'23,940', redirectLink:'./inductions'},
 	{changeClass:'bg-warning', percent:'90', title:'Users', svgBlog:'', number:'94,230', redirectLink:'./students'},
 	{changeClass:'bg-secondary', percent:'60', title:'Review', svgBlog:'', number:'32,567',redirectLink:'./'},
 ];

@@ -82,9 +82,9 @@ const SideBar = () => {
     inductions = [
       "inductions",
       "create-induction",
-      "create-induction-new",
+      //"create-induction-new",
       "single-induction-view",
-      "courses",
+      //"courses",
       "start-test",
     ],
     students = ["students", "add-student"];
@@ -279,9 +279,9 @@ const SideBar = () => {
                   <li>
                     <Link
                       className={`${
-                        path === "create-induction-new" ? "mm-active" : ""
+                        path === "create-induction" ? "mm-active" : ""
                       }`}
-                      to="/create-induction-new"
+                      to="/create-induction"
                     >
                       Create Induction{" "}
                     </Link>
@@ -291,8 +291,8 @@ const SideBar = () => {
 
               <li>
                 <Link
-                  className={`${path === "courses" ? "mm-active" : ""}`}
-                  to="/courses"
+                  className={`${path === "inductions" ? "mm-active" : ""}`}
+                  to="/inductions"
                 >
                   Inductions{" "}
                 </Link>

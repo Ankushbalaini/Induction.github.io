@@ -78,9 +78,9 @@ const Markup = () => {
     { url: "setting", component: Setting },
 
     // Courses ----
-    { url: "courses", component: CoursesMain },
-    { url: "course-details-1", component: CourseDetail1 },
-    { url: "course-details-2", component: CourseDetail2 },
+    { url: "inductions", component: CoursesMain },
+    // { url: "course-details-1", component: CourseDetail1 },
+    // { url: "course-details-2", component: CourseDetail2 },
 
     // Companies ----
     { url: "companies", component: ListCompanies },
@@ -91,10 +91,10 @@ const Markup = () => {
     { url: "add-department", component: AddDepartment },
 
     // Inductions ----
-    { url: "inductions", component: Inductions },
+    // { url: "inductions", component: Inductions },
     { url: "induction/:id", component: InductionDetail },
-    { url: "create-induction", component: CreateInduction },
-    { url: "create-induction-new", component: CreateInductionNew },
+    //{ url: "create-induction", component: CreateInduction },
+    { url: "create-induction", component: CreateInductionNew },
     { url: "single-induction-view/:id", component: SingleInductionView },
     { url: "mcq/:inductionID", component: Mcq },
     { url : "viewmcq/:id", component :ViewMcq},

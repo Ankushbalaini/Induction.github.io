@@ -136,7 +136,7 @@ const TestQuestions = (props) => {
             <div className="mb-3 row text-justify">
               <div className="col-sm-12 text-center">
                 {/* onClick={exitFullscreen} */}
-                <Link to="/courses" className="text-justify" >
+                <Link to="/inductions" className="text-justify" >
                   {" "}
                   Click Here to exit.{" "}
                 </Link>

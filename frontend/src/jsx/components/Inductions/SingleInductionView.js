@@ -63,7 +63,7 @@ const SingleInductionView = (props) => {
     <>
       <ol className="breadcrumb">
         <li className="breadcrumb-item active">
-          <Link className="d-flex align-self-center" to={"../courses"}>
+          <Link className="d-flex align-self-center" to={"../inductions"}>
             <svg
               width="25"
               height="25"

@@ -109,8 +109,8 @@ function CoursesMain() {
   ) : (
     <>
       <div className="widget-heading d-flex justify-content-between align-items-center">
-        <h3 className="m-0">All Courses ({totalRecords})</h3>
-        <Link to={"./courses"} className="btn btn-primary btn-sm">
+        <h3 className="m-0">All Inductions ({totalRecords})</h3>
+        <Link to={"./inductions"} className="btn btn-primary btn-sm">
           View all
         </Link>
       </div>
