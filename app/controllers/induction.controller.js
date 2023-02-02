@@ -60,6 +60,9 @@ exports.index = async (req, res) => {
             subTitle: "$subTitle",
             thumbnail: "$thumbnail",
             description: 1,
+            deptID:1,
+            parentCompany:1,
+            createdBy:1,
             numOfSlides: { $size: "$slides" },
             slides: "$slides",
           },
@@ -109,7 +112,60 @@ exports.index = async (req, res) => {
 
 
 
-    } else {
+    } else if(user.role == "company"){
+      Induction.aggregate([
+        {
+          $match: { $expr: { $eq: ["$parentCompany", ObjectId(user.userID)] } },
+        },
+        {
+          $lookup: {
+            from: "induction_slides",
+            localField: "_id",
+            foreignField: "slideInductionId",
+            as: "slides",
+          },
+        },
+        {
+          $unwind: "$_id",
+        },
+        
+        {
+          $project: {
+            _id: 1,
+            title: "$title",
+            subTitle: "$subTitle",
+            thumbnail: "$thumbnail",
+            description: 1,
+            deptID:1,
+            parentCompany:1,
+            createdBy:1,
+            numOfSlides: { $size: "$slides" },
+            slides: "$slides",
+          },
+        }
+      ])
+        .then((data) => {
+          return res.status(200).send({
+            status: true,
+            message: "Inductions",
+            data: data,
+            body: req.decoded,
+            pagination: {
+              totalRecords: data.length
+            }
+            
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+            data: {},
+            totalRecords: 0
+          });
+        });
+
+    }else{
       // .populate('eventsAttended')
       Induction.aggregate([
         {
@@ -134,6 +190,9 @@ exports.index = async (req, res) => {
             subTitle: "$subTitle",
             thumbnail: "$thumbnail",
             description: 1,
+            deptID:1,
+            parentCompany:1,
+            createdBy:1,
             numOfSlides: { $size: "$slides" },
             slides: "$slides",
           },
@@ -500,7 +559,7 @@ exports.store = async (req, res) => {
     let iData       = JSON.parse(req.body.induction);
     iData.deptID    = ObjectId(req.body.deptID);
     iData.createdBy = ObjectId(user.userID);
-    iData.parentCompany = ObjectId(user.parentCompany);
+    iData.parentCompany = (user.role ==='company')? ObjectId(user.userID) :ObjectId(user.parentCompany);
     iData.thumbnail = thumbnail;
 
 

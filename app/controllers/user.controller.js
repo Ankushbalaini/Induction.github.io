@@ -376,7 +376,7 @@ exports.signUp = (req, res) => {
     });
   } else {
     // Save entry in user cred table
-
+    
     const user_cred = new UserCred({ ...req.body });
     const token = jwt.sign(
       { userID: user_cred._id, email: user_cred.email, role: user_cred.role },
@@ -386,6 +386,7 @@ exports.signUp = (req, res) => {
       }
     );
     user_cred.token = token;
+    
 
     // here call save function
     user_cred
@@ -607,6 +608,8 @@ exports.edit = (req, res) => {
     });
     req.body.profilePhoto = Img.name;
   }
+
+  req.body.deptID = ObjectId(req.body.deptID);
 
   // users colletion
   User.updateOne(

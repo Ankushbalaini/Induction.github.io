@@ -169,28 +169,11 @@ exports.listByCompany = (req, res) => {
  */
 exports.add = (req, res) => {
   try {
-    const { email, role } = req.body;
-
-    req.body.parentCompany = ObjectId(req.body.parentCompany);
-    var InstructorCred = new UserCred(req.body);
-
-    // Create token
-    const token = jwt.sign(
-      { _id: InstructorCred._id, email: email, role: role },
-      "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
-      {
-        expiresIn: "2h",
-      }
-    );
-    
-    // save user token
-    InstructorCred.token = token;
-    InstructorCred.save();
-
-    req.body.userID = ObjectId(InstructorCred._id);
-    var instructorData = new InstructorTable(req.body);
-
+    // check who is adding instructor
+    const user = req.decoded;
+    const { email } = req.body;
     // logo validation
+
     if (!req.files || Object.keys(req.files).length === 0) {
       if (req.body.profilePhoto === "") {
         return res.status(500).send({
@@ -210,9 +193,31 @@ exports.add = (req, res) => {
           });
         }
       });
-      instructorData.profilePhoto = Img.name;
+      //instructorData.profilePhoto = Img.name;
     }
+
+    req.body.parentCompany = (user.role === 'company') ? ObjectId(user.userID) : ObjectId(req.body.parentCompany);
     
+    var InstructorCred = new UserCred(req.body);
+
+    // Create token
+    // const token = jwt.sign(
+    //   { userID: InstructorCred._id, email: email, role: 'instructor' },
+    //   "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
+    //   {
+    //     expiresIn: "2h",
+    //   }
+    // );
+    
+    // save user token
+    // InstructorCred.token = token;
+    InstructorCred.save();
+
+    req.body.userID = ObjectId(InstructorCred._id);
+    var instructorData = new InstructorTable(req.body);
+
+    instructorData.profilePhoto = Img.name;
+
     instructorData
       .save()
       .then((response) => {
@@ -234,7 +239,7 @@ exports.add = (req, res) => {
   } catch (e) {
     return res.status(400).send({
       status: false,
-      message: "catch" + e.message,
+      message: "catch " + e.message,
       data: {},
     });
   }

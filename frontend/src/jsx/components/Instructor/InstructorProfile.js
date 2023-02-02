@@ -8,7 +8,7 @@ import clock from "./../../../images/svg/clock-1.svg";
 import { useSelector } from "react-redux";
 import UpdateProfile from "./UpdateProfile";
 
-const images = require.context('../../../../../images/instructor/', true);
+const images = require.context('../../../../../images/profile/', true);
 
 const WidgetBlog = ({ changeImage, title, link }) => {
   return (

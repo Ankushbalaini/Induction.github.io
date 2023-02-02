@@ -105,7 +105,6 @@ const CreateInduction = () => {
       method: "POST",
       headers: {
         "x-access-token": token,
-        
       },
       body: formData,
     }).then((data) => data.json());
@@ -116,7 +115,7 @@ const CreateInduction = () => {
         timer: 2000,
       }).then((value) => {
         // return <Navigate to="/inductions" />;
-        navigate.push("/courses");
+        navigate.push("/inductions");
       });
     } else {
       return swal("Failed",  response.message , "error");
@@ -204,8 +203,7 @@ const CreateInduction = () => {
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">Department</label>
                   <div className="col-sm-9">
-                    <select
-					name="deptID"
+                    <select name="deptID"
                       className="form-control"
                       onChange={(e) => setDeptID(e.target.value)}
                     >
