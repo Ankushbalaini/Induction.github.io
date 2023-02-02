@@ -8,7 +8,7 @@ import DropDownBlog from "./../Dashboard/DropDownBlog";
 import ActionDropDown from "./../Dashboard/ActionDropDown";
 import UpdateProfile from "./UpdateProfile";
 
-const images = require.context("../../../../../images/instructor/", true);
+const images = require.context("../../../../../images/profile/", true);
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
