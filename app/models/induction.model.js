@@ -17,6 +17,9 @@ module.exports = (mongoose) => {
         noOfAttempts: { type: String, default: 10 },
         status: { type: Boolean, default: 0 },
         deleted: { type: Boolean, default: 0 },
+        attachedSlides: [
+          { type: mongoose.Schema.Types.ObjectId, ref: 'induction_slides' }
+        ]
       },
       { timestamps: true }
     )

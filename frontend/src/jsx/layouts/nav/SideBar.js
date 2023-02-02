@@ -10,6 +10,13 @@ import { useSelector } from "react-redux";
 import { useScrollPosition } from "@n8tb1t/use-scroll-position";
 import { ThemeContext } from "../../../context/ThemeContext";
 
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
+
 class MM extends Component {
   componentDidMount() {
     this.$el = this.el;
@@ -63,7 +70,7 @@ const SideBar = () => {
 
   // super-admin
 
-  let deshBoard = ["", "instructor-dashboard", "profile", "company-profile"],
+  let deshBoard = ["dashboard", "instructor-dashboard", "company-dashboard", "profile", "company-profile"],
     department = ["departments", "add-department"],
     companies = ["companies", "add-company"],
     instructor = [
@@ -75,9 +82,9 @@ const SideBar = () => {
     inductions = [
       "inductions",
       "create-induction",
-      "create-induction-new",
+      //"create-induction-new",
       "single-induction-view",
-      "courses",
+      //"courses",
       "start-test",
     ],
     students = ["students", "add-student"];
@@ -96,21 +103,40 @@ const SideBar = () => {
     >
       <PerfectScrollbar className="dlabnav-scroll">
         <MM className="metismenu" id="menu">
-          {role == "super_admin" ? (
+
+          {/* Dashboards - Super Admin */}
+          {USER_ROLES.SUPER_ADMIN == role ? (
             <>
               <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
                 <Link className="" to="/dashboard">
                   <i className="bi bi-grid"></i>
                   <span className="nav-text">Dashboard</span>
                 </Link>
+                <ul>
+                  <li>
+                    <Link
+                      className={`${
+                        path === "dashboard" ? "mm-active" : ""
+                      }`}
+                      to="/dashboard"
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                </ul>
               </li>
             </>
           ) : null}
 
-          <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
-            <ul>
-              {role == "instructor" ? (
-                <>
+          {/* Dashboards - Instructor */}
+          { USER_ROLES.INSTRUCTOR === role ? (
+            <>
+              <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
+                <Link className="" to="/instructor-dashboard">
+                  <i className="bi bi-grid"></i>
+                  <span className="nav-text">Dashboard</span>
+                </Link>
+                <ul>
                   <li>
                     <Link
                       className={`${
@@ -131,15 +157,24 @@ const SideBar = () => {
                       Profile
                     </Link>
                   </li>
-                </>
-              ) : null}
 
-              {role === "company" ? (
-                <>
+                </ul>
+              </li>
+            </>
+          ) : null}
+
+          {/* Dashboards - Company */}
+          { USER_ROLES.COMPANY === role ?
+              <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
+                <Link className="" to="/company-dashboard">
+                  <i className="bi bi-grid"></i>
+                  <span className="nav-text">Dashboard</span>
+                </Link>
+                <ul>
                   <li>
                     <Link
-                      className={`${path === "dashboard" ? "mm-active" : ""}`}
-                      to="/dashboard"
+                      className={`${path === "company-dashboard" ? "mm-active" : ""}`}
+                      to="/company-dashboard"
                     >
                       {" "}
                       Dashboard
@@ -152,14 +187,17 @@ const SideBar = () => {
                       }`}
                       to="/company-profile"
                     >
-                      Comp Profile
+                      Profile
                     </Link>
                   </li>
-                </>
-              ) : null}
-            </ul>
-          </li>
+                </ul>
+              </li>
+               : null
+            }
 
+
+          
+          {/* Department - Visible for Super Admin and Company Only */}
           {role === "super_admin" || role === "company" ? (
             <li className={`${department.includes(path) ? "mm-active" : ""}`}>
               <Link className="has-arrow" to="#">
@@ -190,7 +228,10 @@ const SideBar = () => {
             </li>
           ) : null}
 
-          {role === "super_admin" ? (
+
+          {/*  Company Module - Visible to Only Super Admin*/}
+
+          { USER_ROLES.SUPER_ADMIN === role ? (
             <li className={`${companies.includes(path) ? "mm-active" : ""}`}>
               <Link className="has-arrow" to="#">
                 {" "}
@@ -272,9 +313,9 @@ const SideBar = () => {
                   <li>
                     <Link
                       className={`${
-                        path === "create-induction-new" ? "mm-active" : ""
+                        path === "create-induction" ? "mm-active" : ""
                       }`}
-                      to="/create-induction-new"
+                      to="/create-induction"
                     >
                       Create Induction{" "}
                     </Link>
@@ -284,12 +325,24 @@ const SideBar = () => {
 
               <li>
                 <Link
-                  className={`${path === "courses" ? "mm-active" : ""}`}
-                  to="/courses"
+                  className={`${path === "inductions" ? "mm-active" : ""}`}
+                  to="/inductions"
                 >
                   Inductions{" "}
                 </Link>
               </li>
+
+              { USER_ROLES.USER === role ?
+              <li>
+                <Link
+                  className={`${path === "attempted-inductions" ? "mm-active" : ""}`}
+                  to="/attempted-inductions"
+                >
+                  Attempted Inductions{" "}
+
+                </Link>
+              </li> : null }
+
             </ul>
           </li>
 

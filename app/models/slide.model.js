@@ -3,7 +3,7 @@ module.exports = mongoose => {
       "induction_slides",
       mongoose.Schema(
         {
-            slideInductionId : { type: String },
+            slideInductionId : { type: mongoose.Schema.Types.ObjectId },
             slideTitle: { type: String, default : null},
             slideContent: { type: String },
             slideOrder: {type : String }

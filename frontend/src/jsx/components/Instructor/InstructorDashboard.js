@@ -63,72 +63,124 @@ const timelineBlog = [
 const InstructorDashboard = () =>{
 	return(
 		<div>
-		
+		<div className="row">
+		<div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
+			   <div className="widget-stat card bg-primary">
+				<div className="card-body  p-4">
+				  <div className="media">
+					<span className="me-3">
+					  <i className="la la-users"></i>
+					</span>
+					<div className="media-body text-white">
+					  <p className="mb-1">Total Students</p>
+					  <h3 className="text-white">32</h3>
+					  <div className="progress mb-2 bg-secondary">
+						<div
+						  className="progress-bar progress-animated bg-light"
+						  style={{ width: "80%" }}
+						></div>
+					  </div>
+					  <small>80% Increase in 20 Days</small>
+					</div>
+				  </div>
+				</div>
+			   </div>
+			  </div>
+			
+			  <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
+			   <div className="widget-stat card bg-secondary">
+				 <div className="card-body p-4">
+				   <div className="media">
+					 <span className="me-3">
+					   <i className="la la-graduation-cap"></i>
+					 </span>
+					 <div className="media-body text-white">
+					   <p className="mb-1">Total Course</p>
+					   <h3 className="text-white">28</h3>
+					   <div className="progress mb-2 bg-primary">
+						 <div
+						   className="progress-bar progress-animated bg-light"
+						   style={{ width: "76%" }}
+						 ></div>
+					   </div>
+					   <small>76% Increase in 20 Days</small>
+					 </div>
+				   </div>
+				 </div>
+			   </div>
+			  </div>
+
+			  <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
+			   <div className="widget-stat card bg-danger">
+				 <div className="card-body p-4">
+				   <div className="media">
+					 <span className="me-3">
+					   <i className="bi bi-award-fill"></i>
+					 </span>
+					 <div className="media-body text-white">
+					   <p className="mb-1">Student Passed</p>
+					   <h3 className="text-white">7/10</h3>
+					   <div className="progress mb-2 bg-primary">
+						 <div
+						   className="progress-bar progress-animated bg-light"
+						   style={{ width: "76%" }}
+						 ></div>
+					   </div>
+					   <small>76% Increase in 20 Days</small>
+					 </div>
+				   </div>
+				 </div>
+			   </div>
+			  </div>
+			 </div>
 		
 			<div className="row">
 				<div className="col-xl-8 col-xxl-7">
 			
 					<div className="row">
-						<div className="col-xl-4 col-xxl-6 col-sm-6">
-							<div className="card">
-								<div className="card-header border-0 pb-0">
-								
-									<h4>Total Students</h4>
-								</div>
-								<div className="card-body pt-0 px-0 ">
-									
-									<TotalStudentsChart />
-									<div className="d-flex justify-content-between align-items-center flex-wrap px-4">
-										<h4 className="fs-18 font-w600 mb-0">12.345</h4>
-										<span><small className="text-secondary">5.4% </small>than last year</span>
-									</div>
-								</div>
-							</div>
+					<div className="col-xl-8 col-lg-12 col-sm-12">
+					<div className="card">
+					  <div className="card-header border-0 pb-0">
+						<h2 className="card-title">Working Activity</h2>
+					  </div>
+					  <div className="card-body pb-0">
+						<p>
+						  Lorem Ipsum is simply dummy text of the printing and typesetting
+						  industry.
+						</p>
+						<ul className="list-group list-group-flush">
+
+						  <li className="list-group-item d-flex px-0 justify-content-between">
+							<strong>Name</strong>
+							<span className="mb-0">William</span>
+						  </li>
+						  <li className="list-group-item d-flex px-0 justify-content-between">
+							<strong>Parent Company</strong>
+							<span className="mb-0">BJS</span>
+						  </li>
+						</ul>
+					  </div>
+					  <div className="card-footer pt-0 pb-0 text-center">
+						<div className="row">
+						  <div className="col-4 pt-3 pb-3 border-right">
+							<h3 className="mb-1 text-primary">150</h3>
+							<span>Projects</span>
+						  </div>
+						  <div className="col-4 pt-3 pb-3 border-right">
+							<h3 className="mb-1 text-primary">140</h3>
+							<span>Uploads</span>
+						  </div>
+						  <div className="col-4 pt-3 pb-3">
+							<h3 className="mb-1 text-primary">45</h3>
+							<span>Tasks</span>
+						  </div>
 						</div>
+					  </div>
+					</div>
+				  </div>
 
 						
-						<div className="col-xl-4 col-xxl-6 col-sm-6">
-							<div className="card">
-								<div className="card-header border-0 pb-0">
-								
-									<h4>Total Students</h4>
-								</div>
-								<div className="card-body pt-0 px-0 ">
-									
-								<TotalStudentsChart />
-									<div className="d-flex justify-content-between align-items-center flex-wrap px-4">
-										<h4 className="fs-18 font-w600 mb-0">12.345</h4>
-										<span><small className="text-secondary">5.4% </small>than last year</span>
-									</div>
-								</div>
-							</div>
-						</div>
 						
-						<div className="col-xl-4 col-xxl-6 col-sm-6">
-							<div className="card ">
-								<div className="card-header border-0 pb-0">
-									<h4>Courses</h4>
-								</div>
-								<div className="card-body pt-0">
-									<div className="d-flex align-items-center courses-chart flex-wrap">
-										<span className="ic-icon me-2">
-											<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M9.00001 6.86665C9.09359 6.86611 9.18637 6.88405 9.27301 6.91944C9.35965 6.95483 9.43845 7.00697 9.5049 7.07288L12.3493 9.91732C12.4832 10.0512 12.5585 10.2328 12.5585 10.4222C12.5585 10.6116 12.4832 10.7932 12.3493 10.9271C12.2154 11.061 12.0338 11.1362 11.8445 11.1362C11.6551 11.1362 11.4735 11.061 11.3396 10.9271L9.00001 8.58043L6.66045 10.92C6.52441 11.0365 6.34943 11.0974 6.17046 11.0904C5.99149 11.0835 5.82172 11.0093 5.69507 10.8827C5.56843 10.7561 5.49424 10.5863 5.48732 10.4073C5.48041 10.2283 5.54129 10.0534 5.65778 9.91732L8.50223 7.07288C8.63468 6.9415 8.81345 6.86744 9.00001 6.86665Z" fill="white"/>
-											</svg>
-										</span>
-										<h4 className="mb-0 me-auto">100</h4>
-										<span><small className="text-secondary">+15%  </small>than last year</span>
-									</div>
-									<div className="pt-line">
-										<div className="peity-line">
-											<Sparklines data={sampleData} data-width="100%" height={102}>
-												<SparklinesLine color="#fec64f" style={{strokeWidth: 4}}/>
-											 </Sparklines>
-										</div>	 
-									</div>	
-								</div>
-							</div>
-						</div>
 						
 						<div className="col-xl-12">
 							<div className="card">
@@ -161,7 +213,7 @@ const InstructorDashboard = () =>{
 								</div>
 
 								<div className="card-body">
-									<WorkingActivityChart  />
+								<WorkingActivityChart  />
 									
 								</div>
 								

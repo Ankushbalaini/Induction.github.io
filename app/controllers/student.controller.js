@@ -22,7 +22,7 @@ exports.index = (req, res) => {
       },
     },
     {
-      $unwind: "$profile"
+      $unwind: "$profile",
     },
 
     {
@@ -30,30 +30,24 @@ exports.index = (req, res) => {
         _id: 1,
         email: 1,
         role: 1,
+        status: 1,
         profile: 1,
-        createdAt:1
+        createdAt: 1,
       },
     },
   ])
     .then((data) => {
-      res.status(200).send({
+      return res.status(200).send({
         status: true,
         message: "All students Listing",
         data: data,
       });
     })
     .catch((err) => {
-      res.status(500).send({
+      return res.status(500).send({
         status: false,
         message: err.message,
         data: {},
       });
     });
 };
-
-
-
-
-
-
-

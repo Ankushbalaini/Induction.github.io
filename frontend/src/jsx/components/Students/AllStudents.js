@@ -3,10 +3,15 @@ import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import ActionDropDown from "./ActionDropDown";
 import UpdateProfile from "./UpdateStudentModal";
+import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const images = require.context("../../../../../images/profile/", true);
 
 const AllStudents = () => {
+  const navigate = useHistory();
+  const token = useSelector((state) => state.auth.auth.token);
+
   const [data, setData] = useState(
     document.querySelectorAll("#student_wrapper tbody tr")
   );
@@ -27,16 +32,9 @@ const AllStudents = () => {
     }});
 
   // model popup usestate
-  const [firstName, setFirstName] = useState('');
-	const [lastName, setLastName] 	= useState('');
-  const [email, setEmail] 		= useState('');
-	const [password, setPassword] = useState('');
-  const [image, setImage] = useState({ preview: "", data: "" });
-  const [address, setAddress] = useState();
-  const [aboutStudent, setAboutStudent] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalData, setModalData] = useState();
-
+  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
+  
   // Active data
   const chageData = (frist, sec) => {
     for (var i = 0; i < data.length; ++i) {
@@ -52,11 +50,53 @@ const AllStudents = () => {
 		return images(`./${imageName}`);
 	}	
 
+  // change status
+  const changeUserStatus = (userID, status) =>{
+    // user id
+    swal({
+      title: "Are you sure?",
+      text:
+        `Once status Changed, User will get or loss access to account`,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (willChange) => {
+      if (willChange) {
+
+        const response = await fetch("http://localhost:8081/api/users/changeUserStatus", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token" : token,
+          },
+          body: JSON.stringify({ "userID" : userID, "status": status})
+        }).then((data) => data.json());
+
+
+        if ("status" in response && response.status == true) {
+          swal("Poof! Your record has been updated!", {
+            icon: "success",
+          }).then(()=>{
+            setIsUserStatusChanged(true);
+            //navigate.push("/students");
+          });
+          
+        } else {
+          return swal("Failed", response.message, "error");
+        }
+
+      } else {
+        swal("Your status is not changed!");
+      }
+    })
+
+
+  }
+
     // callback function to opdate state
     const trackOnclick = (payload, pdata) => {
       if(pdata){
         setProfileData(pdata);
-        console.log(pdata);
       } 
       setIsModalOpen(payload);
     }
@@ -94,6 +134,7 @@ const AllStudents = () => {
     if ("status" in response && response.status == true) {
       setStudents(response.data);
       setLoading(false);
+      setIsUserStatusChanged(false);
       setData(document.querySelectorAll("#student_wrapper tbody tr"));
     } else {
       return swal("Failed", "Error message", "error");
@@ -104,7 +145,7 @@ const AllStudents = () => {
   useEffect(() => {
     handlepageLoad();
     setData(document.querySelectorAll("#student_wrapper tbody tr"));
-  }, [profileData,isModalOpen]);
+  }, [profileData,isModalOpen,isUserStatusChanged]);
 
   // Active pagginarion
   activePag.current === 0 && chageData(0, sort);
@@ -171,7 +212,22 @@ const AllStudents = () => {
                           <td>{row.email}</td>
                           <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
                           <td>
-                            <span className={`badge  light badge-success`}>{`Active`}</span>
+
+                          <Link
+                            className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}
+                            to="/students"
+                            onClick={() => changeUserStatus(row._id, row.status) }
+                            
+                          >
+                            { (row.status) ? 'Active' : 'Inactive'}
+                          </Link>
+                          
+
+                            {/* <span className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}>
+                              <a onClick={ changeUserStatus(row._id) } >{ (row.status) ? 'Active' : 'Inactive'}</a>
+                              
+                              
+                            </span> */}
                           </td>
                           <td>
                             <ActionDropDown trackOnclick={trackOnclick} profileData={row} trackDeleteClick={trackDeleteClick}/>

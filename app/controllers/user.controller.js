@@ -2,6 +2,8 @@ const db = require("../models");
 const UserCred = db.user_cred;
 const User = db.users;
 const CompanyDB = db.company;
+const UserInductionResults = db.user_induction_results;
+
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -638,36 +640,148 @@ exports.setting = (req, res) => {
   try {
     const id = ObjectId(req.decoded.userID);
 
-    UserCred.findOneAndUpdate({ _id: id , password:req.body.currentPassword },
-      {password: req.body.newPassword},
-      (error, user)=>{
+    UserCred.findOneAndUpdate(
+      { _id: id, password: req.body.currentPassword },
+      { password: req.body.newPassword },
+      (error, user) => {
         // if error
-        if(error){
+        if (error) {
           return res.status(500).send({
             status: false,
             message: error.message,
-         });
+          });
         }
 
-        // if user 
-        if(user){
+        // if user
+        if (user) {
           return res.status(200).send({
             status: true,
             message: "User has been updated!",
             data: user.value,
           });
-        }else{
+        } else {
           return res.status(500).send({
             status: false,
-            message: "Invalid details"
-         });
+            message: "Invalid details",
+          });
         }
-    });
-    
+      }
+    );
   } catch (err) {
     return res.status(500).send({
       message: err.message,
       status: false,
+    });
+  }
+};
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+exports.inductions = (req, res) => {
+  try {
+    const userID = ObjectId(req.decoded.userID);
+
+    // 63d22a6b0fcd4d8baa9cc79f
+    // 63d22a6b0fcd4d8baa9cc79f
+
+    //var distinctIdCode = { $group: { _id: { team_code: "$team_code", team_id: "$team_id" } } }
+    //db.foo.aggregate([distinctIdCode])
+    /*
+    db.user_induction_results.aggregate( [
+      {
+        $group: {
+           _id: userID,
+           count: { $count: { } },
+        }
+      }
+    ] ).then((data)=>{
+      return res.status(200).send({
+        message: "Success here",
+        status: true,
+        data: data
+      });
+    })
+    .catch((err)=>{
+      return res.status(500).send({
+        message: err.message,
+        status: false
+      });
+    });
+
+    */
+
+    UserInductionResults.find({ userID: userID })
+      .then((data) => {
+        return res.status(200).send({
+          message: "Success here",
+          status: true,
+          data: data,
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          message: err.message,
+          status: false,
+        });
+      });
+  } catch (err) {
+    return res.status(500).send({
+      message: err.message,
+      status: false,
+    });
+  }
+};
+
+/**
+ * Toggle user status = active/inactive
+ *
+ */
+exports.changeUserStatus = (req, res) => {
+  // userID - cred table
+  //
+  try {
+    UserCred.findOneAndUpdate(
+      { _id: req.body.userID },
+      { status: req.body.status ? false : true },
+      (error, user) => {
+        // if error
+        if (error) {
+          return res.status(500).send({
+            status: false,
+            message: error.message,
+          });
+        }
+
+        // if user
+        if (user) {
+          return res.status(200).send({
+            status: true,
+            message: "User has been updated!",
+            data: user.value,
+          });
+        } else {
+          return res.status(500).send({
+            status: false,
+            message: "Status not changed",
+          });
+        }
+      }
+    );
+
+    // return res.status(200).send({
+    //   status: true,
+    //   message: "Status Changed",
+    //   data: req.body,
+    // });
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      message: err.message,
+      data: {},
     });
   }
 };

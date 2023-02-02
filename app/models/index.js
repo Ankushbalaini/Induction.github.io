@@ -17,5 +17,6 @@ db.instructor = require("./instructor.model.js")(mongoose);
 db.images = require("./images.model.js")(mongoose);
 db.mcqs = require("./mcq.model.js")(mongoose);
 db.user_inductions = require("./UserInductions.model")(mongoose);
+db.user_induction_results = require("./UserInductionResults.model")(mongoose);
 
 module.exports = db;
