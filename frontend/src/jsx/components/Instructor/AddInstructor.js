@@ -11,13 +11,13 @@ import CompanyDropdown from '../Companies/CompanyDropdown';
 const AddInstructor = () => {
   const navigate = useHistory();
   const loggedrole = useSelector((state) => state.auth.auth.role);
-	const parentCompanyID = useSelector((state) => state.auth.auth.id);
+  const token = useSelector((state) => state.auth.auth.token);
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [role, setRole] = useState('instructor');
   const [name, setName] = useState();
-  const [parentCompany, setParentCompany] = useState(parentCompanyID);
+  const [parentCompany, setParentCompany] = useState('');
   const [profilePhoto, setProfilePhoto] = useState('dummy-user.png');
   const [image, setImage] = useState({preview:'', data:''})
   const [address, setAddress] = useState();
@@ -52,6 +52,9 @@ const AddInstructor = () => {
 
     const response = await fetch("http://localhost:8081/api/instructor/add", {
       method: "POST",
+      headers: {
+        "x-access-token": token,
+      },
       body: data,
     }).then((user) => user.json());
 

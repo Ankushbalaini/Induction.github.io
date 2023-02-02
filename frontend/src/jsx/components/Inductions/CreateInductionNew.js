@@ -105,7 +105,6 @@ const CreateInduction = () => {
       method: "POST",
       headers: {
         "x-access-token": token,
-        
       },
       body: formData,
     }).then((data) => data.json());
@@ -116,7 +115,7 @@ const CreateInduction = () => {
         timer: 2000,
       }).then((value) => {
         // return <Navigate to="/inductions" />;
-        navigate.push("/courses");
+        navigate.push("/inductions");
       });
     } else {
       return swal("Failed",  response.message , "error");
