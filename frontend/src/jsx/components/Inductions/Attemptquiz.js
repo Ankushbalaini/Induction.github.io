@@ -5,10 +5,8 @@ import {nanoid} from 'nanoid';
 import { Button, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Editable from './Editable';
-
-
-
 const { Fragment } = require("react");
+
 const tableList = [
 	{
 		id:"1", name:'Noora Sarao ', department:'BJS HR',gender:'Female', 
