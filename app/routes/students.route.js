@@ -9,8 +9,9 @@ module.exports = function (app) {
   var router = require("express").Router();
   const Student = require("../controllers/student.controller.js");
 
-
-
   router.get("/", Student.index);
+  
+
+  
   app.use("/api/students", router);
 };

@@ -148,7 +148,7 @@ const InstructorProfile = () => {
           <WidgetBlog changeImage={clock} title="Inductions" link="courses" />
           <div className="widget-heading d-flex justify-content-between align-items-center">
             <h3 className="m-0">My Inductions</h3>
-            <Link to={"./courses"} className="btn btn-primary btn-sm">
+            <Link to={"./inductions"} className="btn btn-primary btn-sm">
               View all
             </Link>
           </div>

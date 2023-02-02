@@ -27,6 +27,7 @@ import CourseDetail2 from "./components/Courses/CourseDetail2";
 import ListCompanies from "./components/Companies/Companies";
 import AddCompany from "./components/Companies/AddCompany";
 import CompanyProfile from "./components/Companies/CompanyProfile";
+import CompanyDashboard from "./components/Companies/CompanyDashboard";
 
 //Department----
 import AllDepartments from "./components/Department/ListDepartment";
@@ -62,6 +63,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import { store } from "../../src/store/store";
 import ViewMcq from "./components/Inductions/Viewquiz";
 import AttemptQuiz from "./components/Inductions/Attemptquiz";
+import AttemptedInductions from "./components/Students/AttemptedInductions";
 
 const Markup = () => {
   var newState = store.getState();
@@ -76,11 +78,12 @@ const Markup = () => {
     { url: "company-profile", component: CompanyProfile},
     { url: "instructor-profile", component: InstructorProfile},
     { url: "setting", component: Setting },
+    { url: "company-dashboard", component: CompanyDashboard},
 
     // Courses ----
-    { url: "courses", component: CoursesMain },
-    { url: "course-details-1", component: CourseDetail1 },
-    { url: "course-details-2", component: CourseDetail2 },
+    { url: "inductions", component: CoursesMain },
+    // { url: "course-details-1", component: CourseDetail1 },
+    // { url: "course-details-2", component: CourseDetail2 },
 
     // Companies ----
     { url: "companies", component: ListCompanies },
@@ -91,10 +94,10 @@ const Markup = () => {
     { url: "add-department", component: AddDepartment },
 
     // Inductions ----
-    { url: "inductions", component: Inductions },
+    // { url: "inductions", component: Inductions },
     { url: "induction/:id", component: InductionDetail },
-    { url: "create-induction", component: CreateInduction },
-    { url: "create-induction-new", component: CreateInductionNew },
+    //{ url: "create-induction", component: CreateInduction },
+    { url: "create-induction", component: CreateInductionNew },
     { url: "single-induction-view/:id", component: SingleInductionView },
     { url: "mcq/:inductionID", component: Mcq },
     { url : "viewmcq/:id", component :ViewMcq},
@@ -111,6 +114,7 @@ const Markup = () => {
     { url: "instructor-students", component: InstructorStudents },
 
     { url: "students", component: AllStudents },
+    { url : "attempted-inductions", component : AttemptedInductions},
 
     // Apps
     { url: "app-profile", component: AppProfile },

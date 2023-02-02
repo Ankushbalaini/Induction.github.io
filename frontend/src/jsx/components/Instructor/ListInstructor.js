@@ -10,11 +10,17 @@ import UpdateProfile from "./UpdateProfile";
 
 const images = require.context("../../../../../images/instructor/", true);
 
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
 
 // api call
 async function getInstructorApi(role, companyID) {
     var getInstructorsApi = "http://localhost:8081/api/instructor/list";
-    if (role == "company") {
+    if (USER_ROLES.COMPANY === role) {
       var getInstructorsApi =
         "http://localhost:8081/api/instructor/listByCompany?role=company&parentCompany=" +
         companyID;
@@ -25,11 +31,12 @@ async function getInstructorApi(role, companyID) {
         "Content-Type": "application/json",
       },
     }).then((data) => data.json());
-  }
+}
 
 
 const Instructors = () => {
     const role = useSelector((state) => state.auth.auth.role);
+    const token = useSelector((state) => state.auth.auth.token);
     const parentCompany = useSelector((state) => state.auth.auth.id);
 
   const [data, setData] = useState(
@@ -41,7 +48,49 @@ const Instructors = () => {
   const activePag = useRef(0);
   const [test, settest] = useState(0);
   const [students, setStudents] = useState(0);
+  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
   const [instructorData, setInstructorData] = useState({profile: {name:'', email:'',aboutMe:'',address:'',logo:'',_id:''} });
+
+
+  // change status
+  const changeUserStatus = (userID, status) =>{
+    // user id
+    swal({
+      title: "Are you sure?",
+      text:
+        `Once status Changed, User will get or loss access to account`,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (willChange) => {
+      if (willChange) {
+
+        const response = await fetch("http://localhost:8081/api/users/changeUserStatus", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token" : token,
+          },
+          body: JSON.stringify({ "userID" : userID, "status": status})
+        }).then((data) => data.json());
+
+
+        if ("status" in response && response.status == true) {
+          swal("Poof! Your record has been updated!", {
+            icon: "success",
+          }).then(()=>{
+            setIsUserStatusChanged(true);
+          });
+          
+        } else {
+          return swal("Failed", response.message, "error");
+        }
+
+      } else {
+        swal("Your status is not changed!");
+      }
+    })
+  }
 
 
   // Active data
@@ -106,7 +155,16 @@ const Instructors = () => {
             <td>{row.email}</td>
             <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
             <td>
-              <span className={`badge  light badge-success`}>{`Active`}</span>
+              {/* <span className={`badge  light badge-success`}>{`Active`}</span> */}
+              <Link
+                className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}
+                to="/instructors"
+                onClick={() => changeUserStatus(row._id, row.status) }
+                
+              >
+                { (row.status) ? 'Active' : 'Inactive'}
+              </Link>
+              
             </td>
             <td>
             <ActionDropDown trackOnclick={trackOnclick} userData={row} trackDeleteClick={trackDeleteClick}/>
@@ -115,13 +173,14 @@ const Instructors = () => {
           </tr>
         ));
         setStudents(rows);
+        setIsUserStatusChanged(false);
         setData(document.querySelectorAll("#student_wrapper tbody tr"));
       } else {
         return swal("Failed", "Error message", "error");
       }
     };
     handlepageLoad();
-  }, [isModalOpen]);
+  }, [isModalOpen, isUserStatusChanged]);
 
   // api call
   

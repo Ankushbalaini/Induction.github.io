@@ -109,8 +109,8 @@ function CoursesMain() {
   ) : (
     <>
       <div className="widget-heading d-flex justify-content-between align-items-center">
-        <h3 className="m-0">All Courses ({totalRecords})</h3>
-        <Link to={"./courses"} className="btn btn-primary btn-sm">
+        <h3 className="m-0">All Inductions ({totalRecords})</h3>
+        <Link to={"./inductions"} className="btn btn-primary btn-sm">
           View all
         </Link>
       </div>
@@ -122,9 +122,9 @@ function CoursesMain() {
                 <div className="courses-bx">
                   <div className="dlab-media">
                     {data.thumbnail !== "" ? (
-                      <img src={loadImage(data.thumbnail)} alt="" />
+                      <img className="img-fluid" src={loadImage(data.thumbnail)} alt="" />
                     ) : (
-                      <img src={course1} />
+                      <img className="img-fluid" src={course1} />
                     )}
                   </div>
                   <div className="dlab-info">
@@ -145,7 +145,7 @@ function CoursesMain() {
                           >
                             <circle cx="2" cy="2.5" r="2" fill="#DBDBDB" />
                           </svg>
-                          <span>
+                          {/* <span>
                             5.0
                             <svg
                               width="16"
@@ -159,7 +159,7 @@ function CoursesMain() {
                                 fill="#FEC64F"
                               />
                             </svg>
-                          </span>
+                          </span> */}
                         </p>
                       </div>
                       <h4 className="text-primary">
@@ -181,7 +181,7 @@ function CoursesMain() {
                             fill="#c7c7c7"
                           />
                         </svg>
-                        110+ Content
+                        {data.numOfSlides} Slides
                       </span>
                       <Link
                         to={`/single-induction-view/${data._id}`}

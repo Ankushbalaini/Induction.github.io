@@ -54,7 +54,8 @@ module.exports = function (app) {
   router.get("/", users.findAll);
   router.get("/profile", users.profile);
   router.get("/getProfile", users.getProfile);
-
+  router.get("/inductions", users.inductions);
+  
   router.get("/published", users.findAllPublished);
   router.get("/:id", users.findOne);
   router.put("/update", users.update);
@@ -66,7 +67,7 @@ module.exports = function (app) {
   
   
   router.put("/setting", users.setting);
-
+  router.put("/changeUserStatus", users.changeUserStatus);
   
   app.use("/api/users", router);
 };
