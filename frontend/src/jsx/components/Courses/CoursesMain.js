@@ -181,7 +181,7 @@ function CoursesMain() {
                             fill="#c7c7c7"
                           />
                         </svg>
-                        110+ Content
+                        {data.numOfSlides} Slides
                       </span>
                       <Link
                         to={`/single-induction-view/${data._id}`}

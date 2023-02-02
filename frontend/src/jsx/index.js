@@ -27,6 +27,7 @@ import CourseDetail2 from "./components/Courses/CourseDetail2";
 import ListCompanies from "./components/Companies/Companies";
 import AddCompany from "./components/Companies/AddCompany";
 import CompanyProfile from "./components/Companies/CompanyProfile";
+import CompanyDashboard from "./components/Companies/CompanyDashboard";
 
 //Department----
 import AllDepartments from "./components/Department/ListDepartment";
@@ -76,6 +77,7 @@ const Markup = () => {
     { url: "company-profile", component: CompanyProfile},
     { url: "instructor-profile", component: InstructorProfile},
     { url: "setting", component: Setting },
+    { url: "company-dashboard", component: CompanyDashboard},
 
     // Courses ----
     { url: "inductions", component: CoursesMain },

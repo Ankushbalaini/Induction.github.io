@@ -45,6 +45,7 @@ exports.list = (req, res) => {
             _id: 1,
             email: 1,
             role: 1,
+            status:1,
             parentCompany: 1,
             profile: 1,
             createdAt: 1
@@ -124,6 +125,7 @@ exports.listByCompany = (req, res) => {
             _id: 1,
             email: 1,
             role: 1,
+            status:1,
             parentCompany: 1,
             profile: 1,
             createdAt: 1,

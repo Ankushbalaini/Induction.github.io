@@ -123,10 +123,9 @@ const TestQuestions = (props) => {
         <>
           
           <div className="quiz-container text-justify display-6">
-            {/* <h3>My Score : {result.score}</h3>
+            <h3>My Score : {result.score}</h3>
             <h3>Correct : {result.correctAnswers}</h3>
-            <h3>Wrong : {result.wrongAnswers}</h3> */}
-
+            <h3>Wrong : {result.wrongAnswers}</h3>
             
             <h3>
               Thanks For Attempting the test your test results will be shared
@@ -136,7 +135,7 @@ const TestQuestions = (props) => {
             <div className="mb-3 row text-justify">
               <div className="col-sm-12 text-center">
                 {/* onClick={exitFullscreen} */}
-                <Link to="/inductions" className="text-justify" >
+                <Link to="/inductions" className="text-justify" onClick={exitFullscreen}>
                   {" "}
                   Click Here to exit.{" "}
                 </Link>

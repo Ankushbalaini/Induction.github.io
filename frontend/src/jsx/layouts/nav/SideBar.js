@@ -70,7 +70,7 @@ const SideBar = () => {
 
   // super-admin
 
-  let deshBoard = ["", "instructor-dashboard", "profile", "company-profile"],
+  let deshBoard = ["dashboard", "instructor-dashboard", "company-dashboard", "profile", "company-profile"],
     department = ["departments", "add-department"],
     companies = ["companies", "add-company"],
     instructor = [
@@ -103,21 +103,40 @@ const SideBar = () => {
     >
       <PerfectScrollbar className="dlabnav-scroll">
         <MM className="metismenu" id="menu">
-          {role == "super_admin" ? (
+
+          {/* Dashboards - Super Admin */}
+          {USER_ROLES.SUPER_ADMIN == role ? (
             <>
               <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
                 <Link className="" to="/dashboard">
                   <i className="bi bi-grid"></i>
                   <span className="nav-text">Dashboard</span>
                 </Link>
+                <ul>
+                  <li>
+                    <Link
+                      className={`${
+                        path === "dashboard" ? "mm-active" : ""
+                      }`}
+                      to="/dashboard"
+                    >
+                      Dashboard
+                    </Link>
+                  </li>
+                </ul>
               </li>
             </>
           ) : null}
 
-          <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
-            <ul>
-              {role == "instructor" ? (
-                <>
+          {/* Dashboards - Instructor */}
+          { USER_ROLES.INSTRUCTOR === role ? (
+            <>
+              <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
+                <Link className="" to="/instructor-dashboard">
+                  <i className="bi bi-grid"></i>
+                  <span className="nav-text">Dashboard</span>
+                </Link>
+                <ul>
                   <li>
                     <Link
                       className={`${
@@ -138,15 +157,24 @@ const SideBar = () => {
                       Profile
                     </Link>
                   </li>
-                </>
-              ) : null}
 
-              {role === "company" ? (
-                <>
+                </ul>
+              </li>
+            </>
+          ) : null}
+
+          {/* Dashboards - Company */}
+          { USER_ROLES.COMPANY === role ?
+              <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
+                <Link className="" to="/company-dashboard">
+                  <i className="bi bi-grid"></i>
+                  <span className="nav-text">Dashboard</span>
+                </Link>
+                <ul>
                   <li>
                     <Link
-                      className={`${path === "dashboard" ? "mm-active" : ""}`}
-                      to="/dashboard"
+                      className={`${path === "company-dashboard" ? "mm-active" : ""}`}
+                      to="/company-dashboard"
                     >
                       {" "}
                       Dashboard
@@ -159,14 +187,17 @@ const SideBar = () => {
                       }`}
                       to="/company-profile"
                     >
-                      Comp Profile
+                      Profile
                     </Link>
                   </li>
-                </>
-              ) : null}
-            </ul>
-          </li>
+                </ul>
+              </li>
+               : null
+            }
 
+
+          
+          {/* Department - Visible for Super Admin and Company Only */}
           {role === "super_admin" || role === "company" ? (
             <li className={`${department.includes(path) ? "mm-active" : ""}`}>
               <Link className="has-arrow" to="#">
@@ -197,7 +228,10 @@ const SideBar = () => {
             </li>
           ) : null}
 
-          {role === "super_admin" ? (
+
+          {/*  Company Module - Visible to Only Super Admin*/}
+
+          { USER_ROLES.SUPER_ADMIN === role ? (
             <li className={`${companies.includes(path) ? "mm-active" : ""}`}>
               <Link className="has-arrow" to="#">
                 {" "}

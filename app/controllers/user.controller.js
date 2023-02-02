@@ -684,7 +684,7 @@ exports.setting = (req, res) => {
 exports.inductions = (req, res) => {
   try {
     const userID = ObjectId(req.decoded.userID);
-    
+
     // 63d22a6b0fcd4d8baa9cc79f
     // 63d22a6b0fcd4d8baa9cc79f
 
@@ -714,28 +714,74 @@ exports.inductions = (req, res) => {
 
     */
 
-    UserInductionResults.find({ userID : userID })
-    .then((data)=>{
-      return res.status(200).send({
-        message: "Success here",
-        status: true,
-        data: data
+    UserInductionResults.find({ userID: userID })
+      .then((data) => {
+        return res.status(200).send({
+          message: "Success here",
+          status: true,
+          data: data,
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          message: err.message,
+          status: false,
+        });
       });
-    })
-    .catch((err)=>{
-      return res.status(500).send({
-        message: err.message,
-        status: false
-      });
-    });
-    
-
-    
-
   } catch (err) {
     return res.status(500).send({
       message: err.message,
       status: false,
+    });
+  }
+};
+
+/**
+ * Toggle user status = active/inactive
+ *
+ */
+exports.changeUserStatus = (req, res) => {
+  // userID - cred table
+  //
+  try {
+    UserCred.findOneAndUpdate(
+      { _id: req.body.userID },
+      { status: req.body.status ? false : true },
+      (error, user) => {
+        // if error
+        if (error) {
+          return res.status(500).send({
+            status: false,
+            message: error.message,
+          });
+        }
+
+        // if user
+        if (user) {
+          return res.status(200).send({
+            status: true,
+            message: "User has been updated!",
+            data: user.value,
+          });
+        } else {
+          return res.status(500).send({
+            status: false,
+            message: "Status not changed",
+          });
+        }
+      }
+    );
+
+    // return res.status(200).send({
+    //   status: true,
+    //   message: "Status Changed",
+    //   data: req.body,
+    // });
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      message: err.message,
+      data: {},
     });
   }
 };

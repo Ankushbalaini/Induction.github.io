@@ -67,7 +67,7 @@ module.exports = function (app) {
   
   
   router.put("/setting", users.setting);
-
+  router.put("/changeUserStatus", users.changeUserStatus);
   
   app.use("/api/users", router);
 };

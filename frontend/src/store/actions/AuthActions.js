@@ -61,13 +61,13 @@ export function loginAction(role, email, password, history) {
             history.push("/dashboard");
             break;
           case "company":
-            history.push("/departments");
+            history.push("/company-dashboard");
             break;
           case "instructor":
             history.push("/instructor-dashboard");
             break;
           default:
-            history.push("/courses");
+            history.push("/inductions");
             break;
         }
         

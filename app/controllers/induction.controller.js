@@ -1,8 +1,6 @@
 const db = require("../models/");
 const Induction = db.induction;
 const SlideModel = db.induction_slides;
-var jwt = require("jsonwebtoken");
-const { findAll } = require("./user.controller");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -38,6 +36,55 @@ exports.index = async (req, res) => {
 
     if (user.role == "instructor") {
       // return only own Inductions
+
+      Induction.aggregate([
+        {
+          $match: { $expr: { $eq: ["$createdBy", ObjectId(user.userID)] } },
+        },
+        {
+          $lookup: {
+            from: "induction_slides",
+            localField: "_id",
+            foreignField: "slideInductionId",
+            as: "slides",
+          },
+        },
+        {
+          $unwind: "$_id",
+        },
+        
+        {
+          $project: {
+            _id: 1,
+            title: "$title",
+            subTitle: "$subTitle",
+            thumbnail: "$thumbnail",
+            description: 1,
+            numOfSlides: { $size: "$slides" },
+            slides: "$slides",
+          },
+        }
+      ])
+        .then((data) => {
+          return res.status(200).send({
+            status: true,
+            message: "Inductions",
+            data: data,
+            pagination: {
+              totalRecords: data.length
+            }
+            
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+            data: {},
+            totalRecords: 0
+          });
+        });
+        /*
       Induction.find({ createdBy: ObjectId(user.userID) })
         .sort({ createdAt: -1 })
         .limit(limit)
@@ -58,9 +105,60 @@ exports.index = async (req, res) => {
         .catch((err) => {
           res.status(500).send({ message: "Error retrieving User with id=" });
         });
+        */
+
+
+
     } else {
       // .populate('eventsAttended')
+      Induction.aggregate([
+        {
+          $match: {  },
+        },
+        {
+          $lookup: {
+            from: "induction_slides",
+            localField: "_id",
+            foreignField: "slideInductionId",
+            as: "slides",
+          },
+        },
+        {
+          $unwind: "$_id",
+        },
+        
+        {
+          $project: {
+            _id: 1,
+            title: "$title",
+            subTitle: "$subTitle",
+            thumbnail: "$thumbnail",
+            description: 1,
+            numOfSlides: { $size: "$slides" },
+            slides: "$slides",
+          },
+        }
+      ])
+        .then((data) => {
+          return res.status(200).send({
+            status: true,
+            message: "Inductions",
+            data: data,
+            pagination: {
+              totalRecords: data.length
+            }
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+            data: {},
+            totalRecords: 0
+          });
+        });
 
+/*
       const Inductions = await Induction.find({});
 
       // return all
@@ -92,9 +190,12 @@ exports.index = async (req, res) => {
         .catch((err) => {
           res.status(500).send({ status: false, message: err.message });
         });
+        */
+       
     }
 
     return;
+    
   } catch (error) {
     return res.status(403).json({ error: error.message });
   }
