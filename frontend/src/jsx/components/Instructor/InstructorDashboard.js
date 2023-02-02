@@ -31,7 +31,7 @@ const timelineBlog = [
 
 function UpComingEvent(){
 	return(
-		<>
+		<div>
 			<div className="d-flex justify-content-between side-border">
 				<h4 className="mb-0 fs-18 font-w500">5 Jan</h4>
 				<div className="dropdown custom-dropdown mb-0">
@@ -52,13 +52,13 @@ function UpComingEvent(){
 					</li>
 				))}				
 			</ul>
-		</>
+		</div>
 	)
 }
 
 const InstructorDashboard = () =>{
 	return(
-		<>
+		<div>
 			<div className="row">
 				<div className="col-xl-8 col-xxl-7">
 					<div className="row">
@@ -176,7 +176,7 @@ const InstructorDashboard = () =>{
 				
 				
 			</div>	
-		</>
+		</div>
 	)
 }
 export default InstructorDashboard;

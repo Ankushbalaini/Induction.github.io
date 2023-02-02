@@ -14,11 +14,11 @@ import course1 from './../../../images/courses/course1.jpg';
 
 function AboutTabContent({title}){
 	return(
-		<>
+		<div>
 			<h4>{title}</h4>
 			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
 			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-		</>
+		</div>
 	)
 }
 
@@ -37,7 +37,7 @@ const learningData = [
 const CourseDetail1 =()=> {
 	const [isOpen, setOpen] = useState(false)
 	return(
-		<>
+		<div>
 			<ol className="breadcrumb">
 				<li className="breadcrumb-item active">
 					<Link className="d-flex align-self-center" to={"./courses"}>
@@ -176,7 +176,7 @@ const CourseDetail1 =()=> {
 				</div>
 			</div>
 			<ModalVideo channel='youtube' autoplay isOpen={isOpen} videoId="e6MhFghdQps" onClose={() => setOpen(false)} />
-		</>
+		</div>
 	)
 }
 export {AboutTabContent};
