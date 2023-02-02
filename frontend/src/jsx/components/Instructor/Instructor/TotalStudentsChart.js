@@ -9,11 +9,7 @@ class TotalStudentsChart extends React.Component {
 				{
 					name: 'Running',
 					data: [50, 60, 90],						
-				}, 
-				{
-					name: 'Cycling',
-					data: [80, 40, 55]
-				}, 				
+				}	
 			],
 			
 			options:{

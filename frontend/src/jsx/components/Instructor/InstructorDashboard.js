@@ -3,12 +3,15 @@ import {Link} from 'react-router-dom'
 import loadable from "@loadable/component";
 import pMinDelay from "p-min-delay";
 import {Sparklines, SparklinesLine} from "react-sparklines";
+import { Pie } from "react-chartjs-2";
 
 import DropDownBlog from './../Dashboard/DropDownBlog';
 //import TotalStudentsChart from './Instructor/TotalStudentsChart';
 //import EarningsChart from './Instructor/EarningsChart';
 //import WorkingActivityChart from './Instructor/WorkingActivityChart';
 import CalendarBlog from './../Dashboard/Dashboard/CalendarBlog';
+import TotalStudent from '../../pages/WidgetBasic/TotalStudent';
+import TotalCourse from '../../pages/WidgetBasic/TotalCourse';
 
 
 const TotalStudentsChart = loadable(() =>
@@ -29,42 +32,47 @@ const timelineBlog = [
 	{title:'Basic Js', change:'bg-warning'},
 ];
 
-function UpComingEvent(){
-	return(
-		<div>
-			<div className="d-flex justify-content-between side-border">
-				<h4 className="mb-0 fs-18 font-w500">5 Jan</h4>
-				<div className="dropdown custom-dropdown mb-0">
-					<DropDownBlog />
-				</div>
-			</div>
-			<ul className="timeline-active style-4">
-				{timelineBlog.map((data, ind)=>(
-					<li className="d-flex align-items-center" key={ind}>
-						<span className="time-1">08.00 AM</span>
-						<div className="panel">
-							<div className={`line-color ${data.change}`}></div>
-							<Link to={"#"} className="timeline-panel text-muted">
-								<span className="d-block">UI Design</span>
-								<h4 className="mb-0">{data.title}</h4>
-							</Link>
-						</div>	
-					</li>
-				))}				
-			</ul>
-		</div>
-	)
-}
+
+// function UpComingEvent(){
+// 	return(
+// 		<div>
+// 			<div className="d-flex justify-content-between side-border">
+// 				<h4 className="mb-0 fs-18 font-w500">5 Jan</h4>
+// 				<div className="dropdown custom-dropdown mb-0">
+// 					<DropDownBlog />
+// 				</div>
+// 			</div>
+// 			<ul className="timeline-active style-4">
+// 				{timelineBlog.map((data, ind)=>(
+// 					<li className="d-flex align-items-center" key={ind}>
+// 						<span className="time-1">08.00 AM</span>
+// 						<div className="panel">
+// 							<div className={`line-color ${data.change}`}></div>
+// 							<Link to={"#"} className="timeline-panel text-muted">
+// 								<span className="d-block">UI Design</span>
+// 								<h4 className="mb-0">{data.title}</h4>
+// 							</Link>
+// 						</div>	
+// 					</li>
+// 				))}				
+// 			</ul>
+// 		</div>
+// 	)
+// }
 
 const InstructorDashboard = () =>{
 	return(
 		<div>
+		
+		
 			<div className="row">
 				<div className="col-xl-8 col-xxl-7">
+			
 					<div className="row">
 						<div className="col-xl-4 col-xxl-6 col-sm-6">
 							<div className="card">
 								<div className="card-header border-0 pb-0">
+								
 									<h4>Total Students</h4>
 								</div>
 								<div className="card-body pt-0 px-0 ">
@@ -77,8 +85,27 @@ const InstructorDashboard = () =>{
 								</div>
 							</div>
 						</div>
+
+						
 						<div className="col-xl-4 col-xxl-6 col-sm-6">
-							<div className="card overflow-hidden">
+							<div className="card">
+								<div className="card-header border-0 pb-0">
+								
+									<h4>Total Students</h4>
+								</div>
+								<div className="card-body pt-0 px-0 ">
+									
+								<TotalStudentsChart />
+									<div className="d-flex justify-content-between align-items-center flex-wrap px-4">
+										<h4 className="fs-18 font-w600 mb-0">12.345</h4>
+										<span><small className="text-secondary">5.4% </small>than last year</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div className="col-xl-4 col-xxl-6 col-sm-6">
+							<div className="card ">
 								<div className="card-header border-0 pb-0">
 									<h4>Courses</h4>
 								</div>
@@ -102,29 +129,11 @@ const InstructorDashboard = () =>{
 								</div>
 							</div>
 						</div>
-						<div className="col-xl-4 col-xxl-12 col-sm-12">
-							<div className="card">
-								<div className="card-header border-0 pb-0">
-									<h4>Earnings</h4>
-								</div>
-								<div className="card-body pt-0 px-3">
-									<EarningsChart />
-									
-									<div className="px-3">
-										<h4 className="mb-2">$45,741</h4>
-										<span>+15%
-											<svg className="ms-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M23.25 12C23.25 5.775 18.225 0.75 12 0.75C5.775 0.749999 0.75 5.775 0.75 12C0.749999 18.225 5.775 23.25 12 23.25C18.225 23.25 23.25 18.225 23.25 12ZM11.25 16.575L11.25 9.675L9.3 11.4C8.85 11.775 8.25 11.7 7.875 11.325C7.725 11.1 7.65 10.875 7.65 10.65C7.65 10.35 7.8 10.05 8.025 9.9L11.625 6.75C11.7 6.675 11.775 6.675 11.85 6.6C11.925 6.6 11.925 6.6 12 6.525C12.075 6.525 12.075 6.525 12.15 6.525L12.225 6.525C12.3 6.525 12.3 6.525 12.375 6.525L12.45 6.525C12.525 6.525 12.525 6.525 12.6 6.6C12.6 6.6 12.675 6.6 12.675 6.675L12.75 6.75C12.75 6.75 12.75 6.75 12.825 6.825L15.975 10.05C16.35 10.425 16.35 11.1 15.975 11.475C15.6 11.85 14.925 11.85 14.55 11.475L13.125 9.975L13.125 16.65C13.125 17.175 12.675 17.7 12.075 17.7C11.7 17.55 11.25 17.1 11.25 16.575Z" fill="#4CBC9A"/>
-											</svg>
-										</span>
-									</div>
-								</div>
-							</div>
-						</div>
+						
 						<div className="col-xl-12">
 							<div className="card">
 								<div className="card-header border-0 flex-wrap">
-									<h4>Working Activity</h4>
+									<h4>Average Score</h4>
 									<div className="d-flex align-items-center">
 										<div className="d-flex align-items-center">
 											<span className="work-ic">
@@ -150,33 +159,50 @@ const InstructorDashboard = () =>{
 										</div>
 									</div>	
 								</div>
+
 								<div className="card-body">
 									<WorkingActivityChart  />
 									
 								</div>
+								
 							</div>
 						</div>
 					</div>
 				</div>
-				<div className="col-xl-4 col-xxl-5">
-					<div className="card">
-						<div className="card-body">
-							<div className="card-calendar style-1 active-cal border-bottom pb-4 instructor-calendar">
-								<CalendarBlog />
-								{/* <input type='text' className="form-control d-none" id='datetimepicker' /> */}
-							</div>
-							<div id="DZ_W_TimeLine11" className="widget-timeline">
-								<h4 className="mb-3 mt-4">Upcoming Events</h4>								
-								<UpComingEvent />
-								<UpComingEvent />
-							</div>
-						</div>
-					</div>
-				</div>
+				
 				
 				
 			</div>	
+			
 		</div>
 	)
 }
 export default InstructorDashboard;
+
+
+// <div id="DZ_W_TimeLine11" className="widget-timeline">
+// 							// 	<h4 className="mb-3 mt-4">Upcoming Events</h4>								
+// 							// 	<UpComingEvent />
+// 							// 	<UpComingEvent />
+// 							// </div>
+
+
+// <div className="col-xl-4 col-xxl-12 col-sm-12">
+// 							<div className="card">
+// 								<div className="card-header border-0 pb-0">
+// 									<h4>Earnings</h4>
+// 								</div>
+// 								<div className="card-body pt-0 px-3">
+// 									<EarningsChart />
+									
+// 									<div className="px-3">
+// 										<h4 className="mb-2">$45,741</h4>
+// 										<span>+15%
+// 											<svg className="ms-3" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+// 											<path d="M23.25 12C23.25 5.775 18.225 0.75 12 0.75C5.775 0.749999 0.75 5.775 0.75 12C0.749999 18.225 5.775 23.25 12 23.25C18.225 23.25 23.25 18.225 23.25 12ZM11.25 16.575L11.25 9.675L9.3 11.4C8.85 11.775 8.25 11.7 7.875 11.325C7.725 11.1 7.65 10.875 7.65 10.65C7.65 10.35 7.8 10.05 8.025 9.9L11.625 6.75C11.7 6.675 11.775 6.675 11.85 6.6C11.925 6.6 11.925 6.6 12 6.525C12.075 6.525 12.075 6.525 12.15 6.525L12.225 6.525C12.3 6.525 12.3 6.525 12.375 6.525L12.45 6.525C12.525 6.525 12.525 6.525 12.6 6.6C12.6 6.6 12.675 6.6 12.675 6.675L12.75 6.75C12.75 6.75 12.75 6.75 12.825 6.825L15.975 10.05C16.35 10.425 16.35 11.1 15.975 11.475C15.6 11.85 14.925 11.85 14.55 11.475L13.125 9.975L13.125 16.65C13.125 17.175 12.675 17.7 12.075 17.7C11.7 17.55 11.25 17.1 11.25 16.575Z" fill="#4CBC9A"/>
+// 											</svg>
+// 										</span>
+// 									</div>
+// 								</div>
+// 							</div>
+// 						</div>
