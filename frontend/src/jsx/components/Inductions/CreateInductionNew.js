@@ -203,8 +203,7 @@ const CreateInduction = () => {
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">Department</label>
                   <div className="col-sm-9">
-                    <select
-					name="deptID"
+                    <select name="deptID"
                       className="form-control"
                       onChange={(e) => setDeptID(e.target.value)}
                     >

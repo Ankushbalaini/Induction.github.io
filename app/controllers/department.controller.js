@@ -187,6 +187,23 @@ exports.getAll=( async (req, res) => {
 });
 
 
+exports.getAllActive=( async (req, res) => {
+  try {
+    const data = await Department.find({status: 1});
+    res.status(200).send({
+      status: true,
+      message:"Successfully Getting Data",
+      data: data
+    });
+  }
+  catch (err) {
+    res.status(500).send({
+      status: false,
+      message: err.message || "Some error occurred."
+    });
+
+  };
+});
 
 
 

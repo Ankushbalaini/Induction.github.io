@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { Last } from "react-bootstrap/esm/PageItem";
 import { useHistory } from "react-router-dom";
+import DepartmentDropdown from "../Department/DepartmentDropdown";
+
 const images = require.context('../../../../../images/profile', true);
 
 
@@ -13,7 +15,7 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
 
     const token = useSelector((state) => state.auth.auth.token);
     const [userID, setUserID] = useState();
-
+    const [deptID, setDeptID] = useState();
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();
     const [email, setEmail] = useState();
@@ -27,6 +29,7 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
     }
 
     useEffect(() => {
+        setDeptID(profileData.deptID);
         setUserID(profileData.profile._id);
         setFirstName(profileData.profile.first_name);
         setLastName(profileData.profile.last_name);
@@ -60,6 +63,7 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
       }
 
       let formData = new FormData()
+      formData.append('deptID', deptID);
       formData.append('first_name', firstName);
       formData.append('last_name', lastName);
       formData.append('email', email);
@@ -115,9 +119,33 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
               encType
             >
               <div className="row">
+                
                 <div className="col-lg-6">
                   <div className="form-group mb-3">
-                    <label htmlFor="author" className="text-black font-w600">
+                    <label htmlFor="department" className="text-black font-w600">
+                      {" "}
+                      Assign Department {deptID}<span className="required">*</span>{" "}
+                    </label>
+
+                    <select name="deptID"
+                      className="form-control"
+                      onChange={(e) => setDeptID(e.target.value)}
+                    >
+                      <DepartmentDropdown prevSelected={deptID}/>
+
+
+                    </select>
+                      
+                    
+                  </div>
+                </div>
+                </div>
+
+                <div className="row">
+                
+                <div className="col-lg-6">
+                  <div className="form-group mb-3">
+                    <label htmlFor="first_name" className="text-black font-w600">
                       {" "}
                       First Name <span className="required">*</span>{" "}
                     </label>
@@ -125,7 +153,7 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
                       type="text"
                       className="form-control"
                       defaultValue=''
-                      name="Author"
+                      name="first_name"
                       placeholder=""
                       value={firstName}
                       onChange={(e)=>setFirstName(e.target.value)}

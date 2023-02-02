@@ -10,6 +10,7 @@ module.exports = (mongoose) => {
         token: { type: String },
         parentCompany: { type: mongoose.Schema.Types.ObjectId },
         parentInstructor: { type: mongoose.Schema.Types.ObjectId },
+        deptID:{type: mongoose.Schema.Types.ObjectId },
         totalCompanies: { type: String },
         totalInstructors: { type: String },
         totalCourses: { type: String },
