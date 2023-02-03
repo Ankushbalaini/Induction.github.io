@@ -1,6 +1,9 @@
 const db = require("../models");
 const UserCred = db.user_cred;
 const User = db.users;
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
+
 
 /*
  * All student api for super admin
@@ -9,9 +12,19 @@ const User = db.users;
  */
 
 exports.index = (req, res) => {
-  UserCred.aggregate([
+ try{ 
+
+   UserCred.aggregate([
     {
-      $match: { $expr: { $eq: ["$role", "user"] } },
+      $match: { 
+        $expr: {
+          $and:[
+            {
+              $eq: ["$role", "user"] ,
+            },
+          ],
+         } 
+        },
     },
     {
       $lookup: {
@@ -24,7 +37,6 @@ exports.index = (req, res) => {
     {
       $unwind: "$profile",
     },
-
     {
       $project: {
         _id: 1,
@@ -50,4 +62,14 @@ exports.index = (req, res) => {
         data: {},
       });
     });
+    return;
+   } catch (err) {
+      res.status(500).send({
+        status: false,
+        message: err.message,
+        data: {},
+      });
+    }
 };
+
+
