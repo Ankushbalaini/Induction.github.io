@@ -61,7 +61,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
               </Link>
             </div>
           </div>
-
+          
           <div className="accordion accordion">
           <div class="card accordion-item">
             <Link

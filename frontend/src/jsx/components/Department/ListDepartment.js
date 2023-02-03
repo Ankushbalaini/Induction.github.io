@@ -5,7 +5,7 @@ import { useHistory, Link } from "react-router-dom";
 import Table from "./DataTable";
 import DropDownBlog from './../Dashboard/DropDownBlog'; 
 import { Button ,Modal } from "react-bootstrap";
-
+import { useSelector } from "react-redux";
 
 const ListDepartments =()=>{
     const navigate = useHistory();
@@ -16,7 +16,7 @@ const ListDepartments =()=>{
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({ name: ''});
     const [editID, setEditID] = useState();
-
+    const token = useSelector((state) => state.auth.auth.token);
 
 
         const actionHandler = (department) => {
@@ -61,6 +61,10 @@ const ListDepartments =()=>{
           "http://localhost:8081/api/department/edit/" + editID,
           {
             method: "PUT",
+            headers :{
+              "Content-Type" : "application/json",
+              "x-access-token" : token,
+            },
             body: data,
           }
         ).then((data) => data.json());
@@ -82,7 +86,7 @@ const ListDepartments =()=>{
 
     const handlepageLoad = async (event) =>{
             
-      const response = await getDepartments();
+      const response = await getDepartments(token);
      const a = 1;
       if ("status" in response && response.status == true){
        
@@ -95,13 +99,13 @@ const ListDepartments =()=>{
 
 
   // api call
-  async function getDepartments(formValues){
+  async function getDepartments(token){
     return fetch ("http://localhost:8081/api/department/getall",{
         method: "GET",
         headers:{
             "Content-Type": "application/json",
+            "x-access-token" : token,
         },
-        body: JSON.stringify(formValues),
     }).then ((data)=>data.json());
   }
 

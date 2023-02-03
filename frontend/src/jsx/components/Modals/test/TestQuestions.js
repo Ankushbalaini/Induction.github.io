@@ -19,6 +19,7 @@ const TestQuestions = (props) => {
   const [showResult, setShowResult] = useState(false);
   const [submitTest, setSubmitTest] = useState(false);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
+  const [tabChangeCount , setTabChangeCount] = useState(0);
   const [result, setResult] = useState({
     score: 0,
     correctAnswers: 0,
@@ -43,6 +44,9 @@ const TestQuestions = (props) => {
     
   };
 
+
+
+  
   // setting questions 
   const questions = props.Questions;
 
@@ -61,7 +65,7 @@ const TestQuestions = (props) => {
       selectedAnswer
         ? {
             ...prev,
-            score: prev.score + 5,
+            score: prev.score + 1,
             correctAnswers: prev.correctAnswers + 1,
           }
         : { ...prev, wrongAnswers: prev.wrongAnswers + 1 }
@@ -109,6 +113,45 @@ const TestQuestions = (props) => {
   }, [showResult, result]);
 
   const addLeadingZero = (number) => (number > 9 ? number : `0${number}`);
+
+
+  // change tab 3 times in browser leads to fail test
+  document.addEventListener("visibilitychange", function() {
+    if (document.visibilityState === 'visible') {
+        // console.log('has focus');
+    } else {
+
+      if(tabChangeCount > 2){
+        swal({
+          title: "Test Fail.",
+          text:
+            "You are switching tabs more that 3 times in test.",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        }).then((willDelete) => {
+
+          if (willDelete) {
+            swal("Test Fail. and redirecting you to inductions", {
+              icon: "warning",
+            }).then(()=>{
+              navigate.push("/inductions");
+            });
+          }
+
+          
+        })
+      }else{
+        setTabChangeCount(tabChangeCount+1);
+      }
+
+      
+      
+    }
+  });
+
+
+
 
   return (
     <div className="background-modal" style={{
