@@ -26,7 +26,7 @@ export function signupAction(firstName, lastName, email, password,role, history)
         
 
         dispatch(confirmedSignupAction(response.data.data));
-        history.push("/dashboard");
+        history.push("/inductions");
         // window.location.href = "/login";
       })
       .catch((error) => {

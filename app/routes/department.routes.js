@@ -12,6 +12,9 @@ module.exports = app =>{
     //List all Department
     router.get('/getall',department.getAll);
 
+    // get only active dept for dropdown
+    router.get('/getAllActive',department.getAllActive);
+
     // Delete Department
     router.delete('/delete/:id',department.delete);
     

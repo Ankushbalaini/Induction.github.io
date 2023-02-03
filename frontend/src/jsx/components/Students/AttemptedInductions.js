@@ -105,7 +105,7 @@ const AttemptedInductions = () => {
   useEffect(() => {
     handlepageLoad();
     setData(document.querySelectorAll("#student_wrapper tbody tr"));
-  }, [profileData, isModalOpen]);
+  }, [profileData, isModalOpen, inductions]);
 
   // Active pagginarion
   activePag.current === 0 && chageData(0, sort);
@@ -150,53 +150,35 @@ const AttemptedInductions = () => {
                     >
                       <thead>
                         <tr>
-                          <th>Name</th>
-                          <th>Student ID</th>
-                          <th>Join Date</th>
+                          <th>Induction Title</th>
+                          <th>Wrong Answers</th>
+                          <th>Correct Answers</th>
                           <th>Status</th>
-                          <th Style="text-align: end">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {/* {inductions.map((row, index) => (
+                        {inductions.map((row, index) => (
                           <tr key={index}>
                             <td>
                               <div className="d-flex align-items-center">
                                 <img
-                                  src={loadImage(row.profile.profilePhoto)}
+                                  src=""
                                   alt=""
                                 />
                                 <h4 className="mb-0 fs-16 font-w500">
-                                  {row.profile?.first_name}{" "}
-                                  {row.profile?.last_name}
+                                  {row.inductionID}{" "}
                                 </h4>
                               </div>
                             </td>
-                            <td>{row.email}</td>
+                            <td>{row.wrongAnswers}</td>
                             <td>
-                              {new Date(row.createdAt).toLocaleDateString(
-                                "en-GB",
-                                {
-                                  day: "numeric",
-                                  month: "long",
-                                  year: "numeric",
-                                }
-                              )}
+                              {row.correctAnswers}
                             </td>
                             <td>
-                              <span
-                                className={`badge  light badge-success`}
-                              >{`Active`}</span>
-                            </td>
-                            <td>
-                              <ActionDropDown
-                                trackOnclick={trackOnclick}
-                                profileData={row}
-                                trackDeleteClick={trackDeleteClick}
-                              />
+                              {row.testStatus}
                             </td>
                           </tr>
-                        ))} */}
+                        ))}
                       </tbody>
                     </table>
                     <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
@@ -213,7 +195,7 @@ const AttemptedInductions = () => {
                       >
                         <Link
                           className="paginate_button previous "
-                          to="/students"
+                          to="/attempted-inductions"
                           onClick={() =>
                             activePag.current > 0 &&
                             onClick(activePag.current - 1)
@@ -228,7 +210,7 @@ const AttemptedInductions = () => {
                           {paggination.map((number, i) => (
                             <Link
                               key={i}
-                              to="/students"
+                              to="/attempted-inductions"
                               className={`paginate_button  ${
                                 activePag.current === i ? "current" : ""
                               } `}
@@ -241,7 +223,7 @@ const AttemptedInductions = () => {
 
                         <Link
                           className="paginate_button next"
-                          to="/students"
+                          to="/attempted-inductions"
                           onClick={() =>
                             activePag.current + 1 < paggination.length &&
                             onClick(activePag.current + 1)
@@ -265,11 +247,3 @@ const AttemptedInductions = () => {
   );
 };
 export default AttemptedInductions;
-
-// <Form.Group as={Col}controlId="formGridState" className="form-group mb-3 text-black font-w600">
-// <Form.Label>Status</Form.Label>
-// <Form.Select defaultValue="Choose...">
-//   <option>Active</option>
-//   <option>Inactive</option>
-// </Form.Select>
-// </Form.Group>
