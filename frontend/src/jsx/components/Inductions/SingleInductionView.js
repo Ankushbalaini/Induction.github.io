@@ -40,6 +40,7 @@ const SingleInductionView = (props) => {
   const [currentSlideContent, setCurrentSlideContent] = useState(null);
   const [isChangeContent, setIsChangeContent] = useState(false);
   const token = useSelector((state) => state.auth.auth.token);
+  const role = useSelector((state) => state.auth.auth.role);
   const { id } = useParams();
 
   // API call for fetching all induction details with slides
@@ -59,13 +60,13 @@ const SingleInductionView = (props) => {
   };
 
   const openPopUp= () => {
-    console.log("openPopUp called");
+    //console.log("openPopUp called");
     setPassingMarksPop(true);
     return;
   }
 
   const hidePopUp = () =>{
-    console.log("hidePopUp called");
+    //console.log("hidePopUp called");
     setPassingMarksPop(false);
   }
 
@@ -78,16 +79,14 @@ const SingleInductionView = (props) => {
 
   // On every render
   useEffect(() => {
-
-    
-
     if (loading) {
       handleGetInductionDetail();
     }
 
     return ()=>{
-      console.log('passingMarksPop', passingMarksPop);
+      // console.log('passingMarksPop', passingMarksPop);
     }
+
   }, [loading ]);
 
   const PageContent = loading ? (
@@ -141,14 +140,6 @@ const SingleInductionView = (props) => {
 
 
         <div className="col-xl-4 col-xxl-5">
-
-        {/* <Link
-            className="btn btn-primary"
-            to={`../mcq/${id}`}
-            name="Set Pass"
-          >
-            Set Pass Percentage
-          </Link> */}
         
         <InductionSlidesList
           setStateOfParent={setStateOfParent}
@@ -157,23 +148,23 @@ const SingleInductionView = (props) => {
           inductionID={id}
         />
 
-
-          <div className="accordion accordion">
-            <div class="card accordion-item">
-              {/* <a onClick={setPassingMarksPop(true)}> Click </a> */}
-
-              <button type="button" class="btn btn-primary m-3" 
-                onClick={() => openPopUp() }>Set Passing Percentage</button>
-
-            </div>
+        { (role === 'instructor') ? <>
+        <div className="accordion accordion">
+          <div class="card accordion-item">
+            <button type="button" class="btn btn-primary m-3" 
+              onClick={() => openPopUp() }>Set Passing Percentage</button>
           </div>
-          
+        </div>
+
+        <UpdatePassPercentage inductionID={id} passPercentage={inductionData.passPercentage} show={passingMarksPop} hidePopUp={hidePopUp} />
+        </>
+        : null }
       </div>
 
       
 
 
-      <UpdatePassPercentage inductionID={id} passPercentage={inductionData.passPercentage} show={passingMarksPop} hidePopUp={hidePopUp} />
+      
     </>
   );
 

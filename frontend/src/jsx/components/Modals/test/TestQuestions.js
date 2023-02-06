@@ -111,7 +111,9 @@ const TestQuestions = (props) => {
 
 
   const handleTabSwitch = (event) => {
-    console.log("here window events");
+
+
+    // console.log("here window events");
     if (document.visibilityState === 'visible') {
       // console.log('has focus');
     } else {
@@ -130,21 +132,22 @@ const TestQuestions = (props) => {
             swal("Test Fail. and redirecting you to inductions", {
               icon: "warning",
             }).then(()=>{
-
+              setTabChangeCount(0);
               var data = { ...result};
               submitTestApi(id, token, data); 
-              window.removeEventListener('visibilitychange', handleTabSwitch);
+              window.removeEventListener('visibilitychange', "");
               setActiveWindowEvent(false);
               navigate.push("/inductions");
             });
           }
 
-          
         })
       }else{
         setTabChangeCount(tabChangeCount+1);
       }
     }
+
+    
   };
 
 
@@ -152,21 +155,35 @@ const TestQuestions = (props) => {
 
   useEffect(async () => {
 
-    if(activeWindowEvent){
-      window.addEventListener('visibilitychange', handleTabSwitch);
-    }else{
-      window.removeEventListener('visibilitychange', handleTabSwitch);
-    }
+    window.addEventListener('visibilitychange', handleTabSwitch);
+
+    // if(activeWindowEvent){
+    //   window.addEventListener('visibilitychange', handleTabSwitch);
+    // }else{
+    //   window.removeEventListener('visibilitychange', handleTabSwitch);
+    // }
 
     if(showResult){
       var data = { ...result};
       data.remark = "Test successfully completed";
       const response = await submitTestApi(id, token, data);  
-      window.removeEventListener('visibilitychange', handleTabSwitch);  
+      window.removeEventListener('visibilitychange', {});  
       setActiveWindowEvent(false);  
     }
+
+    
+
   }, [showResult, result, activeWindowEvent, tabChangeCount]);
   
+
+
+  useEffect(()=>{
+    return () => {
+      window.removeEventListener('visibilitychange', {});
+      console.log("unmount");
+    }
+
+  },[]);
 
   return (
     <div className="background-modal" style={{
