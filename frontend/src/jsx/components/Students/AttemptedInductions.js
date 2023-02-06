@@ -137,7 +137,7 @@ const AttemptedInductions = () => {
                           {/* <th>Wrong Answers</th>
                           <th>Correct Answers</th> */}
                           <th>Remark</th>
-                          <th>Status</th>
+                          <th>Test Status</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -162,8 +162,14 @@ const AttemptedInductions = () => {
                             <td>
                               {row.remark}
                             </td>
-                            <td>
-                              {row.testStatus}
+                            <td Style="text-align:left;">
+                              <Link
+                                className={`badge light ${(row.testStatus === 'Fail')? 'badge-danger': 'badge-success'}`}
+                                onClick={(e)=>e.preventDefault()}
+                              >
+                                {row.testStatus}
+                              </Link>
+                              
                             </td>
                           </tr>
                         ))}
