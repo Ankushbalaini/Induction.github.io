@@ -15,32 +15,23 @@ const Table = props => {
       className: 'col-3'
     },
     {
-      name: "Status",
-      button: true,
-      sortable: true,
-      cell: row =>
-          <>
-            {row.status ? 'Active': 'Inactive'}
-            
-          </>
+      name : "Status",
+      // selector:"status",
+      // sortable:true,
+      hide: "sm",
+      cell: row => (
+        <div>
+          <span className={`badge badge-rounded ${row.status === 1 ?  "badge-primary" : "badge-success"}`}>
+            {row.status}
+          </span>
+        </div>
+        )
     },
-
     {
       name: "Actions",
       button: true,
       cell: row =>
-          <>
-            {/* <button
-              onClick={() => props.actionHandler(row)}
-              style={{ marginRight: "5px", minWidth: "80px" }}
-              className="btn btn-warning btn "
-            >
-              Edit
-            </button>
-
-            <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button> */}
-            {/* <DropDownBlog onEdit={()=>props.actionHandler(row)} onDelete={()=>props.deleteClick(row.name)}/> */}
-            
+          <div>
             <div className="d-flex">
             <button onClick={()=>props.actionHandler(row)}
               href="#"
@@ -55,7 +46,7 @@ const Table = props => {
               <i className="fa fa-trash"></i>
             </button>
           </div>
-          </>
+          </div>
     }
   ];
 

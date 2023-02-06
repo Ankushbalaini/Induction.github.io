@@ -158,22 +158,24 @@ exports.submitTest = (req, res) => {
   try {
     const userID = req.decoded.userID;
     const testID = ObjectId(req.params.testID);
-    // return res.status(200).send({
-    //   status: true,
-    //   message: `Success`,
-    //   data: req.decoded
-    // });
+    const passPercentage = 75; // need to get this from induction table
 
-    // const inductionID = ObjectId(req.body.inductionID);
-    // const userID = ObjectId(req.body.userID);
-    
+    const passStatus = (req.body.correctAnswers / (req.body.correctAnswers + req.body.wrongAnswers) )* 100;
+
+    var pass= "Fail";
+    if(passStatus >= passPercentage){
+      // 
+      pass = "Pass";
+    }
+
     const submitDataObj = {
         userID : userID,
         inductionID : testID,
         score: req.body.score,
         correctAnswers: req.body.correctAnswers,
         wrongAnswers: req.body.wrongAnswers,
-        testStatus: 'Pass'
+        testStatus: pass,
+        remark: req.body.remark
     };
 
     Result = new UserInductionResults(submitDataObj);
@@ -184,7 +186,6 @@ exports.submitTest = (req, res) => {
         status: true,
         message: `Success`,
         data: resp,
-        myid: userID
       });
     })
     .catch((err)=>{

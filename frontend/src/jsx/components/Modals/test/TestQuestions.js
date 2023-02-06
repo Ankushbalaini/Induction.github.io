@@ -8,6 +8,20 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
 
+
+const submitTestApi = async (id, token, dataPass) => {
+  return await fetch("http://localhost:8081/api/mcq/submit/" + id, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+    body: JSON.stringify(dataPass),
+  }).then((data) => data.json());
+};
+
+
+
 const TestQuestions = (props) => {
   const navigate = useHistory();
   const userID = useSelector((state) => state.auth.auth._id);
@@ -15,32 +29,27 @@ const TestQuestions = (props) => {
   const { id } = useParams();
 
   const [activeQuestion, setActiveQuestion] = useState(0);
+  const [activeWindowEvent, setActiveWindowEvent] = useState(true);
+
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [showResult, setShowResult] = useState(false);
   const [submitTest, setSubmitTest] = useState(false);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
+  const [tabChangeCount , setTabChangeCount] = useState(0);
   const [result, setResult] = useState({
     score: 0,
     correctAnswers: 0,
     wrongAnswers: 0,
+    remark: "Test Failed due to tab changes"
   });
+
+
+  
+
 
   const buttonsty = {
     float: "right",
     margin: "auto",
-  };
-
-  const submitTestApi = async (id, token, dataPass) => {
-    return await fetch("http://localhost:8081/api/mcq/submit/" + id, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token,
-      },
-      body: JSON.stringify(dataPass),
-    }).then((data) => data.json());
-  
-    
   };
 
   // setting questions 
@@ -61,7 +70,7 @@ const TestQuestions = (props) => {
       selectedAnswer
         ? {
             ...prev,
-            score: prev.score + 5,
+            score: prev.score + 1,
             correctAnswers: prev.correctAnswers + 1,
           }
         : { ...prev, wrongAnswers: prev.wrongAnswers + 1 }
@@ -96,19 +105,85 @@ const TestQuestions = (props) => {
     }
   }
 
-  useEffect(async () => {
-    if(showResult){
-      var data = { ...result};
-      const response = await submitTestApi(id, token, data);
-      if ("status" in response && response.status == true) {
-      }else{
+  
 
+  const addLeadingZero = (number) => (number > 9 ? number : `0${number}`);
+
+
+  const handleTabSwitch = (event) => {
+
+
+    // console.log("here window events");
+    if (document.visibilityState === 'visible') {
+      // console.log('has focus');
+    } else {
+      console.log(`events ${tabChangeCount}`);
+      if(tabChangeCount > 2){
+        swal({
+          title: "Test Fail.",
+          text:
+            "You are switching tabs more that 3 times in test.",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        }).then((willDelete) => {
+
+          if (willDelete) {
+            swal("Test Fail. and redirecting you to inductions", {
+              icon: "warning",
+            }).then(()=>{
+              setTabChangeCount(0);
+              var data = { ...result};
+              submitTestApi(id, token, data); 
+              window.removeEventListener('visibilitychange', "");
+              setActiveWindowEvent(false);
+              navigate.push("/inductions");
+            });
+          }
+
+        })
+      }else{
+        setTabChangeCount(tabChangeCount+1);
       }
     }
 
-  }, [showResult, result]);
+    
+  };
 
-  const addLeadingZero = (number) => (number > 9 ? number : `0${number}`);
+
+
+
+  useEffect(async () => {
+
+    window.addEventListener('visibilitychange', handleTabSwitch);
+
+    // if(activeWindowEvent){
+    //   window.addEventListener('visibilitychange', handleTabSwitch);
+    // }else{
+    //   window.removeEventListener('visibilitychange', handleTabSwitch);
+    // }
+
+    if(showResult){
+      var data = { ...result};
+      data.remark = "Test successfully completed";
+      const response = await submitTestApi(id, token, data);  
+      window.removeEventListener('visibilitychange', {});  
+      setActiveWindowEvent(false);  
+    }
+
+    
+
+  }, [showResult, result, activeWindowEvent, tabChangeCount]);
+  
+
+
+  useEffect(()=>{
+    return () => {
+      window.removeEventListener('visibilitychange', {});
+      console.log("unmount");
+    }
+
+  },[]);
 
   return (
     <div className="background-modal" style={{

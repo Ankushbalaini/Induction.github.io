@@ -192,8 +192,8 @@ const AllStudents = () => {
                         
                         <th>Name</th>
                         <th>Student ID</th>
-                        <th>Company</th>
-                        <th>Department</th>
+                        {/* <th>Company</th>
+                        <th>Department</th> */}
                         <th>Join Date</th>
                         <th>Status</th>
                         <th Style="text-align: end">Action</th>
@@ -212,8 +212,8 @@ const AllStudents = () => {
                             </div>
                           </td>
                           <td>{row.email}</td>
-                          <td>{row.parentCompany}</td>
-                          <td>{row.deptID}</td>
+                          {/* <td>{row.parentCompany}</td>
+                          <td>{row.deptID}</td> */}
                           <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
                           <td>
 

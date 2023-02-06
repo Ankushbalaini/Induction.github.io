@@ -11,6 +11,7 @@ const AddDepartment =() =>{
     const [status , setStatus] = useState(1);
     const loggedrole = useSelector((state) => state.auth.auth.role);
     const [parentCompany, setParentCompany] = useState('');
+    const token = useSelector((state) => state.auth.auth.token);
 
 
 // validation messages
@@ -62,6 +63,7 @@ const [errors, setErrors] = useState(errorsObj);
          method : "POST",
          headers :{
              "Content-Type" : "application/json",
+             "x-access-token" : token,
          },
          body: JSON.stringify(formValues),
      }). then ((data)=> data.json());

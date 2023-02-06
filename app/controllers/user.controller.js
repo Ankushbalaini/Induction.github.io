@@ -584,7 +584,7 @@ exports.getProfile = (req, res) => {
  * @param req
  * @param res
  */
-exports.edit = (req, res) => {
+exports.edit = async (req, res) => {
   const id = req.params.id;
 
   if (!req.files || Object.keys(req.files).length === 0) {
@@ -610,6 +610,9 @@ exports.edit = (req, res) => {
   }
 
   req.body.deptID = ObjectId(req.body.deptID);
+  req.body.parentCompany = ObjectId(req.body.deptID);
+
+  // await new UserCred({deptID : req.body.deptID}).save();
 
   // users colletion
   User.updateOne(
@@ -629,11 +632,25 @@ exports.edit = (req, res) => {
           message: "User not found!",
         });
       } else {
-        return res.status(200).send({
-          status: true,
-          message: "User has been updated1!",
-          data: user,
-        });
+
+
+        UserCred.updateOne(
+          { _id: req.body.mainID },
+          { $set: req.body },
+          { multi: true })
+          .then((user)=>{
+            return res.status(200).send({
+              status: true,
+              message: "User has been updated!",
+              data: user,
+            });
+          })
+          .catch((err)=>{
+            return res.status(500).send({
+              status: false,
+              message: err.message
+            });
+          });
       }
     }
   );
@@ -717,7 +734,13 @@ exports.inductions = (req, res) => {
 
     */
 
-    UserInductionResults.find({ userID: userID })
+    UserInductionResults
+      .find({ userID: userID })
+      .populate({
+        path: 'inductionID',
+        select: 'title'
+      })
+      .sort({ createdAt: -1 })
       .then((data) => {
         return res.status(200).send({
           message: "Success here",
@@ -788,3 +811,5 @@ exports.changeUserStatus = (req, res) => {
     });
   }
 };
+
+

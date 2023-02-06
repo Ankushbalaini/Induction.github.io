@@ -5,8 +5,7 @@ import { useHistory, Link } from "react-router-dom";
 import Table from "./DataTable";
 import DropDownBlog from './../Dashboard/DropDownBlog'; 
 import { Button ,Modal } from "react-bootstrap";
-
-
+import { useSelector } from "react-redux";
 
 const ListDepartments =()=>{
     const navigate = useHistory();
@@ -17,7 +16,7 @@ const ListDepartments =()=>{
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalData, setModalData] = useState({ name: ''});
     const [editID, setEditID] = useState();
-
+    const token = useSelector((state) => state.auth.auth.token);
 
 
         const actionHandler = (department) => {
@@ -62,6 +61,10 @@ const ListDepartments =()=>{
           "http://localhost:8081/api/department/edit/" + editID,
           {
             method: "PUT",
+            headers :{
+              "Content-Type" : "application/json",
+              "x-access-token" : token,
+            },
             body: data,
           }
         ).then((data) => data.json());
@@ -83,8 +86,8 @@ const ListDepartments =()=>{
 
     const handlepageLoad = async (event) =>{
             
-      const response = await getDepartments();
-     const a =1;
+      const response = await getDepartments(token);
+     const a = 1;
       if ("status" in response && response.status == true){
        
        setdeptData(response.data);
@@ -96,16 +99,20 @@ const ListDepartments =()=>{
 
 
   // api call
-  async function getDepartments(formValues){
+  async function getDepartments(token){
     return fetch ("http://localhost:8081/api/department/getall",{
         method: "GET",
         headers:{
             "Content-Type": "application/json",
+            "x-access-token" : token,
         },
-        body: JSON.stringify(formValues),
     }).then ((data)=>data.json());
   }
 
+  const buttonsty={
+    margin:"auto",
+    display:"flex"
+  }
   return (
     <Fragment>
         <PageTitle activeMenu="All Departments" motherMenu= "Department" />
@@ -161,11 +168,11 @@ const ListDepartments =()=>{
             <div className="modal-body">
               <form className="company-form" onSubmit={(e) => onSubmitHandle(e)}>
                 <div className="row">
-                  <div className="col-lg-6">
+                  <div className="col-lg-12">
                     <div className="form-group mb-3">
                       <label htmlFor="author" className="text-black font-w600">
                       {" "}
-                      Name <span className="required"></span>*
+                      Name <span className="required"></span>
                       </label>
                       <input
                       type="text"
@@ -177,34 +184,27 @@ const ListDepartments =()=>{
                     />
                     </div>
                   </div>
-                  <div className="col-lg-6">
+                  <div className="col-lg-12">
                     <div className="form-group mb-3">
                       <label htmlFor="author" className="text-black font-w600">
                       {" "}
-                      Department Status<span className="required">*</span>{" "}
+                      Department Status<span className="required"></span>{" "}
                     </label>
                     <select className="form-control" onChange={(e) =>setStatus(e.target.value)}>
-                                    <option value="1">Active</option>
-                                    <option value="0">Inactive</option>
+                                    <option value={1}>Active</option>
+                                    <option value={0}>Inactive</option>
                                     </select>
-                    {/* <input
-                      type="text"
-                      className="form-control"
-                      name="status"
-                      placeholder="status"
-                      value={status}
-                      onChange={(e) => setStatus(e.target.value)}
-                      required
-                    /> */}
                     </div>
                   </div>
                   <div className="col-lg-12">
                   <div className="form-group mb-3">
                     <Button
+                    style={buttonsty}
                       type="submit"
                       value="Submit"
                       className="submit btn btn-primary"
                     >
+
                       Submit
                     </Button>
                   </div>

@@ -58,7 +58,6 @@ const StartTest = () => {
     if ("status" in response && response.status == true) {
       setStartTest(true);
       openFullscreen();
-
     }
   };
 

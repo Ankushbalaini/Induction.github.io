@@ -64,24 +64,7 @@ const AttemptedInductions = () => {
     setIsModalOpen(payload);
   };
 
-  // callback function to opdate state
-  const trackDeleteClick = () => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this record!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        swal("Poof! Your record has been deleted!", {
-          icon: "success",
-        });
-      } else {
-        swal("Your record is safe!");
-      }
-    });
-  };
+  
 
   const handlepageLoad = async (event) => {
     const response = await fetch("http://localhost:8081/api/users/inductions", {
@@ -105,7 +88,7 @@ const AttemptedInductions = () => {
   useEffect(() => {
     handlepageLoad();
     setData(document.querySelectorAll("#student_wrapper tbody tr"));
-  }, [profileData, isModalOpen, inductions]);
+  }, [profileData, isModalOpen]);
 
   // Active pagginarion
   activePag.current === 0 && chageData(0, sort);
@@ -151,9 +134,10 @@ const AttemptedInductions = () => {
                       <thead>
                         <tr>
                           <th>Induction Title</th>
-                          <th>Wrong Answers</th>
-                          <th>Correct Answers</th>
-                          <th>Status</th>
+                          {/* <th>Wrong Answers</th>
+                          <th>Correct Answers</th> */}
+                          <th>Remark</th>
+                          <th>Test Status</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -161,21 +145,31 @@ const AttemptedInductions = () => {
                           <tr key={index}>
                             <td>
                               <div className="d-flex align-items-center">
-                                <img
+                                {/* <img
                                   src=""
                                   alt=""
                                 />
+                                */}
                                 <h4 className="mb-0 fs-16 font-w500">
-                                  {row.inductionID}{" "}
-                                </h4>
+                                  {row.inductionID.title}{" "}
+                                </h4> 
                               </div>
                             </td>
-                            <td>{row.wrongAnswers}</td>
+                            {/* <td>{row.wrongAnswers}</td>
                             <td>
                               {row.correctAnswers}
-                            </td>
+                            </td> */}
                             <td>
-                              {row.testStatus}
+                              {row.remark}
+                            </td>
+                            <td Style="text-align:left;">
+                              <Link
+                                className={`badge light ${(row.testStatus === 'Fail')? 'badge-danger': 'badge-success'}`}
+                                onClick={(e)=>e.preventDefault()}
+                              >
+                                {row.testStatus}
+                              </Link>
+                              
                             </td>
                           </tr>
                         ))}

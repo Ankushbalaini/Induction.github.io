@@ -49,6 +49,8 @@ const Inductions = () => {
     }
   };
 
+  window.removeEventListener('visibilitychange', ()=>{});
+
   // api call
   async function getAllInductions() {
     //const id =  '63a5b994d187fa1a5a210934';
@@ -63,6 +65,8 @@ const Inductions = () => {
 
   // use effect
   useEffect(() => {
+    window.removeEventListener('visibilitychange', ()=>{});
+    
     const handleGetInduction = async (e) => {
       const response = await getAllInductions();
       if ("status" in response && response.status == true) {
@@ -90,6 +94,9 @@ const Inductions = () => {
       }
     };
     handleGetInduction();
+
+    
+    
     setData(document.querySelectorAll("#student_wrapper tbody tr"));
     //chackboxFun();
   }, []);

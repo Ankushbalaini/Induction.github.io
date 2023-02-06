@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
-import { Last } from "react-bootstrap/esm/PageItem";
 import { useHistory } from "react-router-dom";
-import DepartmentDropdown from "../Department/DepartmentDropdown";
+import CompanyDropdown from "../Companies/CompanyDropdown";
 
 const images = require.context('../../../../../images/profile', true);
 
@@ -14,7 +13,11 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
     const navigate = useHistory();
 
     const token = useSelector((state) => state.auth.auth.token);
-    const [userID, setUserID] = useState();
+    const role = useSelector((state) => state.auth.auth.role);
+
+    const [userID, setUserID] = useState(); // User Table id
+    const [mainID, setMainID] = useState(); // UserCred table id
+    const [parentCompany, setParentCompany] = useState();
     const [deptID, setDeptID] = useState();
     const [firstName, setFirstName] = useState();
     const [lastName, setLastName] = useState();
@@ -23,13 +26,18 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
     const [image, setImage] = useState({ preview: '', data: '' });
     const [preview, setPreview] = useState('dummy-user.png');
     const [address, setAddress] = useState();
+    const [departmentDropdown, setDepartmentDropdown ] = useState();
+    const [option, setOption] = useState();
     
     const loadImage = (imageName) => {
       return images(`./${imageName}`);
     }
 
     useEffect(() => {
-        setDeptID(profileData.deptID);
+
+        //setParentCompany(profileData.parentCompany);
+        //setDeptID(profileData.deptID);
+        setMainID(profileData._id);
         setUserID(profileData.profile._id);
         setFirstName(profileData.profile.first_name);
         setLastName(profileData.profile.last_name);
@@ -37,9 +45,9 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
         setAddress(profileData.profile.address);
         setPreview(profileData.profile.profilePhoto);
         setEmail(profileData.email);
-        
-    },[profileData, isModalOpen]);
+        // call to api to update Department Dropdown
 
+    },[profileData, isModalOpen, parentCompany, option]);
 
     const handleCallback = () => {
       trackOnclick(false);
@@ -63,7 +71,9 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
       }
 
       let formData = new FormData()
+      formData.append('mainID', mainID);
       formData.append('deptID', deptID);
+      formData.append('parentCompany', parentCompany);
       formData.append('first_name', firstName);
       formData.append('last_name', lastName);
       formData.append('email', email);
@@ -98,6 +108,26 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
 
     }
 
+    // here
+    const handleCompanyChange = async (e) => {
+      // call api to fetch departments 
+      const response = await fetch("http://localhost:8081/api/department/getDepartmentByComp", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "x-access-token" : token
+          },
+          body : JSON.stringify({ "parentCompany" : e.target.value })
+        }).then((data) => data.json());
+            
+      if ("status" in response && response.status == true) {
+        const rows = response.data.map((row, index) => (
+            <option value={row._id}>{row.name}</option>
+        ));
+        setOption(rows);
+        setParentCompany(e.target.value);
+      }     
+    }
 
     return (
         <Modal className="modal fade" show={isModalOpen}>
@@ -120,24 +150,35 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
             >
               <div className="row">
                 
-                <div className="col-lg-6">
+                <div className="col-lg-12">
+                  { (role === 'super_admin') ? <>
+                  <div className="form-group mb-3">
+                    <label htmlFor="parentCompany" className="text-black font-w600">
+                      {" "}
+                      Assign Company <span className="required">*</span>{" "}
+                    </label>
+                    <select name="parentCompany"
+                      className="form-control"
+                      onChange={handleCompanyChange}
+                    >
+                        <CompanyDropdown prevSelected={parentCompany} />
+                    </select>
+                  </div>
+
                   <div className="form-group mb-3">
                     <label htmlFor="department" className="text-black font-w600">
                       {" "}
-                      Assign Department {deptID}<span className="required">*</span>{" "}
+                      Assign Department <span className="required">*</span>{" "}
                     </label>
-
                     <select name="deptID"
                       className="form-control"
                       onChange={(e) => setDeptID(e.target.value)}
                     >
-                      <DepartmentDropdown prevSelected={deptID}/>
-
-
+                      {option}
                     </select>
-                      
-                    
                   </div>
+                  </> :null }
+
                 </div>
                 </div>
 
@@ -263,6 +304,7 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
                     />
                   </div>
                 </div>
+
               </div>
             </form>
           </div>

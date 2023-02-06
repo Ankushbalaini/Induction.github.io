@@ -108,16 +108,16 @@ if(loading){
                  </div>
                 </div>
                 <div className="col-xl-12">
-							<div className="card">
-								<div className="card-body">
-									<div className="row">
-										<div className="col-xl-6 col-xxl-12">
-											<div className="card-calendar style-1 process-calendar">
-												<CalendarBlog />
-												{/* <input type='text' className="form-control d-none" id='datetimepicker' /> */}
-											</div>
-										</div>
-										<div className="col-xl-6 redial col-xxl-12">
+							   <div className="card">
+							  	<div className="card-body">
+							  		<div className="row">
+							  			<div className="col-xl-6 col-xxl-12">
+							  				<div className="card-calendar style-1 process-calendar">
+							  					<CalendarBlog />
+							  					{/* <input type='text' className="form-control d-none" id='datetimepicker' /> */}
+							  				</div>
+							  			</div>
+							  			<div className="col-xl-6 redial col-xxl-12">
 											<p className="text-center">Your Progress this Month</p>
 												<ScheduleRadilChart />
 											<p className="my-4 text-center">Lorem ipsum dolor sit amet, adipiscing elit, sed do eiusmod tempor</p>

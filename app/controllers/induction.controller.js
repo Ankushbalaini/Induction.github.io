@@ -638,3 +638,35 @@ function uploadThumbnail(req, res) {
     return file_name;
   }
 }
+
+
+
+exports.updatePassingMarks = (req, res) =>{
+  // req.body.inductionID
+  // req.body.passPercentage
+  Induction.findOneAndUpdate( { _id: ObjectId(req.body.inductionID) },
+    { passPercentage: req.body.passPercentage })
+    .then((induction)=>{
+      if (induction) {
+        return res.status(200).send({
+          status: true,
+          message: "Pass Percentage has been updated!",
+          data: induction,
+        });
+      } else {
+        return res.status(500).send({
+          status: false,
+          message: "Pass Percentage not changed",
+        });
+      }
+
+    })
+    .catch((error)=>{
+      return res.status(500).send({
+        status: false,
+        message: error.message,
+      });
+    });
+
+
+}
