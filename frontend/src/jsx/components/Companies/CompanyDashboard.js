@@ -37,9 +37,7 @@ if(loading){
 
 
 	return(
-		<>  <div>
-
-        </div>
+		<> 
 			  <div className="row">
 			          <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
                  <div className="widget-stat card bg-primary">
