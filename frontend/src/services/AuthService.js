@@ -37,6 +37,7 @@ export function login(role, email, password) {
 }
 
 export function formatError(errorResponse) {
+    
     switch (errorResponse.message) {
         case 'EMAIL_EXISTS':
             //return 'Email already exists';
@@ -51,7 +52,8 @@ export function formatError(errorResponse) {
             swal("Oops", "Invalid Password", "error",{ button: "Try Again!" });
             break;
         case 'USER_DISABLED':
-            return 'User Disabled';
+            swal("Oops", "User status is disabled.", "error",{ button: "Conatct Admin and Try Again!",});
+            break;
         
         default:
             swal("Oops", "Network Error!. Please try again later.", "error",{ button: "Try Again!",});

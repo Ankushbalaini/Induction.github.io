@@ -197,6 +197,7 @@ exports.add = (req, res) => {
     }
 
     req.body.parentCompany = (user.role === 'company') ? ObjectId(user.userID) : ObjectId(req.body.parentCompany);
+    req.body.deptID = ObjectId(req.body.deptID);
     
     var InstructorCred = new UserCred(req.body);
 
@@ -306,7 +307,6 @@ exports.edit = (req, res) => {
           err.message || "Some error occurred while creating the Deparment.",
       });
     });
-
  }catch(err){
   res.status(500).send({
     status: false,

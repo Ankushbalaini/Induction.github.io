@@ -8,10 +8,13 @@ import { useSelector } from "react-redux";
 import CompanyDropdown from '../Companies/CompanyDropdown';
 import DepartmentDropdown from '../Department/DepartmentDropdown';
 
+import DepartmentByCompany from "../Department/DepartmentByCompany";
 
 const AddInstructor = () => {
   const navigate = useHistory();
   const loggedrole = useSelector((state) => state.auth.auth.role);
+  const id = useSelector((state) => state.auth.auth.id);
+  const lrole = useSelector((state) => state.auth.auth.role);
   const token = useSelector((state) => state.auth.auth.token);
 
   const [email, setEmail] = useState();
@@ -20,6 +23,7 @@ const AddInstructor = () => {
   const [name, setName] = useState();
   const [parentCompany, setParentCompany] = useState('');
   const [parentDepartment, setParentDepartment] = useState('');
+  const [deptID, setDeptID] = useState();
   const [profilePhoto, setProfilePhoto] = useState('dummy-user.png');
   const [image, setImage] = useState({preview:'', data:''})
   const [address, setAddress] = useState();
@@ -49,6 +53,7 @@ const AddInstructor = () => {
     data.append('role', role);
     data.append('parentCompany', parentCompany);
     data.append('parentDepartment',parentDepartment);
+    data.append('deptID', deptID);
     data.append('profilePhoto', image.data);
     data.append('address', address);
     data.append('aboutMe', aboutMe);
@@ -194,6 +199,21 @@ const AddInstructor = () => {
                   value={parentDepartment}
                 />
                 }
+
+                { (lrole === 'company') ? 
+                <div className="mb-3 row">
+                  <label className="col-sm-3 col-form-label">Select Department</label>
+                  <div className="col-sm-9">
+                    <select name="deptID" className="form-control" onChange={ (e) => setDeptID(e.target.value) }>
+                        <option value="">Select</option>
+                        <DepartmentByCompany parentCompany={id} prevSelected="" />
+                    </select> 
+
+                    {errors.deptID && <div Style="color:red;font-weight:600;padding:5px;">{errors.deptID}</div>}
+
+                  </div>
+                </div> : null }
+
                 
 
                 <div className="mb-3 row">

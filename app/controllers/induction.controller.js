@@ -165,7 +165,67 @@ exports.index = async (req, res) => {
           });
         });
 
+    }else if(user.role === "user"){
+      // get Parent Company and department of user
+      // then pass to query 
+      // inside token - add parent company and department
+
+      
+      Induction.aggregate([
+        {
+          $match: { $expr: { $eq: ["$parentCompany", ObjectId(user.parentCompany)] } },
+        },
+        {
+          $lookup: {
+            from: "induction_slides",
+            localField: "_id",
+            foreignField: "slideInductionId",
+            as: "slides",
+          },
+        },
+        {
+          $unwind: "$_id",
+        },
+        
+        {
+          $project: {
+            _id: 1,
+            title: "$title",
+            subTitle: "$subTitle",
+            thumbnail: "$thumbnail",
+            description: 1,
+            deptID:1,
+            parentCompany:1,
+            createdBy:1,
+            numOfSlides: { $size: "$slides" },
+            slides: "$slides",
+          },
+        }
+      ])
+        .then((data) => {
+          return res.status(200).send({
+            status: true,
+            message: "Inductions",
+            data: data,
+            reqbody: req.decoded,
+            pagination: {
+              totalRecords: data.length
+            }
+            
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+            data: {},
+            totalRecords: 0
+          });
+        });
+
+
     }else{
+      // super admin
       // .populate('eventsAttended')
       Induction.aggregate([
         {
@@ -259,6 +319,11 @@ exports.index = async (req, res) => {
     return res.status(403).json({ error: error.message });
   }
 };
+
+
+
+
+
 
 /**
  * @method post

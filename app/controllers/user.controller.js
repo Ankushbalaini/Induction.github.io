@@ -3,6 +3,8 @@ const UserCred = db.user_cred;
 const User = db.users;
 const CompanyDB = db.company;
 const UserInductionResults = db.user_induction_results;
+const Inductions = db.induction;
+
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -156,6 +158,15 @@ exports.login = (req, res) => {
     password: password,
   })
     .then(function (user) {
+
+      // checking user status
+      if(user.status === false){
+        return res.status(500).send({
+          status: false,
+          message: "USER_DISABLED",
+          data: {},
+        });
+      }
       if (user) {
         // create a new token
         const user_cred = new UserCred(user);
@@ -165,6 +176,8 @@ exports.login = (req, res) => {
             userID: user_cred._id,
             email: user_cred.email,
             role: user_cred.role,
+            deptID: user_cred.deptID,
+            parentCompany: user_cred.parentCompany
           },
           "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
           {
@@ -431,11 +444,21 @@ exports.signUp = (req, res) => {
  * @param {} res
  * @returns
  */
-exports.getProfile = (req, res) => {
+exports.getProfile = async (req, res) => {
   try {
     const userRole = req.decoded.role;
     switch (userRole) {
       case "instructor":
+
+      var totalInductions;
+
+      await Inductions.find({ createdBy : ObjectId(req.decoded.userID) })
+        .then((induction)=>{
+            totalInductions = induction.length;
+        })
+        .catch((err)=>{err});
+        
+
         UserCred.aggregate([
           {
             $match: { _id: ObjectId(req.decoded.userID) },
@@ -464,14 +487,17 @@ exports.getProfile = (req, res) => {
           },
         ])
           .then((data) => {
-            res.status(200).send({
+
+            data[0].totalInductions = totalInductions;
+
+            return res.status(200).send({
               status: true,
               message: "User profile",
               data: data[0],
             });
           })
           .catch((err) => {
-            res.status(500).send({
+            return res.status(500).send({
               status: false,
               message: err.message,
               data: {},
@@ -480,6 +506,23 @@ exports.getProfile = (req, res) => {
 
         break;
       case "company":
+
+        var totalInductions, totalInstructors;
+
+        await Inductions.find({ parentCompany : ObjectId(req.decoded.userID) })
+          .then((induction)=>{
+              totalInductions = induction.length;
+          })
+          .catch((err)=>{err});
+        
+        await UserCred.find({role:'instructor', parentCompany: ObjectId(req.decoded.userID) })
+          .then((user)=>{
+              totalInstructors = user.length;
+          })
+          .catch((err)=>{err});
+
+
+
         UserCred.aggregate([
           {
             $match: { _id: ObjectId(req.decoded.userID) },
@@ -508,10 +551,15 @@ exports.getProfile = (req, res) => {
           },
         ])
           .then((data) => {
+
+            data[0].totalInductions = totalInductions;
+            data[0].totalInstructors = totalInstructors;
+
             res.status(200).send({
               status: true,
-              message: "User profile",
+              message: "Company profile",
               data: data[0],
+              
             });
           })
           .catch((err) => {
@@ -555,7 +603,7 @@ exports.getProfile = (req, res) => {
           .then((data) => {
             res.status(200).send({
               status: true,
-              message: "User profile",
+              message: "User profile ",
               data: data[0],
             });
           })
@@ -610,7 +658,7 @@ exports.edit = async (req, res) => {
   }
 
   req.body.deptID = ObjectId(req.body.deptID);
-  req.body.parentCompany = ObjectId(req.body.deptID);
+  req.body.parentCompany = ObjectId(req.body.parentCompany );
 
   // await new UserCred({deptID : req.body.deptID}).save();
 
