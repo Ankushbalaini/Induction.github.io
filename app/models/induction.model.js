@@ -15,6 +15,7 @@ module.exports = (mongoose) => {
         currentSlide: { type: String },
         totalReviews: { type: String },
         noOfAttempts: { type: String, default: 10 },
+        passPercentage: { type: String, default: 75 },
         status: { type: Boolean, default: 0 },
         deleted: { type: Boolean, default: 0 },
         attachedSlides: [

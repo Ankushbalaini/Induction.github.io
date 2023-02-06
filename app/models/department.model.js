@@ -5,6 +5,7 @@ module.exports = (mongoose) => {
       {
         name: { type: String, required: true, unique: true },
         status: { type: Boolean, default: 1 }, // 1=active, 0= inactive
+        parentCompany : { type: mongoose.Schema.Types.ObjectId }
       },
       { timestamps: true }
     )

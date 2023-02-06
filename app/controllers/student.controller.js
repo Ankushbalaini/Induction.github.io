@@ -30,6 +30,8 @@ exports.index = (req, res) => {
         _id: 1,
         email: 1,
         role: 1,
+        deptID:1,
+        parentCompany:1,
         status: 1,
         profile: 1,
         createdAt: 1,

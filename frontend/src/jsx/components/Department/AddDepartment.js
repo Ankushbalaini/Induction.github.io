@@ -2,11 +2,13 @@ import React, { Fragment, useState, useRef } from "react";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AddDepartment =() =>{
     const navigate = useHistory();
     const [name,setName] = useState();
     const [status , setStatus] = useState(1);
+    const token = useSelector((state) => state.auth.auth.token);
 
 
  let handleSubmit = async (event)=>{
@@ -54,6 +56,7 @@ const AddDepartment =() =>{
          method : "POST",
          headers :{
              "Content-Type" : "application/json",
+             "x-access-token" : token,
          },
          body: JSON.stringify(formValues),
      }). then ((data)=> data.json());

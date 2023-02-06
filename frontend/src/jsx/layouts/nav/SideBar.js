@@ -197,36 +197,7 @@ const SideBar = () => {
 
 
           
-          {/* Department - Visible for Super Admin and Company Only */}
-          {role === "super_admin" || role === "company" ? (
-            <li className={`${department.includes(path) ? "mm-active" : ""}`}>
-              <Link className="has-arrow" to="#">
-                <i className="bi bi-book"></i>
-                <span className="nav-text">Department</span>
-              </Link>
-              <ul>
-                <li>
-                  <Link
-                    className={`${path === "department" ? "mm-active" : ""}`}
-                    to="/departments"
-                  >
-                    Departments
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    className={`${
-                      path === "add-department" ? "mm-active" : ""
-                    }`}
-                    to="/add-department"
-                  >
-                    Add Department{" "}
-                  </Link>
-                </li>
-              </ul>
-            </li>
-          ) : null}
+          
 
 
           {/*  Company Module - Visible to Only Super Admin*/}
@@ -259,6 +230,39 @@ const SideBar = () => {
               </ul>
             </li>
           ) : null}
+
+
+          {/* Department - Visible for Super Admin and Company Only */}
+          { role === "company" ? (
+            <li className={`${department.includes(path) ? "mm-active" : ""}`}>
+              <Link className="has-arrow" to="#">
+                <i className="bi bi-book"></i>
+                <span className="nav-text">Department</span>
+              </Link>
+              <ul>
+                <li>
+                  <Link
+                    className={`${path === "department" ? "mm-active" : ""}`}
+                    to="/departments"
+                  >
+                    Departments
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    className={`${
+                      path === "add-department" ? "mm-active" : ""
+                    }`}
+                    to="/add-department"
+                  >
+                    Add Department{" "}
+                  </Link>
+                </li>
+              </ul>
+            </li>
+          ) : null}
+          
 
           {role === "super_admin" || role === "company" ? (
             <li className={`${instructor.includes(path) ? "mm-active" : ""}`}>

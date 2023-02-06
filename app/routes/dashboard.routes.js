@@ -33,6 +33,11 @@ module.exports = function (app) {
   });
 
   router.get("/", dashboard.index);
+  router.get("/company", dashboard.company);
+  router.get("/instructor", dashboard.instructor);
+
+  
+
 
   app.use("/api/dashboard", router);
 };

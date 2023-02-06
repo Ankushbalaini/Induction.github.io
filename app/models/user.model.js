@@ -3,7 +3,7 @@ module.exports = mongoose => {
       "users",
       mongoose.Schema(
         {
-          userID : {type: String, unique: true , required: true},
+          userID : {type: mongoose.Schema.Types.ObjectId, unique: true , required: true},
           first_name: { type: String, default : null},
           last_name: { type: String, default : null},
           email: { type: String, unique: true , required: true},

@@ -64,24 +64,7 @@ const AttemptedInductions = () => {
     setIsModalOpen(payload);
   };
 
-  // callback function to opdate state
-  const trackDeleteClick = () => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this record!",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        swal("Poof! Your record has been deleted!", {
-          icon: "success",
-        });
-      } else {
-        swal("Your record is safe!");
-      }
-    });
-  };
+  
 
   const handlepageLoad = async (event) => {
     const response = await fetch("http://localhost:8081/api/users/inductions", {
@@ -150,53 +133,46 @@ const AttemptedInductions = () => {
                     >
                       <thead>
                         <tr>
-                          <th>Name</th>
-                          <th>Student ID</th>
-                          <th>Join Date</th>
-                          <th>Status</th>
-                          <th Style="text-align: end">Action</th>
+                          <th>Induction Title</th>
+                          {/* <th>Wrong Answers</th>
+                          <th>Correct Answers</th> */}
+                          <th>Remark</th>
+                          <th>Test Status</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {/* {inductions.map((row, index) => (
+                        {inductions.map((row, index) => (
                           <tr key={index}>
                             <td>
                               <div className="d-flex align-items-center">
-                                <img
-                                  src={loadImage(row.profile.profilePhoto)}
+                                {/* <img
+                                  src=""
                                   alt=""
                                 />
+                                */}
                                 <h4 className="mb-0 fs-16 font-w500">
-                                  {row.profile?.first_name}{" "}
-                                  {row.profile?.last_name}
-                                </h4>
+                                  {row.inductionID.title}{" "}
+                                </h4> 
                               </div>
                             </td>
-                            <td>{row.email}</td>
+                            {/* <td>{row.wrongAnswers}</td>
                             <td>
-                              {new Date(row.createdAt).toLocaleDateString(
-                                "en-GB",
-                                {
-                                  day: "numeric",
-                                  month: "long",
-                                  year: "numeric",
-                                }
-                              )}
+                              {row.correctAnswers}
+                            </td> */}
+                            <td>
+                              {row.remark}
                             </td>
-                            <td>
-                              <span
-                                className={`badge  light badge-success`}
-                              >{`Active`}</span>
-                            </td>
-                            <td>
-                              <ActionDropDown
-                                trackOnclick={trackOnclick}
-                                profileData={row}
-                                trackDeleteClick={trackDeleteClick}
-                              />
+                            <td Style="text-align:left;">
+                              <Link
+                                className={`badge light ${(row.testStatus === 'Fail')? 'badge-danger': 'badge-success'}`}
+                                onClick={(e)=>e.preventDefault()}
+                              >
+                                {row.testStatus}
+                              </Link>
+                              
                             </td>
                           </tr>
-                        ))} */}
+                        ))}
                       </tbody>
                     </table>
                     <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
@@ -213,7 +189,7 @@ const AttemptedInductions = () => {
                       >
                         <Link
                           className="paginate_button previous "
-                          to="/students"
+                          to="/attempted-inductions"
                           onClick={() =>
                             activePag.current > 0 &&
                             onClick(activePag.current - 1)
@@ -228,7 +204,7 @@ const AttemptedInductions = () => {
                           {paggination.map((number, i) => (
                             <Link
                               key={i}
-                              to="/students"
+                              to="/attempted-inductions"
                               className={`paginate_button  ${
                                 activePag.current === i ? "current" : ""
                               } `}
@@ -241,7 +217,7 @@ const AttemptedInductions = () => {
 
                         <Link
                           className="paginate_button next"
-                          to="/students"
+                          to="/attempted-inductions"
                           onClick={() =>
                             activePag.current + 1 < paggination.length &&
                             onClick(activePag.current + 1)
@@ -265,11 +241,3 @@ const AttemptedInductions = () => {
   );
 };
 export default AttemptedInductions;
-
-// <Form.Group as={Col}controlId="formGridState" className="form-group mb-3 text-black font-w600">
-// <Form.Label>Status</Form.Label>
-// <Form.Select defaultValue="Choose...">
-//   <option>Active</option>
-//   <option>Inactive</option>
-// </Form.Select>
-// </Form.Group>
