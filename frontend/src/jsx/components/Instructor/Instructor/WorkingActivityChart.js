@@ -6,14 +6,8 @@ class WorkingActivityChart extends React.Component {
 		super(props);
 		this.state = {
 			series: [{
-				name: 'Aplication Sent',
-				data: [40, 55, 15, 50, 70, 20, 55,35, 15,]
-			}, {
-				name: 'Appllication Answered',
-				data: [55, 55, 35, 15,  35, 55, 20,40, 55,]
-			}, {
-				name: 'Hired',
-				data: [20, 17, 55, 45, 30, 65, 50,20, 55,]
+				name: 'Average Score',
+				data: [40, 55, 15, 50, 70, 20, 55]
 			}],
 			
 			options:{
@@ -28,7 +22,7 @@ class WorkingActivityChart extends React.Component {
 				plotOptions: {
 					bar: {
 						horizontal: false,
-						columnWidth: '40%',
+						columnWidth: '60%',
 						
 						endingShape: "rounded",
 						startingShape: "rounded",
@@ -65,7 +59,7 @@ class WorkingActivityChart extends React.Component {
 						show: false,
 					},
 					
-					categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul','Aug','Sep','Oct','Nov','Dec'],
+					categories: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 				},
 				yaxis: {
 					show: true,
