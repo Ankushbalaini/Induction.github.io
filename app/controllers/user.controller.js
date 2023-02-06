@@ -734,7 +734,13 @@ exports.inductions = (req, res) => {
 
     */
 
-    UserInductionResults.find({ userID: userID })
+    UserInductionResults
+      .find({ userID: userID })
+      .populate({
+        path: 'inductionID',
+        select: 'title'
+      })
+      .sort({ createdAt: -1 })
       .then((data) => {
         return res.status(200).send({
           message: "Success here",

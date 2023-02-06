@@ -8,6 +8,20 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
 
+
+const submitTestApi = async (id, token, dataPass) => {
+  return await fetch("http://localhost:8081/api/mcq/submit/" + id, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+    body: JSON.stringify(dataPass),
+  }).then((data) => data.json());
+};
+
+
+
 const TestQuestions = (props) => {
   const navigate = useHistory();
   const userID = useSelector((state) => state.auth.auth._id);
@@ -15,6 +29,8 @@ const TestQuestions = (props) => {
   const { id } = useParams();
 
   const [activeQuestion, setActiveQuestion] = useState(0);
+  const [activeWindowEvent, setActiveWindowEvent] = useState(true);
+
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [showResult, setShowResult] = useState(false);
   const [submitTest, setSubmitTest] = useState(false);
@@ -24,29 +40,18 @@ const TestQuestions = (props) => {
     score: 0,
     correctAnswers: 0,
     wrongAnswers: 0,
+    remark: "Test Failed due to tab changes"
   });
+
+
+  
+
 
   const buttonsty = {
     float: "right",
     margin: "auto",
   };
 
-  const submitTestApi = async (id, token, dataPass) => {
-    return await fetch("http://localhost:8081/api/mcq/submit/" + id, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token,
-      },
-      body: JSON.stringify(dataPass),
-    }).then((data) => data.json());
-  
-    
-  };
-
-
-
-  
   // setting questions 
   const questions = props.Questions;
 
@@ -100,27 +105,17 @@ const TestQuestions = (props) => {
     }
   }
 
-  useEffect(async () => {
-    if(showResult){
-      var data = { ...result};
-      const response = await submitTestApi(id, token, data);
-      if ("status" in response && response.status == true) {
-      }else{
-
-      }
-    }
-
-  }, [showResult, result]);
+  
 
   const addLeadingZero = (number) => (number > 9 ? number : `0${number}`);
 
 
-  // change tab 3 times in browser leads to fail test
-  document.addEventListener("visibilitychange", function() {
+  const handleTabSwitch = (event) => {
+    console.log("here window events");
     if (document.visibilityState === 'visible') {
-        // console.log('has focus');
+      // console.log('has focus');
     } else {
-
+      console.log(`events ${tabChangeCount}`);
       if(tabChangeCount > 2){
         swal({
           title: "Test Fail.",
@@ -135,6 +130,11 @@ const TestQuestions = (props) => {
             swal("Test Fail. and redirecting you to inductions", {
               icon: "warning",
             }).then(()=>{
+
+              var data = { ...result};
+              submitTestApi(id, token, data); 
+              window.removeEventListener('visibilitychange', handleTabSwitch);
+              setActiveWindowEvent(false);
               navigate.push("/inductions");
             });
           }
@@ -144,14 +144,29 @@ const TestQuestions = (props) => {
       }else{
         setTabChangeCount(tabChangeCount+1);
       }
-
-      
-      
     }
-  });
+  };
 
 
 
+
+  useEffect(async () => {
+
+    if(activeWindowEvent){
+      window.addEventListener('visibilitychange', handleTabSwitch);
+    }else{
+      window.removeEventListener('visibilitychange', handleTabSwitch);
+    }
+
+    if(showResult){
+      var data = { ...result};
+      data.remark = "Test successfully completed";
+      const response = await submitTestApi(id, token, data);  
+      window.removeEventListener('visibilitychange', handleTabSwitch);  
+      setActiveWindowEvent(false);  
+    }
+  }, [showResult, result, activeWindowEvent, tabChangeCount]);
+  
 
   return (
     <div className="background-modal" style={{

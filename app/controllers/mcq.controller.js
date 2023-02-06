@@ -174,7 +174,8 @@ exports.submitTest = (req, res) => {
         score: req.body.score,
         correctAnswers: req.body.correctAnswers,
         wrongAnswers: req.body.wrongAnswers,
-        testStatus: pass
+        testStatus: pass,
+        remark: req.body.remark
     };
 
     Result = new UserInductionResults(submitDataObj);
