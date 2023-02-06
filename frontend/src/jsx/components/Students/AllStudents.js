@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import ActionDropDown from "./ActionDropDown";
-import UpdateProfile from "./UpdateStudentModal";
+import UpdateStudentModal from "./UpdateStudentModal";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -304,7 +304,7 @@ const AllStudents = () => {
       </div>
       }
       
-      <UpdateProfile  isModalOpen={isModalOpen} trackOnclick={trackOnclick} profileData={profileData} />
+      <UpdateStudentModal  isModalOpen={isModalOpen} trackOnclick={trackOnclick} profileData={profileData} />
 
 
     </>

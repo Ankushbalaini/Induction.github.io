@@ -14,15 +14,20 @@ async function getCompanies() {
 
    
 const CompanyDropdown = (props) => {
-
+    const [selected, setSelected] = useState(props.prevSelected);
     const [loading, setLoading] = useState(true);
     const [option, setOption] = useState();
 
     const callApi = async () =>{
         const response = await getCompanies();
         if ("status" in response && response.status == true) {
+
+
             const rows = response.data.map((row, index) => (
+
                 <option value={row.userID}>{row.name}</option>
+
+
             ));
             setOption(rows);
             setLoading(false);

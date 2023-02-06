@@ -10,7 +10,7 @@ import UpdateProfile from "./UpdateProfile";
 
 const images = require.context('../../../../../images/profile/', true);
 
-const WidgetBlog = ({ changeImage, title, link }) => {
+const WidgetBlog = ({ changeImage, title, link, Count }) => {
   return (
     <>
       <div className="col-xl-6 col-lg-6 col-sm-6">
@@ -20,7 +20,7 @@ const WidgetBlog = ({ changeImage, title, link }) => {
               <div className="d-flex">
                 <img src={changeImage} alt="" />
                 <div className="ms-4">
-                  <h4>100</h4>
+                  <h4>{Count}</h4>
                   <span>{title}</span>
                 </div>
               </div>
@@ -95,8 +95,9 @@ const InstructorProfile = () => {
   }
 
   useEffect(()=>{
-    getProfile();
-
+    if(loading){
+      getProfile();
+    }
   }, [instructorData]);
 
   const pageContent = (loading) ? <h1>Loading</h1> :
@@ -140,12 +141,13 @@ const InstructorProfile = () => {
       </div>
       <div className="col-xl-8 col-xxl-7 col-lg-12 ">
         <div className="row">
-          <WidgetBlog
+          {/* <WidgetBlog
             changeImage={certificate}
             title="Instructors"
             link="instructors"
-          />
-          <WidgetBlog changeImage={clock} title="Inductions" link="courses" />
+            Count={instructorData.totalInductions}
+          /> */}
+          <WidgetBlog changeImage={clock} title="Inductions" link="inductions" Count={instructorData.totalInductions}/>
           <div className="widget-heading d-flex justify-content-between align-items-center">
             <h3 className="m-0">My Inductions</h3>
             <Link to={"./inductions"} className="btn btn-primary btn-sm">

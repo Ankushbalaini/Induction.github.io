@@ -50,32 +50,36 @@ export function loginAction(role, email, password, history) {
   return (dispatch) => {
     login(role, email, password)
       .then((response) => {
-        
-        saveTokenInLocalStorage(response.data.data);
-        
-        dispatch(loginConfirmedAction(response.data.data));
-        
-        // navigate to respective dashboard
-        switch (response.data.data.role) {
-          case "super_admin":
-            history.push("/dashboard");
-            break;
-          case "company":
-            history.push("/company-dashboard");
-            break;
-          case "instructor":
-            history.push("/instructor-dashboard");
-            break;
-          default:
-            history.push("/inductions");
-            break;
+
+        if(response.data.status === true){
+          saveTokenInLocalStorage(response.data.data);
+          
+          dispatch(loginConfirmedAction(response.data.data));
+          
+          // navigate to respective dashboard
+          switch (response.data.data.role) {
+            case "super_admin":
+              history.push("/dashboard");
+              break;
+            case "company":
+              history.push("/company-dashboard");
+              break;
+            case "instructor":
+              history.push("/instructor-dashboard");
+              break;
+            default:
+              history.push("/inductions");
+              break;
+          }
+        }else{
+          throw new Error(response.data.message);
         }
-        
       })
       .catch((error) => {
-        const errorMessage = formatError(error);
-        dispatch(loginFailedAction(errorMessage));
-      });
+         // console.log(error);
+          const errorMessage = formatError(error);
+          dispatch(loginFailedAction(errorMessage));
+       });
   };
 }
 
