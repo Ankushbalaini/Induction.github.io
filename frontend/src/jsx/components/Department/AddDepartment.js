@@ -105,14 +105,15 @@ const [errors, setErrors] = useState(errorsObj);
 
                                  </div>
                              </div>
-                             { (loggedrole == 'super_admin') ?
+                             {/* { (loggedrole == 'company') ?
                                 <div className="mb-3 row">
                                   <label className="col-sm-3 col-form-label">Parent Company</label>
                                   <div className="col-sm-9">
                 
                                      
-                                    <option value="">Select</option>
+                                  
                                      <select name="parentCompany" className="form-control" onChange={ (e) => setParentCompany(e.target.value) }>
+                                     <option value="">Select</option>
                                        <CompanyDropdown />
                                     </select> 
                 
@@ -127,7 +128,7 @@ const [errors, setErrors] = useState(errorsObj);
                                   className="form-control"
                                   value={parentCompany}
                                 />
-                                }
+                                } */}
  
                              <div className="mb-3 row">
                                  <label className="col-sm-3 col-form-label">

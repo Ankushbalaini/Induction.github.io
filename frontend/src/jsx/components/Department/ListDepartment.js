@@ -11,6 +11,7 @@ const ListDepartments =()=>{
     const navigate = useHistory();
     const [name,setName] = useState();
     const [status , setStatus] =useState();
+    const [parentCompany,setParentCompany]=useState();
     const [departments,setDepartments] =useState();
     const [deptData, setdeptData] = useState([{name:'noora'}]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,6 +25,7 @@ const ListDepartments =()=>{
          setModalData(department);
          setName(department.name);
          setStatus(department.status);
+         setParentCompany(department.parentCompany)
          setEditID(department._id);
 
       }
@@ -191,9 +193,9 @@ const ListDepartments =()=>{
                       Department Status<span className="required"></span>{" "}
                     </label>
                     <select className="form-control" onChange={(e) =>setStatus(e.target.value)}>
-                                    <option value={1}>Active</option>
-                                    <option value={0}>Inactive</option>
-                                    </select>
+                      <option value={1}>Active</option>
+                      <option value={0}>Inactive</option>
+                     </select>
                     </div>
                   </div>
                   <div className="col-lg-12">
