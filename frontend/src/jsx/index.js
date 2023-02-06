@@ -62,6 +62,7 @@ import Mcq from "./components/Inductions/Mcq";
 import { ThemeContext } from "../context/ThemeContext";
 import { store } from "../../src/store/store";
 import ViewMcq from "./components/Inductions/Viewquiz";
+import AttemptQuiz from "./components/Inductions/Attemptquiz";
 import AttemptedInductions from "./components/Students/AttemptedInductions";
 
 const Markup = () => {
@@ -100,6 +101,7 @@ const Markup = () => {
     { url: "single-induction-view/:id", component: SingleInductionView },
     { url: "mcq/:inductionID", component: Mcq },
     { url : "viewmcq/:id", component :ViewMcq},
+    { url : "attemptquiz/:id",component:AttemptQuiz},
   
     { url: "start-test/:id", component: StarTest },
 

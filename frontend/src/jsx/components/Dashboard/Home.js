@@ -61,7 +61,7 @@ const Home = () => {
 
 	const [dropSelect, setDropSelect] = useState('This Month');
 	return(
-		<>
+		<div>
 			{ (loading) ? <i className="fas fa-atom fa-spin"></i> : <div className="row">
 				<div className="col-xl-12 col-xxl-12">
 					<div className="row">
@@ -74,7 +74,7 @@ const Home = () => {
 											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. </p>
 										</div>	
 										<div className="dlab-img">
-											<img src={Educat} alt="" />
+										<img src={Educat} height="250px" width="100px" alt=""/>
 										</div>	
 										<div className="dlab-icon">
 											<img src={Calpng} alt="" className="cal-img" />
@@ -87,7 +87,10 @@ const Home = () => {
 						<div className="col-xl-12 bt-order">
 							<CourseBlog dashboard={dashboard}/> 
 						</div>
-						{/* <div className="col-xl-12 col-xxl-6">
+						
+						
+						<div className="row">
+					 <div className="col-xl-6 col-xxl-6">
 							<div className="card score-active">
 								<div className="card-header border-0 flex-wrap">
 									<h4>Learning Activity</h4>
@@ -110,11 +113,18 @@ const Home = () => {
 									<LearningActivityChart />
 								</div>
 							</div>
-						</div> */}
+						</div> 
+						<div className="col-xl-6 col-lg-8">
+							<div className="card">
+								<div className="card-body card-calendar home-calendar">								
+									<CalendarBlog />
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div className="col-xl-6 col-xxl-12">
-					<div className="row">
+				
+					
 						{/* <div className="col-xl-12">
 							<div className="card score-active">
 								<div className="card-header border-0 pb-2 flex-wrap">
@@ -162,20 +172,15 @@ const Home = () => {
 								</div>
 							</div>
 						</div> */}
-						<div className="col-xl-12 col-lg-8">
-							<div className="card">
-								<div className="card-body card-calendar home-calendar">								
-									<CalendarBlog />
-								</div>
-							</div>
-						</div>
+						
 					</div>
 				</div>
 				
 				
-			</div>
+			
+			
 			}
-		</>
+		</div>
 	)
 }
 export default Home;

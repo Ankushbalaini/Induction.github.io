@@ -37,7 +37,7 @@ const TimeLineBlog2 =() =>{
 
 const Activity = () =>{
 	return(
-		<>
+		<div>
 			<div className="card">
 				<Tab.Container defaultActiveKey='Follow'> 
 					<div className="card-header border-0 flex-wrap">
@@ -120,7 +120,7 @@ const Activity = () =>{
 					</div>	
 				</div>
 			</div>
-		</>
+		</div>
 	)
 }
 export default Activity;

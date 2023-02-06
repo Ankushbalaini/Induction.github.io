@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import {Link} from 'react-router-dom'
 import loadable from "@loadable/component";
 import pMinDelay from "p-min-delay";
@@ -8,34 +8,32 @@ import { Pie } from "react-chartjs-2";
 import DropDownBlog from './../Dashboard/DropDownBlog';
 //import TotalStudentsChart from './Instructor/TotalStudentsChart';
 //import EarningsChart from './Instructor/EarningsChart';
-//import WorkingActivityChart from './Instructor/WorkingActivityChart';
+import WorkingActivityChart from './Instructor/WorkingActivityChart';
 import CalendarBlog from './../Dashboard/Dashboard/CalendarBlog';
-import TotalStudent from '../../pages/WidgetBasic/TotalStudent';
-import TotalCourse from '../../pages/WidgetBasic/TotalCourse';
+import { useSelector } from 'react-redux';
 
 
-const TotalStudentsChart = loadable(() =>
-	pMinDelay(import("./Instructor/TotalStudentsChart"), 1000)
-);
-const EarningsChart = loadable(() =>
-	pMinDelay(import("./Instructor/EarningsChart"), 1000)
-);
-const WorkingActivityChart = loadable(() =>
-	pMinDelay(import("./Instructor/WorkingActivityChart"), 1000)
-);
+// const TotalStudentsChart = loadable(() =>
+// 	pMinDelay(import("./Instructor/TotalStudentsChart"), 1000)
+// );
+// const EarningsChart = loadable(() =>
+// 	pMinDelay(import("./Instructor/EarningsChart"), 1000)
+// );
+// const WorkingActivityChart = loadable(() =>
+// 	pMinDelay(import("./Instructor/WorkingActivityChart"), 1000)
+// );
 
-const sampleData = [4,7,4,9,5,6,8,4,2,4,5,6];
+// const sampleData = [4,7,4,9,5,6,8,4,2,4,5,6];
 
-const timelineBlog = [
-	{title:'Introduction Wireframe', change:'bg-primary'},
-	{title:'Basic React', change:'bg-secondary'},
-	{title:'Basic Js', change:'bg-warning'},
-];
-
+// const timelineBlog = [
+// 	{title:'Introduction Wireframe', change:'bg-primary'},
+// 	{title:'Basic React', change:'bg-secondary'},
+// 	{title:'Basic Js', change:'bg-warning'},
+// ];
 
 // function UpComingEvent(){
 // 	return(
-// 		<div>
+// 		<>
 // 			<div className="d-flex justify-content-between side-border">
 // 				<h4 className="mb-0 fs-18 font-w500">5 Jan</h4>
 // 				<div className="dropdown custom-dropdown mb-0">
@@ -56,133 +54,101 @@ const timelineBlog = [
 // 					</li>
 // 				))}				
 // 			</ul>
-// 		</div>
+// 		</>
 // 	)
 // }
 
 const InstructorDashboard = () =>{
+ const token = useSelector((state) => state.auth.auth.token);
+ const [instructorDB,setInstructorDB]=useState();
+ const [loading, setLoading] = useState(true);
+
+ const [scoreData, setScoreData]=useState()
+ 
+ const  handlepageScore = async (e) =>{
+	const response = await fetch ("http://localhost:8081/api/dashboard/instructor",{
+	 method:"GET", 
+	 headers:{
+	   "Content-Type": "application/json",
+	   "x-access-token" : token,
+	 },
+	})
+	const result = await response.json();
+	const {data} = result;
+	setScoreData(data);
+  }
+
+ const  handlepageLoad = async (e) =>{
+   const response = await fetch ("http://localhost:8081/api/dashboard/instructor",{
+    method:"GET", 
+    headers:{
+      "Content-Type": "application/json",
+      "x-access-token" : token,
+    },
+   })
+   const result = await response.json();
+   const {data} = result;
+   setInstructorDB(data);
+ }
+ 
+ useEffect(() => {
+  if(loading){
+    handlepageLoad();
+  }},[]);
+
 	return(
 		<div>
 		<div className="row">
-		<div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-			   <div className="widget-stat card bg-primary">
-				<div className="card-body  p-4">
-				  <div className="media">
-					<span className="me-3">
-					  <i className="la la-users"></i>
-					</span>
-					<div className="media-body text-white">
-					  <p className="mb-1">Total Students</p>
-					  <h3 className="text-white">32</h3>
-					  <div className="progress mb-2 bg-secondary">
-						<div
-						  className="progress-bar progress-animated bg-light"
-						  style={{ width: "80%" }}
-						></div>
-					  </div>
-					  <small>80% Increase in 20 Days</small>
-					</div>
-				  </div>
-				</div>
-			   </div>
-			  </div>
-			
-			  <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-			   <div className="widget-stat card bg-secondary">
-				 <div className="card-body p-4">
-				   <div className="media">
-					 <span className="me-3">
-					   <i className="la la-graduation-cap"></i>
-					 </span>
-					 <div className="media-body text-white">
-					   <p className="mb-1">Total Course</p>
-					   <h3 className="text-white">28</h3>
-					   <div className="progress mb-2 bg-primary">
-						 <div
-						   className="progress-bar progress-animated bg-light"
-						   style={{ width: "76%" }}
-						 ></div>
-					   </div>
-					   <small>76% Increase in 20 Days</small>
-					 </div>
-				   </div>
-				 </div>
-			   </div>
-			  </div>
-
-			  <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-			   <div className="widget-stat card bg-danger">
-				 <div className="card-body p-4">
-				   <div className="media">
-					 <span className="me-3">
-					   <i className="bi bi-award-fill"></i>
-					 </span>
-					 <div className="media-body text-white">
-					   <p className="mb-1">Student Passed</p>
-					   <h3 className="text-white">7/10</h3>
-					   <div className="progress mb-2 bg-primary">
-						 <div
-						   className="progress-bar progress-animated bg-light"
-						   style={{ width: "76%" }}
-						 ></div>
-					   </div>
-					   <small>76% Increase in 20 Days</small>
-					 </div>
-				   </div>
-				 </div>
-			   </div>
-			  </div>
-			 </div>
+		</div>
 		
 			<div className="row">
-				<div className="col-xl-8 col-xxl-7">
-			
-					<div className="row">
-					<div className="col-xl-8 col-lg-12 col-sm-12">
-					<div className="card">
-					  <div className="card-header border-0 pb-0">
-						<h2 className="card-title">Working Activity</h2>
-					  </div>
-					  <div className="card-body pb-0">
-						<p>
-						  Lorem Ipsum is simply dummy text of the printing and typesetting
-						  industry.
-						</p>
-						<ul className="list-group list-group-flush">
+			      <div className="col-xl-6 col-lg-6 col-xxl-6 col-sm-6">
+                     <div className="widget-stat card bg-primary">
+                       <div className="card-body  p-4">
+                         <div className="media">
+                      <span className="me-3">
+                        <i className="bi bi-book"></i>
+                      </span>
+                      <div className="media-body text-white">
+                        <p className="mb-1" >Total Inductions</p>
+                        <h3 className="text-white">{instructorDB?.totalInductions}</h3>
+                        <div className="progress mb-2 bg-secondary">
+                          <div
+                            className="progress-bar progress-animated bg-light"
+                            style={{ width: "80%" }}
+                          ></div>
+                        </div>
+                        <small>80% Increase in 20 Days</small>
+                      </div>
+                    </div>
+                  </div>
+                 </div>
+                </div>
+              
+                <div className="col-xl-6 col-lg-6 col-xxl-6 col-sm-6">
+                 <div className="widget-stat card bg-secondary">
+                   <div className="card-body p-4">
+                     <div className="media">
+                       <span className="me-3">
+                         <i className="bi bi-people"></i>
+                       </span>
+                       <div className="media-body text-white">
+                         <p className="mb-1 font-weight-bold">Total Users</p>
+                         <h3 className="text-white">{instructorDB?.totalUsers}</h3>
+                         <div className="progress mb-2 bg-primary">
+                           <div
+                             className="progress-bar progress-animated bg-light"
+                             style={{ width: "76%" }}
+                           ></div>
+                         </div>
+                         <small>76% Increase in 20 Days</small>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+                </div>
 
-						  <li className="list-group-item d-flex px-0 justify-content-between">
-							<strong>Name</strong>
-							<span className="mb-0">William</span>
-						  </li>
-						  <li className="list-group-item d-flex px-0 justify-content-between">
-							<strong>Parent Company</strong>
-							<span className="mb-0">BJS</span>
-						  </li>
-						</ul>
-					  </div>
-					  <div className="card-footer pt-0 pb-0 text-center">
-						<div className="row">
-						  <div className="col-4 pt-3 pb-3 border-right">
-							<h3 className="mb-1 text-primary">150</h3>
-							<span>Projects</span>
-						  </div>
-						  <div className="col-4 pt-3 pb-3 border-right">
-							<h3 className="mb-1 text-primary">140</h3>
-							<span>Uploads</span>
-						  </div>
-						  <div className="col-4 pt-3 pb-3">
-							<h3 className="mb-1 text-primary">45</h3>
-							<span>Tasks</span>
-						  </div>
-						</div>
-					  </div>
-					</div>
-				  </div>
-
-						
-						
-						
-						<div className="col-xl-12">
+				<div className="col-xl-12">
 							<div className="card">
 								<div className="card-header border-0 flex-wrap">
 									<h4>Average Score</h4>
@@ -219,9 +185,8 @@ const InstructorDashboard = () =>{
 								
 							</div>
 						</div>
-					</div>
-				</div>
-				
+
+         
 				
 				
 			</div>	
