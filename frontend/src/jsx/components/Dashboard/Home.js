@@ -19,12 +19,7 @@ import { useSelector } from "react-redux";
 const LearningActivityChart = loadable(() =>
 	pMinDelay(import("./Dashboard/LearningActivityChart"), 1000)
 );
-const ScoreActivityChart = loadable(() =>
-	pMinDelay(import("./Dashboard/ScoreActivityChart"), 1000)
-);
-const ProgressChart = loadable(() =>
-	pMinDelay(import("./Dashboard/ProgressChart"), 1000)
-);
+
 
 
 const Home = () => {
@@ -95,12 +90,7 @@ const Home = () => {
 								<div className="card-header border-0 flex-wrap">
 									<h4>Learning Activity</h4>
 									<ul className="d-flex">
-										<li>
-											<svg className="me-2" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<rect x="1.5" y="1.5" width="9" height="9" rx="4.5" fill="white" stroke="var(--primary)" strokeWidth="3"/>
-											</svg>
-											Last Month
-										</li>
+										
 										<li>
 											<svg className="me-2" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<rect x="1.5" y="1.5" width="9" height="9" rx="4.5" fill="white" stroke="var(--secondary)" strokeWidth="3"/>

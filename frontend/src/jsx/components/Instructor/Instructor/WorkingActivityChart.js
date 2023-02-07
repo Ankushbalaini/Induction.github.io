@@ -2,6 +2,7 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 
 class WorkingActivityChart extends React.Component {
+
 	constructor(props) {
 		super(props);
 		this.state = {

@@ -68,7 +68,7 @@ const InstructorDashboard = () =>{
  
  //score of students
  const  handlepageScore = async (e) =>{
-	const response = await fetch ("http://localhost:8081/api/users/inductions",{
+	const response = await fetch ("http://localhost:8081/api/users/inductions/score" + testID,{
 	 method:"GET", 
 	 headers:{
 	   "Content-Type": "application/json",
@@ -79,6 +79,10 @@ const InstructorDashboard = () =>{
 	const {data} = result;
 	setScoreData(data);
   }
+  useEffect(() => {
+	if(loading){
+		handlepageScore();
+	}},[]);
 
  const  handlepageLoad = async (e) =>{
    const response = await fetch ("http://localhost:8081/api/dashboard/instructor",{
@@ -162,8 +166,8 @@ const InstructorDashboard = () =>{
 												</svg>
 											</span>
 											<div className="ms-3">
-												<span>Performance</span>
-												<h4 className="fs-18 mb-0">23</h4>
+												<span></span>
+												<h4 className="fs-18 mb-0">{scoreData?.score}</h4>
 											</div>
 										</div>
 										
