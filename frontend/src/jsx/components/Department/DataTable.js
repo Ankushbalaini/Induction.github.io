@@ -14,9 +14,16 @@ const Table = props => {
       grow: 1,
       className: 'col-3'
     },
+    // {
+    //   name:"Parent Company",
+    //   selector :"parentcompany",
+    //   sortable: true,
+    //   grow:1,
+    //   className :"col-3"
+    // },
     {
       name : "Status",
-      // selector:"status",
+      selector:"status",
       // sortable:true,
       hide: "sm",
       cell: row => (

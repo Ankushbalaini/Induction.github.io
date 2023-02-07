@@ -8,16 +8,27 @@ import { useHistory } from "react-router-dom";
 
 
 const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
+        console.log(mcqData,"mcqData...");
+
     const navigate = useHistory();
 
     const token = useSelector((state) => state.auth.auth.token);
     
-    const [question, setQuestion] = useState(mcqData.question);
-    const [option1, setOption1] = useState("");
-    const [option2, setOption2] = useState("");
-    const [option3, setOption3] = useState("");
-    const [option4, setOption4] = useState("");
-    const [answer, setAnswer] = useState("");
+    const [question, setQuestion] = useState();
+    const [option1, setOption1] = useState();
+    const [option2, setOption2] = useState();
+    const [option3, setOption3] = useState();
+    const [option4, setOption4] = useState();
+    const [answer, setAnswer] = useState(mcqData.answer);
+  useEffect(()=>{
+    setQuestion(mcqData.question)
+    setOption1(mcqData.option1)
+    setOption2(mcqData.option2)
+    setOption3(mcqData.option3)
+    setOption4(mcqData.option4)
+    setAnswer(mcqData.answer)
+  },[mcqData])
+    // const []
 
 
     const handleCallback = () => {
@@ -31,7 +42,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
         <Modal className="modal fade" show={isModalOpen}>
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Update Profile</h5>
+            <h5 className="modal-title">Update Mcq </h5>
             <Button
               variant=""
               type="button"
@@ -41,14 +52,14 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
             ></Button>
           </div>
           <div className="modal-body">
-            <form
+           <form
               className="update-form"
-              onSubmit={handleSubmit}
+              onSubmit={handleCallback}
               encType
             >
-              <div className="row">
-                <div className="col-lg-6">
-                  <div className="form-group mb-3">
+              <div className="row" >
+                <div className="col-lg-12">
+                  <div className="form-group mb-6">
                     <label htmlFor="question" className="text-black font-w600">
                       {" "}
                       Question  <span className="required">*</span>{" "}
@@ -59,62 +70,62 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
                       defaultValue=''
                       name="question"
                       placeholder=""
-                      value={firstName}
+                      value={question}
                       onChange={(e)=>setQuestion(e.target.value)}
                     />
                   </div>
                 </div>
-                <div className="col-lg-6">
+
+                <div className="col-sm-12">
                   <div className="form-group mb-3">
-                    <label htmlFor="last_name" className="text-black font-w600">
+                    <label htmlFor="option1" className="text-black font-w600">
                       {" "}
-                      Option1 <span className="required">*</span>
+                      Option 1 <span className="required">*</span>
                     </label>
-                    <inputLastName
+                    <input
                       type="text"
                       className="form-control"
-                      name="last_name"
+                      name="option1"
                       value={option1}
                       onChange={(e)=>setOption1(e.target.value)}
+                      disabled
 
                     />
                   </div>
                 </div>
-
                 <div className="col-lg-12">
                   <div className="form-group mb-3">
-                    <label htmlFor="email" className="text-black font-w600">
+                    <label htmlFor="option2" className="text-black font-w600">
                       {" "}
-                      Profile Pic <span className="required">*</span>
-                    </label>
-                    <div className="instructors-media">
-                    <img src={ loadImage(preview).default } Style="max-height:100px; max-width:100px; padding:10px; border-radius:10px"></img>
-                    </div> 
-                    <input type="hidden" value={preview} name="profilePhoto" />
-                    <input
-                      type="file"
-                      className="form-control"
-                      name="image"
-                      onChange={handleFileChange}
-                    />
-                  </div>
-                </div>
-
-
-
-
-                <div className="col-lg-12">
-                  <div className="form-group mb-3">
-                    <label htmlFor="email" className="text-black font-w600">
-                      {" "}
-                      Email <span className="required">*</span>
+                      Option 2 <span className="required">*</span>
                     </label>
                     <input
                       type="text"
                       className="form-control"
-                      name="email"
-                      value={email}
-                      onChange={(e)=>setEmail(e.target.value)}
+                      name="option2"
+                      value={option2}
+                      onChange={(e)=>setOption2(e.target.value)}
+                      
+
+                    />
+                  </div>
+                </div>
+
+
+
+
+                <div className="col-lg-12">
+                  <div className="form-group mb-3">
+                    <label htmlFor="option3" className="text-black font-w600">
+                      {" "}
+                      Option 3 <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="option3"
+                      value={option3}
+                      onChange={(e)=>setOption3(e.target.value)}
                       disabled
 
                     />
@@ -124,32 +135,49 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
 				
                 <div className="col-lg-12">
                   <div className="form-group mb-3">
-                    <label htmlFor="aboutMe" className="text-black font-w600">
-                      About me
+                    <label htmlFor="option4" className="text-black font-w600">
+                      {" "}
+                      Option 4 <span className="required"></span>
                     </label>
-                    <textarea
-                      rows={3}
+                    <input
+                      type="text"
                       className="form-control"
-                      name="aboutMe"
-                      placeholder=""
-                      defaultValue={""}
-                      value={aboutMe}
-                      onChange={(e)=>setAboutMe(e.target.value)}
+                      name="option4"
+                      value={option4}
+                      onChange={(e)=>setOption4(e.target.value)}
+                      disabled
 
                     />
                   </div>
                 </div>
-                <div className="col-lg-12">
-                  <div className="form-group mb-3">
-                    <input
-                      type="submit"
-                      value="Update Profile"
-                      className="submit btn btn-primary"
-                      name="submit"
-                    />
-                  </div>
-                </div>
-              </div>
+   
+                       <div className="col-lg-12">
+                          <div className="form-group mb-3">
+                            <label htmlFor="answer" className="text-black font-w600">
+                              {" "}
+                              Correct Answer <span className="required">*</span>
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              name="answer"
+                              value={answer}
+                              onChange={(e)=>setAnswer(e.target.value)}
+                              disabled
+        
+                            />
+                        </div>
+                
+                           
+                           <div className="col-lg-12">
+                             <div className="form-group mb-3">
+                               <Button className="btn-primary" onClick={""}>
+                                Update Quiz
+                               </Button>
+                             </div>
+                           </div>
+                       </div>
+                    </div>
             </form>
           </div>
         </div>

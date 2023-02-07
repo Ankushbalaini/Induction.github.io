@@ -10,8 +10,5 @@ module.exports = function (app) {
   const Student = require("../controllers/student.controller.js");
 
   router.get("/", Student.index);
-  
-
-  
   app.use("/api/students", router);
 };

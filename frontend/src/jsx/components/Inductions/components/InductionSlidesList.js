@@ -86,6 +86,18 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
 
       {USER_ROLES.COMPANY === role || USER_ROLES.INSTRUCTOR === role ? (
         <div>
+        <div className="accordion accordion">
+            <div class="card accordion-item">
+              <Link
+                className="btn btn-primary"
+                to={`../attemptquiz/${inductionID}`}
+                activeClassName="active"
+              >
+                Attempted Quiz
+              </Link>
+            </div>
+        </div>
+
           <div className="accordion accordion">
             <div class="card accordion-item">
               <Link
@@ -138,7 +150,9 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
           </div>
         </div>
         </div>
+        
       ) : null}
+      
       <div className="custome-accordion">
       <Accordion className="accordion" defaultActiveKey="0">
      
@@ -173,26 +187,16 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
                         </span>
                         <h4 className="m-0">{slide.slideTitle}</h4>
                       </div>
-                      
-
-                     
-                      </div>
-                   
-                      
+                      </div>  
                     </div>
                   </div>
                   );
                 })}
-            </div>
-         
-            
+            </div>    
           </Accordion.Collapse>
-        </Accordion.Item>
-    
+        </Accordion.Item>  
       </Accordion>
-    </div>
-
-    {/* <Modal className="modal fade" show={passMarksModel}>
+      {/* <Modal className="modal fade" show={passMarksModel}>
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Update Pass Marks</h5>
@@ -242,9 +246,8 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
           </div>
         </div>
       </Modal> */}
-
-
     </div>
+  </div>  
   );
 }
 

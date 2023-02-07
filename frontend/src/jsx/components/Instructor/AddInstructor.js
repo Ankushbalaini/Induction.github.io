@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 
 
 import CompanyDropdown from '../Companies/CompanyDropdown';
+import DepartmentDropdown from '../Department/DepartmentDropdown';
+
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 
 const AddInstructor = () => {
@@ -20,6 +22,7 @@ const AddInstructor = () => {
   const [role, setRole] = useState('instructor');
   const [name, setName] = useState();
   const [parentCompany, setParentCompany] = useState('');
+  const [parentDepartment, setParentDepartment] = useState('');
   const [deptID, setDeptID] = useState();
   const [profilePhoto, setProfilePhoto] = useState('dummy-user.png');
   const [image, setImage] = useState({preview:'', data:''})
@@ -27,7 +30,7 @@ const AddInstructor = () => {
   const [aboutMe, setAboutMe] = useState();
 
   // validation messages
-  let errorsObj = { email: "", password: "", cname: "", parentCompany:"" };
+  let errorsObj = { email: "", password: "", cname: "", parentCompany:"",parentDepartment:"" };
   const [errors, setErrors] = useState(errorsObj);
 
   const handleFileChange = async (e) => {
@@ -49,6 +52,7 @@ const AddInstructor = () => {
     data.append('password', password);
     data.append('role', role);
     data.append('parentCompany', parentCompany);
+    data.append('parentDepartment',parentDepartment);
     data.append('deptID', deptID);
     data.append('profilePhoto', image.data);
     data.append('address', address);
@@ -148,7 +152,7 @@ const AddInstructor = () => {
                     {errors.cname && <div Style="color:red;font-weight:600;padding:5px;">{errors.cname}</div>}
                   </div>
                 </div>
-                { (loggedrole == 'super_admin') ?
+                { (loggedrole == 'super_admin' || loggedrole == 'company' ) ?
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">Parent Company</label>
                   <div className="col-sm-9">
@@ -172,6 +176,29 @@ const AddInstructor = () => {
                 />
                 }
 
+              { (loggedrole == 'super_admin' || loggedrole == 'company' ) ?
+                <div className="mb-3 row">
+                  <label className="col-sm-3 col-form-label">Parent Department</label>
+                  <div className="col-sm-9">
+
+                     
+                    <select name="parentDepartment" className="form-control" onChange={ (e) => setParentDepartment(e.target.value) }>
+                        <option value="">Select</option>
+                        <DepartmentDropdown />
+                    </select> 
+
+                    {errors.parentDepartment && <div Style="color:red;font-weight:600;padding:5px;">{errors.parentDepartment}</div>}
+
+                  </div>
+                </div>
+                : 
+                <input
+                  name="parentDepartment"
+                  type="hidden"
+                  className="form-control"
+                  value={parentDepartment}
+                />
+                }
 
                 { (lrole === 'company') ? 
                 <div className="mb-3 row">

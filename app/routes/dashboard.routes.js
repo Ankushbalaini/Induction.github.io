@@ -6,9 +6,10 @@ module.exports = function (app) {
   const jwt = require("jsonwebtoken");
 
   var router = require("express").Router();
-  var key = process.env.JWT_KEY;
+  var key = "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1";
 
   const dashboard = require("../controllers/dashboard.controller.js");
+ 
 
   acl.config({
     filename: "./nacl.json",
@@ -32,12 +33,13 @@ module.exports = function (app) {
     }
   });
 
+
   router.get("/", dashboard.index);
   router.get("/company", dashboard.company);
   router.get("/instructor", dashboard.instructor);
-
   
 
 
   app.use("/api/dashboard", router);
+
 };

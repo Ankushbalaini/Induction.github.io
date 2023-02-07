@@ -2,16 +2,23 @@ import React, { Fragment, useState, useRef } from "react";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import CompanyDropdown from "../Companies/CompanyDropdown";
 import { useSelector } from "react-redux";
 
 const AddDepartment =() =>{
     const navigate = useHistory();
     const [name,setName] = useState();
     const [status , setStatus] = useState(1);
+    const loggedrole = useSelector((state) => state.auth.auth.role);
+    const [parentCompany, setParentCompany] = useState('');
     const token = useSelector((state) => state.auth.auth.token);
 
 
- let handleSubmit = async (event)=>{
+// validation messages
+let errorsObj = { name: "", status: "",  parentCompany:"" };
+const [errors, setErrors] = useState(errorsObj);
+
+  let handleSubmit = async (event)=>{
     event.preventDefault();
     const deparment ={
         name:name,
@@ -94,8 +101,34 @@ const AddDepartment =() =>{
                                        onChange={(e) =>setName(e.target.value)}
                                        value={name}
                                      />
+                               {errors.name && <div Style="color:red;font-weight:600;padding:5px;">{errors.name}</div>}
+
                                  </div>
                              </div>
+                             {/* { (loggedrole == 'company') ?
+                                <div className="mb-3 row">
+                                  <label className="col-sm-3 col-form-label">Parent Company</label>
+                                  <div className="col-sm-9">
+                
+                                     
+                                  
+                                     <select name="parentCompany" className="form-control" onChange={ (e) => setParentCompany(e.target.value) }>
+                                     <option value="">Select</option>
+                                       <CompanyDropdown />
+                                    </select> 
+                
+                                    {errors.parentCompany && <div Style="color:red;font-weight:600;padding:5px;">{errors.parentCompany}</div>}
+                
+                                  </div>
+                                </div>
+                                : 
+                                <input
+                                  name="parentCompany"
+                                  type="hidden"
+                                  className="form-control"
+                                  value={parentCompany}
+                                />
+                                } */}
  
                              <div className="mb-3 row">
                                  <label className="col-sm-3 col-form-label">
@@ -106,13 +139,8 @@ const AddDepartment =() =>{
                                     <option value="1">Active</option>
                                     <option value="0">Inactive</option>
                                     </select>
-                                      {/* <input 
-                                       type="text"
-                                       className="form-control"
-                                       placeholder=""
-                                       onChange={(e) =>setStatus(e.target.value)}
-                                       value={status}
-                                       /> */}
+                                    {errors.status && <div Style="color:red;font-weight:600;padding:5px;">{errors.status}</div>}
+
                                  </div>
                              </div>
  
