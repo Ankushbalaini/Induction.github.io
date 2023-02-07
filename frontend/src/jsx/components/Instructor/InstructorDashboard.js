@@ -5,6 +5,8 @@ import pMinDelay from "p-min-delay";
 import {Sparklines, SparklinesLine} from "react-sparklines";
 import { Pie } from "react-chartjs-2";
 
+
+
 import DropDownBlog from './../Dashboard/DropDownBlog';
 //import TotalStudentsChart from './Instructor/TotalStudentsChart';
 //import EarningsChart from './Instructor/EarningsChart';
@@ -65,10 +67,12 @@ const InstructorDashboard = () =>{
 
  const [scoreData, setScoreData]=useState();
  const [testID, setTestID]=useState();
+
+ 
  
  //score of students
  const  handlepageScore = async (e) =>{
-	const response = await fetch ("http://localhost:8081/api/users/inductions/score" + testID,{
+	const response = await fetch ("http://localhost:8081/api/users/inductions/" + testID,{
 	 method:"GET", 
 	 headers:{
 	   "Content-Type": "application/json",
@@ -153,6 +157,9 @@ const InstructorDashboard = () =>{
                    </div>
                  </div>
                 </div>
+
+              
+                 
 
 				<div className="col-xl-12">
 							<div className="card">
