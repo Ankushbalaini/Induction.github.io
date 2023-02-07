@@ -236,6 +236,38 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
       {/* company ends */}
 
 
+
+
+
+       {/* company start */}
+       { (role === 'instructor') ?
+      
+      <div className="form-group mb-3">
+              <label
+                htmlFor="department"
+                className="text-black font-w600"
+              >
+                {" "}
+                Assign Department <span className="required">
+                  *
+                </span>{" "}
+              </label>
+              <select
+                name="deptID"
+                className="form-control"
+                onChange={(e) => setDeptID(e.target.value)}
+                value={deptID}
+              >
+                <option>Select</option>
+                <DepartmentByCompany parentCompany={id}/>
+              </select>
+            </div>
+            : null }
+
+      {/* company ends */}
+
+
+
               <div className="col-lg-6">
                 <div className="form-group mb-3">
                   <label htmlFor="first_name" className="text-black font-w600">

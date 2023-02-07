@@ -192,12 +192,13 @@ const Profile = () => {
                   changeImage={certificate}
                   title="Companies"
                   link="companies"
-                  nos={5}
+                  nos={profileData.totalCompanies}
                 />
                 <WidgetBlog
                   changeImage={clock}
-                  title="Students"
+                  title="Users"
                   link="students"
+                  nos={profileData.totalUsers}
                 />
               </>
             ) : null }

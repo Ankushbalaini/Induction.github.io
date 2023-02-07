@@ -2,19 +2,26 @@ import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import ActionDropDown from "./ActionDropDown";
-// import UpdateStudentModal from "./UpdateStudentModal";
 
 import UpdateUserModal from "./UpdateUserModal";
 
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import CompanyDropdown from "../Companies/CompanyDropdown";
+import DepartmentByCompany from "../Department/DepartmentByCompany";
 
 const images = require.context("../../../../../images/profile/", true);
 
 const AllStudents = () => {
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
+  const id = useSelector((state) => state.auth.auth.id);
+  const role = useSelector((state) => state.auth.auth.role);
+
+  const [searchCompany,setSearchCompany] = useState();
+  const [searchDepartment,setSearchDepartment] = useState();
+  const [searchName,setSearchName] = useState();
+  const [departmentOptions, setDepartmentOptions] = useState();
 
   const [data, setData] = useState(
     document.querySelectorAll("#student_wrapper tbody tr")
@@ -53,6 +60,28 @@ const AllStudents = () => {
   const loadImage = (imageName) => {
 		return images(`./${imageName}`);
 	}	
+
+  const CompanyChangeFilter = (e) =>{
+    setSearchCompany(e.target.value);
+    setLoading(true);
+
+    setDepartmentOptions(<DepartmentByCompany parentCompany={e.target.value} />);
+
+
+
+  }
+
+  const DepartmentChangeFilter = (e) =>{
+    // change department
+    setSearchDepartment(e.target.value);
+    setLoading(true);
+  }
+
+  const searchByName = (e) => {
+    setSearchName(e.target.value);
+    setLoading(true);
+  }
+
 
   // change status
   const changeUserStatus = (userID, status) =>{
@@ -126,11 +155,30 @@ const AllStudents = () => {
     }
 
   const handlepageLoad = async (event) => {
-     
-    const response = await fetch("http://localhost:8081/api/students/", {
+    var str="";
+    if(searchCompany !== undefined ){
+      str = "?company="+searchCompany;
+
+      if(searchDepartment !== undefined ){
+        str += "&deptID="+searchDepartment;
+      }
+    }
+
+    if(searchDepartment !== undefined && searchCompany === undefined ){
+      str = "?deptID="+searchDepartment;
+    }
+
+    // else{
+    //   str = "?deptID="+searchDepartment;
+    // }
+
+    
+
+    const response = await fetch("http://localhost:8081/api/students/"+str, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "x-access-token" : token,
       },
     }).then((data) => data.json());
 
@@ -141,7 +189,7 @@ const AllStudents = () => {
       setIsUserStatusChanged(false);
       setData(document.querySelectorAll("#student_wrapper tbody tr"));
     } else {
-      return swal("Failed", "Error message", "error");
+      return swal("Failed", response.message, "error");
     }
   };
   
@@ -149,7 +197,7 @@ const AllStudents = () => {
   useEffect(() => {
     handlepageLoad();
     setData(document.querySelectorAll("#student_wrapper tbody tr"));
-  }, [profileData,isModalOpen,isUserStatusChanged]);
+  }, [profileData,isModalOpen,isUserStatusChanged, searchCompany, searchDepartment]);
 
   // Active pagginarion
   activePag.current === 0 && chageData(0, sort);
@@ -171,6 +219,9 @@ const AllStudents = () => {
     display: "flex",
   };
 
+
+  
+
   return (
     <>
      { (loading) ? <h3>Loading</h3> : 
@@ -179,14 +230,62 @@ const AllStudents = () => {
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
               <h4>Students List</h4>
-              
             </div>
+
+           
+
             <div className="card-body py-0">
               <div className="table-responsive">
                 <div
                   id="student_wrapper"
                   className="dataTables_wrapper no-footer"
                 >
+                  {/* CompanyChangeFilter */}
+
+
+                      {/* <label Style="margin:20px">Filter Users</label> */}
+
+                      { role === 'super_admin' ? <>
+                        <select Style="margin:20px; font-size: 16px;" name="search_company" onChange={(e)=> CompanyChangeFilter(e)} defaultValue={searchCompany}>
+                          <option>Select Company</option>
+                          <CompanyDropdown />
+                        </select>
+                      {/* <label Style="margin:20px">Select Department</label> */}
+                      <select Style="margin:20px; font-size: 16px;" name="search_department" onChange={(e)=> setSearchDepartment(e.target.value)}  defaultValue={searchDepartment}>
+                        <option>Select Department</option>
+                        {departmentOptions}
+                      </select>
+
+                      </> : null }
+
+
+                      { role === 'company' ? <>
+                      <select Style="margin:20px; font-size: 16px;" name="search_department" onChange={(e)=>setSearchDepartment(e.target.value)}>
+                        <option value='all'>All</option>
+                        <DepartmentByCompany parentCompany={id} />
+                      </select>
+
+                      </> : null }
+
+
+
+                      { role === 'instructor' ? <>
+                      <select Style="margin:20px; font-size: 16px;" name="search_department" onChange={(e)=>setSearchDepartment(e.target.value)}>
+                        <option value='all'>All</option>
+                        <DepartmentByCompany parentCompany={id} />
+                      </select>
+
+                      </> : null }
+
+
+
+                      
+
+                      <input Style="margin:20px; font-size: 16px;"  type="text" name="search" onChange={(e) => searchByName }  placeholder="Search......"></input>
+                    
+
+                  
+                  
                   <table
                     className="table display mb-4 dataTablesCard order-table card-table text-black application "
                     id="application-tbl1_next"
@@ -196,8 +295,6 @@ const AllStudents = () => {
                         
                         <th>Name</th>
                         <th>Student ID</th>
-                        {/* <th>Company</th>
-                        <th>Department</th> */}
                         <th>Join Date</th>
                         <th>Status</th>
                         <th Style="text-align: end">Action</th>
@@ -216,8 +313,6 @@ const AllStudents = () => {
                             </div>
                           </td>
                           <td>{row.email}</td>
-                          {/* <td>{row.parentCompany}</td>
-                          <td>{row.deptID}</td> */}
                           <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
                           <td>
 
@@ -229,13 +324,6 @@ const AllStudents = () => {
                           >
                             { (row.status) ? 'Active' : 'Inactive'}
                           </Link>
-                          
-
-                            {/* <span className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}>
-                              <a onClick={ changeUserStatus(row._id) } >{ (row.status) ? 'Active' : 'Inactive'}</a>
-                              
-                              
-                            </span> */}
                           </td>
                           <td>
                             <ActionDropDown trackOnclick={trackOnclick} profileData={row} trackDeleteClick={trackDeleteClick}/>
@@ -315,12 +403,3 @@ const AllStudents = () => {
   );
 };
 export default AllStudents;
-
-
-// <Form.Group as={Col}controlId="formGridState" className="form-group mb-3 text-black font-w600">
-// <Form.Label>Status</Form.Label>
-// <Form.Select defaultValue="Choose...">
-//   <option>Active</option>
-//   <option>Inactive</option>
-// </Form.Select>
-// </Form.Group>

@@ -450,13 +450,13 @@ exports.getProfile = async (req, res) => {
     switch (userRole) {
       case "instructor":
 
-      var totalInductions;
+        var totalInductions;
 
-      await Inductions.find({ createdBy : ObjectId(req.decoded.userID) })
-        .then((induction)=>{
-            totalInductions = induction.length;
-        })
-        .catch((err)=>{err});
+        await Inductions.find({ createdBy : ObjectId(req.decoded.userID) })
+          .then((induction)=>{
+              totalInductions = induction.length;
+          })
+          .catch((err)=>{err});
         
 
         UserCred.aggregate([
@@ -572,6 +572,72 @@ exports.getProfile = async (req, res) => {
 
         break;
 
+        case "super_admin":
+
+            var totalCompanies, totalUsers;
+
+            await UserCred.find({role:'company' })
+              .then((user)=>{
+                totalCompanies = user.length;
+              })
+              .catch((err)=>{err});
+
+            await UserCred.find({role:'user' })
+              .then((user)=>{
+                totalUsers = user.length;
+              })
+              .catch((err)=>{err});
+
+              
+            UserCred.aggregate([
+            {
+              $match: { _id: ObjectId(req.decoded.userID) },
+            },
+            { $limit: 1 },
+            {
+              $lookup: {
+                from: "users",
+                localField: "email",
+                foreignField: "email",
+                as: "profile",
+              },
+            },
+            {
+              $unwind: "$profile",
+            },
+  
+            {
+              $project: {
+                _id: 1,
+                email: 1,
+                role: 1,
+                createdAt: 1,
+                profile: 1,
+              },
+            },
+          ])
+            .then((data) => {
+
+              data[0].totalCompanies = totalCompanies;
+              data[0].totalUsers = totalUsers;
+
+
+              res.status(200).send({
+                status: true,
+                message: "User profile ",
+                data: data[0],
+              });
+            })
+            .catch((err) => {
+              res.status(500).send({
+                status: false,
+                message: err.message,
+                data: {},
+              });
+            });
+  
+          break;
+
       default:
         UserCred.aggregate([
           {
@@ -673,6 +739,8 @@ exports.edit = async (req, res) => {
 
   if(req.decoded.role === 'instructor'){
     // pass parent company and dept 
+    // undefined
+    req.body.parentCompany = ObjectId(req.decoded.parentCompany);
   }
 
   
