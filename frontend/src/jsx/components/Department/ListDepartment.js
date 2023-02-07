@@ -25,7 +25,7 @@ const ListDepartments =()=>{
          setModalData(department);
          setName(department.name);
          setStatus(department.status);
-         setParentCompany(department.parentCompany)
+         setParentCompany(department.parentCompany);
          setEditID(department._id);
 
       }
