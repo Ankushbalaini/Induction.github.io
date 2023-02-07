@@ -103,7 +103,7 @@ const InstructorDashboard = () =>{
                             style={{ width: "80%" }}
                           ></div>
                         </div>
-                        <small>80% Increase in 20 Days</small>
+                        {/* <small>80% Increase in 20 Days</small> */}
                       </div>
                     </div>
                   </div>
@@ -126,7 +126,7 @@ const InstructorDashboard = () =>{
                              style={{ width: "76%" }}
                            ></div>
                          </div>
-                         <small>76% Increase in 20 Days</small>
+                         {/* <small>76% Increase in 20 Days</small> */}
                        </div>
                      </div>
                    </div>
