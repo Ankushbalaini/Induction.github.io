@@ -200,22 +200,7 @@ const Profile = () => {
                   link="students"
                 />
               </>
-            ) : (
-              <>
-                <WidgetBlog
-                  changeImage={certificate}
-                  title="Avilable Inductions"
-                  link="courses"
-                  nos={5}
-                />
-                <WidgetBlog
-                  changeImage={clock}
-                  title="My Inductions"
-                  link="courses"
-                  nos={5}
-                />
-              </>
-            )}
+            ) : null }
 
             {USER_ROLES.SUPER_ADMIN === role ? (
               <>

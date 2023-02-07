@@ -65,7 +65,6 @@ const Inductions = () => {
 
   // use effect
   useEffect(() => {
-    window.removeEventListener('visibilitychange', ()=>{});
     
     const handleGetInduction = async (e) => {
       const response = await getAllInductions();
@@ -98,6 +97,13 @@ const Inductions = () => {
     
     
     setData(document.querySelectorAll("#student_wrapper tbody tr"));
+
+
+    return () =>{
+      //const element = window;
+      window.removeEventListener('visibilitychange', []);
+      console.log("unmounting ....");
+    }
     //chackboxFun();
   }, []);
 

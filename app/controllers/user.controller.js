@@ -635,6 +635,8 @@ exports.getProfile = async (req, res) => {
 exports.edit = async (req, res) => {
   const id = req.params.id;
 
+  
+
   if (!req.files || Object.keys(req.files).length === 0) {
     if (req.body.profilePhoto === "") {
       return res.status(500).send({
@@ -657,8 +659,23 @@ exports.edit = async (req, res) => {
     req.body.profilePhoto = Img.name;
   }
 
-  req.body.deptID = ObjectId(req.body.deptID);
-  req.body.parentCompany = ObjectId(req.body.parentCompany );
+  // check request token values 
+
+  if(req.decoded.role === 'super_admin'){
+    req.body.deptID = ObjectId(req.body.deptID);
+    req.body.parentCompany = ObjectId(req.body.parentCompany );
+  }
+
+  if(req.decoded.role === 'company'){
+    // 
+    req.body.parentCompany = ObjectId(req.body.userID);
+  }
+
+  if(req.decoded.role === 'instructor'){
+    // pass parent company and dept 
+  }
+
+  
 
   // await new UserCred({deptID : req.body.deptID}).save();
 

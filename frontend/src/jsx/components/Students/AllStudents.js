@@ -2,9 +2,13 @@ import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import ActionDropDown from "./ActionDropDown";
-import UpdateStudentModal from "./UpdateStudentModal";
+// import UpdateStudentModal from "./UpdateStudentModal";
+
+import UpdateUserModal from "./UpdateUserModal";
+
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 
 const images = require.context("../../../../../images/profile/", true);
 
@@ -304,7 +308,7 @@ const AllStudents = () => {
       </div>
       }
       
-      <UpdateStudentModal  isModalOpen={isModalOpen} trackOnclick={trackOnclick} profileData={profileData} />
+      <UpdateUserModal  isModalOpen={isModalOpen} trackOnclick={trackOnclick} profileData={profileData} />
 
 
     </>
