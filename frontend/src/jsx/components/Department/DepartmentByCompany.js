@@ -33,10 +33,10 @@ const DepartmentByCompany = (props) => {
     }
 
     useEffect(()=>{
-        if(loading){
+        //if(loading){
             callApi(token, props.parentCompany);
-        }
-    },[props]);
+        //}
+    },[props.parentCompany]);
     const pageContent = (loading) ? <option>Loading</option> : <>{option}</>;
     return(
         <>
