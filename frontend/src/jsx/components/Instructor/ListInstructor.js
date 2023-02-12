@@ -8,6 +8,7 @@ import DropDownBlog from "./../Dashboard/DropDownBlog";
 import ActionDropDown from "./../Dashboard/ActionDropDown";
 import UpdateProfile from "./UpdateProfile";
 import CompanyDropdown from '../Companies/CompanyDropdown';
+import Table from './DataTable';
 
 const images = require.context("../../../../../images/profile/", true);
 
@@ -70,6 +71,7 @@ const Instructors = () => {
   const [students, setStudents] = useState(0);
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
   const [instructorData, setInstructorData] = useState({profile: {name:'', email:'',aboutMe:'',address:'',logo:'',_id:''} });
+  const [instructorsList, setInstructosList] = useState([]);
 
 
   // change status
@@ -162,39 +164,40 @@ const Instructors = () => {
       const response = await filterInstructorApi(companyID);
 
       if ("status" in response && response.status == true) {
-        const rows = response.data.map((row, index) => (
-          <tr key={index}>
-            <td>
-              <div className="d-flex align-items-center">
-                <img src={loadImage(row.profile.profilePhoto)} alt="" />
-                <h4 className="mb-0 fs-16 font-w500">
-                  {row.profile?.name}
-                </h4>
-              </div>
-            </td>
-            <td>{row.email}</td>
-            <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
-            <td>
-              {/* <span className={`badge  light badge-success`}>{`Active`}</span> */}
-              <Link
-                className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}
-                to="/instructors"
-                onClick={() => changeUserStatus(row._id, row.status) }
+        setInstructosList(response.data);
+        // const rows = response.data.map((row, index) => (
+        //   <tr key={index}>
+        //     <td>
+        //       <div className="d-flex align-items-center">
+        //         <img src={loadImage(row.profile.profilePhoto)} alt="" />
+        //         <h4 className="mb-0 fs-16 font-w500">
+        //           {row.profile?.name}
+        //         </h4>
+        //       </div>
+        //     </td>
+        //     <td>{row.email}</td>
+        //     <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
+        //     <td>
+        //       {/* <span className={`badge  light badge-success`}>{`Active`}</span> */}
+        //       <Link
+        //         className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}
+        //         to="/instructors"
+        //         onClick={() => changeUserStatus(row._id, row.status) }
                 
-              >
-                { (row.status) ? 'Active' : 'Inactive'}
-              </Link>
+        //       >
+        //         { (row.status) ? 'Active' : 'Inactive'}
+        //       </Link>
               
-            </td>
-            <td>
-            <ActionDropDown trackOnclick={trackOnclick} userData={row} trackDeleteClick={trackDeleteClick}/>
-              {/* <DropDownBlog /> */}
-            </td>
-          </tr>
-        ));
-        setStudents(rows);
-        setIsUserStatusChanged(false);
-        setData(document.querySelectorAll("#student_wrapper tbody tr"));
+        //     </td>
+        //     <td>
+        //     <ActionDropDown trackOnclick={trackOnclick} userData={row} trackDeleteClick={trackDeleteClick}/>
+        //       {/* <DropDownBlog /> */}
+        //     </td>
+        //   </tr>
+        // ));
+        // setStudents(rows);
+        // setIsUserStatusChanged(false);
+        // setData(document.querySelectorAll("#student_wrapper tbody tr"));
       } else {
         return swal("Failed", "Something went wrong, please try again later.", "error");
       }
@@ -207,39 +210,43 @@ const Instructors = () => {
       const response = await getInstructorApi(role, parentCompany);
 
       if ("status" in response && response.status == true) {
-        const rows = response.data.map((row, index) => (
-          <tr key={index}>
-            <td>
-              <div className="d-flex align-items-center">
-                <img src={loadImage(row.profile.profilePhoto)} alt="" />
-                <h4 className="mb-0 fs-16 font-w500">
-                  {row.profile?.name}
-                </h4>
-              </div>
-            </td>
-            <td>{row.email}</td>
-            <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
-            <td>
-              {/* <span className={`badge  light badge-success`}>{`Active`}</span> */}
-              <Link
-                className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}
-                to="/instructors"
-                onClick={() => changeUserStatus(row._id, row.status) }
+        /* Prepare data for instructor data-table list, start */
+        setInstructosList(response.data);
+        /* Prepare data for instructor data-table list, end */
+        
+        // const rows = response.data.map((row, index) => (
+        //   <tr key={index}>
+        //     <td>
+        //       <div className="d-flex align-items-center">
+        //         <img src={loadImage(row.profile.profilePhoto)} alt="" />
+        //         <h4 className="mb-0 fs-16 font-w500">
+        //           {row.profile?.name}
+        //         </h4>
+        //       </div>
+        //     </td>
+        //     <td>{row.email}</td>
+        //     <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
+        //     <td>
+        //       {/* <span className={`badge  light badge-success`}>{`Active`}</span> */}
+        //       <Link
+        //         className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}
+        //         to="/instructors"
+        //         onClick={() => changeUserStatus(row._id, row.status) }
                 
-              >
-                { (row.status) ? 'Active' : 'Inactive'}
-              </Link>
+        //       >
+        //         { (row.status) ? 'Active' : 'Inactive'}
+        //       </Link>
               
-            </td>
-            <td>
-            <ActionDropDown trackOnclick={trackOnclick} userData={row} trackDeleteClick={trackDeleteClick}/>
-              {/* <DropDownBlog /> */}
-            </td>
-          </tr>
-        ));
-        setStudents(rows);
-        setIsUserStatusChanged(false);
-        setData(document.querySelectorAll("#student_wrapper tbody tr"));
+        //     </td>
+        //     <td>
+        //     <ActionDropDown trackOnclick={trackOnclick} userData={row} trackDeleteClick={trackDeleteClick}/>
+        //       {/* <DropDownBlog /> */}
+        //     </td>
+        //   </tr>
+        // ));
+        // setStudents(rows);
+        // setIsUserStatusChanged(false);
+        // setData(document.querySelectorAll("#student_wrapper tbody tr"));
       } else {
         return swal("Failed", "Error message", "error");
       }
@@ -266,22 +273,42 @@ const Instructors = () => {
 
   return (
     <>
-      <div className="row"></div>
       <div className="row">
         
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              {/* <h4>Instructors</h4> */}
-              
-            </div>
-            <div className="card-body py-0">
+              <h4>Company List</h4>
               <div className="col-lg-4">
                 <select name="parentCompany" className="form-control" onChange={ (e) => filterByCompany(e.target.value) }>
                   <option value="all">All</option>
                   <CompanyDropdown />
                 </select> 
               </div>
+            </div>
+            <div className="card-body py-0">
+              <div className="table-responsive">
+                <div
+                  id="student_wrapper"
+                  className="dataTables_wrapper no-footer"
+                >
+                  {/* <Table data={data} click={clickhandler} /> */}
+                  <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick}/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="row">
+        
+        <div className="col-xl-12">
+          <div className="card students-list">
+            <div className="card-header border-0 flex-wrap pb-0">
+              
+            </div>
+            <div className="card-body py-0">
               <div className="table-responsive">
                 <div
                   id="student_wrapper"
@@ -364,7 +391,7 @@ const Instructors = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <UpdateProfile isModalOpen={isModalOpen} trackOnclick={trackOnclick} instructorData={instructorData}></UpdateProfile>
 
