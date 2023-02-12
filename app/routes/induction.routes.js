@@ -49,6 +49,7 @@ module.exports = function (app) {
   router.get("/_new/:id", induction.findOne_new ); 
 
   router.post("/updatePassingMarks", induction.updatePassingMarks);
+  router.get("/filter/by/company", induction.filterByCompany);
   
   
 

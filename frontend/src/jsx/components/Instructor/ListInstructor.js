@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import DropDownBlog from "./../Dashboard/DropDownBlog";
 import ActionDropDown from "./../Dashboard/ActionDropDown";
 import UpdateProfile from "./UpdateProfile";
+import CompanyDropdown from '../Companies/CompanyDropdown';
 
 const images = require.context("../../../../../images/profile/", true);
 
@@ -31,6 +32,25 @@ async function getInstructorApi(role, companyID) {
         "Content-Type": "application/json",
       },
     }).then((data) => data.json());
+}
+
+/**
+ * Instructor API call to filter byb company.
+ * 
+ * @param {*} companyID 
+ * @returns 
+ */
+async function filterInstructorApi(companyID) {
+  let filterInstructorsApi = "http://localhost:8081/api/instructor/filterByCompany?filterByCompany="+companyID;
+  if (companyID == 'all') {
+    filterInstructorsApi = "http://localhost:8081/api/instructor/list";
+  }
+  return fetch(filterInstructorsApi, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((data) => data.json());
 }
 
 
@@ -104,6 +124,7 @@ const Instructors = () => {
     }
   };
 
+
   // callback function to opdate state
   const trackOnclick = (payload, userData) => {
     setIsModalOpen(payload);  
@@ -136,6 +157,50 @@ const Instructors = () => {
 		return images(`./${imageName}`);
 	}	
 
+  const filterByCompany = (companyID) => {
+    const handlepageLoad = async (event) => {
+      const response = await filterInstructorApi(companyID);
+
+      if ("status" in response && response.status == true) {
+        const rows = response.data.map((row, index) => (
+          <tr key={index}>
+            <td>
+              <div className="d-flex align-items-center">
+                <img src={loadImage(row.profile.profilePhoto)} alt="" />
+                <h4 className="mb-0 fs-16 font-w500">
+                  {row.profile?.name}
+                </h4>
+              </div>
+            </td>
+            <td>{row.email}</td>
+            <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
+            <td>
+              {/* <span className={`badge  light badge-success`}>{`Active`}</span> */}
+              <Link
+                className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}
+                to="/instructors"
+                onClick={() => changeUserStatus(row._id, row.status) }
+                
+              >
+                { (row.status) ? 'Active' : 'Inactive'}
+              </Link>
+              
+            </td>
+            <td>
+            <ActionDropDown trackOnclick={trackOnclick} userData={row} trackDeleteClick={trackDeleteClick}/>
+              {/* <DropDownBlog /> */}
+            </td>
+          </tr>
+        ));
+        setStudents(rows);
+        setIsUserStatusChanged(false);
+        setData(document.querySelectorAll("#student_wrapper tbody tr"));
+      } else {
+        return swal("Failed", "Something went wrong, please try again later.", "error");
+      }
+    };
+    handlepageLoad();
+  }
   // use effect
   useEffect(() => {
     const handlepageLoad = async (event) => {
@@ -201,7 +266,9 @@ const Instructors = () => {
 
   return (
     <>
+      <div className="row"></div>
       <div className="row">
+        
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
@@ -209,6 +276,12 @@ const Instructors = () => {
               
             </div>
             <div className="card-body py-0">
+              <div className="col-lg-4">
+                <select name="parentCompany" className="form-control" onChange={ (e) => filterByCompany(e.target.value) }>
+                  <option value="all">All</option>
+                  <CompanyDropdown />
+                </select> 
+              </div>
               <div className="table-responsive">
                 <div
                   id="student_wrapper"
