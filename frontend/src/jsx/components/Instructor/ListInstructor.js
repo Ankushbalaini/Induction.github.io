@@ -210,6 +210,27 @@ const Instructors = () => {
       const response = await getInstructorApi(role, parentCompany);
 
       if ("status" in response && response.status == true) {
+
+        /* Prepare data for instructor data-table list, start */
+        // let instructorsListArr = [];
+        // response.data.map(function(row, index){
+        //   let instructorArr = {
+        //     '_id' : row._id,
+        //     'email': row.email,
+        //     'join_date': new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"}),
+        //     'name' : row.profile?.name,
+        //     'status': row.status,
+        //     'row': row
+        //   };
+        //   instructorsListArr.push(instructorArr);
+        // });
+        // //setInstructosList(instructorsListArr);
+        // console.log('prepare instructor list', instructorsListArr);
+        // console.log('data', response.data);
+        // setInstructosList(instructorsListArr);
+        /* Prepare data for instructor data-table list, end */
+
+
         /* Prepare data for instructor data-table list, start */
         setInstructosList(response.data);
         /* Prepare data for instructor data-table list, end */
@@ -278,7 +299,7 @@ const Instructors = () => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h4>Company List</h4>
+              <h4>Instructor List</h4>
               <div className="col-lg-4">
                 <select name="parentCompany" className="form-control" onChange={ (e) => filterByCompany(e.target.value) }>
                   <option value="all">All</option>

@@ -31,7 +31,7 @@ const Table = props => {
     {
       name: "Name",
       selector: "name",
-      sortable: true,
+      sortable: false,
       grow: 1,
       className: 'col-3',
       cell: row =>
@@ -51,8 +51,8 @@ const Table = props => {
       hide: "sm"
     },
     {
-      name: "join Date",
-      selector: "join_date",
+      name: "Join Date",
+      selector: "createdAt",
       sortable: true,
       hide: "sm",
       cell: row =>
