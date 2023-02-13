@@ -1,24 +1,9 @@
 import React,{useState, useEffect} from "react";
 import { Dropdown } from "react-bootstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { Link } from "react-router-dom";
-/// Scroll
-//import PerfectScrollbar from "react-perfect-scrollbar";
-
-/// Image
-//import profile from "../../../images/profile/pic1.jpg";
-//import avatar from "../../../images/avatar/1.jpg";
-//import { Dropdown } from "react-bootstrap";
-//import LogoutPage from './Logout';
-import RightSideBar from './RightSideBar';
-
-
+import { Link, useLocation, useParams } from "react-router-dom";
 import LogoutPage from './Logout';
-
-import United from "../../../images/United.png";
 import avatar from "../../../images/avatar/1.jpg";
-import profile from "../../../images/profile/pic1.jpg";
-
 import { useSelector } from "react-redux";
 const images = require.context('../../../../../images/profile', true);
 
@@ -113,12 +98,16 @@ const Header = ({ onNote }) => {
 		getProfile();
 
 	}, []); 
-	
+
   //const [searchBut, setSearchBut] = useState(false);	
   var path = window.location.pathname.split("/");
+  let inductionName = path[path.length - 2];
+
   var name = path[path.length - 1].split("-");
   var filterName = name.length >= 3 ? name.filter((n, i) => i > 0) : name;
-  var finalName = filterName.includes("app")
+
+  var finalName = inductionName === 'single-induction-view' ? "View":
+	filterName.includes("app")
     ? filterName.filter((f) => f !== "app")
     : filterName.includes("ui")
     ? filterName.filter((f) => f !== "ui")
@@ -140,7 +129,8 @@ const Header = ({ onNote }) => {
     ? filterName.filter((f) => f !== "chart")
     : filterName.includes("editor")
     ? filterName.filter((f) => f !== "editor")
-    : filterName;
+	:filterName;
+
   return ( 
     <div className={`header ${headerFix ? "is-fixed" : ""}`}>
       <div className="header-content">
@@ -151,7 +141,7 @@ const Header = ({ onNote }) => {
 					className="dashboard_bar"
 					style={{ textTransform: "capitalize" }}
 				  >
-					{finalName.join(" ").length === 0
+					{inductionName === "single-induction-view" ? "Induction View" : finalName.join(" ").length === 0
 					  ? "Dashboard"
 					  : finalName.join(" ") === "dashboard dark"
 					  ? "Dashboard"
@@ -159,27 +149,7 @@ const Header = ({ onNote }) => {
 				</div>
             </div>
 			<div className="navbar-nav header-right">
-				{/* <div className="nav-item d-flex align-items-center">
-					<div className="input-group search-area">
-						<span className="input-group-text"><Link to={"#"}><svg width="24" height="24" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<path d="M27.414 24.586L22.337 19.509C23.386 17.928 24 16.035 24 14C24 8.486 19.514 4 14 4C8.486 4 4 8.486 4 14C4 19.514 8.486 24 14 24C16.035 24 17.928 23.386 19.509 22.337L24.586 27.414C25.366 28.195 26.634 28.195 27.414 27.414C28.195 26.633 28.195 25.367 27.414 24.586ZM7 14C7 10.14 10.14 7 14 7C17.86 7 21 10.14 21 14C21 17.86 17.86 21 14 21C10.14 21 7 17.86 7 14Z" fill="var(--secondary)"/>
-							</svg>
-							</Link></span>
-						<input type="text" className="form-control" placeholder="Search here..." />  
-					</div>					
-				</div> */}
 				<div className="dlab-side-menu">
-					{/* <div className="search-coundry d-flex align-items-center">
-						<img src={United} alt="" className='mx-2'/>						
-						<Dropdown className='sidebar-dropdown me-2 mt-2'>
-							<Dropdown.Toggle as='div' className='i-false sidebar-select'>{rightSelect} <i className="fa-solid fa-angle-down ms-2" /></Dropdown.Toggle>
-							<Dropdown.Menu>
-								<Dropdown.Item onClick={()=>setRightSelect("Eng")}>Eng</Dropdown.Item>
-								<Dropdown.Item onClick={()=>setRightSelect("Af")}>Af</Dropdown.Item>
-								<Dropdown.Item onClick={()=>setRightSelect("Al")}>Al</Dropdown.Item>
-							</Dropdown.Menu>
-						</Dropdown>
-					</div> */}
 					<div className="sidebar-social-link ">
 						<ul className="">
 							<Dropdown as="li" className="nav-item dropdown notification_dropdown ">
@@ -348,17 +318,12 @@ const Header = ({ onNote }) => {
 									<span className="ms-2">Setting</span>
 								</Link>
 								
-								
 								<LogoutPage />
 							</Dropdown.Menu>
 						</Dropdown> 	
-					</ul>
-					
+					</ul>					
 				</div>
-
-			</div>
-			
-			
+			</div>			
           </div>
         </nav>
       </div>

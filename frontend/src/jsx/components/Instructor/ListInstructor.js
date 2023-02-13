@@ -4,8 +4,8 @@ import loadable from "@loadable/component";
 import pMinDelay from "p-min-delay";
 import swal from "sweetalert";
 import { useSelector } from "react-redux";
-import DropDownBlog from "./../Dashboard/DropDownBlog";
-import ActionDropDown from "./../Dashboard/ActionDropDown";
+import DropDownBlog from "../Dashboard/DropDownBlog";
+import ActionDropDown from "../Dashboard/ActionDropDown";
 import UpdateProfile from "./UpdateProfile";
 
 const images = require.context("../../../../../images/profile/", true);
@@ -35,9 +35,9 @@ async function getInstructorApi(role, companyID) {
 
 
 const Instructors = () => {
-    const role = useSelector((state) => state.auth.auth.role);
-    const token = useSelector((state) => state.auth.auth.token);
-    const parentCompany = useSelector((state) => state.auth.auth.id);
+  const role = useSelector((state) => state.auth.auth.role);
+  const token = useSelector((state) => state.auth.auth.token);
+  const parentCompany = useSelector((state) => state.auth.auth.id);
 
   const [data, setData] = useState(
     document.querySelectorAll("#student_wrapper tbody tr")
@@ -50,7 +50,6 @@ const Instructors = () => {
   const [students, setStudents] = useState(0);
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
   const [instructorData, setInstructorData] = useState({profile: {name:'', email:'',aboutMe:'',address:'',logo:'',_id:''} });
-
 
   // change status
   const changeUserStatus = (userID, status) =>{
@@ -91,8 +90,6 @@ const Instructors = () => {
       }
     })
   }
-
-
   // Active data
   const chageData = (frist, sec) => {
     for (var i = 0; i < data.length; ++i) {
@@ -135,19 +132,17 @@ const Instructors = () => {
   const loadImage = (imageName) => {
 		return images(`./${imageName}`);
 	}	
-
   // use effect
   useEffect(() => {
     const handlepageLoad = async (event) => {
       const response = await getInstructorApi(role, parentCompany);
-
       if ("status" in response && response.status == true) {
         const rows = response.data.map((row, index) => (
           <tr key={index}>
             <td>
               <div className="d-flex align-items-center">
                 <img src={loadImage(row.profile.profilePhoto)} alt="" />
-                <h4 className="mb-0 fs-16 font-w500">
+                <h4 className="mb-0 fs-16 font-w500" >
                   {row.profile?.name}
                 </h4>
               </div>
@@ -162,13 +157,12 @@ const Instructors = () => {
                 onClick={() => changeUserStatus(row._id, row.status) }
                 
               >
-                { (row.status) ? 'Active' : 'Inactive'}
+              { (row.status) ? 'Active' : 'Inactive'}
               </Link>
               
             </td>
             <td>
             <ActionDropDown trackOnclick={trackOnclick} userData={row} trackDeleteClick={trackDeleteClick}/>
-              {/* <DropDownBlog /> */}
             </td>
           </tr>
         ));
@@ -182,7 +176,7 @@ const Instructors = () => {
     handlepageLoad();
   }, [isModalOpen, isUserStatusChanged]);
 
-  // api call
+
   
 
   // Active pagginarion

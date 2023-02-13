@@ -165,7 +165,7 @@ exports.index = async (req, res) => {
           });
         });
 
-    }else if(user.role === "user"){
+    }else if(user.role === "user" ){
       // get Parent Company and department of user
       // then pass to query 
       // inside token - add parent company and department
