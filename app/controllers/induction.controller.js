@@ -320,6 +320,78 @@ exports.index = async (req, res) => {
   }
 };
 
+exports.filterByCompany = async (req, res) => {
+  try {
+    var cond = mongoose.Types.ObjectId.isValid(req.query.filterByCompany);
+
+    if (!cond) {
+      throw new Error("Parent Company Id not exist.");
+    }
+    const user = req.decoded;
+
+    const page = req.query.page > 0 ? req.query.page : 1;
+    // const limit = 6;
+    // const skips = 6 * (page-1);
+    const limit = 3;
+    const skips = 3 * (page - 1);
+    Induction.aggregate([
+      {
+        $match: { $expr: { $eq: ["$parentCompany", ObjectId(req.query.filterByCompany)] } },
+      },
+      {
+        $lookup: {
+          from: "induction_slides",
+          localField: "_id",
+          foreignField: "slideInductionId",
+          as: "slides",
+        },
+      },
+      {
+        $unwind: "$_id",
+      },
+      
+      {
+        $project: {
+          _id: 1,
+          title: "$title",
+          subTitle: "$subTitle",
+          thumbnail: "$thumbnail",
+          description: 1,
+          deptID:1,
+          parentCompany:1,
+          createdBy:1,
+          numOfSlides: { $size: "$slides" },
+          slides: "$slides",
+        },
+      }
+    ])
+      .then((data) => {
+        return res.status(200).send({
+          status: true,
+          message: "Inductions",
+          data: data,
+          pagination: {
+            totalRecords: data.length
+          }
+          
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          status: false,
+          message: err.message,
+          data: {},
+          totalRecords: 0
+        });
+      });
+
+    return;
+    
+  } catch (error) {
+    return res.status(403).json({ error: error.message });
+  }
+};
+
 
 
 
@@ -617,14 +689,17 @@ exports.findOne = (req, res) => {
  */
 exports.store = async (req, res) => {
   try {
-
+    //console.log('req body', req.body); 
     const user      = req.decoded;
+    //console.log('user', user); 
     const thumbnail = uploadThumbnail(req, res);
 
     let iData       = JSON.parse(req.body.induction);
     iData.deptID    = ObjectId(req.body.deptID);
     iData.createdBy = ObjectId(user.userID);
+    //console.log('parent company', user.parentCompany);
     iData.parentCompany = (user.role ==='company')? ObjectId(user.userID) :ObjectId(user.parentCompany);
+    //console.log('company', iData.parentCompany); return;
     iData.thumbnail = thumbnail;
 
 
