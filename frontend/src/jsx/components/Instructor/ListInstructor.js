@@ -73,6 +73,7 @@ const Instructors = () => {
   const [instructorData, setInstructorData] = useState({profile: {name:'', email:'',aboutMe:'',address:'',logo:'',_id:''} });
   const [instructorsList, setInstructosList] = useState([]);
 
+
   // change status
   const changeUserStatus = (userID, status) =>{
     // user id
