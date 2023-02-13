@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 // api call
 async function getDepartments(token, company) {
+    
     return fetch("http://localhost:8081/api/department/getDepartmentByComp", {
         method: "POST",
         headers: {
@@ -33,10 +34,10 @@ const DepartmentByCompany = (props) => {
     }
 
     useEffect(()=>{
-        if(loading){
+        //if(loading){
             callApi(token, props.parentCompany);
-        }
-    },[props]);
+        //}
+    },[props.parentCompany]);
     const pageContent = (loading) ? <option>Loading</option> : <>{option}</>;
     return(
         <>

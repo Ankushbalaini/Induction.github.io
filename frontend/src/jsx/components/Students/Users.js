@@ -1,51 +1,44 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import ActionDropDown from "./ActionDropDown";
-
-import UpdateUserModal from "./UpdateUserModal";
-
-import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { getData } from "../APIs";
+import UserPopup from "./UserPopup";
 import CompanyDropdown from "../Companies/CompanyDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 
 const images = require.context("../../../../../images/profile/", true);
 
-const AllStudents = () => {
-  const navigate = useHistory();
+const Users = () => {
   const token = useSelector((state) => state.auth.auth.token);
-  const id = useSelector((state) => state.auth.auth.id);
   const role = useSelector((state) => state.auth.auth.role);
+  const loggedInID = useSelector((state) => state.auth.auth.id);
+  const parentCompany = useSelector((state) => state.auth.auth.parentCompany);
 
-  const [searchCompany, setSearchCompany] = useState();
-  const [searchDepartment, setSearchDepartment] = useState();
-  const [searchName, setSearchName] = useState();
-  const [departmentOptions, setDepartmentOptions] = useState();
+
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState();
+
+  // filter states
+  const [filteredUsers, setFilteredUsers] = useState();
+  const [searchField, setSearchField] = useState("");
+
+  const [companyFilter, setCompanyFilter] = useState();
+  const [deptFilter, setDeptFilter] = useState();
 
   const [data, setData] = useState(
     document.querySelectorAll("#student_wrapper tbody tr")
   );
+
+  // Edit User- Popup
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [profileData, setProfileData] = useState();
+  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
+
+  const [test, settest] = useState(0);
   const sort = 5;
   const activePag = useRef(0);
-  const [loading, setLoading] = useState(true);
-  const [test, settest] = useState(0);
-  const [students, setStudents] = useState(0);
-  const [profileData, setProfileData] = useState({
-    email: "",
-    createdAt: "",
-    profile: {
-      first_name: "",
-      last_name: "",
-      profilePhoto: "dummy-user.png",
-      aboutMe: "",
-      address: "",
-    },
-  });
-
-  // model popup usestate
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
 
   // Active data
   const chageData = (frist, sec) => {
@@ -58,28 +51,18 @@ const AllStudents = () => {
     }
   };
 
-  const loadImage = (imageName) => {
-    return images(`./${imageName}`);
-  };
+  // Active pagginarion
+  activePag.current === 0 && chageData(0, sort);
+  // paggination
+  let paggination = Array(Math.ceil(data.length / sort))
+    .fill()
+    .map((_, i) => i + 1);
 
-  const CompanyChangeFilter = (e) => {
-    setSearchCompany(e.target.value);
-    setLoading(true);
-
-    setDepartmentOptions(
-      <DepartmentByCompany parentCompany={e.target.value} />
-    );
-  };
-
-  const DepartmentChangeFilter = (e) => {
-    // change department
-    setSearchDepartment(e.target.value);
-    setLoading(true);
-  };
-
-  const searchByName = (e) => {
-    setSearchName(e.target.value);
-    setLoading(true);
+  // Active paggination & chage data
+  const onClick = (i) => {
+    activePag.current = i;
+    chageData(activePag.current * sort, (activePag.current + 1) * sort);
+    settest(i);
   };
 
   // change status
@@ -110,7 +93,7 @@ const AllStudents = () => {
             icon: "success",
           }).then(() => {
             setIsUserStatusChanged(true);
-            //navigate.push("/students");
+            // navigate.push("/users");
           });
         } else {
           return swal("Failed", response.message, "error");
@@ -119,6 +102,10 @@ const AllStudents = () => {
         swal("Your status is not changed!");
       }
     });
+  };
+
+  const loadImage = (imageName) => {
+    return images(`./${imageName}`);
   };
 
   // callback function to opdate state
@@ -148,78 +135,89 @@ const AllStudents = () => {
     });
   };
 
-  const handlepageLoad = async (event) => {
-    var str = "";
-    if (searchCompany !== undefined) {
-      str = "?company=" + searchCompany;
+  // call api
+  const getUserData = async (token) => {
 
-      if (searchDepartment !== undefined) {
-        str += "&deptID=" + searchDepartment;
+    var API_URL = "http://localhost:8081/api/students/";
+
+    // company filter adding api URL
+    if (companyFilter !== undefined) {
+      if (companyFilter === "All") {
+      } else {
+        API_URL = API_URL + "?company=" + companyFilter + "&";
       }
     }
 
-    if (searchDepartment !== undefined && searchCompany === undefined) {
-      str = "?deptID=" + searchDepartment;
+    // department filter adding api URL
+    if(companyFilter !== undefined && companyFilter !== 'All' &&  deptFilter !== undefined){
+      if (deptFilter === "All") {
+      } else {
+        API_URL = API_URL + "deptID=" + deptFilter;
+      }
     }
 
-    // else{
-    //   str = "?deptID="+searchDepartment;
-    // }
-
-    const response = await fetch("http://localhost:8081/api/students/" + str, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token,
-      },
-    }).then((data) => data.json());
-
+    const response = await getData(API_URL, token);
     if ("status" in response && response.status == true) {
-      setStudents(response.data);
+      setUsers(response.data);
+      setFilteredUsers(response.data);
       setLoading(false);
-      setIsUserStatusChanged(false);
       setData(document.querySelectorAll("#student_wrapper tbody tr"));
     } else {
       return swal("Failed", response.message, "error");
     }
   };
 
-  // use effect
+  //
+  const searchFilter = (e) => {
+    const searchVal = e.target.value.trim();
+    //setSearchField(searchVal);
+
+    if (searchVal === "" || searchVal.length < 2) {
+      setSearchField("");
+      setFilteredUsers(users);
+      setData(document.querySelectorAll("#student_wrapper tbody tr"));
+    } else {
+      const filterUsers = users.filter((user) => {
+        var fullname = user.profile.first_name + " " + user.profile.last_name;
+        return (
+          fullname.toLowerCase().includes(searchVal.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchVal.toLowerCase())
+        );
+      });
+      setFilteredUsers(filterUsers);
+      setSearchField(searchVal);
+      setData(document.querySelectorAll("#student_wrapper tbody tr"));
+    }
+  };
+
+  const CompanyFilterHandle = (e) => {
+    // set parent Company
+    setCompanyFilter(e.target.value);
+    setSearchField("");
+  };
+
+  const DepartmentFilterHandle = (e) =>{
+    setDeptFilter(e.target.value);
+    setSearchField("");
+  }
+
   useEffect(() => {
-    handlepageLoad();
-    setData(document.querySelectorAll("#student_wrapper tbody tr"));
-  }, [
-    profileData,
-    isModalOpen,
-    isUserStatusChanged,
-    searchCompany,
-    searchDepartment,
-  ]);
+    // fetch users data
+    getUserData(token);
 
-  // Active pagginarion
-  activePag.current === 0 && chageData(0, sort);
-  // paggination
-  let paggination = Array(Math.ceil(data.length / sort))
-    .fill()
-    .map((_, i) => i + 1);
+    if(role === 'company'){
+      setCompanyFilter(loggedInID);
+    }
 
-  // Active paggination & chage data
-  const onClick = (i) => {
-    activePag.current = i;
-    chageData(activePag.current * sort, (activePag.current + 1) * sort);
-    settest(i);
-  };
+    if(role === 'instructor'){
+      // get parent Company of instructor and set in company filter - pending
+      setCompanyFilter(parentCompany);
+    }
 
-  //css for button
-  const buttonStyle = {
-    margin: "auto",
-    display: "flex",
-  };
 
-  const sortByName = () => {
-    //
-    alert("Here");
-  };
+
+    // setData(document.querySelectorAll("#student_wrapper tbody tr"));
+  }, [isModalOpen, isUserStatusChanged, companyFilter, deptFilter ]);
 
   return (
     <>
@@ -230,8 +228,7 @@ const AllStudents = () => {
           <div className="col-xl-12">
             <div className="card students-list">
               <div className="card-header border-0 flex-wrap pb-0">
-                <h4>Students List</h4>
-
+                <h4>Users List</h4>
                 <div class="input-group search-area w-auto">
                   <span class="input-group-text">
                     <a href="/react/demo/instructor-students">
@@ -251,9 +248,76 @@ const AllStudents = () => {
                   </span>
                   <input
                     type="text"
+                    name="search"
+                    id="search"
                     class="form-control"
                     placeholder="Search here..."
+                    onChange={(e) => searchFilter(e)}
                   />
+                </div>
+                <div class="input-group">
+                  {role === "super_admin" ? (
+                    <>
+                      <label for="company_filter">Select Company</label>
+                      <select
+                        Style="margin:20px; font-size: 16px;"
+                        name="company_filter"
+                        onChange={(e) => CompanyFilterHandle(e)}
+                      >
+                        <option value="All">All</option>
+                        <CompanyDropdown />
+                      </select>
+
+
+                      <label for="dept_filter">Select Department</label>
+                      <select
+                        Style="margin:20px; font-size: 16px;"
+                        name="dept_filter"
+                        onChange={(e) => DepartmentFilterHandle(e)}
+                      >
+                        <option value="All">All</option>
+                        <DepartmentByCompany parentCompany={companyFilter}/>
+                        
+                      </select>
+                    </>
+                  ) : null }
+
+
+
+
+                  {role === "company" ? (
+                    <>
+                      <label for="dept_filter">Select Department</label>
+                      <select
+                        Style="margin:20px; font-size: 16px;"
+                        name="dept_filter"
+                        onChange={(e) => DepartmentFilterHandle(e)}
+                      >
+                        <option value="All">All</option>
+                        
+                        <DepartmentByCompany parentCompany={loggedInID}/>
+                        
+                      </select>
+                    </>
+                  ) : null }
+
+                  {role === "instructor" ? (
+                    <>
+                      <label for="dept_filter">Select Department</label>
+                      <select
+                        Style="margin:20px; font-size: 16px;"
+                        name="dept_filter"
+                        onChange={(e) => DepartmentFilterHandle(e)}
+                      >
+                        <option value="All">All</option>
+                        <DepartmentByCompany parentCompany={parentCompany}/>
+                        
+                      </select>
+                    </>
+                  ) : null }
+
+
+
                 </div>
               </div>
 
@@ -263,93 +327,37 @@ const AllStudents = () => {
                     id="student_wrapper"
                     className="dataTables_wrapper no-footer"
                   >
-                    {/* CompanyChangeFilter */}
-
-                    {/* <label Style="margin:20px">Filter Users</label> */}
-
-                    {role === "super_admin" ? (
-                      <>
-                        <select
-                          Style="margin:20px; font-size: 16px;"
-                          name="search_company"
-                          onChange={(e) => CompanyChangeFilter(e)}
-                          defaultValue={searchCompany}
-                        >
-                          <option>Select Company</option>
-                          <CompanyDropdown />
-                        </select>
-                        {/* <label Style="margin:20px">Select Department</label> */}
-                        <select
-                          Style="margin:20px; font-size: 16px;"
-                          name="search_department"
-                          onChange={(e) => setSearchDepartment(e.target.value)}
-                          defaultValue={searchDepartment}
-                        >
-                          <option>Select Department</option>
-                          {departmentOptions}
-                        </select>
-                      </>
-                    ) : null}
-
-                    {role === "company" ? (
-                      <>
-                        <select
-                          Style="margin:20px; font-size: 16px;"
-                          name="search_department"
-                          onChange={(e) => setSearchDepartment(e.target.value)}
-                        >
-                          <option value="all">All</option>
-                          <DepartmentByCompany parentCompany={id} />
-                        </select>
-                      </>
-                    ) : null}
-
-                    {role === "instructor" ? (
-                      <>
-                        <select
-                          Style="margin:20px; font-size: 16px;"
-                          name="search_department"
-                          onChange={(e) => setSearchDepartment(e.target.value)}
-                        >
-                          <option value="all">All</option>
-                          <DepartmentByCompany parentCompany={id} />
-                        </select>
-                      </>
-                    ) : null}
-
-                    {/* <input Style="margin:20px; font-size: 16px;"  type="text" name="search" onChange={(e) => searchByName }  placeholder="Search......"></input> */}
-
                     <table
                       className="table display mb-4 dataTablesCard order-table card-table text-black application "
                       id="application-tbl1_next"
                     >
                       <thead>
                         <tr>
-                          <th onClick={sortByName}>Name</th>
-                          <th>Student ID</th>
+                          <th>Name</th>
+                          <th>Email</th>
                           <th>Join Date</th>
                           <th>Status</th>
                           <th Style="text-align: end">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {students.map((row, index) => (
+                        {filteredUsers.map((user, index) => (
                           <tr key={index}>
                             <td>
                               <div className="d-flex align-items-center">
                                 <img
-                                  src={loadImage(row.profile.profilePhoto)}
+                                  src={loadImage(user.profile.profilePhoto)}
                                   alt=""
                                 />
                                 <h4 className="mb-0 fs-16 font-w500">
-                                  {row.profile?.first_name}{" "}
-                                  {row.profile?.last_name}
+                                  {user.profile?.first_name}{" "}
+                                  {user.profile?.last_name}
                                 </h4>
                               </div>
                             </td>
-                            <td>{row.email}</td>
+                            <td>{user.email}</td>
                             <td>
-                              {new Date(row.createdAt).toLocaleDateString(
+                              {new Date(user.createdAt).toLocaleDateString(
                                 "en-GB",
                                 {
                                   day: "numeric",
@@ -361,20 +369,20 @@ const AllStudents = () => {
                             <td>
                               <Link
                                 className={`badge light ${
-                                  row.status ? "badge-success" : "badge-danger"
+                                  user.status ? "badge-success" : "badge-danger"
                                 }`}
-                                to="/students"
+                                to="/users"
                                 onClick={() =>
-                                  changeUserStatus(row._id, row.status)
+                                  changeUserStatus(user._id, user.status)
                                 }
                               >
-                                {row.status ? "Active" : "Inactive"}
+                                {user.status ? "Active" : "Inactive"}
                               </Link>
                             </td>
                             <td>
                               <ActionDropDown
                                 trackOnclick={trackOnclick}
-                                profileData={row}
+                                profileData={user}
                                 trackDeleteClick={trackDeleteClick}
                               />
                             </td>
@@ -396,7 +404,7 @@ const AllStudents = () => {
                       >
                         <Link
                           className="paginate_button previous "
-                          to="/students"
+                          to="/users"
                           onClick={() =>
                             activePag.current > 0 &&
                             onClick(activePag.current - 1)
@@ -411,7 +419,7 @@ const AllStudents = () => {
                           {paggination.map((number, i) => (
                             <Link
                               key={i}
-                              to="/students"
+                              to="/users"
                               className={`paginate_button  ${
                                 activePag.current === i ? "current" : ""
                               } `}
@@ -424,7 +432,7 @@ const AllStudents = () => {
 
                         <Link
                           className="paginate_button next"
-                          to="/students"
+                          to="/users"
                           onClick={() =>
                             activePag.current + 1 < paggination.length &&
                             onClick(activePag.current + 1)
@@ -442,15 +450,18 @@ const AllStudents = () => {
               </div>
             </div>
           </div>
+
+          {/* Update User popUp */}
+          {isModalOpen ? (
+            <UserPopup
+              isModalOpen={isModalOpen}
+              trackOnclick={trackOnclick}
+              profileData={profileData}
+            />
+          ) : null}
         </div>
       )}
-
-      <UpdateUserModal
-        isModalOpen={isModalOpen}
-        trackOnclick={trackOnclick}
-        profileData={profileData}
-      />
     </>
   );
 };
-export default AllStudents;
+export default Users;

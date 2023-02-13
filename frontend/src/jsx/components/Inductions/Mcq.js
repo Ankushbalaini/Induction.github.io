@@ -125,6 +125,8 @@ const AddMcq = (props) => {
         </li>
       </ol>
 
+      
+
       <div className="row">
         <div className="col-xl-12 col-lg-12 col-md-12">
           <div className="card">

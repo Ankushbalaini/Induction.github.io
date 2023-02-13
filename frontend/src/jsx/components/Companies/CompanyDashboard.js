@@ -47,7 +47,7 @@ if(loading){
                         <i className="bi bi-book"></i>
                       </span>
                       <div className="media-body text-white">
-                        <p className="mb-1" >Total Department</p>
+                        <p className="mb-1" >Total Users</p>
                         <h3 className="text-white">{companyDB?.totalUsers}</h3>
                         <div className="progress mb-2 bg-secondary">
                           <div
@@ -55,7 +55,7 @@ if(loading){
                             style={{ width: "80%" }}
                           ></div>
                         </div>
-                        <small>80% Increase in 20 Days</small>
+                        {/* <small>80% Increase in 20 Days</small> */}
                       </div>
                     </div>
                   </div>
@@ -78,7 +78,7 @@ if(loading){
                              style={{ width: "76%" }}
                            ></div>
                          </div>
-                         <small>76% Increase in 20 Days</small>
+                         {/* <small>76% Increase in 20 Days</small> */}
                        </div>
                      </div>
                    </div>
@@ -101,7 +101,7 @@ if(loading){
                              style={{ width: "76%" }}
                            ></div>
                          </div>
-                         <small>76% Increase in 20 Days</small>
+                         {/* <small>76% Increase in 20 Days</small> */}
                        </div>
                      </div>
                    </div>

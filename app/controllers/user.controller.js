@@ -5,7 +5,6 @@ const CompanyDB = db.company;
 const UserInductionResults = db.user_induction_results;
 const Inductions = db.induction;
 
-
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -158,9 +157,8 @@ exports.login = (req, res) => {
     password: password,
   })
     .then(function (user) {
-
       // checking user status
-      if(user.status === false){
+      if (user.status === false) {
         return res.status(500).send({
           status: false,
           message: "USER_DISABLED",
@@ -177,7 +175,7 @@ exports.login = (req, res) => {
             email: user_cred.email,
             role: user_cred.role,
             deptID: user_cred.deptID,
-            parentCompany: user_cred.parentCompany
+            parentCompany: user_cred.parentCompany,
           },
           "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
           {
@@ -201,6 +199,7 @@ exports.login = (req, res) => {
             email: user.email,
             token: user_cred.token,
             role: user.role,
+            parentCompany: user.parentCompany,
             expiresIn: new Date(Date.now() + 2 * (60 * 60 * 1000)),
           },
         });
@@ -389,7 +388,7 @@ exports.signUp = (req, res) => {
     });
   } else {
     // Save entry in user cred table
-    
+
     const user_cred = new UserCred({ ...req.body });
     const token = jwt.sign(
       { userID: user_cred._id, email: user_cred.email, role: user_cred.role },
@@ -399,7 +398,6 @@ exports.signUp = (req, res) => {
       }
     );
     user_cred.token = token;
-    
 
     // here call save function
     user_cred
@@ -449,15 +447,15 @@ exports.getProfile = async (req, res) => {
     const userRole = req.decoded.role;
     switch (userRole) {
       case "instructor":
+        var totalInductions;
 
-      var totalInductions;
-
-      await Inductions.find({ createdBy : ObjectId(req.decoded.userID) })
-        .then((induction)=>{
+        await Inductions.find({ createdBy: ObjectId(req.decoded.userID) })
+          .then((induction) => {
             totalInductions = induction.length;
-        })
-        .catch((err)=>{err});
-        
+          })
+          .catch((err) => {
+            err;
+          });
 
         UserCred.aggregate([
           {
@@ -487,7 +485,6 @@ exports.getProfile = async (req, res) => {
           },
         ])
           .then((data) => {
-
             data[0].totalInductions = totalInductions;
 
             return res.status(200).send({
@@ -506,22 +503,26 @@ exports.getProfile = async (req, res) => {
 
         break;
       case "company":
-
         var totalInductions, totalInstructors;
 
-        await Inductions.find({ parentCompany : ObjectId(req.decoded.userID) })
-          .then((induction)=>{
-              totalInductions = induction.length;
+        await Inductions.find({ parentCompany: ObjectId(req.decoded.userID) })
+          .then((induction) => {
+            totalInductions = induction.length;
           })
-          .catch((err)=>{err});
-        
-        await UserCred.find({role:'instructor', parentCompany: ObjectId(req.decoded.userID) })
-          .then((user)=>{
-              totalInstructors = user.length;
+          .catch((err) => {
+            err;
+          });
+
+        await UserCred.find({
+          role: "instructor",
+          parentCompany: ObjectId(req.decoded.userID),
+        })
+          .then((user) => {
+            totalInstructors = user.length;
           })
-          .catch((err)=>{err});
-
-
+          .catch((err) => {
+            err;
+          });
 
         UserCred.aggregate([
           {
@@ -551,7 +552,6 @@ exports.getProfile = async (req, res) => {
           },
         ])
           .then((data) => {
-
             data[0].totalInductions = totalInductions;
             data[0].totalInstructors = totalInstructors;
 
@@ -559,7 +559,72 @@ exports.getProfile = async (req, res) => {
               status: true,
               message: "Company profile",
               data: data[0],
-              
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              status: false,
+              message: err.message,
+              data: {},
+            });
+          });
+
+        break;
+
+      case "super_admin":
+        var totalCompanies, totalUsers;
+
+        await UserCred.find({ role: "company" })
+          .then((user) => {
+            totalCompanies = user.length;
+          })
+          .catch((err) => {
+            err;
+          });
+
+        await UserCred.find({ role: "user" })
+          .then((user) => {
+            totalUsers = user.length;
+          })
+          .catch((err) => {
+            err;
+          });
+
+        UserCred.aggregate([
+          {
+            $match: { _id: ObjectId(req.decoded.userID) },
+          },
+          { $limit: 1 },
+          {
+            $lookup: {
+              from: "users",
+              localField: "email",
+              foreignField: "email",
+              as: "profile",
+            },
+          },
+          {
+            $unwind: "$profile",
+          },
+
+          {
+            $project: {
+              _id: 1,
+              email: 1,
+              role: 1,
+              createdAt: 1,
+              profile: 1,
+            },
+          },
+        ])
+          .then((data) => {
+            data[0].totalCompanies = totalCompanies;
+            data[0].totalUsers = totalUsers;
+
+            res.status(200).send({
+              status: true,
+              message: "User profile ",
+              data: data[0],
             });
           })
           .catch((err) => {
@@ -633,7 +698,7 @@ exports.getProfile = async (req, res) => {
  * @param res
  */
 exports.edit = async (req, res) => {
-  const id = req.params.id;
+  const id = req.params.id; // user id who needs to update
 
   if (!req.files || Object.keys(req.files).length === 0) {
     if (req.body.profilePhoto === "") {
@@ -657,10 +722,21 @@ exports.edit = async (req, res) => {
     req.body.profilePhoto = Img.name;
   }
 
-  req.body.deptID = ObjectId(req.body.deptID);
-  req.body.parentCompany = ObjectId(req.body.parentCompany );
+  // check request token values
+  if (req.decoded.role === "super_admin") {
+    req.body.deptID = ObjectId(req.body.deptID);
+    req.body.parentCompany = ObjectId(req.body.parentCompany);
+  }
 
-  // await new UserCred({deptID : req.body.deptID}).save();
+  if (req.decoded.role === "company") {
+    req.body.parentCompany = ObjectId(req.body.userID);
+  }
+
+  if (req.decoded.role === "instructor") {
+    // pass parent company and dept
+    // undefined
+    req.body.parentCompany = ObjectId(req.decoded.parentCompany);
+  }
 
   // users colletion
   User.updateOne(
@@ -680,23 +756,22 @@ exports.edit = async (req, res) => {
           message: "User not found!",
         });
       } else {
-
-
         UserCred.updateOne(
           { _id: req.body.mainID },
           { $set: req.body },
-          { multi: true })
-          .then((user)=>{
+          { multi: true }
+        )
+          .then((user) => {
             return res.status(200).send({
               status: true,
               message: "User has been updated!",
               data: user,
             });
           })
-          .catch((err)=>{
+          .catch((err) => {
             return res.status(500).send({
               status: false,
-              message: err.message
+              message: err.message,
             });
           });
       }
@@ -704,6 +779,12 @@ exports.edit = async (req, res) => {
   );
 };
 
+/**
+ *
+ * @param {'*'} req
+ * @param {*} res
+ * @returns
+ */
 exports.setting = (req, res) => {
   try {
     const id = ObjectId(req.decoded.userID);
@@ -782,11 +863,10 @@ exports.inductions = (req, res) => {
 
     */
 
-    UserInductionResults
-      .find({ userID: userID })
+    UserInductionResults.find({ userID: userID })
       .populate({
-        path: 'inductionID',
-        select: 'title'
+        path: "inductionID",
+        select: "title",
       })
       .sort({ createdAt: -1 })
       .then((data) => {
@@ -859,5 +939,3 @@ exports.changeUserStatus = (req, res) => {
     });
   }
 };
-
-
