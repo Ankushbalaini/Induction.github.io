@@ -261,7 +261,7 @@ const Users = () => {
                 <div class="input-group">
                   {role === "super_admin" ? (
                     <>
-                      <label for="company_filter">Select Company</label>
+                      <label for="company_filter">Select Company: </label>
                       <select
                         Style="margin:20px; font-size: 16px;"
                         name="company_filter"
@@ -272,7 +272,7 @@ const Users = () => {
                       </select>
 
 
-                      <label for="dept_filter">Select Department {companyFilter}</label>
+                      <label for="dept_filter">Select Department: </label>
                       <select
                         Style="margin:20px; font-size: 16px;"
                         name="dept_filter"
@@ -290,7 +290,7 @@ const Users = () => {
 
                   {role === "company" ? (
                     <>
-                      <label for="dept_filter">Select Department</label>
+                      <label for="dept_filter">Select Department: </label>
                       <select
                         Style="margin:20px; font-size: 16px;"
                         name="dept_filter"
@@ -306,7 +306,7 @@ const Users = () => {
 
                   {role === "instructor" ? (
                     <>
-                      <label for="dept_filter">Select Department</label>
+                      <label for="dept_filter">Select Department:</label>
                       <select
                         Style="margin:20px; font-size: 16px;"
                         name="dept_filter"
