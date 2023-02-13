@@ -5,25 +5,71 @@ import { useHistory } from "react-router-dom";
 
 const AddCompany = () => {
   const navigate = useHistory();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [name, setName] = useState();
-  const [companyID, setCompanyID] = useState();
-  const [logo, setLogo] = useState();
-  const [image, setImage] = useState({preview:'', data:''})
-  const [address, setAddress] = useState();
-  const [aboutCompany, setAboutCompany] = useState();
+  const intialState = {
+    email:'',
+    password:'',
+    name:'',
+    companyID: '',
+    image:'',
+    address:'',
+    aboutCompany: '',
+    logo: {
+      preview:'',
+      data:''
+    }
+  }
+  // useState 
+  const [state, setState] = useState(intialState);
 
+
+  // const [email, setEmail] = useState();
+  // const [password, setPassword] = useState();
+  // const [name, setName] = useState();
+  // const [companyID, setCompanyID] = useState();
+  // const [logo, setLogo] = useState();
+  // const [image, setImage] = useState({preview:'', data:''})
+  // const [address, setAddress] = useState();
+  // const [aboutCompany, setAboutCompany] = useState();
+
+
+  // on file change
   const handleFileChange = async (e) => {
     const img = {
       preview: URL.createObjectURL(e.target.files[0]),
       data: e.target.files[0],
     }
-    setImage(img)
+    setState({...state, logo : img.data });
+    //setImage(img)
   }
 
+
+
+  // on form submit
   let handleSubmit = async (e) => {
     e.preventDefault();
+
+    // alert( JSON.stringify(state) );
+
+    const data = new FormData(e.target);
+
+    const response = await fetch("http://localhost:8081/api/company/add", {
+      method: "POST",
+      body: data,
+    }).then((data) => data.json());
+
+    if ("status" in response && response.status == true) {
+      return swal("Success", response.message, "success", {
+        buttons: false,
+        timer: 2000,
+      }).then((value) => {
+        // return <Navigate to="/inductions" />;
+        navigate.push("/companies");
+      });
+    } else {
+      return swal("Failed", "Error message", "error");
+    }
+
+    /*
     
     const data = new FormData();
     data.append('name', name);
@@ -51,6 +97,7 @@ const AddCompany = () => {
     } else {
       return swal("Failed", "Error message", "error");
     }
+    */
   };
 
 
@@ -86,9 +133,8 @@ const AddCompany = () => {
                       type="email"
                       name="email"
                       className="form-control"
-                      placeholder=""
-                      onChange={(e) => setEmail(e.target.value)}
-                      value={email}
+                      onChange={(e) => setState( {...state, email : e.target.value}) }
+                      value={state.email}
                       required
                     />
                   </div>
@@ -103,8 +149,8 @@ const AddCompany = () => {
                       type="password"
                       name="password"
                       className="form-control"
-                      onChange={(e) => setPassword(e.target.value)}
-                      value={password}
+                      onChange={(e) => setState( {...state, password : e.target.value}) }
+                      value={state.password}
                       required
                     />
                   </div>
@@ -119,8 +165,8 @@ const AddCompany = () => {
                       type="text"
                       name="name"
                       className="form-control"
-                      onChange={(e) => setName(e.target.value)}
-                      value={name}
+                      onChange={(e) => setState( {...state, name : e.target.value}) }
+                      value={state.name}
                       required
                     />
                   </div>
@@ -131,9 +177,9 @@ const AddCompany = () => {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder=""
-                      onChange={(e) => setCompanyID(e.target.value)}
-                      value={companyID}
+                      name="companyID"
+                      onChange={(e) => setState( {...state, companyID : e.target.value }) }
+                      value={ state.companyID }
                       required
                     />
                   </div>
@@ -161,10 +207,10 @@ const AddCompany = () => {
                       className="form-control"
                       name="address"
                       placeholder=""
-                      onChange={(e) => setAddress(e.target.value)}
+                      onChange={(e) => setState( {...state, address : e.target.value}) }
                       required
                     >
-                      {address}
+                      {state.address}
                     </textarea>
                   </div>
                 </div>
@@ -178,10 +224,10 @@ const AddCompany = () => {
                       className="form-control"
                       name="aboutCompany"
                       placeholder=""
-                      onChange={(e) => setAboutCompany(e.target.value)}
+                      onChange={(e) => setState( {...state, aboutCompany : e.target.value}) }
                       required
                     >
-                      {aboutCompany}
+                      {state.aboutCompany}
                     </textarea>
                   </div>
                 </div>

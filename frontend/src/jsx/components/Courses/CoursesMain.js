@@ -6,10 +6,13 @@ import "swiper/css";
 import course1 from "./../../../images/courses/course1.jpg";
 
 import { useSelector } from "react-redux";
+import CompanyDropdown from '../Companies/CompanyDropdown';
 
 const images = require.context("../../../../../images/inductions/", true);
 
 function CoursesMain() {
+  const [source, setSource] = useState('list');
+  const [filterCompany, setFilterCompany] = useState();
   const [courses, setCourses] = useState();
   const [loading, setloading] = useState(true);
   const [page, setPage] = useState(1);
@@ -36,9 +39,55 @@ function CoursesMain() {
     }).then((data) => data.json());
   }
 
+  async function filterInductions(page, companyID) {
+    let filterInductionsApi = "http://localhost:8081/api/induction/filter/by/company?page=" + page + "&filterByCompany=" + companyID;
+    if (companyID == 'all') {
+      filterInductionsApi = "http://localhost:8081/api/induction?page=" + page;
+    }
+    return fetch(filterInductionsApi, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    }).then((data) => data.json());
+  }
+
   const loadImage = (imageName) => {
     return images(`./${imageName}`);
   };
+
+  const filterByCompany = async (companyID) => {
+    setSource('filter');
+    setFilterCompany(companyID);
+    const response = await filterInductions(page, companyID);
+    if ("status" in response && response.status == true) {
+      setCourses(response.data);
+      //return;
+      setloading(false);
+      setTotalRecords(response.pagination.totalRecords);
+      setLimit(response.pagination.limit);
+      
+
+      setPrevLink(
+        <Link to={"#"} onClick={(e) => setPage(page - 1)} className="">
+          <i className="fas fa-chevron-left"></i>
+        </Link>
+      );
+
+      setFirstLink(
+        <Link
+          to={"#"}
+          onClick={(e) => setPage(1)}
+          className={page === 1 ? "active" : ""}
+        >
+          <i className="fas fa-chevron-left"></i>
+        </Link>
+      );
+
+      pageNate();
+    }
+  }
 
   const handleGetInduction = async (page) => {
     const response = await getAllInductions(page);
@@ -70,7 +119,12 @@ function CoursesMain() {
 
   // use effect
   useEffect(() => {
-    handleGetInduction(page);
+    if (source == 'filter') {
+      filterByCompany(filterCompany);
+    } else {
+      handleGetInduction(page);
+    }
+    
   }, [page, loading, totalRecords]);
 
   const pageNate = () => {
@@ -110,10 +164,17 @@ function CoursesMain() {
     <>
       <div className="widget-heading d-flex justify-content-between align-items-center">
         <h3 className="m-0">All Inductions ({totalRecords})</h3>
-        <Link to={"./inductions"} className="btn btn-primary btn-sm">
+        <div className="col-lg-4">
+          <select name="parentCompany" className="form-control" onChange={ (e) => filterByCompany(e.target.value) }>
+            <option value="all">All</option>
+            <CompanyDropdown />
+          </select> 
+        </div>
+        {/* <Link to={"./inductions"} className="btn btn-primary btn-sm">
           View all
-        </Link>
+        </Link> */}
       </div>
+      
       <div className="row">
         {courses.map((data, index) => (
           <div className="col-xl-4 col-md-6" key={index}>

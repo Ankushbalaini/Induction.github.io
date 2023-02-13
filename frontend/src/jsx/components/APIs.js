@@ -1,11 +1,5 @@
 import { useSelector } from "react-redux";
 
-export function get_all_user(){
-    // rest of code
-
-
-}
-  
 // get Induction By ID 
 export async function getInduction(id, token){
     // const token = useSelector((state) => state.auth.auth.token);
@@ -24,5 +18,25 @@ export async function getInduction(id, token){
 }
 
 
+export async function getUsers(token) {
+
+    return await fetch("http://localhost:8081/api/students/" , {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token" : token,
+      },
+    }).then((data) => data.json());
+
+}
 
 
+export async function getData(URL, Token) {
+    return await fetch( URL , {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token" : Token,
+      },
+    }).then((data) => data.json());
+}

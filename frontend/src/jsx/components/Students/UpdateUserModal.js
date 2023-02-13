@@ -9,13 +9,13 @@ import DepartmentByCompany from "../Department/DepartmentByCompany";
 
 const images = require.context("../../../../../images/profile", true);
 
-const UpdateProfile = ({ isModalOpen, trackOnclick, profileData }) => {
+const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
   const navigate = useHistory();
 
-  const token = useSelector((state) => state.auth.auth.token);
   const id = useSelector((state) => state.auth.auth.id);
+  const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
- 
+
   const [userID, setUserID] = useState(); // User Table id
   const [mainID, setMainID] = useState(); // UserCred table id
   const [parentCompany, setParentCompany] = useState();
@@ -30,43 +30,34 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, profileData }) => {
   const [departmentDropdown, setDepartmentDropdown] = useState();
   const [option, setOption] = useState();
 
-  const loadImage = (imageName) => {
-    return images(`./${imageName}`);
-  };
+  const handleCompanyChange = async (e) => {
+    // call api to fetch departments
+    setParentCompany(e.target.value);
+    const response = await fetch(
+      "http://localhost:8081/api/department/getDepartmentByComp",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+        body: JSON.stringify({ parentCompany: e.target.value }),
+      }
+    ).then((data) => data.json());
 
-  useEffect(() => {
-    setParentCompany(profileData.parentCompany);
-    setDeptID(profileData.deptID);
-    setMainID(profileData._id);
-    setUserID(profileData.profile._id);
-    setFirstName(profileData.profile.first_name);
-    setLastName(profileData.profile.last_name);
-    setAboutMe(profileData.profile.aboutMe);
-    setAddress(profileData.profile.address);
-    setPreview(profileData.profile.profilePhoto);
-    setEmail(profileData.email);
-    // call to api to update Department Dropdown
-  }, [profileData, isModalOpen, parentCompany, option]);
-
-  const handleCallback = () => {
-    trackOnclick(false);
-  };
-
-  const handleFileChange = async (e) => {
-    const img = {
-      preview: URL.createObjectURL(e.target.files[0]),
-      data: e.target.files[0],
-    };
-    setImage(img);
+    if ("status" in response && response.status == true) {
+      const rows = response.data.map((row, index) => (
+        <option value={row._id}>{row.name}</option>
+      ));
+      setOption(rows);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // validate data
     if (firstName === "" || lastName === "" || aboutMe === "") {
       return swal("Failed", "All fields are required!", "error");
-      return false;
     }
 
     let formData = new FormData();
@@ -106,29 +97,35 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, profileData }) => {
     }
   };
 
-  // here
-  const handleCompanyChange = async (e) => {
-    // call api to fetch departments
-    const response = await fetch(
-      "http://localhost:8081/api/department/getDepartmentByComp",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": token,
-        },
-        body: JSON.stringify({ parentCompany: e.target.value }),
-      }
-    ).then((data) => data.json());
-
-    if ("status" in response && response.status == true) {
-      const rows = response.data.map((row, index) => (
-        <option value={row._id}>{row.name}</option>
-      ));
-      setOption(rows);
-      setParentCompany(e.target.value);
-    }
+  const handleCallback = () => {
+    trackOnclick(false);
   };
+
+  const loadImage = (imageName) => {
+    return images(`./${imageName}`);
+  };
+
+  const handleFileChange = async (e) => {
+    const img = {
+      preview: URL.createObjectURL(e.target.files[0]),
+      data: e.target.files[0],
+    };
+    setImage(img);
+  };
+
+  useEffect(() => {
+    // setParentCompany(profileData.parentCompany);
+    setDeptID(profileData.deptID);
+    setMainID(profileData._id);
+    setUserID(profileData.profile._id);
+    setFirstName(profileData.profile.first_name);
+    setLastName(profileData.profile.last_name);
+    setAboutMe(profileData.profile.aboutMe);
+    setAddress(profileData.profile.address);
+    setPreview(profileData.profile.profilePhoto);
+    setEmail(profileData.email);
+    // call to api to update Department Dropdown
+  }, [profileData, isModalOpen, option]);
 
   return (
     <Modal className="modal fade" show={isModalOpen}>
@@ -146,9 +143,10 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, profileData }) => {
         <div className="modal-body">
           <form className="update-form" onSubmit={handleSubmit} encType>
             <div className="row">
-              <div className="col-lg-12">
-                {role === "super_admin" ? (
-                  <>
+              {/* Super admin starts */}
+              {role === "super_admin" ? (
+                <>
+                  <div className="col-lg-6">
                     <div className="form-group mb-3">
                       <label
                         htmlFor="parentCompany"
@@ -160,97 +158,79 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, profileData }) => {
                       <select
                         name="parentCompany"
                         className="form-control"
-                        value={parentCompany}
                         onChange={handleCompanyChange}
+                        value={parentCompany}
                       >
+                        <option>Select</option>
                         <CompanyDropdown prevSelected={parentCompany} />
                       </select>
                     </div>
-
-                    <div className="form-group mb-3">
-                      <label
-                        htmlFor="department"
-                        className="text-black font-w600"
-                      >
-                        {" "}
-                        Assign Department <span className="required">
-                          *
-                        </span>{" "}
-                      </label>
-                      <select
-                        name="deptID"
-                        className="form-control"
-                        onChange={(e) => setDeptID(e.target.value)}
-                      >
-                        <option>Select</option>
-                        {option}
-                      </select>
-                    </div>
-                  </>
-                ) : null}
-
-                {/* Department Dropdown for Company and Instructor */}
-
-                {role === "company" ? 
-                (
-                <>
-                  <input type="hidden" value={id} name="parentCompany" />
+                  </div>
                   <div className="form-group mb-3">
                     <label
                       htmlFor="department"
                       className="text-black font-w600"
                     >
                       {" "}
-                      Assign Department <span className="required">
-                        *
-                      </span>{" "}
+                      Assign Department <span className="required">*</span>{" "}
                     </label>
                     <select
-                        name="deptID"
-                        className="form-control"
-                        onChange={(e) => setDeptID(e.target.value)}
-                      >
-                        <option>Select</option>
-                        <DepartmentByCompany />
-                    </select>
-                  </div>
-                </>
-                ) : null }
-
-
-                {/* Department Dropdown for Company and Instructor */}
-
-                {role === "instructor" ? 
-                (
-                <>
-                  {/* <input type="hidden" value={id} name="parentCompany" /> */}
-                  <div className="form-group mb-3">
-                    <label
-                      htmlFor="department"
-                      className="text-black font-w600"
+                      name="deptID"
+                      className="form-control"
+                      onChange={(e) => setDeptID(e.target.value)}
+                      value={deptID}
                     >
-                      {" "}
-                      Assign Department <span className="required">
-                        *
-                      </span>{" "}
-                    </label>
-                    <select
-                        name="deptID"
-                        className="form-control"
-                        onChange={(e) => setDeptID(e.target.value)}
-                      >
-                        <option>Select</option>
-                        <DepartmentByCompany />
+                      <option>Select</option>
+                      {option}
                     </select>
                   </div>
                 </>
-                ) : null }
+              ) : null}
 
-              </div>
+              {/* Super admin ends */}
 
-            </div>
+              {/* company start */}
+              {role === "company" ? (
+                <div className="form-group mb-3">
+                  <label htmlFor="department" className="text-black font-w600">
+                    {" "}
+                    Assign Department <span className="required">*</span>{" "}
+                  </label>
+                  <select
+                    name="deptID"
+                    className="form-control"
+                    onChange={(e) => setDeptID(e.target.value)}
+                    value={deptID}
+                  >
+                    <option>Select</option>
+                    <DepartmentByCompany />
+                  </select>
+                </div>
+              ) : null}
 
-            <div className="row">
+              {/* company ends */}
+
+              {/* company start */}
+              {role === "instructor" ? (
+                <div className="form-group mb-3">
+                  <label htmlFor="department" className="text-black font-w600">
+                    {" "}
+                    Assign Department <span className="required">*</span>{" "}
+                  </label>
+                  <select
+                    name="deptID"
+                    className="form-control"
+                    onChange={(e) => setDeptID(e.target.value)}
+                    value={deptID}
+                  >
+                    <option>Select</option>
+                    <DepartmentByCompany parentCompany={id} />
+                  </select>
+                </div>
+              ) : null}
+
+              {/* company ends */}
+
               <div className="col-lg-6">
                 <div className="form-group mb-3">
                   <label htmlFor="first_name" className="text-black font-w600">
@@ -374,4 +354,4 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, profileData }) => {
   );
 };
 
-export default UpdateProfile;
+export default UpdateUserModal;

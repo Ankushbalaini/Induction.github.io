@@ -8,28 +8,40 @@ import { Link } from "react-router-dom";
 const Table = props => {
   const columns = [
     {
-      name: "Name",
-      selector: "name",
+      name: "Email",
+      selector: "email",
       sortable: true,
       grow: 1,
       className: 'col-3'
     },
-    // {
-    //   name:"Parent Company",
-    //   selector :"parentcompany",
-    //   sortable: true,
-    //   grow:1,
-    //   className :"col-3"
-    // },
+    {
+      name: "Parent Company",
+      selector: "parentCompany",
+      sortable: true,
+      grow: 1,
+      className: 'col-3'
+    },
+    {
+      name: "Department",
+      
+      sortable: true,
+      grow: 1,
+      className: 'col-3',
+      cell: row => (
+        <div>
+          { row.deptID }
+        </div>
+        )
+    },
+    
     {
       name : "Status",
       selector:"status",
-      // sortable:true,
       hide: "sm",
       cell: row => (
         <div>
-          <span className={`badge badge-rounded ${row.status === 1 ?  "badge-primary" : "badge-success"}`}>
-            {row.status ?  'Active' : 'Inactive'}
+          <span className={`badge badge-rounded ${ (row.status)?"badge-success":"badge-primary"}`}>
+            {(row.status)?'Active':'Inactive'}
           </span>
         </div>
         )
@@ -46,7 +58,7 @@ const Table = props => {
             >
               <i className="fas fa-pencil-alt"></i>
             </button>
-            <button onClick={() => props.deleteClick(row.name)}
+            <button onClick={() => props.deleteClick(row.email)}
               href="#"
               className="btn btn-danger shadow btn-xs sharp"
             >
@@ -55,6 +67,7 @@ const Table = props => {
           </div>
           </div>
     }
+    
   ];
 
   const [filterText, setFilterText] = React.useState("");

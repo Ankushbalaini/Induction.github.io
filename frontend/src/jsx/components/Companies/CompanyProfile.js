@@ -149,7 +149,7 @@ const CompanyProfile = () => {
               <div className="col-xl-8 col-xxl-7 col-lg-12 ">
                 <div className="row">
                   <WidgetBlog changeImage={certificate} title="Instructors" link="instructors" dataCount={companyData.totalInstructors} />
-                  <WidgetBlog changeImage={clock} title="Inductions" link="courses" dataCount={companyData.totalInductions} />
+                  <WidgetBlog changeImage={clock} title="Inductions" link="inductions" dataCount={companyData.totalInductions} />
                   <div className="widget-heading d-flex justify-content-between align-items-center">
                     <h3 className="m-0">My Instructors</h3>
                     <Link to={"./instructors"} className="btn btn-primary btn-sm">

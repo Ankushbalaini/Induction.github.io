@@ -2,6 +2,7 @@ const db = require("../models/");
 const MCQs = db.mcqs;
 const UserInductions = db.user_inductions;
 const UserInductionResults = db.user_induction_results;
+const Induction = db.induction;
 
 var jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
@@ -154,11 +155,18 @@ exports.startTest = (req, res) => {
  * @param {*} res
  * @returns
  */
-exports.submitTest = (req, res) => {
+exports.submitTest = async (req, res) => {
   try {
     const userID = req.decoded.userID;
     const testID = ObjectId(req.params.testID);
-    const passPercentage = 75; // need to get this from induction table
+    let passPercentage;
+
+    await Induction.findById(testID)
+    .then((ind)=>{
+      passPercentage = ind.passPercentage;
+    }).catch((err)=>{
+      
+    });
 
     const passStatus = (req.body.correctAnswers / (req.body.correctAnswers + req.body.wrongAnswers) )* 100;
 

@@ -21,6 +21,8 @@ module.exports = function (app) {
   router.get("/list", instructor.list);
   
   router.get("/listByCompany", instructor.listByCompany);
+
+  router.get("/filterByCompany", instructor.filterByCompany);
   
   router.put("/edit/:id", instructor.edit );
  

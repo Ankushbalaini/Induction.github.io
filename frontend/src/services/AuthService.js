@@ -52,7 +52,7 @@ export function formatError(errorResponse) {
             swal("Oops", "Invalid Password", "error",{ button: "Try Again!" });
             break;
         case 'USER_DISABLED':
-            swal("Oops", "User status is disabled.", "error",{ button: "Conatct Admin and Try Again!",});
+            swal("Oops", "Your account has been suspended. Please contact administrator. Thank you!", "error",{ button: "Try Again",});
             break;
         
         default:

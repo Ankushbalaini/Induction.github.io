@@ -2,10 +2,11 @@ import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import ActionDropDown from "./ActionDropDown";
-import UpdateProfile from "./UpdateStudentModal";
+// import UpdateProfile from "./UpdateStudentModal";
 import { useSelector } from "react-redux";
 
 const images = require.context("../../../../../images/profile/", true);
+
 
 const AttemptedInductions = () => {
   const token = useSelector((state) => state.auth.auth.token);

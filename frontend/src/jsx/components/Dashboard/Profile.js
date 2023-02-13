@@ -192,30 +192,16 @@ const Profile = () => {
                   changeImage={certificate}
                   title="Companies"
                   link="companies"
-                  nos={5}
+                  nos={profileData.totalCompanies}
                 />
                 <WidgetBlog
                   changeImage={clock}
-                  title="Students"
+                  title="Users"
                   link="students"
+                  nos={profileData.totalUsers}
                 />
               </>
-            ) : (
-              <>
-                <WidgetBlog
-                  changeImage={certificate}
-                  title="Avilable Inductions"
-                  link="courses"
-                  nos={5}
-                />
-                <WidgetBlog
-                  changeImage={clock}
-                  title="My Inductions"
-                  link="courses"
-                  nos={5}
-                />
-              </>
-            )}
+            ) : null }
 
             {USER_ROLES.SUPER_ADMIN === role ? (
               <>
