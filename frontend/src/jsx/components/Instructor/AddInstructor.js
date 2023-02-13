@@ -53,12 +53,11 @@ const AddInstructor = () => {
     data.append('role', role);
     data.append('parentCompany', parentCompany);
     data.append('parentDepartment',parentDepartment);
-    data.append('deptID', parentDepartment);
+    data.append('deptID', deptID);
     data.append('profilePhoto', image.data);
     data.append('address', address);
     data.append('aboutMe', aboutMe);
 
-    
     const response = await fetch("http://localhost:8081/api/instructor/add", {
       method: "POST",
       headers: {
@@ -185,9 +184,7 @@ const AddInstructor = () => {
                      
                     <select name="parentDepartment" className="form-control" onChange={ (e) => setParentDepartment(e.target.value) }>
                         <option value="">Select</option>
-                        {/* <DepartmentDropdown parentCompany={parentCompany}/> */}
-                        <DepartmentByCompany parentCompany={parentCompany} prevSelected="" />
-
+                        <DepartmentDropdown />
                     </select> 
 
                     {errors.parentDepartment && <div Style="color:red;font-weight:600;padding:5px;">{errors.parentDepartment}</div>}
@@ -196,7 +193,7 @@ const AddInstructor = () => {
                 </div>
                 : 
                 <input
-                  name="deptID"
+                  name="parentDepartment"
                   type="hidden"
                   className="form-control"
                   value={parentDepartment}
