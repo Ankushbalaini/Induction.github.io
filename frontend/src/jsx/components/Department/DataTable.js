@@ -29,7 +29,7 @@ const Table = props => {
       cell: row => (
         <div>
           <span className={`badge badge-rounded ${row.status === 1 ?  "badge-primary" : "badge-success"}`}>
-            {row.status}
+            {row.status ?  'Active' : 'Inactive'}
           </span>
         </div>
         )

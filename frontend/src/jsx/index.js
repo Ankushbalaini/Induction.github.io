@@ -114,8 +114,8 @@ const Markup = () => {
     { url: "instructor-courses", component: InstructorCourses },
     { url: "instructor-students", component: InstructorStudents },
 
-    //{ url: "students", component: AllStudents },
-    { url: "students", component: Users },
+    { url: "students", component: AllStudents },
+    { url: "users", component: Users },
     { url : "attempted-inductions", component : AttemptedInductions},
 
     // Apps

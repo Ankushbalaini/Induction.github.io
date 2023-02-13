@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 // api call
 async function getDepartments(token, company) {
+    
     return fetch("http://localhost:8081/api/department/getDepartmentByComp", {
         method: "POST",
         headers: {

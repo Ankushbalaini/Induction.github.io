@@ -14,23 +14,28 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
   const role = useSelector((state) => state.auth.auth.role);
 
   const intialValue = {
-    userID : profileData.profile._id,
-    email : profileData.email,
-    first_name : profileData.profile.first_name,
-    last_name : profileData.profile.last_name,
-    aboutMe : profileData.profile.aboutMe,
-    address : profileData.profile.address,
-    profilePhoto : profileData.profile.profilePhoto
+    userID: profileData.profile._id,
+    email: profileData.email,
+    first_name: profileData.profile.first_name,
+    last_name: profileData.profile.last_name,
+    aboutMe: profileData.profile.aboutMe,
+    address: profileData.profile.address,
+    profilePhoto: profileData.profile.profilePhoto,
   };
 
   const [state, setState] = useState(intialValue);
-  const [image,setImage] = useState({preview:'',data:''});
- 
+  const [image, setImage] = useState({ preview: "", data: "" });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // validate data
-    if (state.first_name === "" || state.last_name === "" || state.aboutMe === "" || state.address === "") {
+    if (
+      state.first_name === "" ||
+      state.last_name === "" ||
+      state.aboutMe === "" ||
+      state.address === ""
+    ) {
       return swal("Failed", "All fields are required!", "error");
     }
 
@@ -104,26 +109,28 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
         <div className="modal-body">
           <form className="update-form" onSubmit={handleSubmit} encType>
             <div className="row">
+              {role === "super_admin" ? (
+                <CompanyDropdown
+                  selectedVal={profileData.parentCompany}
+                  selectedDeptVal={profileData.deptID}
+                />
+              ) : null}
 
-
-              {
-                (role === 'super_admin') ?
-                  <CompanyDropdown selectedVal={profileData.parentCompany} selectedDeptVal={profileData.deptID} />
-                : null  
-              }
-              
               <div className="col-lg-6">
                 <div className="form-group mb-3">
                   <label htmlFor="first_name" className="text-black font-w600">
                     {" "}
                     First Name <span className="required">*</span>{" "}
                   </label>
+                  <input type="hidden" name="mainID" value={profileData._id} />
                   <input
                     type="text"
                     className="form-control"
                     name="first_name"
                     value={state.first_name}
-                    onChange={(e) => setState({...state , first_name : e.target.value }) }
+                    onChange={(e) =>
+                      setState({ ...state, first_name: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -138,7 +145,9 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                     className="form-control"
                     name="last_name"
                     value={state.last_name}
-                    onChange={(e) => setState({...state , last_name : e.target.value }) }
+                    onChange={(e) =>
+                      setState({ ...state, last_name: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -155,7 +164,11 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                       Style="max-height:100px; max-width:100px; padding:10px; border-radius:10px"
                     ></img>
                   </div>
-                  <input type="hidden" value={state.profilePhoto} name="profilePhoto" />
+                  <input
+                    type="hidden"
+                    value={state.profilePhoto}
+                    name="profilePhoto"
+                  />
                   <input
                     type="file"
                     className="form-control"
@@ -177,7 +190,9 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                     className="form-control"
                     name="email"
                     value={state.email}
-                    onChange={(e) =>  setState({...state , email : e.target.value }) }
+                    onChange={(e) =>
+                      setState({ ...state, email: e.target.value })
+                    }
                     disabled
                   />
                 </div>
@@ -193,7 +208,9 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                     className="form-control"
                     name="aboutMe"
                     value={state.aboutMe}
-                    onChange={(e) => setState({...state , aboutMe : e.target.value }) }
+                    onChange={(e) =>
+                      setState({ ...state, aboutMe: e.target.value })
+                    }
                   />
                 </div>
               </div>
@@ -209,7 +226,9 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                     name="address"
                     placeholder="Enter your current address"
                     value={state.address}
-                    onChange={(e) => setState({...state , address : e.target.value }) }
+                    onChange={(e) =>
+                      setState({ ...state, address: e.target.value })
+                    }
                   />
                 </div>
               </div>

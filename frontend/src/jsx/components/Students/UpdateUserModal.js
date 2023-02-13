@@ -10,7 +10,6 @@ import DepartmentByCompany from "../Department/DepartmentByCompany";
 const images = require.context("../../../../../images/profile", true);
 
 const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
-
   const navigate = useHistory();
 
   const id = useSelector((state) => state.auth.auth.id);
@@ -30,8 +29,6 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
   const [address, setAddress] = useState();
   const [departmentDropdown, setDepartmentDropdown] = useState();
   const [option, setOption] = useState();
-
-
 
   const handleCompanyChange = async (e) => {
     // call api to fetch departments
@@ -53,15 +50,8 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
         <option value={row._id}>{row.name}</option>
       ));
       setOption(rows);
-      
     }
-  }; 
-
-
-  
-  
-
-      
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -105,7 +95,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     } else {
       return swal("Failed", "Error message", "error");
     }
-  }
+  };
 
   const handleCallback = () => {
     trackOnclick(false);
@@ -123,8 +113,6 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     setImage(img);
   };
 
-  
-
   useEffect(() => {
     // setParentCompany(profileData.parentCompany);
     setDeptID(profileData.deptID);
@@ -137,9 +125,8 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     setPreview(profileData.profile.profilePhoto);
     setEmail(profileData.email);
     // call to api to update Department Dropdown
-  }, [profileData, isModalOpen,  option]);
+  }, [profileData, isModalOpen, option]);
 
- 
   return (
     <Modal className="modal fade" show={isModalOpen}>
       <div className="modal-content">
@@ -155,118 +142,94 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
         </div>
         <div className="modal-body">
           <form className="update-form" onSubmit={handleSubmit} encType>
-            
-
             <div className="row">
+              {/* Super admin starts */}
+              {role === "super_admin" ? (
+                <>
+                  <div className="col-lg-6">
+                    <div className="form-group mb-3">
+                      <label
+                        htmlFor="parentCompany"
+                        className="text-black font-w600"
+                      >
+                        {" "}
+                        Assign Company <span className="required">*</span>{" "}
+                      </label>
+                      <select
+                        name="parentCompany"
+                        className="form-control"
+                        onChange={handleCompanyChange}
+                        value={parentCompany}
+                      >
+                        <option>Select</option>
+                        <CompanyDropdown prevSelected={parentCompany} />
+                      </select>
+                    </div>
+                  </div>
+                  <div className="form-group mb-3">
+                    <label
+                      htmlFor="department"
+                      className="text-black font-w600"
+                    >
+                      {" "}
+                      Assign Department <span className="required">*</span>{" "}
+                    </label>
+                    <select
+                      name="deptID"
+                      className="form-control"
+                      onChange={(e) => setDeptID(e.target.value)}
+                      value={deptID}
+                    >
+                      <option>Select</option>
+                      {option}
+                    </select>
+                  </div>
+                </>
+              ) : null}
 
-               {/* Super admin starts */}
-            { (role === 'super_admin') ?
-            <>
-            <div className="col-lg-6">
-              <div className="form-group mb-3">
-                <label
-                  htmlFor="parentCompany"
-                  className="text-black font-w600"
-                >
-                  {" "}
-                  Assign Company <span className="required">*</span>{" "}
-                </label>
-                <select
-                  name="parentCompany"
-                  className="form-control"
-                  onChange={handleCompanyChange}
-                  value={parentCompany}
-                >
-                  <option>Select</option>
-                  <CompanyDropdown prevSelected={parentCompany} />
-                </select>
-              </div>
-            </div>
-            <div className="form-group mb-3">
-              <label
-                htmlFor="department"
-                className="text-black font-w600"
-              >
-                {" "}
-                Assign Department <span className="required">
-                  *
-                </span>{" "}
-              </label>
-              <select
-                name="deptID"
-                className="form-control"
-                onChange={(e) => setDeptID(e.target.value)}
-                value={deptID}
-              >
-                <option>Select</option>
-                {option}
-              </select>
-            </div>
-            </>
-            : null }
+              {/* Super admin ends */}
 
-            {/* Super admin ends */}
+              {/* company start */}
+              {role === "company" ? (
+                <div className="form-group mb-3">
+                  <label htmlFor="department" className="text-black font-w600">
+                    {" "}
+                    Assign Department <span className="required">*</span>{" "}
+                  </label>
+                  <select
+                    name="deptID"
+                    className="form-control"
+                    onChange={(e) => setDeptID(e.target.value)}
+                    value={deptID}
+                  >
+                    <option>Select</option>
+                    <DepartmentByCompany />
+                  </select>
+                </div>
+              ) : null}
 
+              {/* company ends */}
 
-      {/* company start */}
-      { (role === 'company') ?
-      
-      <div className="form-group mb-3">
-              <label
-                htmlFor="department"
-                className="text-black font-w600"
-              >
-                {" "}
-                Assign Department <span className="required">
-                  *
-                </span>{" "}
-              </label>
-              <select
-                name="deptID"
-                className="form-control"
-                onChange={(e) => setDeptID(e.target.value)}
-                value={deptID}
-              >
-                <option>Select</option>
-                <DepartmentByCompany />
-              </select>
-            </div>
-            : null }
+              {/* company start */}
+              {role === "instructor" ? (
+                <div className="form-group mb-3">
+                  <label htmlFor="department" className="text-black font-w600">
+                    {" "}
+                    Assign Department <span className="required">*</span>{" "}
+                  </label>
+                  <select
+                    name="deptID"
+                    className="form-control"
+                    onChange={(e) => setDeptID(e.target.value)}
+                    value={deptID}
+                  >
+                    <option>Select</option>
+                    <DepartmentByCompany parentCompany={id} />
+                  </select>
+                </div>
+              ) : null}
 
-      {/* company ends */}
-
-
-
-
-
-       {/* company start */}
-       { (role === 'instructor') ?
-      
-      <div className="form-group mb-3">
-              <label
-                htmlFor="department"
-                className="text-black font-w600"
-              >
-                {" "}
-                Assign Department <span className="required">
-                  *
-                </span>{" "}
-              </label>
-              <select
-                name="deptID"
-                className="form-control"
-                onChange={(e) => setDeptID(e.target.value)}
-                value={deptID}
-              >
-                <option>Select</option>
-                <DepartmentByCompany parentCompany={id}/>
-              </select>
-            </div>
-            : null }
-
-      {/* company ends */}
-
-
+              {/* company ends */}
 
               <div className="col-lg-6">
                 <div className="form-group mb-3">

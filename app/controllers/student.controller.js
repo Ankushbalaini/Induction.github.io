@@ -55,7 +55,7 @@ exports.index = async (req, res) => {
 
     if(req.query.company !== undefined && req.query.deptID !== undefined ){
 
-      if(req.query.deptID == "all"){
+      if(req.query.deptID == "All"){
         // enable all departments
 
         UserCred.aggregate([
@@ -100,7 +100,7 @@ exports.index = async (req, res) => {
           .then((data) => {
             return res.status(200).send({
               status: true,
-              message: "All students Listing",
+              message: "All students Listing - 1" ,
               data: data,
   
             });
@@ -158,7 +158,7 @@ exports.index = async (req, res) => {
           .then((data) => {
             return res.status(200).send({
               status: true,
-              message: "All students Listing",
+              message: "All students Listing - 2",
               data: data,
   
             });
@@ -178,6 +178,7 @@ exports.index = async (req, res) => {
 
 
     }else if(req.query.company !== undefined ) {
+
       UserCred.aggregate([
         {
           $match: { 
@@ -186,7 +187,6 @@ exports.index = async (req, res) => {
                 {
                   $eq: ["$role", "user"] ,
                   $eq: ["$parentCompany",  ObjectId(req.query.company) ] ,
-                  
                 },
   
               ],
@@ -220,7 +220,7 @@ exports.index = async (req, res) => {
         .then((data) => {
           return res.status(200).send({
             status: true,
-            message: "All students Listing",
+            message: "All students Listing - 3",
             data: data,
           });
         })
@@ -243,7 +243,6 @@ exports.index = async (req, res) => {
               {
                 $eq: ["$role", "user"] 
               },
-
             ],
             } 
           },
@@ -275,7 +274,7 @@ exports.index = async (req, res) => {
       .then((data) => {
         return res.status(200).send({
           status: true,
-          message: "All students Listing",
+          message: "All students Listing - 4",
           data: data,
         });
       })

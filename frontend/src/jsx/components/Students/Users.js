@@ -5,16 +5,28 @@ import swal from "sweetalert";
 import ActionDropDown from "./ActionDropDown";
 import { getData } from "../APIs";
 import UserPopup from "./UserPopup";
-
-
+import CompanyDropdown from "../Companies/CompanyDropdown";
+import DepartmentByCompany from "../Department/DepartmentByCompany";
 
 const images = require.context("../../../../../images/profile/", true);
 
 const Users = () => {
   const token = useSelector((state) => state.auth.auth.token);
+  const role = useSelector((state) => state.auth.auth.role);
+  const loggedInID = useSelector((state) => state.auth.auth.id);
+  const parentCompany = useSelector((state) => state.auth.auth.parentCompany);
+
+
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState();
+
+  // filter states
+  const [filteredUsers, setFilteredUsers] = useState();
   const [searchField, setSearchField] = useState("");
+
+  const [companyFilter, setCompanyFilter] = useState();
+  const [deptFilter, setDeptFilter] = useState();
+
   const [data, setData] = useState(
     document.querySelectorAll("#student_wrapper tbody tr")
   );
@@ -22,6 +34,7 @@ const Users = () => {
   // Edit User- Popup
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profileData, setProfileData] = useState();
+  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
 
   const [test, settest] = useState(0);
   const sort = 5;
@@ -52,7 +65,44 @@ const Users = () => {
     settest(i);
   };
 
-  const changeUserStatus = () => {};
+  // change status
+  const changeUserStatus = (userID, status) => {
+    // user id
+    swal({
+      title: "Are you sure?",
+      text: `Once status Changed, User will get or loss access to account`,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (willChange) => {
+      if (willChange) {
+        const response = await fetch(
+          "http://localhost:8081/api/users/changeUserStatus",
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": token,
+            },
+            body: JSON.stringify({ userID: userID, status: status }),
+          }
+        ).then((data) => data.json());
+
+        if ("status" in response && response.status == true) {
+          swal("Poof! Your record has been updated!", {
+            icon: "success",
+          }).then(() => {
+            setIsUserStatusChanged(true);
+            // navigate.push("/users");
+          });
+        } else {
+          return swal("Failed", response.message, "error");
+        }
+      } else {
+        swal("Your status is not changed!");
+      }
+    });
+  };
 
   const loadImage = (imageName) => {
     return images(`./${imageName}`);
@@ -87,12 +137,29 @@ const Users = () => {
 
   // call api
   const getUserData = async (token) => {
-    const response = await getData(
-      "http://localhost:8081/api/students/",
-      token
-    );
+
+    var API_URL = "http://localhost:8081/api/students/";
+
+    // company filter adding api URL
+    if (companyFilter !== undefined) {
+      if (companyFilter === "All") {
+      } else {
+        API_URL = API_URL + "?company=" + companyFilter + "&";
+      }
+    }
+
+    // department filter adding api URL
+    if(companyFilter !== undefined && companyFilter !== 'All' &&  deptFilter !== undefined){
+      if (deptFilter === "All") {
+      } else {
+        API_URL = API_URL + "deptID=" + deptFilter;
+      }
+    }
+
+    const response = await getData(API_URL, token);
     if ("status" in response && response.status == true) {
       setUsers(response.data);
+      setFilteredUsers(response.data);
       setLoading(false);
       setData(document.querySelectorAll("#student_wrapper tbody tr"));
     } else {
@@ -100,21 +167,57 @@ const Users = () => {
     }
   };
 
+  //
+  const searchFilter = (e) => {
+    const searchVal = e.target.value.trim();
+    //setSearchField(searchVal);
 
-  //  
-  const searchFilter = (e) =>{
-    // map function for filter users and set New users
-    setSearchField(e.target.value);
+    if (searchVal === "" || searchVal.length < 2) {
+      setSearchField("");
+      setFilteredUsers(users);
+      setData(document.querySelectorAll("#student_wrapper tbody tr"));
+    } else {
+      const filterUsers = users.filter((user) => {
+        var fullname = user.profile.first_name + " " + user.profile.last_name;
+        return (
+          fullname.toLowerCase().includes(searchVal.toLowerCase()) ||
+          user.email.toLowerCase().includes(searchVal.toLowerCase())
+        );
+      });
+      setFilteredUsers(filterUsers);
+      setSearchField(searchVal);
+      setData(document.querySelectorAll("#student_wrapper tbody tr"));
+    }
+  };
 
-    // setUsers(response.data);
+  const CompanyFilterHandle = (e) => {
+    // set parent Company
+    setCompanyFilter(e.target.value);
+    setSearchField("");
+  };
 
-    // console.log(e.target.value);
+  const DepartmentFilterHandle = (e) =>{
+    setDeptFilter(e.target.value);
+    setSearchField("");
   }
 
   useEffect(() => {
     // fetch users data
     getUserData(token);
-  }, [isModalOpen]);
+
+    if(role === 'company'){
+      setCompanyFilter(loggedInID);
+    }
+
+    if(role === 'instructor'){
+      // get parent Company of instructor and set in company filter - pending
+      setCompanyFilter(parentCompany);
+    }
+
+
+
+    // setData(document.querySelectorAll("#student_wrapper tbody tr"));
+  }, [isModalOpen, isUserStatusChanged, companyFilter, deptFilter ]);
 
   return (
     <>
@@ -145,10 +248,76 @@ const Users = () => {
                   </span>
                   <input
                     type="text"
+                    name="search"
+                    id="search"
                     class="form-control"
                     placeholder="Search here..."
-                    onChange={(e) => searchFilter(e) }
+                    onChange={(e) => searchFilter(e)}
                   />
+                </div>
+                <div class="input-group">
+                  {role === "super_admin" ? (
+                    <>
+                      <label for="company_filter">Select Company</label>
+                      <select
+                        Style="margin:20px; font-size: 16px;"
+                        name="company_filter"
+                        onChange={(e) => CompanyFilterHandle(e)}
+                      >
+                        <option value="All">All</option>
+                        <CompanyDropdown />
+                      </select>
+
+
+                      <label for="dept_filter">Select Department</label>
+                      <select
+                        Style="margin:20px; font-size: 16px;"
+                        name="dept_filter"
+                        onChange={(e) => DepartmentFilterHandle(e)}
+                      >
+                        <option value="All">All</option>
+                        <DepartmentByCompany parentCompany={companyFilter}/>
+                        
+                      </select>
+                    </>
+                  ) : null }
+
+
+
+
+                  {role === "company" ? (
+                    <>
+                      <label for="dept_filter">Select Department</label>
+                      <select
+                        Style="margin:20px; font-size: 16px;"
+                        name="dept_filter"
+                        onChange={(e) => DepartmentFilterHandle(e)}
+                      >
+                        <option value="All">All</option>
+                        
+                        <DepartmentByCompany parentCompany={loggedInID}/>
+                        
+                      </select>
+                    </>
+                  ) : null }
+
+                  {role === "instructor" ? (
+                    <>
+                      <label for="dept_filter">Select Department</label>
+                      <select
+                        Style="margin:20px; font-size: 16px;"
+                        name="dept_filter"
+                        onChange={(e) => DepartmentFilterHandle(e)}
+                      >
+                        <option value="All">All</option>
+                        <DepartmentByCompany parentCompany={parentCompany}/>
+                        
+                      </select>
+                    </>
+                  ) : null }
+
+
+
                 </div>
               </div>
 
@@ -172,7 +341,7 @@ const Users = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {users.map((user, index) => (
+                        {filteredUsers.map((user, index) => (
                           <tr key={index}>
                             <td>
                               <div className="d-flex align-items-center">
@@ -202,7 +371,7 @@ const Users = () => {
                                 className={`badge light ${
                                   user.status ? "badge-success" : "badge-danger"
                                 }`}
-                                to="/students"
+                                to="/users"
                                 onClick={() =>
                                   changeUserStatus(user._id, user.status)
                                 }
@@ -235,7 +404,7 @@ const Users = () => {
                       >
                         <Link
                           className="paginate_button previous "
-                          to="/students"
+                          to="/users"
                           onClick={() =>
                             activePag.current > 0 &&
                             onClick(activePag.current - 1)
@@ -250,7 +419,7 @@ const Users = () => {
                           {paggination.map((number, i) => (
                             <Link
                               key={i}
-                              to="/students"
+                              to="/users"
                               className={`paginate_button  ${
                                 activePag.current === i ? "current" : ""
                               } `}
@@ -263,7 +432,7 @@ const Users = () => {
 
                         <Link
                           className="paginate_button next"
-                          to="/students"
+                          to="/users"
                           onClick={() =>
                             activePag.current + 1 < paggination.length &&
                             onClick(activePag.current + 1)
@@ -283,13 +452,13 @@ const Users = () => {
           </div>
 
           {/* Update User popUp */}
-          {(isModalOpen) ? 
-          <UserPopup
-            isModalOpen={isModalOpen}
-            trackOnclick={trackOnclick}
-            profileData={profileData}
-          />
-          : null }
+          {isModalOpen ? (
+            <UserPopup
+              isModalOpen={isModalOpen}
+              trackOnclick={trackOnclick}
+              profileData={profileData}
+            />
+          ) : null}
         </div>
       )}
     </>
