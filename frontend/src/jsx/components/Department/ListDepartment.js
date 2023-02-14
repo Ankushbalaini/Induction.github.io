@@ -77,7 +77,7 @@ const ListDepartments = () => {
           // "Content-Type": "application/json",
           "x-access-token": token,
         },
-        body: JSON.stringify(data),
+        body: data,
       }
     ).then((data) => data.json());
 
