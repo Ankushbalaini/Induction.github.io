@@ -6,6 +6,8 @@ import { useHistory } from "react-router-dom";
 import JoditEditor from "jodit-react";
 import { useSelector } from "react-redux";
 import DepartmentDropdown from "../Department/DepartmentDropdown";
+import DepartmentByCompany from "../Department/DepartmentByCompany";
+
 
 const CreateInduction = () => {
   const navigate = useHistory();
@@ -201,13 +203,14 @@ const CreateInduction = () => {
 
 
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">Department</label>
+                  <label className="col-sm-3 col-form-label">Department </label>
                   <div className="col-sm-9">
                     <select name="deptID"
                       className="form-control"
                       onChange={(e) => setDeptID(e.target.value)}
                     >
-                      <DepartmentDropdown />
+                      {/* <DepartmentDropdown /> */}
+                      <DepartmentByCompany />
                     </select>
 
                     {errors.deptID && <div Style="color:red;font-weight:600;padding:5px;">{errors.deptID}</div>}

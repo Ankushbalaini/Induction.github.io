@@ -14,7 +14,7 @@ async function getCompanies() {
 
    
 const CompanyDropdown = (props) => {
-
+    const [selected, setSelected] = useState(props.prevSelected);
     const [loading, setLoading] = useState(true);
     const [option, setOption] = useState();
 

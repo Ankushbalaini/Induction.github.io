@@ -66,7 +66,10 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
             </div>
           </div>
         </div>
+        
       ) : null}
+      
+      <div className="custome-accordion">
       <Accordion className="accordion" defaultActiveKey="0">
         <Accordion.Item className="card">
           <Accordion.Header as="h2" className="accordion-header border-0">
@@ -107,6 +110,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
           </Accordion.Collapse>
         </Accordion.Item>
       </Accordion>
+    </div>
     </div>
   );
 }

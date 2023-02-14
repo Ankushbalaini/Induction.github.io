@@ -97,7 +97,7 @@ exports.edit = (req, res) => {
       }
     })
     .catch((err) => {
-      res.status(500).send({
+      return res.status(500).send({
         status: false,
         message:
           err.message ||
@@ -179,14 +179,27 @@ exports.delete = (req, res) => {
 exports.getAll = async (req, res) => {
   try {
     const user = req.decoded;
+
+    await Department.find({ parentCompany: ObjectId(user.userID) })
+          .then((data)=>{
+            return res.status(200).send({
+              status: true,
+              message: "Successfully Getting Data",
+              data: data,
+              u: user
+            });
+          })
+          .catch((err)=>{
+            return res.status(500).send({
+              status: false,
+              message: err.message
+            });
+          });
+
     
-    const data = await Department.find({ parentCompany: ObjectId(user.userID) });
+    //const data = await Department.find({ parentCompany: ObjectId(user.userID) });
     
-    return res.status(200).send({
-      status: true,
-      message: "Successfully Getting Data",
-      data: data,
-    });
+   
   } catch (err) {
     return res.status(500).send({
       status: false,
@@ -239,7 +252,17 @@ exports.getDepartmentByComp = async (req, res) => {
         data: data,
   
       });
-    }else{
+    }else if(user.role === 'instructor'){
+      const data = await Department.find({ status: 1, parentCompany: ObjectId(user.parentCompany) });
+      return res.status(200).send({
+        status: true,
+        message: "Successfully Getting Data",
+        data: data,
+  
+      });
+
+    }
+    else{
       // super admin
       const data = await Department.find({ status: 1, parentCompany:  ObjectId(req.body.parentCompany) });
       return res.status(200).send({

@@ -3,6 +3,8 @@ const InstructorTable = db.instructor;
 const UserCred = db.user_cred;
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const UserInductionResults = db.user_induction_results;
+
 
 var jwt = require("jsonwebtoken");
 const { instructor } = require("../models");
@@ -156,6 +158,74 @@ exports.listByCompany = (req, res) => {
   }
 };
 
+exports.filterByCompany = (req, res) => {
+  try {
+    var cond = mongoose.Types.ObjectId.isValid(req.query.filterByCompany);
+
+    if (!cond) {
+      throw new Error("Company Id not exist.");
+    }
+
+    UserCred
+      .aggregate([
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $eq: ["$parentCompany", ObjectId(req.query.filterByCompany)],
+                },
+              ],
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: "instructors",
+            localField: "_id",
+            foreignField: "userID",
+            as: "profile",
+          },
+        },
+        {
+          $unwind: "$profile",
+        },
+        {
+          $project: {
+            _id: 1,
+            email: 1,
+            role: 1,
+            status:1,
+            parentCompany: 1,
+            profile: 1,
+            createdAt: 1,
+          },
+        },
+      ])
+      .then((data) => {
+        res.status(200).send({
+          status: true,
+          message: "All Instuctor Listing",
+          data: data,
+        });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          status: false,
+          message: err.message,
+          data: {},
+        });
+      });
+    return;
+  } catch (err) {
+    res.status(500).send({
+      status: false,
+      message: err.message,
+      data: {},
+    });
+  }
+};
+
 
 
 
@@ -197,6 +267,8 @@ exports.add = (req, res) => {
     }
 
     req.body.parentCompany = (user.role === 'company') ? ObjectId(user.userID) : ObjectId(req.body.parentCompany);
+    //console.log(req.body); return;
+    req.body.deptID = ObjectId(req.body.deptID);
     
     var InstructorCred = new UserCred(req.body);
 
@@ -306,7 +378,6 @@ exports.edit = (req, res) => {
           err.message || "Some error occurred while creating the Deparment.",
       });
     });
-
  }catch(err){
   res.status(500).send({
     status: false,
@@ -314,6 +385,51 @@ exports.edit = (req, res) => {
   });
 
  }
-
-
 }
+
+/**
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+exports.inductionsDm = (req, res) => {
+  try {
+  //   const userID = ObjectId(req.decoded.userID);
+  //   const indution = req.decoded; 
+  //  const user = req.decoded;
+
+  //  if(user.role ==='instructor'){
+  //   UserInductionResults
+  //     .find({ inductionID: ObjectId(user.inductionID) })
+  //     // .populate({
+  //     //   path: 'inductionID',
+  //     //   select: 'title'
+  //     // })
+  //     .sort({ createdAt: -1 })
+  //     .then((data) => {
+  //       return res.status(200).send({
+  //         message: "Success here",
+  //         status: true,
+  //         data: data,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       return res.status(500).send({
+  //         message: err.message,
+  //         status: false,
+  //       });
+  //     });
+  //  }
+  return res.send(200).send({
+    message:"Hello",
+    status:true,
+    data:data
+  })
+
+  } catch (err) {
+    return res.status(500).send({
+      message: err.message,
+      status: false,
+    });
+  }
+};

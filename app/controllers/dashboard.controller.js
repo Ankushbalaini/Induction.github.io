@@ -129,7 +129,7 @@ exports.instructor = async (req, res) => {
       let totalUsers, totalInductions;
   
 
-      await UserCred.find({role:'user', parentCompany: ObjectId(req.decoded.userID) })
+      await UserCred.find({role:'user', parentCompany: ObjectId(req.decoded.parentCompany) })
           .then((user)=>{
               totalUsers = user.length;
           })

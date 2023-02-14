@@ -5,6 +5,7 @@ module.exports = mongoose => {
         {
           userID : {type: String, unique: true , required: true},
           parentInstructor: { type: mongoose.Schema.Types.ObjectId, required: true },
+          userID : {type: mongoose.Schema.Types.ObjectId, unique: true , required: true},
           first_name: { type: String, default : null},
           last_name: { type: String, default : null},
           email: { type: String, unique: true , required: true},

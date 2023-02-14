@@ -91,7 +91,7 @@ const ListCompanies = () => {
                         <th></th>
                       </tr>
                     </thead>
-                    <tbody>{companies}</tbody>
+                    {/* <tbody>{companies}</tbody> */}
                   </table>
                 </div>
               </div>

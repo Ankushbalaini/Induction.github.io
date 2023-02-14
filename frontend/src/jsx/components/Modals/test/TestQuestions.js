@@ -1,6 +1,6 @@
 import React from "react";
 import "./quiz.css";
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import bjslogo from "./../../../../../src/images/bg-1.jpg";
 import swal from "sweetalert";
@@ -36,6 +36,7 @@ const TestQuestions = (props) => {
   const [submitTest, setSubmitTest] = useState(false);
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
   const [tabChangeCount , setTabChangeCount] = useState(0);
+  
   const [result, setResult] = useState({
     score: 0,
     correctAnswers: 0,
@@ -43,14 +44,13 @@ const TestQuestions = (props) => {
     remark: "Test Failed due to tab changes"
   });
 
-
-  
-
-
   const buttonsty = {
     float: "right",
     margin: "auto",
   };
+
+  const ref = useRef(null);
+
 
   // setting questions 
   const questions = props.Questions;
@@ -111,8 +111,6 @@ const TestQuestions = (props) => {
 
 
   const handleTabSwitch = (event) => {
-
-
     // console.log("here window events");
     if (document.visibilityState === 'visible') {
       // console.log('has focus');
@@ -134,8 +132,8 @@ const TestQuestions = (props) => {
             }).then(()=>{
               setTabChangeCount(0);
               var data = { ...result};
-              submitTestApi(id, token, data); 
-              window.removeEventListener('visibilitychange', "");
+               submitTestApi(id, token, data); 
+              //window.removeEventListener('visibilitychange', handleTabSwitch);
               setActiveWindowEvent(false);
               navigate.push("/inductions");
             });
@@ -146,44 +144,34 @@ const TestQuestions = (props) => {
         setTabChangeCount(tabChangeCount+1);
       }
     }
-
-    
   };
-
-
-
 
   useEffect(async () => {
 
     window.addEventListener('visibilitychange', handleTabSwitch);
-
-    // if(activeWindowEvent){
-    //   window.addEventListener('visibilitychange', handleTabSwitch);
-    // }else{
-    //   window.removeEventListener('visibilitychange', handleTabSwitch);
-    // }
+    // const element = window;
+    // element.addEventListener('visibilitychange', handleTabSwitch);
+    // console.log('Event listener Started');
 
     if(showResult){
       var data = { ...result};
       data.remark = "Test successfully completed";
       const response = await submitTestApi(id, token, data);  
-      window.removeEventListener('visibilitychange', {});  
+      navigate.push("/inductions");
+      window.removeEventListener('visibilitychange', handleTabSwitch);
+      setTabChangeCount(0);  
       setActiveWindowEvent(false);  
     }
 
-    
+    // return () => {
+    //   element.removeEventListener('visibilitychange', handleTabSwitch);
+    //   console.log('Event listener removed');
+    // };
+
+
 
   }, [showResult, result, activeWindowEvent, tabChangeCount]);
   
-
-
-  useEffect(()=>{
-    return () => {
-      window.removeEventListener('visibilitychange', {});
-      console.log("unmount");
-    }
-
-  },[]);
 
   return (
     <div className="background-modal" style={{

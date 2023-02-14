@@ -13,7 +13,7 @@ import UpdateCompanyProfile from "./UpdateCompanyProfile";
 
 const images = require.context('../../../../../images/company/', true);
 
-const WidgetBlog = ({ changeImage, title, link }) => {
+const WidgetBlog = ({ changeImage, title, link , dataCount }) => {
   return (
     <>
       <div className="col-xl-6 col-lg-6 col-sm-6">
@@ -23,7 +23,7 @@ const WidgetBlog = ({ changeImage, title, link }) => {
               <div className="d-flex">
                 <img src={changeImage} alt="" />
                 <div className="ms-4">
-                  <h4>100</h4>
+                  <h4>{dataCount}</h4>
                   <span>{title}</span>
                 </div>
               </div>
@@ -105,21 +105,6 @@ const CompanyProfile = () => {
     return images(`./${imageName}`);
   }
 
-
-
-  // useEffect(() => {
-  //   const images = require.context('../../../../../images/company/', true);
-  //   import("./../images/icons/" + props.src + ".png").then(setImage)
-  //   // return image ? <img src={image} /> : 'Loading...'
-  // }, [props.src])
-
-
-
-
-
-
-
-
   const pageContent = (loading) ? <h1>Loading</h1> :
           <>
            <div className="row">
@@ -163,8 +148,8 @@ const CompanyProfile = () => {
               </div>
               <div className="col-xl-8 col-xxl-7 col-lg-12 ">
                 <div className="row">
-                  <WidgetBlog changeImage={certificate} title="Instructors" link="instructors"/>
-                  <WidgetBlog changeImage={clock} title="Inductions" link="courses"/>
+                  <WidgetBlog changeImage={certificate} title="Instructors" link="instructors" dataCount={companyData.totalInstructors} />
+                  <WidgetBlog changeImage={clock} title="Inductions" link="inductions" dataCount={companyData.totalInductions} />
                   <div className="widget-heading d-flex justify-content-between align-items-center">
                     <h3 className="m-0">My Instructors</h3>
                     <Link to={"./instructors"} className="btn btn-primary btn-sm">
