@@ -324,13 +324,12 @@ exports.add = (req, res) => {
  * @param {*} req
  * @param {*} res
  * @returns
- * instructor@gmail.com
+ * 
  */
 exports.edit = (req, res) => {
  try{
   
   const id = ObjectId(req.params.id);
-  
 
   // logo validation
   if (!req.files || Object.keys(req.files).length === 0) {

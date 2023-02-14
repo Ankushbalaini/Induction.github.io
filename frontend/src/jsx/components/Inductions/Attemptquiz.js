@@ -152,7 +152,7 @@ const AttemptQuiz = ()=>{
             pageContent="Attempted Quiz"
           />
               <div className="row">
-               <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
+               {/* <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
                  <div className="widget-stat card bg-primary">
                   <div className="card-body  p-4">
                     <div className="media">
@@ -219,7 +219,7 @@ const AttemptQuiz = ()=>{
                      </div>
                    </div>
                  </div>
-                </div>
+                </div> */}
                </div>
 
             {/* <PageTitle activeMenu="Student Table" motherMenu="Quiz" />  */}

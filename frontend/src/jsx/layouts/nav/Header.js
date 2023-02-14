@@ -106,7 +106,10 @@ const Header = ({ onNote }) => {
   var name = path[path.length - 1].split("-");
   var filterName = name.length >= 3 ? name.filter((n, i) => i > 0) : name;
 
-  var finalName = inductionName === 'single-induction-view' ? "View":
+  var finalName = 
+    // inductionName === 'single-induction-view' ? "View":
+    // inductionName === 'attemptquiz' ?"Attempet Quiz":
+	// inductionName === 'viewmcq' ?"View MCQ":
 	filterName.includes("app")
     ? filterName.filter((f) => f !== "app")
     : filterName.includes("ui")
@@ -141,7 +144,10 @@ const Header = ({ onNote }) => {
 					className="dashboard_bar"
 					style={{ textTransform: "capitalize" }}
 				  >
-					{inductionName === "single-induction-view" ? "Induction View" : finalName.join(" ").length === 0
+					{inductionName === "single-induction-view" ? "Induction View" :
+					 inductionName === "viewmcq" ? "View MCQ" :
+                     inductionName === "mcq" ? "Create QUIZ" :
+					 inductionName === "attemptquiz" ? "Attempt Quiz" : finalName.join(" ").length === 0
 					  ? "Dashboard"
 					  : finalName.join(" ") === "dashboard dark"
 					  ? "Dashboard"

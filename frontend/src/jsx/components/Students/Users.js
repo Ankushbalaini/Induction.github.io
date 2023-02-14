@@ -228,7 +228,7 @@ const Users = () => {
           <div className="col-xl-12">
             <div className="card students-list">
               <div className="card-header border-0 flex-wrap pb-0">
-                <h4>Users List</h4>
+                <h3>Users List</h3>
                 <div class="input-group search-area w-auto">
                   <span class="input-group-text">
                     <a href="/react/demo/instructor-students">
