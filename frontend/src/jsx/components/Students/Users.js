@@ -265,6 +265,7 @@ const Users = () => {
                       <select
                         Style="margin:20px; font-size: 16px;"
                         name="company_filter"
+                        className="form-control"
                         onChange={(e) => CompanyFilterHandle(e)}
                       >
                         <option value="All">All</option>
@@ -276,6 +277,7 @@ const Users = () => {
                       <select
                         Style="margin:20px; font-size: 16px;"
                         name="dept_filter"
+                        className="form-control"
                         onChange={(e) => DepartmentFilterHandle(e)}
                       >
                         <option value="All">All</option>
