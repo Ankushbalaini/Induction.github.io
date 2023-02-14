@@ -201,9 +201,9 @@ const Users = () => {
     setSearchField("");
   }
 
+
   useEffect(() => {
-    // fetch users data
-    getUserData(token);
+    
 
     if(role === 'company'){
       setCompanyFilter(loggedInID);
@@ -214,10 +214,12 @@ const Users = () => {
       setCompanyFilter(parentCompany);
     }
 
-
-
+    // fetch users data
+    getUserData(token);
+    
     // setData(document.querySelectorAll("#student_wrapper tbody tr"));
-  }, [isModalOpen, isUserStatusChanged, companyFilter, deptFilter ]);
+  }, [isModalOpen, isUserStatusChanged, companyFilter, deptFilter, loading ]);
+
 
   return (
     <>
@@ -228,7 +230,8 @@ const Users = () => {
           <div className="col-xl-12">
             <div className="card students-list">
               <div className="card-header border-0 flex-wrap pb-0">
-                <h3>Users List</h3>
+                <h4>Users List</h4>
+
                 <div class="input-group search-area w-auto">
                   <span class="input-group-text">
                     <a href="/react/demo/instructor-students">
@@ -269,7 +272,7 @@ const Users = () => {
                       </select>
 
 
-                      <label for="dept_filter">Select Department</label>
+                      <label for="dept_filter">Select Department {companyFilter}</label>
                       <select
                         Style="margin:20px; font-size: 16px;"
                         name="dept_filter"
@@ -390,6 +393,9 @@ const Users = () => {
                         ))}
                       </tbody>
                     </table>
+
+
+
                     <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
                       <div className="dataTables_info">
                         Showing {activePag.current * sort + 1} to{" "}
@@ -462,6 +468,7 @@ const Users = () => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
+
 export default Users;

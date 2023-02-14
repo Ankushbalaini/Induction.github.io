@@ -50,7 +50,7 @@ module.exports = function (app) {
   // get only active dept for dropdown
   router.get('/getAllActive',department.getAllActive);
 
-  router.get('/getDepartmentByComp',department.getDepartmentByComp);
+  router.post('/getDepartmentByComp',department.getDepartmentByComp);
 
   // Delete Department
   router.delete('/delete/:id',department.delete);
