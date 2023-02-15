@@ -62,10 +62,10 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
       }).then((value) => {
         handleCallback();
         //profile
-        navigate.push("/students");
+        navigate.push("/users");
       });
     } else {
-      return swal("Failed", "Error message", "error");
+      return swal("Failed", response.message, "error");
     }
   };
 

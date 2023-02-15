@@ -7,7 +7,7 @@ import UserPopup from "./UserPopup";
 
 const images = require.context("../../../../../images/profile/", true);
 
-function UsersTable({ filteredUsers }) {
+function UsersTable({ filteredUsers , checkUserUpdated }) {
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
@@ -30,6 +30,7 @@ function UsersTable({ filteredUsers }) {
       setProfileData(pdata);
     }
     setIsModalOpen(payload);
+    checkUserUpdated();
   };
 
   // change status
@@ -59,6 +60,7 @@ function UsersTable({ filteredUsers }) {
           swal("Poof! Your record has been updated!", {
             icon: "success",
           }).then(() => {
+            checkUserUpdated();
             navigate.push("/users");
           });
         } else {

@@ -12,6 +12,7 @@ const Users = () => {
   const loggedInID = useSelector((state) => state.auth.auth.id);
   const parentCompany = useSelector((state) => state.auth.auth.parentCompany);
 
+  const [userUpdated,setUserUpdated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState();
 
@@ -55,6 +56,11 @@ const Users = () => {
     settest(i);
   };
 
+  const checkUserUpdated = () => {
+    setUserUpdated(true);
+    // alert( "User is updated and model closed" );
+  }
+
   // call api
   const getUserData = async (token) => {
     var API_URL = "http://localhost:8081/api/students/";
@@ -84,6 +90,7 @@ const Users = () => {
       setUsers(response.data);
       setFilteredUsers(response.data);
       setLoading(false);
+      setUserUpdated(false);
       setData(document.querySelectorAll("#student_wrapper tbody tr"));
     } else {
       return swal("Failed", response.message, "error");
@@ -138,7 +145,7 @@ const Users = () => {
     getUserData(token);
 
     // setData(document.querySelectorAll("#student_wrapper tbody tr"));
-  }, [ companyFilter, deptFilter, loading]);
+  }, [ companyFilter, deptFilter, loading, userUpdated ]);
 
   return (
     <>
@@ -163,7 +170,7 @@ const Users = () => {
                     className="dataTables_wrapper no-footer"
                   >
                     {/* User listing table */}
-                    <UsersTable filteredUsers={filteredUsers} />
+                    <UsersTable filteredUsers={filteredUsers} checkUserUpdated={checkUserUpdated}/>
 
                     <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
                       <div className="dataTables_info">
