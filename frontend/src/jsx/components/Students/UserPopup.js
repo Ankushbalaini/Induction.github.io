@@ -14,6 +14,8 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
   const role = useSelector((state) => state.auth.auth.role);
 
   const intialValue = {
+    parentCompany: profileData.parentCompany,
+    deptID: profileData.deptID,
     userID: profileData.profile._id,
     email: profileData.email,
     first_name: profileData.profile.first_name,
@@ -31,6 +33,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
 
     // validate data
     if (
+      state.parentCompany === "Select" || 
       state.first_name === "" ||
       state.last_name === "" ||
       state.aboutMe === "" ||
@@ -40,18 +43,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
     }
 
     let formData = new FormData(e.target);
-
-    // formData.append("mainID", mainID);
-    // formData.append("deptID", deptID);
-    // formData.append("parentCompany", parentCompany);
-    // formData.append("first_name", firstName);
-    // formData.append("last_name", lastName);
-    // formData.append("email", email);
-    // formData.append("aboutMe", aboutMe);
-    // formData.append("image", image.data);
-    // formData.append("profilePhoto", preview);
-    // formData.append("address", address);
-
+    
     const response = await fetch(
       "http://localhost:8081/api/users/edit/" + state.userID,
       {

@@ -16,8 +16,8 @@ const ObjectId = mongoose.Types.ObjectId;
 exports.create = (req, res) => {
   try {
     const user = req.decoded;
-    if(user.role === 'company'){
-      req.body.parentCompany =  user.userID;
+    if (user.role === "company") {
+      req.body.parentCompany = user.userID;
     }
     const { name, status, parentCompany } = req.body;
 
@@ -64,7 +64,6 @@ exports.create = (req, res) => {
   }
 };
 
-
 //Edit the department
 /**
  * @description: Finding department by their ID and then updating the credentials
@@ -81,11 +80,7 @@ exports.edit = (req, res) => {
   const { name, status } = req.body;
   const id = req.params.id;
 
-  Department.updateOne(
-    { _id: id },
-    { $set: req.body },
-    { multi: true }
-  )
+  Department.updateOne({ _id: id }, { $set: req.body }, { multi: true })
     .then((department) => {
       return res.status(200).send({
         status: true,
@@ -99,35 +94,6 @@ exports.edit = (req, res) => {
         message: err.message,
       });
     });
-
-
-    /*
-
-  Department.findByIdAndUpdate(id, req.body, { useFindAndModify: true })
-    .then(function (department) {
-      if (!department) {
-        return res.status(500).send({
-          status: false,
-          message: "Deparment not found.",
-          
-        });
-      } else {
-        return res.status(200).send({
-          message: "Deparment has been updated successfully",
-          data: department,
-          status: true,
-        });
-      }
-    })
-    .catch((err) => {
-      return res.status(500).send({
-        status: false,
-        message:
-          err.message ||
-          "Some error occurred while creating the New Deparment.",
-      });
-    });
-    */
 };
 
 // get the Department
@@ -205,25 +171,22 @@ exports.getAll = async (req, res) => {
     const user = req.decoded;
 
     await Department.find({ parentCompany: ObjectId(user.userID) })
-          .then((data)=>{
-            return res.status(200).send({
-              status: true,
-              message: "Successfully Getting Data",
-              data: data,
-              u: user
-            });
-          })
-          .catch((err)=>{
-            return res.status(500).send({
-              status: false,
-              message: err.message
-            });
-          });
+      .then((data) => {
+        return res.status(200).send({
+          status: true,
+          message: "Successfully Getting Data",
+          data: data,
+          u: user,
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          status: false,
+          message: err.message,
+        });
+      });
 
-    
     //const data = await Department.find({ parentCompany: ObjectId(user.userID) });
-    
-   
   } catch (err) {
     return res.status(500).send({
       status: false,
@@ -232,20 +195,20 @@ exports.getAll = async (req, res) => {
   }
 };
 
-
-
-
 exports.getAllActive = async (req, res) => {
   try {
     const user = req.decoded;
-    if(user.role === 'company'){
-      const data = await Department.find({ status: 1, parentCompany: ObjectId(user.userID) });
+    if (user.role === "company") {
+      const data = await Department.find({
+        status: 1,
+        parentCompany: ObjectId(user.userID),
+      });
       return res.status(200).send({
         status: true,
         message: "Successfully Getting Data",
         data: data,
       });
-    }else{
+    } else {
       const data = await Department.find({ status: 1 });
       return res.status(200).send({
         status: true,
@@ -253,8 +216,6 @@ exports.getAllActive = async (req, res) => {
         data: data,
       });
     }
-    
-    
   } catch (err) {
     return res.status(500).send({
       status: false,
@@ -263,49 +224,55 @@ exports.getAllActive = async (req, res) => {
   }
 };
 
-
-
 exports.getDepartmentByComp = async (req, res) => {
   try {
     const user = req.decoded;
-    if(user.role === 'company'){
-      const data = await Department.find({ status: 1, parentCompany: ObjectId(user.userID) });
-      return res.status(200).send({
-        status: true,
-        message: "Successfully Getting Data",
-        data: data,
-  
-      });
-    }else if(user.role === 'instructor'){
-      const data = await Department.find({ status: 1, parentCompany: ObjectId(user.parentCompany) });
-      return res.status(200).send({
-        status: true,
-        message: "Successfully Getting Data",
-        data: data,
-  
-      });
 
+    if (user.role === "company") {
+      const data = await Department.find({
+        status: 1,
+        parentCompany: ObjectId(user.userID),
+      });
+      return res.status(200).send({
+        status: true,
+        message: "Successfully Getting Data",
+        data: data,
+      });
+    } else if (user.role === "instructor") {
+      const data = await Department.find({
+        status: 1,
+        parentCompany: ObjectId(user.parentCompany),
+      });
+      return res.status(200).send({
+        status: true,
+        message: "Successfully Getting Data",
+        data: data,
+      });
+    } else {
+      if (req.body.parentCompany === "All") {
+        const data = await Department.find({ status: 1 });
+        return res.status(200).send({
+          status: true,
+          message: "Successfully Getting Data",
+          data: data,
+        });
+      } else {
+        // super admin
+        const data = await Department.find({
+          status: 1,
+          parentCompany: ObjectId(req.body.parentCompany),
+        });
+        return res.status(200).send({
+          status: true,
+          message: "Successfully Getting Data",
+          data: data,
+        });
+      }
     }
-    else{
-      // super admin
-      const data = await Department.find({ status: 1, parentCompany:  ObjectId(req.body.parentCompany) });
-      return res.status(200).send({
-        status: true,
-        message: "Successfully Getting Data",
-        data: data,
-  
-      });
-
-    }
-
-    
-
-
-    
   } catch (err) {
     return res.status(500).send({
       status: false,
       message: err.message || "Some error occurred.",
     });
   }
-}
+};
