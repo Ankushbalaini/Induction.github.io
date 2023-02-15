@@ -166,6 +166,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
             {props.slides.map((slide,i) => {
               return (
                   <div
+                    key={i}
                     className="acc-courses"
                     onClick={() => handleClick(slide)}
                   >

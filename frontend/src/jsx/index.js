@@ -41,6 +41,11 @@ import CreateInductionNew from "./components/Inductions/CreateInductionNew";
 import SingleInductionView from "./components/Inductions/SingleInductionView";
 import StarTest from './components/Inductions/test/StartTest';
 
+// v2 versions
+import Add from './components/Induction/Add';
+import AddSlide from "./components/Slides/Add";
+//add-induction
+
 //Instructors
 //import Instructors from "./components/Dashboard/Instructors";
 import Instructors from "./components/Instructor/ListInstructor";
@@ -99,6 +104,9 @@ const Markup = () => {
     { url: "induction/:id", component: InductionDetail },
     //{ url: "create-induction", component: CreateInduction },
     { url: "create-induction", component: CreateInductionNew },
+    { url: "add-induction", component: Add },
+    { url: "add-slide", component: AddSlide },
+
     { url: "single-induction-view/:id", component: SingleInductionView },
     { url: "mcq/:inductionID", component: Mcq },
     { url : "viewmcq/:id", component :ViewMcq},

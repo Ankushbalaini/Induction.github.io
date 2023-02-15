@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "swiper/css";
 
@@ -65,27 +65,7 @@ function CoursesMain() {
       setCourses(response.data);
       //return;
       setloading(false);
-      setTotalRecords(response.pagination.totalRecords);
-      setLimit(response.pagination.limit);
-      
-
-      setPrevLink(
-        <Link to={"#"} onClick={(e) => setPage(page - 1)} className="">
-          <i className="fas fa-chevron-left"></i>
-        </Link>
-      );
-
-      setFirstLink(
-        <Link
-          to={"#"}
-          onClick={(e) => setPage(1)}
-          className={page === 1 ? "active" : ""}
-        >
-          <i className="fas fa-chevron-left"></i>
-        </Link>
-      );
-
-      pageNate();
+      setData(document.querySelectorAll("#student_wrapper .cardDiv"));
     }
   }
 
@@ -97,23 +77,9 @@ function CoursesMain() {
       setTotalRecords(response.pagination.totalRecords);
       setLimit(response.pagination.limit);
 
-      setPrevLink(
-        <Link to={"#"} onClick={(e) => setPage(page - 1)} className="">
-          <i className="fas fa-chevron-left"></i>
-        </Link>
-      );
+      setData(document.querySelectorAll("#student_wrapper .cardDiv"));
 
-      setFirstLink(
-        <Link
-          to={"#"}
-          onClick={(e) => setPage(1)}
-          className={page === 1 ? "active" : ""}
-        >
-          <i className="fas fa-chevron-left"></i>
-        </Link>
-      );
-
-      pageNate();
+      
     }
   };
 
@@ -127,36 +93,44 @@ function CoursesMain() {
     
   }, [page, loading, totalRecords]);
 
-  const pageNate = () => {
-    if (totalRecords > limit) {
-      // enable pagination
-      const totalPages = totalRecords / limit;
+  
 
-      setShowing(
-        <>
-          <h4 className="sm-mb-0 mb-3">
-            Showing inside{" "}
-            <span>
-              {page === 1 ? 1 : (page - 1) * limit} -{" "}
-              {page === 1 ? limit : (page - 1) * limit + limit}{" "}
-            </span>
-            from <span>{totalRecords} </span>
-          </h4>
-        </>
-      );
-    } else {
-      // only show dummy html
-      setShowing(
-        <h4 className="sm-mb-0 mb-3">
-          Showing Else{" "}
-          <span>
-            {page === 0 ? 1 : page * limit} - {page * limit + limit}{" "}
-          </span>
-          from <span>{totalRecords} </span>
-        </h4>
-      );
+
+
+
+  const [data, setData] = useState(
+    document.querySelectorAll("#student_wrapper .cardDiv")
+  );
+
+  const [test, settest] = useState(0);
+  const sort = 6;
+  const activePag = useRef(0);
+
+  // Active data
+  const chageData = (frist, sec) => {
+    for (var i = 0; i < data.length; ++i) {
+      if (i >= frist && i < sec) {
+        data[i].classList.remove("d-none");
+      } else {
+        data[i].classList.add("d-none");
+      }
     }
   };
+
+  // Active pagginarion
+  activePag.current === 0 && chageData(0, sort);
+  // paggination
+  let paggination = Array(Math.ceil(data.length / sort))
+    .fill()
+    .map((_, i) => i + 1);
+
+  // Active paggination & chage data
+  const onClick = (i) => {
+    activePag.current = i;
+    chageData(activePag.current * sort, (activePag.current + 1) * sort);
+    settest(i);
+  };
+
 
   const content = loading ? (
     <h1>Loading</h1>
@@ -175,9 +149,9 @@ function CoursesMain() {
         </Link> */}
       </div>
       
-      <div className="row">
+      <div className="row dataTables_wrapper no-footer" id="student_wrapper" >
         {courses.map((data, index) => (
-          <div className="col-xl-4 col-md-6" key={index}>
+          <div className="col-xl-4 col-md-6 cardDiv" key={index}>
             <div className="card all-crs-wid">
               <div className="card-body">
                 <div className="courses-bx">
@@ -257,65 +231,65 @@ function CoursesMain() {
             </div>
           </div>
         ))}
-      </div>
-      <div className="pagination-down">
-        <div className="d-flex align-items-center justify-content-between flex-wrap">
-          {/* <h4 className="sm-mb-0 mb-3">
-            Showing <span>{page * limit}- </span>from <span>{totalRecords} </span>data
-          </h4> */}
-          {showing}
-          <ul>
-            <li>
-              <Link
-                to={"#"}
-                onClick={(e) => setPage(page - 1)}
-                className={page < 1 ? "active" : ""}
-              >
-                <i className="fas fa-chevron-left"></i>
-              </Link>
-            </li>
+      
 
-            <li>
-              <Link
-                to={"#"}
-                onClick={(e) => setPage(1)}
-                className={page == 1 ? "active" : ""}
-              >
-                1
-              </Link>
-              
-            </li>
-            <li>
-              <Link
-                to={"#"}
-                onClick={(e) => setPage(2)}
-                className={page == 2 ? "active" : ""}
-              >
-                2
-              </Link>
-            </li>
-            {/* <li>
-              <Link
-                to={"#"}
-                onClick={(e) => setPage(3)}
-                className={page == 3 ? "active" : ""}
-              >
-                3
-              </Link>
-            </li> */}
+      <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
+                      <div className="dataTables_info">
+                        Showing {activePag.current * sort + 1} to{" "}
+                        {data.length > (activePag.current + 1) * sort
+                          ? (activePag.current + 1) * sort
+                          : data.length}{" "}
+                        of {data.length} entries
+                      </div>
+                      <div
+                        className="dataTables_paginate paging_simple_numbers mb-0"
+                        id="application-tbl1_paginate"
+                      >
+                        <Link
+                          className="paginate_button previous "
+                          to="/inductions"
+                          onClick={() =>
+                            activePag.current > 0 &&
+                            onClick(activePag.current - 1)
+                          }
+                        >
+                          <i
+                            className="fa fa-angle-double-left"
+                            aria-hidden="true"
+                          ></i>
+                        </Link>
+                        <span>
+                          {paggination.map((number, i) => (
+                            <Link
+                              key={i}
+                              to="/inductions"
+                              className={`paginate_button  ${
+                                activePag.current === i ? "current" : ""
+                              } `}
+                              onClick={() => onClick(i)}
+                            >
+                              {number}
+                            </Link>
+                          ))}
+                        </span>
 
-            <li>
-              <Link
-                to={"#"}
-                onClick={(e) => setPage(page + 1)}
-                className={page > 2 ? "active" : ""}
-              >
-                <i className="fas fa-chevron-right"></i>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
+                        <Link
+                          className="paginate_button next"
+                          to="/inductions"
+                          onClick={() =>
+                            activePag.current + 1 < paggination.length &&
+                            onClick(activePag.current + 1)
+                          }
+                        >
+                          <i
+                            className="fa fa-angle-double-right"
+                            aria-hidden="true"
+                          ></i>
+                        </Link>
+                      </div>
+                    </div>
+
+                    </div>
     </>
   );
 

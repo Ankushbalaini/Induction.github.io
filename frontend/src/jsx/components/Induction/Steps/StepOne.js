@@ -6,62 +6,57 @@ const StepOne = () => {
          <div className="row">
             <div className="col-lg-6 mb-2">
                <div className="form-group mb-3">
-                  <label className="text-label">First Name*</label>
+                  <label className="text-label">Title*</label>
                   <input
                      type="text"
-                     name="firstName"
+                     name="title"
                      className="form-control"
-                     placeholder="Parsley"
                      required
                   />
                </div>
             </div>
             <div className="col-lg-6 mb-2">
                <div className="form-group mb-3">
-                  <label className="text-label">Last Name*</label>
+                  <label className="text-label">Sub Title*</label>
                   <input
                      type="text"
-                     name="lastName"
+                     name="subTitle"
                      className="form-control"
-                     placeholder="Montana"
                      required
                   />
                </div>
             </div>
             <div className="col-lg-6 mb-2">
                <div className="form-group mb-3">
-                  <label className="text-label">Email Address*</label>
+                  <label className="text-label">Thumbnail*</label>
                   <input
-                     type="email"
+                     type="file"
                      className="form-control"
-                     id="inputGroupPrepend2"
-                     aria-describedby="inputGroupPrepend2"
-                     placeholder="example@example.com.com"
                      required
                   />
                </div>
             </div>
             <div className="col-lg-6 mb-2">
                <div className="form-group mb-3">
-                  <label className="text-label">Phone Number*</label>
+                  <label className="text-label">Passing Percentage*</label>
                   <input
-                     type="text"
-                     name="phoneNumber"
+                     type="number"
+                     name="passingPercentage"
                      className="form-control"
-                     placeholder="(+1)408-657-9007"
+                     placeholder="33%"
                      required
                   />
                </div>
             </div>
             <div className="col-lg-12 mb-3">
                <div className="form-group mb-3">
-                  <label className="text-label">Where are you from*</label>
-                  <input
-                     type="text"
-                     name="place"
+                  <label className="text-label">About Induction*</label>
+                  <textarea
+                     name="aboutInduction"
                      className="form-control"
                      required
-                  />
+                  >
+                  </textarea>
                </div>
             </div>
          </div>

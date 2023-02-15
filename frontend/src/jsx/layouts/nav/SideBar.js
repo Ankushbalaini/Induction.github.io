@@ -86,6 +86,8 @@ const SideBar = () => {
       "single-induction-view",
       //"courses",
       "start-test",
+      "add-induction",
+      "add-slide"
     ],
     students = ["students", "add-student"];
 
@@ -324,6 +326,33 @@ const SideBar = () => {
                       Create Induction{" "}
                     </Link>
                   </li>
+
+                  <li>
+                    <Link
+                      className={`${
+                        path === "add-induction" ? "mm-active" : ""
+                      }`}
+                      to="/add-induction"
+                    >
+                      Add Induction{" "}
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link
+                      className={`${
+                        path === "add-induction" ? "mm-active" : ""
+                      }`}
+                      to="/add-slide"
+                    >
+                      Add Slide{" "}
+                    </Link>
+                  </li>
+
+
+                  
+
+
                 </>
               ) : null}
 
