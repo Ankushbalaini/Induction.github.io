@@ -79,13 +79,11 @@ const AddCompany = () => {
     data.append('logo', image.data);
     data.append('address', address);
     data.append('aboutCompany', aboutCompany);
-
     // let formData = new FormData();
     const response = await fetch("http://localhost:8081/api/company/add", {
       method: "POST",
       body: data,
     }).then((data) => data.json());
-
     if ("status" in response && response.status == true) {
       return swal("Success", response.message, "success", {
         buttons: false,

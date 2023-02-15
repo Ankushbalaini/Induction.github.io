@@ -17,10 +17,16 @@ import BJSLogo from "../../images/BJSLogo.png";
 
 function Login(props) {
   const [email, setEmail] = useState("super@admin.com");
+  
+  
   let errorsObj = { email: "", password: "" };
   const [errors, setErrors] = useState(errorsObj);
+
+
   const [password, setPassword] = useState("admin");
   const [userType, setUserType] = useState("user");
+
+  // const [highlight, setHighlight] = useState("");
   const dispatch = useDispatch();
 
   
@@ -49,6 +55,15 @@ function Login(props) {
    const right = {
     float: 'right'
   };
+
+  function handleKeyPress(e) {
+    var key = e.key;
+   if (key == key) {
+        setErrors((errorsObj == false))
+    }
+}
+
+
 
   return (
     <div
@@ -81,7 +96,7 @@ function Login(props) {
                         </Row>
                         <div className="login-social"></div>
                         {props.errorMessage && (
-                          <div className="bg-red-300 text-red-900 border border-red-900 p-1 my-2">
+                          <div className="bg-red-600 text-red-900 border border-red-900 p-1 my-2">
                             {props.errorMessage}
                           </div>
                         )}
@@ -122,11 +137,12 @@ function Login(props) {
                               className="form-control"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
-                              required
+                              onKeyPress={(e) => handleKeyPress(e)}
+                              // style={{border: highlight}}
                             />
                             {errors.email && (
-                              <div className="text-danger fs-12">
-                                {errors.email}
+                              <div Style="color:red;font-weight:400">
+                                 {errors.email}
                               </div>
                             )}
                           </div>
@@ -139,10 +155,11 @@ function Login(props) {
                               className="form-control"
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
-                              required
+                              onKeyPress={(e) => handleKeyPress(e)}
+                             
                             />
                             {errors.password && (
-                              <div className="text-danger fs-12">
+                              <div Style="color:red;font-weight:400">
                                 {errors.password}
                               </div>
                             )}

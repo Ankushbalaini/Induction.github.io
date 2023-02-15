@@ -53,7 +53,6 @@ import InstructorStudents from "./components/Instructor/InstructorStudents";
 
 // Students
 import AllStudents from "./components/Students/AllStudents";
-import Users from "./components/Students/Users";
 
 // App
 import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
@@ -103,6 +102,7 @@ const Markup = () => {
     { url: "mcq/:inductionID", component: Mcq },
     { url : "viewmcq/:id", component :ViewMcq},
     { url : "attemptquiz/:id",component:AttemptQuiz},
+    
   
     { url: "start-test/:id", component: StarTest },
 
@@ -115,7 +115,6 @@ const Markup = () => {
     { url: "instructor-students", component: InstructorStudents },
 
     { url: "students", component: AllStudents },
-    { url: "users", component: Users },
     { url : "attempted-inductions", component : AttemptedInductions},
 
     // Apps

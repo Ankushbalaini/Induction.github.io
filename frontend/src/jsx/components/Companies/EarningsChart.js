@@ -4,10 +4,81 @@ import ReactApexChart from "react-apexcharts";
 class EarningsChart extends React.Component {
 	constructor(props) {
 		super(props);
+
+		const data = [
+			{
+				id:1 ,score: 25, days: "01-02-2023"
+			},
+			{
+				id:2, score: 5, days: "01-02-2023"
+			},
+			{
+				id:3 ,score: 15, days: "01-02-2023"
+			},
+			{
+				id:4 ,score: 15, days: "01-02-2023"
+			},
+			{
+				id:5, score: 10, days: "01-02-2023"
+			},
+			{
+				id:6 ,score: 35, days: "02-02-2023"
+			},
+			{
+				id:7 ,score: 35, days: "02-02-2023"
+			},
+			{
+				id:8, score: 10, days: "02-02-2023"
+			},
+			{
+				id:9 ,score: 15, days: "03-02-2023"
+			},
+			{
+				id:10 ,score: 25, days: "03-02-2023"
+			},
+			{
+				id:11 ,score: 35, days: "03-02-2023"
+			},
+			{
+				id:12 ,score: 10, days: "04-02-2023"
+			},
+			{
+				id:13 ,score: 20, days: "04-02-2023"
+			}
+	]
+
+	const arr = [{score: 25, days: "01-02-2023"},{score: 10, days: "02-02-2023"},{score: 35, days: "03-02-2023"},{score: 25, days: "04-02-2023"},{score: 15, days: "05-02-2023"},{score: 5, days: "06-02-2023"},{score: 10, days: "07-02-2023"}];
+
+	//filter function
+	var filterArray = data.filter(function (num)
+	{
+		 return num.days == '01-02-2023' ;
+	}
+	  );
+	 console.log(filterArray);
+
+
+  // get scores of all objects
+     data.forEach(
+	  nums=>{
+		  console.log("Score "+nums.score , "date "+nums.days)
+	  }
+     )
+
+       //average function
+        const arr1 = [10, 22, 33, 45, 57];
+        var sum = 0;
+        for(var number of arr1){
+	    sum += number
+       }
+
+        let average = sum/arr1.length
+         console.log("average "+average)
+		// const arr = [40, 55, 15, 50, 70, 50, 30]
 		this.state = {
 			series: [{
 				name: 'Average Score',
-				data: [40, 55, 15, 50, 70, 20, 55]
+				data: arr.map(i=>i.score)
 			}],
 			
 			options:{
@@ -59,7 +130,7 @@ class EarningsChart extends React.Component {
 						show: false,
 					},
 					
-					categories: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+					categories: arr.map(i=>i.days),
 				},
 				yaxis: {
 					show: true,

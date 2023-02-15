@@ -7,7 +7,11 @@ import FilterComponent from "./FilterComponent";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
+
 import { useSelector } from "react-redux";
+import { tableStyles } from "./Instructor/tableStyles";
+
+
 
 const images = require.context("../../../../../images/profile/", true);
 
@@ -15,58 +19,52 @@ const loadImage = (imageName) => {
   return images(`./${imageName}`);
 }	
 
-const profileImageCss = {
-  height: "3.5rem",
-  width: "3.5rem",
-  borderRadius: "0.625rem",
-  margin: "5px 5px 5px 0"
-};
+// const profileImageCss = {
+//   height: "3.5rem",
+//   width: "3.5rem",
+//   borderRadius: "0.625rem",
+//   margin: "5px 5px 5px 0"
+// };
 
 
 
 const Table = props => {
-  
-  
+
   const columns = [
     {
       name: "Name",
-      selector: "name",
-      sortable: false,
+      selector: "profile.name",
+      sortable: true,
       grow: 1,
       className: 'col-3',
-      cell: row =>
-      <>
-        <div className="d-flex align-items-center">
-          <img style={profileImageCss} src={loadImage(row.profile.profilePhoto)} alt="" />
-          <h4 className="mb-0 fs-16 font-w500">
-            {row.profile?.name}
-          </h4>
-        </div>
-      </>
-    },
+      reorder: true,
+},
     {
       name: "Email",
       selector: "email",
       sortable: true,
-      hide: "sm"
+      hide: "sm",
+      reorder: true,
     },
     {
       name: "Join Date",
       selector: "createdAt",
       sortable: true,
       hide: "sm",
+      reorder: true,
       cell: row =>
-      <>
+      <div>
       {new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}
-      </>
+      </div>
     },
     {
       name: "Status",
       selector: "status",
       sortable: true,
       hide: "sm",
+      reorder: true,
       cell: row =>
-      <>
+      <div>
         <Link
           className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}
           to="/instructors"
@@ -75,22 +73,20 @@ const Table = props => {
         >
           { (row.status) ? 'Active' : 'Inactive'}
         </Link>
-      </>
+      </div>
     },
     {
       name: "Actions",
       button: true,
       cell: row =>
-          <>
+          <div>
             <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick}/>
-          </>
+          </div>
     }
   ];
 
   const [filterText, setFilterText] = React.useState("");
-  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
-    false
-  );
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(true);
 
   const token = useSelector((state) => state.auth.auth.token);
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
@@ -162,17 +158,20 @@ const changeUserStatus = (userID, status) =>{
   }, [filterText, resetPaginationToggle]);
 
   return (
+    <div className="App">
     <DataTable
+     customStyles={tableStyles}
       title=""
       columns={columns}
       data={filteredItems}
       defaultSortField="name"
-      striped
-      pagination
       subHeader
       subHeaderComponent={subHeaderComponent}
+      pagination
     />
+    </div>
   );
+  
 };
 
 export default Table;
