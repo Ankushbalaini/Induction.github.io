@@ -340,7 +340,7 @@ const Users = () => {
                           <th>Email</th>
                           <th>Join Date</th>
                           <th>Status</th>
-                          <th Style="text-align: end">Action</th>
+                          <th Style="text-align: end" >Action</th>
                         </tr>
                       </thead>
                       <tbody>

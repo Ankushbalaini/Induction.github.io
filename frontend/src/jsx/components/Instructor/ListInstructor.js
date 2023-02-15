@@ -163,39 +163,7 @@ const Instructors = () => {
 
       if ("status" in response && response.status == true) {
         setInstructosList(response.data);
-        // const rows = response.data.map((row, index) => (
-        //   <tr key={index}>
-        //     <td>
-        //       <div className="d-flex align-items-center">
-        //         <img src={loadImage(row.profile.profilePhoto)} alt="" />
-        //         <h4 className="mb-0 fs-16 font-w500">
-        //           {row.profile?.name}
-        //         </h4>
-        //       </div>
-        //     </td>
-        //     <td>{row.email}</td>
-        //     <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
-        //     <td>
-        //       {/* <span className={`badge  light badge-success`}>{`Active`}</span> */}
-        //       <Link
-        //         className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}
-        //         to="/instructors"
-        //         onClick={() => changeUserStatus(row._id, row.status) }
-                
-        //       >
-        //         { (row.status) ? 'Active' : 'Inactive'}
-        //       </Link>
-              
-        //     </td>
-        //     <td>
-        //     <ActionDropDown trackOnclick={trackOnclick} userData={row} trackDeleteClick={trackDeleteClick}/>
-        //       {/* <DropDownBlog /> */}
-        //     </td>
-        //   </tr>
-        // ));
-        // setStudents(rows);
-        // setIsUserStatusChanged(false);
-        // setData(document.querySelectorAll("#student_wrapper tbody tr"));
+   
       } else {
         return swal("Failed", "Something went wrong, please try again later.", "error");
       }

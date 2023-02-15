@@ -147,7 +147,8 @@ const Header = ({ onNote }) => {
 					{inductionName === "single-induction-view" ? "Induction View" :
 					 inductionName === "viewmcq" ? "View MCQ" :
                      inductionName === "mcq" ? "Create QUIZ" :
-					 inductionName === "attemptquiz" ? "Attempt Quiz" : finalName.join(" ").length === 0
+					 inductionName === "attemptquiz" ? "Attempt Quiz" :
+					  finalName.join(" ").length === 0
 					  ? "Dashboard"
 					  : finalName.join(" ") === "dashboard dark"
 					  ? "Dashboard"

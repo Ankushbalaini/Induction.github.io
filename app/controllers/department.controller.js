@@ -79,25 +79,24 @@ exports.edit = (req, res) => {
     });
   }
   const id = (req.params.id);
-  Department.updateOne(
-    { _id: id },
-    { $set: req.body },
-    { multi: true }
+  Department.updateOne( 
+    { _id: id }, 
+    { $set: req.body }, 
+    { multi: true } 
   )
-    .then((department) => {
-      return res.status(200).send({
-        status: true,
-        message: "Department has been updated!",
-        data: department,
-      });
-    })
-    .catch((err) => {
-      return res.status(500).send({
-        status: false,
-        message: err.message,
-      });
-    });
-
+    .then((department) => { 
+      return res.status(200).send({ 
+        status: true, 
+        message: "Department has been updated!", 
+        data: department, 
+      }); 
+    }) 
+    .catch((err) => { 
+      return res.status(500).send({ 
+        status: false,  
+        message: err.message, 
+      }); 
+    }); 
 };
 
 // get the Department
@@ -130,7 +129,6 @@ exports.getDepartment = async (req, res) => {
 // Delete the department
 /**
  * @description: Finding Deparment by their ID and then deleting.
- *
  * @param req
  * @param res
  */
