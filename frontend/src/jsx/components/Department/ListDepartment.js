@@ -30,7 +30,7 @@ const ListDepartments = () => {
   const [editID, setEditID] = useState();
   const token = useSelector((state) => state.auth.auth.token);
  console.log(deptData,"deptdata......")
-  const actionHandler = (department) => {
+ const actionHandler = (department) => {
     console.log("here");
     setIsModalOpen(true);
     setModalData(department);
@@ -117,11 +117,11 @@ const onSubmitHandle = async (e) => {
             <div className="card-header border-0 flex-wrap pb-0">
               <h4>Department List</h4>
             </div>
-            <div className="card-body py-0">
+            <div className="card-body">
               <div className="table-responsive">
                 <div
                   id="student_wrapper"
-                  className="dataTables_wrapper no-footer"
+                  className="dataTables_wrapper"
                 >
                   <table
                     className="table display mb-4 dataTablesCard order-table card-table text-black application"
@@ -130,13 +130,14 @@ const onSubmitHandle = async (e) => {
   
                     <tbody>{departments}</tbody>
                   </table>
-                  <Table
+                 
+                </div>
+              </div>
+              <Table
                     data={deptData}
                     actionHandler={actionHandler}
                     deleteClick={deleteClick}
                   />
-                </div>
-              </div>
             </div>
           </div>
         </div>
