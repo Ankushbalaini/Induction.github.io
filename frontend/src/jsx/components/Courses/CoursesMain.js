@@ -214,18 +214,6 @@ function CoursesMain() {
            </select>
          </div>     
        </div>
-       {/* <div className="row">
-        <div className="col-sm-4 pb-4"
-        >
-          <Link
-            className="btn btn-primary float-right"
-            to="/viewallcourses"
-            activeClassName="active"
-          >
-            View All
-          </Link>
-        </div>
-       </div> */}
      </div>
 
       <div className="row" id="student_wrapper">
@@ -297,7 +285,7 @@ function CoursesMain() {
         ))}
       </div>
      
-      <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
+      {/* <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
            <div className="dataTables_info">
              Showing {activePag.current * sort + 1} to{" "}
              {data.length > (activePag.current + 1) * sort
@@ -350,7 +338,7 @@ function CoursesMain() {
                ></i>
              </Link>
            </div>
-         </div>
+         </div> */}
     </>
   );
 // const contents = React.lazy(()=>{content})

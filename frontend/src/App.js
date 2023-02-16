@@ -15,6 +15,7 @@ import "./css/style.css";
 const SignUp = lazy(() => import('./jsx/pages/Registration'));
 const ForgotPassword = lazy(() => import('./jsx/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('./jsx/pages/ResetPassword'));
+const CoursesMain = lazy(()=>import('./jsx/components/Courses/CoursesMain'))
 
 const Login = lazy(() => {
     return new Promise(resolve => {
@@ -35,6 +36,7 @@ function App (props) {
             <Route path='/page-register' component={SignUp} />
             <Route path='/forgot-password' component={ForgotPassword} />
             <Route path='/reset-password/:token' component={ResetPassword} />
+            
         </Switch>
     );
     if (props.isAuthenticated) {

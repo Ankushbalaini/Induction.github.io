@@ -68,7 +68,7 @@ const Table = props => {
         <Link
           className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}
           to="/instructors"
-          onClick={() => changeUserStatus(row._id, row.status) }
+          onClick={() => props.changeUserStatus(row._id, row.status) }
           
         >
           { (row.status) ? 'Active' : 'Inactive'}
@@ -92,7 +92,7 @@ const Table = props => {
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
   
   // change status
-const changeUserStatus = (userID, status) =>{
+const changeUserStatusOG = (userID, status) =>{
 
   
   // user id

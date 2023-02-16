@@ -366,14 +366,14 @@ const SideBar = () => {
                   </Link>
                 </li>
 
-                <li>
+                {/* <li>
                   <Link
                     className={`${path === "users" ? "mm-active" : ""}`}
                     to="/users"
                   >
                     All Users{" "}
                   </Link>
-                </li>
+                </li> */}
 
               </ul>
             </li>

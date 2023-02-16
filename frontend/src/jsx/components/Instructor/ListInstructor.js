@@ -68,9 +68,15 @@ const Instructors = () => {
   const sort = 5;
   const activePag = useRef(0);
   const [test, settest] = useState(0);
-  const [students, setStudents] = useState(0);
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
-  const [instructorData, setInstructorData] = useState({profile: {name:'', email:'',aboutMe:'',address:'',logo:'',_id:''} });
+  const [instructorData, setInstructorData] = useState({
+  profile: {name:'',
+  email:'',
+  aboutMe:'',
+  address:'',
+  logo:'',
+  _id:''}, 
+  });
   const [instructorsList, setInstructosList] = useState([]);
 
 
@@ -101,7 +107,7 @@ const Instructors = () => {
           swal("Poof! Your record has been updated!", {
             icon: "success",
           }).then(()=>{
-            setIsUserStatusChanged(true);
+            setIsUserStatusChanged(!isUserStatusChanged);
           });
           
         } else {
@@ -162,7 +168,7 @@ const Instructors = () => {
       const response = await filterInstructorApi(companyID);
 
       if ("status" in response && response.status == true) {
-        setInstructosList(response.data);
+        // setInstructosList(response.data);
    
       } else {
         return swal("Failed", "Something went wrong, please try again later.", "error");
@@ -224,7 +230,7 @@ const Instructors = () => {
                   {/* <Table data={data} click={clickhandler} /> */}
 
                 </div>
-                <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} />
+                <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus} />
 
               </div>
               
@@ -326,8 +332,9 @@ const Instructors = () => {
         </div>
       </div> */}
 
-      <UpdateProfile isModalOpen={isModalOpen} trackOnclick={trackOnclick} instructorData={instructorData}></UpdateProfile>
-
+      <UpdateProfile isModalOpen={isModalOpen} 
+      trackOnclick={trackOnclick} 
+      instructorData={instructorData}></UpdateProfile>
     </>
   );
 };

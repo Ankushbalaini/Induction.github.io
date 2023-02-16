@@ -6,7 +6,9 @@ import { useHistory } from "react-router-dom";
 
 const images = require.context("../../../../../images/profile", true);
 
-const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
+const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
+  console.log(instructorData,"instructorData...");
+
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
@@ -38,14 +40,13 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
 
   // on every render change values
   useEffect(()=>{
-
+   
     setName(instructorData.profile.name);
     setEmail(instructorData.email);
     setAboutMe(instructorData.profile.aboutMe);
     setAddress(instructorData.profile.address);
     setProfilePhoto(instructorData.profile.profilePhoto);
     setUserID(instructorData.profile._id);
-    
   },[isModalOpen])
 
 
