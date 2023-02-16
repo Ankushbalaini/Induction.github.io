@@ -163,6 +163,7 @@ const Instructors = () => {
 
       if ("status" in response && response.status == true) {
         setInstructosList(response.data);
+   
       } else {
         return swal("Failed", "Something went wrong, please try again later.", "error");
       }

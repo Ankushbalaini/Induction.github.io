@@ -14,8 +14,8 @@ const CreateInduction = () => {
   const [loading, setLoading] = useState(true);
   
   const [image, setImage] = useState({preview:'', data:''})
-  const [title, setTitle] = useState("Fullstack Developer");
-  const [subTitle, setSubTitle] = useState("nodejs, mongo, react , express");
+  const [title, setTitle] = useState("");
+  const [subTitle, setSubTitle] = useState("");
   const [deptID, setDeptID] = useState();
   const [inductionDesc, setInductionDesc] = useState(
     "<h1>Induction description</h1>"
@@ -163,6 +163,7 @@ const CreateInduction = () => {
                       type="text"
                       className="form-control"
                       name="title"
+                      placeholder="Fullstack Developer"
                       onChange={(e) => setTitle(e.target.value)}
                       value={title}
                     />
@@ -179,6 +180,7 @@ const CreateInduction = () => {
                       type="text"
                       className="form-control"
                       name="subTitle"
+                      placeholder="nodejs, mongo, react , express...."
                       onChange={(e) => setSubTitle(e.target.value)}
                       value={subTitle}
                     />

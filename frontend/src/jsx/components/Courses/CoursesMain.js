@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "swiper/css";
+import LazyLoad from 'react-lazy-load';
 
 //images
 import course1 from "./../../../images/courses/course1.jpg";
@@ -67,7 +68,7 @@ function CoursesMain() {
       setloading(false);
       setTotalRecords(response.pagination.totalRecords);
       setLimit(response.pagination.limit);
-      
+
 
       setPrevLink(
         <Link to={"#"} onClick={(e) => setPage(page - 1)} className="">
@@ -116,6 +117,43 @@ function CoursesMain() {
       pageNate();
     }
   };
+  const [data, setData] = useState(
+    document.querySelectorAll("#student_wrapper tbody tr")
+  );
+
+  // Edit User- Popup
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [profileData, setProfileData] = useState();
+  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
+
+  const [test, settest] = useState(0);
+  const sort = 6;
+  const activePag = useRef(0);
+
+  // Active data
+  const chageData = (frist, sec) => {
+    for (var i = 0; i < data.length; ++i) {
+      if (i >= frist && i < sec) {
+        data[i].classList.remove("d-none");
+      } else {
+        data[i].classList.add("d-none");
+      }
+    }
+  };
+
+  // Active pagginarion
+  activePag.current === 0 && chageData(0, sort);
+  // paggination
+  let paggination = Array(Math.ceil(data.length / sort))
+    .fill()
+    .map((_, i) => i + 1);
+
+  // Active paggination & chage data
+  const onClick = (i) => {
+    activePag.current = i;
+    chageData(activePag.current * sort, (activePag.current + 1) * sort);
+    settest(i);
+  };
 
   // use effect
   useEffect(() => {
@@ -124,7 +162,7 @@ function CoursesMain() {
     } else {
       handleGetInduction(page);
     }
-    
+
   }, [page, loading, totalRecords]);
 
   const pageNate = () => {
@@ -158,24 +196,39 @@ function CoursesMain() {
     }
   };
 
+  const style = {
+    float : "right"
+  }
+
   const content = loading ? (
     <h1>Loading</h1>
   ) : (
-    <div>
-      <div className="widget-heading d-flex justify-content-between align-items-center">
-        <h3 className="m-0">All Inductions ({totalRecords})</h3>
-        <div className="col-lg-4">
-          <select name="parentCompany" className="form-control" onChange={ (e) => filterByCompany(e.target.value) }>
-            <option value="all">All</option>
-            <CompanyDropdown />
-          </select> 
+    <>
+    <div className="row" id="student_wrapper">
+       <div className="widget-heading d-flex justify-content-between align-items-center">
+         <h3 className="m-0">All Inductions ({totalRecords})</h3>
+         <div className="col-sm-4">
+           <select name="parentCompany" className="form-control" onChange={(e) => filterByCompany(e.target.value)}>
+             <option value="all">All</option>
+             <CompanyDropdown />
+           </select>
+         </div>     
+       </div>
+       {/* <div className="row">
+        <div className="col-sm-4 pb-4"
+        >
+          <Link
+            className="btn btn-primary float-right"
+            to="/viewallcourses"
+            activeClassName="active"
+          >
+            View All
+          </Link>
         </div>
-        {/* <Link to={"./inductions"} className="btn btn-primary btn-sm">
-          View all
-        </Link> */}
-      </div>
-      
-      <div className="row">
+       </div> */}
+     </div>
+
+      <div className="row" id="student_wrapper">
         {courses.map((data, index) => (
           <div className="col-xl-4 col-md-6" key={index}>
             <div className="card all-crs-wid">
@@ -206,21 +259,6 @@ function CoursesMain() {
                           >
                             <circle cx="2" cy="2.5" r="2" fill="#DBDBDB" />
                           </svg>
-                          {/* <span>
-                            5.0
-                            <svg
-                              width="16"
-                              height="15"
-                              viewBox="0 0 16 15"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M8 0.5L9.79611 6.02786H15.6085L10.9062 9.44427L12.7023 14.9721L8 11.5557L3.29772 14.9721L5.09383 9.44427L0.391548 6.02786H6.20389L8 0.5Z"
-                                fill="#FEC64F"
-                              />
-                            </svg>
-                          </span> */}
                         </p>
                       </div>
                       <h4 className="text-primary">
@@ -258,67 +296,67 @@ function CoursesMain() {
           </div>
         ))}
       </div>
-      <div className="pagination-down">
-        <div className="d-flex align-items-center justify-content-between flex-wrap">
-          {/* <h4 className="sm-mb-0 mb-3">
-            Showing <span>{page * limit}- </span>from <span>{totalRecords} </span>data
-          </h4> */}
-          {showing}
-          <ul>
-            <li>
-              <Link
-                to={"#"}
-                onClick={(e) => setPage(page - 1)}
-                className={page < 1 ? "active" : ""}
-              >
-                <i className="fas fa-chevron-left"></i>
-              </Link>
-            </li>
-
-            <li>
-              <Link
-                to={"#"}
-                onClick={(e) => setPage(1)}
-                className={page == 1 ? "active" : ""}
-              >
-                1
-              </Link>
-              
-            </li>
-            <li>
-              <Link
-                to={"#"}
-                onClick={(e) => setPage(2)}
-                className={page == 2 ? "active" : ""}
-              >
-                2
-              </Link>
-            </li>
-            {/* <li>
-              <Link
-                to={"#"}
-                onClick={(e) => setPage(3)}
-                className={page == 3 ? "active" : ""}
-              >
-                3
-              </Link>
-            </li> */}
-
-            <li>
-              <Link
-                to={"#"}
-                onClick={(e) => setPage(page + 1)}
-                className={page > 2 ? "active" : ""}
-              >
-                <i className="fas fa-chevron-right"></i>
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
+     
+      <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
+           <div className="dataTables_info">
+             Showing {activePag.current * sort + 1} to{" "}
+             {data.length > (activePag.current + 1) * sort
+               ? (activePag.current + 1) * sort
+               : data.length}{" "}
+             of {data.length} entries
+           </div>
+           <div
+             className="dataTables_paginate paging_simple_numbers mb-0"
+             id="application-tbl1_paginate"
+           >
+             <Link
+               className="paginate_button previous "
+               to="/users"
+               onClick={() =>
+                 activePag.current > 0 &&
+                 onClick(activePag.current - 1)
+               }
+             >
+               <i
+                 className="fa fa-angle-double-left"
+                 aria-hidden="true"
+               ></i>
+             </Link>
+             <span>
+               {paggination.map((number, i) => (
+                 <Link
+                   key={i}
+                   to="/inductions"
+                   className={`paginate_button  ${
+                     activePag.current === i ? "current" : ""
+                   } `}
+                   onClick={() => onClick(i)}
+                 >
+                   {number}
+                 </Link>
+               ))}
+             </span>
+             <Link
+               className="paginate_button next"
+               to="/inductions"
+               onClick={() =>
+                 activePag.current + 1 < paggination.length &&
+                 onClick(activePag.current + 1)
+               }
+             >
+               <i
+                 className="fa fa-angle-double-right"
+                 aria-hidden="true"
+               ></i>
+             </Link>
+           </div>
+         </div>
+    </>
   );
-
-  return <>{content}</>;
+// const contents = React.lazy(()=>{content})
+  return <>
+    {content}  
+    
+    </>;
 }
 export default CoursesMain;

@@ -27,10 +27,11 @@ const Table = props => {
       // sortable:true,
       hide: "sm",
       cell: row => (
-        <div>
-          <span className={`badge badge-rounded ${row.status === 1 ?  "badge-primary" : "badge-success"}`}>
-            {row.status ?  'Active' : 'Inactive'}
-          </span>
+        <div
+      
+        className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`} >
+        { (row.status) ? 'Active' : 'Inactive'}
+      
         </div>
         )
     },
