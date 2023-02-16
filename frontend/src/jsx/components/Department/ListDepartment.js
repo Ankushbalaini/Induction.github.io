@@ -29,11 +29,9 @@ const ListDepartments = () => {
   const [modalData, setModalData] = useState({ name: "" });
   const [editID, setEditID] = useState();
   const token = useSelector((state) => state.auth.auth.token);
-
+ console.log(deptData,"deptdata......")
   const actionHandler = (department) => {
-    console.log(
-      "here"
-    );
+    console.log("here");
     setIsModalOpen(true);
     setModalData(department);
     setName(department.name);
@@ -42,11 +40,11 @@ const ListDepartments = () => {
     setEditID(department._id);
   };
 
-  const deleteClick = (comp_name) => {
+  const deleteClick = () => {
     // show delete confirmation msg
     swal({
       title: "Are you sure?",
-      text: `Once deleted, you will not be able to recover ${comp_name} company!`,
+      text: `Once deleted, you will not be able to recover department`,
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -60,36 +58,34 @@ const ListDepartments = () => {
   };
 
 
-  //Edit Department submit handler
-  const onSubmitHandle = async (e) => {
-    e.preventDefault();
-
-    const data = new FormData(e.target);
-    //data.append("name", name);
-    //data.append("status", status);
-    // data.append('companyID', companyID)
-
-    const response = await fetch(
-      "http://localhost:8081/api/department/edit/" + editID,
-      {
-        method: "PUT",
-        headers: {
-          // "Content-Type": "application/json",
-          "x-access-token": token,
-        },
-        body: JSON.stringify(data),
-      }
-    ).then((data) => data.json());
-
-    if ("status" in response && response.status == true) {
-      setIsModalOpen(false);
-      return swal("Success", response.message, "success");
-    } else {
-      return swal("Failed", response.message, "error");
+//Edit Department submit handler
+const onSubmitHandle = async (e) => {
+  e.preventDefault();
+  const data = new FormData(e.target);
+  //data.append("name", name);
+  //data.append("status", status);
+  // data.append('companyID', companyID)
+  const response = await fetch(
+    "http://localhost:8081/api/department/edit/" + editID,
+    {
+      method: "PUT",
+      headers: {
+        // "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+      body: data,
     }
-  };
+  ).then((data) => data.json());
+  if ("status" in response && response.status == true) {
+    setIsModalOpen(false);
+    return swal("Success", response.message, "success");
+  } else {
+    return swal("Failed", response.message, "error");
+  }
+};
 
-  
+
+
 
   const handlepageLoad = async (event) => {
     const response = await getDepartments(token);
@@ -105,6 +101,7 @@ const ListDepartments = () => {
 
   useEffect(() => {
     handlepageLoad();
+  //  actionHandler();
   }, [isModalOpen ]);
 
   const buttonsty = {
@@ -130,13 +127,7 @@ const ListDepartments = () => {
                     className="table display mb-4 dataTablesCard order-table card-table text-black application"
                     id="application-tbl1_next"
                   >
-                    {/* <thead>
-                                    <tr>
-                                        <th>Name </th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead> */}
+  
                     <tbody>{departments}</tbody>
                   </table>
                   <Table
@@ -186,7 +177,7 @@ const ListDepartments = () => {
                   <div className="form-group mb-3">
                     <label htmlFor="author" className="text-black font-w600">
                       {" "}
-                      Department Status = { status ? 'Active': 'Inactive' }<span className="required"></span>{" "}
+                      Department Status  { status ? 'Active': 'Inactive' }<span className="required"></span>{" "}
                     </label>
                     <select
                       className="form-control"

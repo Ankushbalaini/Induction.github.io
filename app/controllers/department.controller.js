@@ -78,32 +78,25 @@ exports.edit = (req, res) => {
       message: "Data to be edit can't be empty!",
     });
   }
-  const { name, status } = req.body;
-  const id = req.params.id;
-
-  Department.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
-    .then(function (department) {
-      if (!department) {
-        return res.status(500).send({
-          status: false,
-          message: "Deparment not found.",
-        });
-      } else {
-        return res.status(200).send({
-          message: "Deparment has been updated successfully",
-          name: name,
-          status: true,
-        });
-      }
-    })
-    .catch((err) => {
-      return res.status(500).send({
-        status: false,
-        message:
-          err.message ||
-          "Some error occurred while creating the New Deparment.",
-      });
-    });
+  const id = (req.params.id);
+  Department.updateOne( 
+    { _id: id }, 
+    { $set: req.body }, 
+    { multi: true } 
+  )
+    .then((department) => { 
+      return res.status(200).send({ 
+        status: true, 
+        message: "Department has been updated!", 
+        data: department, 
+      }); 
+    }) 
+    .catch((err) => { 
+      return res.status(500).send({ 
+        status: false,  
+        message: err.message, 
+      }); 
+    }); 
 };
 
 // get the Department
@@ -117,10 +110,6 @@ exports.edit = (req, res) => {
 exports.getDepartment = async (req, res) => {
   const { name, status } = req.body;
   const id = req.params.id;
-  // const department = new Department({
-  //   name: name,
-  //   status: status
-  // });
 
   try {
     const data = await Department.findById(id);
@@ -140,7 +129,6 @@ exports.getDepartment = async (req, res) => {
 // Delete the department
 /**
  * @description: Finding Deparment by their ID and then deleting.
- *
  * @param req
  * @param res
  */
@@ -195,10 +183,7 @@ exports.getAll = async (req, res) => {
               message: err.message
             });
           });
-
-    
-    //const data = await Department.find({ parentCompany: ObjectId(user.userID) });
-    
+   
    
   } catch (err) {
     return res.status(500).send({
@@ -207,8 +192,6 @@ exports.getAll = async (req, res) => {
     });
   }
 };
-
-
 
 
 exports.getAllActive = async (req, res) => {
@@ -269,15 +252,8 @@ exports.getDepartmentByComp = async (req, res) => {
         status: true,
         message: "Successfully Getting Data",
         data: data,
-  
       });
-
     }
-
-    
-
-
-    
   } catch (err) {
     return res.status(500).send({
       status: false,

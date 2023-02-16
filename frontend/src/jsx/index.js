@@ -66,6 +66,7 @@ import ViewMcq from "./components/Inductions/Viewquiz";
 import AttemptQuiz from "./components/Inductions/Attemptquiz";
 import AttemptedInductions from "./components/Students/AttemptedInductions";
 
+
 const Markup = () => {
   var newState = store.getState();
 
