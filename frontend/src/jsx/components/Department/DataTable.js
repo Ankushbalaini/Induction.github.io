@@ -4,6 +4,7 @@ import DataTable from "react-data-table-component";
 import FilterComponent from "../Companies/FilterComponent";
 import DropDownBlog from "../Dashboard/DropDownBlog";
 import { Link } from "react-router-dom";
+import { tableStyles } from "../Instructor/Instructor/tableStyles";
 
 const Table = props => {
   const columns = [
@@ -14,13 +15,7 @@ const Table = props => {
       grow: 1,
       className: 'col-3'
     },
-    // {
-    //   name:"Parent Company",
-    //   selector :"parentcompany",
-    //   sortable: true,
-    //   grow:1,
-    //   className :"col-3"
-    // },
+
     {
       name : "Status",
       selector:"status",
@@ -43,7 +38,7 @@ const Table = props => {
             <div className="d-flex">
             <button onClick={()=>props.actionHandler(row)}
               href="#"
-              className="btn btn-primary shadow btn-xs sharp me-1"
+              className="btn btn-success shadow btn-xs sharp me-1"
             >
               <i className="fas fa-pencil-alt"></i>
             </button>
@@ -95,10 +90,10 @@ const Table = props => {
       columns={columns}
       data={filteredItems}
       defaultSortField="name"
-      striped
       pagination
       subHeader
       subHeaderComponent={subHeaderComponent}
+      customStyles={tableStyles}
     />
   );
 };

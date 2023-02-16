@@ -27,11 +27,14 @@ const AllStudents = () => {
   const [data, setData] = useState(
     document.querySelectorAll("#student_wrapper tbody tr")
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const sort = 5;
   const activePag = useRef(0);
   const [loading, setLoading] = useState(true);
   const [test, settest] = useState(0);
-  const [students, setStudents] = useState(0);
+  
+  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
   const [profileData, setProfileData] = useState({
     email: "",
     createdAt: "",
@@ -42,22 +45,21 @@ const AllStudents = () => {
       aboutMe: "",
       address: "",
     },
+  
   });
+  const [students, setStudents] = useState([]);
 
-  // model popup usestate
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
-
-  // Active data
-  const chageData = (frist, sec) => {
-    for (var i = 0; i < data.length; ++i) {
-      if (i >= frist && i < sec) {
-        data[i].classList.remove("d-none");
-      } else {
-        data[i].classList.add("d-none");
-      }
-    }
-  };
+ 
+  // // Active data
+  // const chageData = (frist, sec) => {
+  //   for (var i = 0; i < data.length; ++i) {
+  //     if (i >= frist && i < sec) {
+  //       data[i].classList.remove("d-none");
+  //     } else {
+  //       data[i].classList.add("d-none");
+  //     }
+  //   }
+  // };
 
   const loadImage = (imageName) => {
     return images(`./${imageName}`);
@@ -83,52 +85,15 @@ const AllStudents = () => {
     setLoading(true);
   };
 
-  // change status
-  const changeUserStatus = (userID, status) => {
-    // user id
-    swal({
-      title: "Are you sure?",
-      text: `Once status Changed, User will get or loss access to account`,
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (willChange) => {
-      if (willChange) {
-        const response = await fetch(
-          "http://localhost:8081/api/users/changeUserStatus",
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              "x-access-token": token,
-            },
-            body: JSON.stringify({ userID: userID, status: status }),
-          }
-        ).then((data) => data.json());
-
-        if ("status" in response && response.status == true) {
-          swal("Poof! Your record has been updated!", {
-            icon: "success",
-          }).then(() => {
-            setIsUserStatusChanged(true);
-            //navigate.push("/students");
-          });
-        } else {
-          return swal("Failed", response.message, "error");
-        }
-      } else {
-        swal("Your status is not changed!");
-      }
-    });
-  };
 
   // callback function to opdate state
-  const trackOnclick = (payload, pdata) => {
-    if (pdata) {
-      setProfileData(pdata);
-    }
+  const trackOnclick = (payload, userData) => {
     setIsModalOpen(payload);
+    if (userData) {
+      setProfileData(userData);
+    } 
   };
+  
 
   // callback function to opdate state
   const trackDeleteClick = () => {
@@ -148,6 +113,48 @@ const AllStudents = () => {
       }
     });
   };
+
+
+    // change status
+    const changeUserStatus = (userID, status) => {
+      // user id
+      swal({
+        title: "Are you sure?",
+        text: `Once status Changed, User will get or loss access to account`,
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then(async (willChange) => {
+        if (willChange) {
+          const response = await fetch(
+            "http://localhost:8081/api/users/changeUserStatus",
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                "x-access-token": token,
+              },
+              body: JSON.stringify({ userID: userID, status: status }),
+            }
+          ).then((data) => data.json());
+  
+          if ("status" in response && response.status == true) {
+            swal("Poof! Your record has been updated!", {
+              icon: "success",
+            }).then(() => {
+              setIsUserStatusChanged(!isUserStatusChanged);
+              
+              //navigate.push("/students");
+            });
+          } else {
+            return swal("Failed", response.message, "error");
+          }
+        } else {
+          swal("Your status is not changed!");
+        }
+      handlepageLoad();
+      });
+    };
 
   const handlepageLoad = async (event) => {
     var str = "";
@@ -188,28 +195,15 @@ const AllStudents = () => {
   // use effect
   useEffect(() => {
     handlepageLoad();
-    setData(document.querySelectorAll("#student_wrapper tbody tr"));
+     setData(document.querySelectorAll("#student_wrapper tbody tr"));
   }, [
-    profileData,
+    // profileData,
     isModalOpen,
     isUserStatusChanged,
     searchCompany,
     searchDepartment,
   ]);
 
-  // Active pagginarion
-  activePag.current === 0 && chageData(0, sort);
-  // paggination
-  let paggination = Array(Math.ceil(data.length / sort))
-    .fill()
-    .map((_, i) => i + 1);
-
-  // Active paggination & chage data
-  const onClick = (i) => {
-    activePag.current = i;
-    chageData(activePag.current * sort, (activePag.current + 1) * sort);
-    settest(i);
-  };
 
   //css for button
   const buttonStyle = {
@@ -217,10 +211,6 @@ const AllStudents = () => {
     display: "flex",
   };
 
-  const sortByName = () => {
-    //
-    alert("Here");
-  };
 
   return (
     <>
@@ -236,22 +226,24 @@ const AllStudents = () => {
 
               {role === "super_admin" ? (
                       <div >
-                           <select className="btn btn-white col-sm-2 border-dark"
+                          <select className="btn btn-white col-sm-2 border-dark"
                           Style="margin:20px; font-size: 16px; float:right"
                           name="search_department"
-                          onChange={(e) => setSearchDepartment(e.target.value)}
+                          onChange={(e) => DepartmentChangeFilter(e.target.value)}
                           defaultValue={searchDepartment}
                         >
-                          <option>Select Department</option>
+                          <option value ="all">Select Department</option>
                           {departmentOptions}
                         </select>
+                        
+                        
                         <select className="btn btn-white col-sm-2 border-dark"
                           Style="margin:20px; font-size: 16px; float:right"
-                          name="search_company"
+                           name="search_company"
                           onChange={(e) => CompanyChangeFilter(e)}
                           defaultValue={searchCompany}
                         >
-                          <option className="col-lg-4" >Select Company</option>
+                          <option className="col-lg-4" value="all">Select Company</option>
                           <CompanyDropdown />
                         </select>
                      
@@ -266,12 +258,13 @@ const AllStudents = () => {
                   >       
                     {role === "company" ? (
                       <>
+                       
                         <select
                           Style="margin:20px; font-size: 16px;"
                           name="search_department"
-                          onChange={(e) => setSearchDepartment(e.target.value)}
+                          onChange={(e) => DepartmentChangeFilter(e)}
                         >
-                          <option value="all">All</option>
+                          <option value="all">Select Department</option>
                           <DepartmentByCompany parentCompany={id} />
                         </select>
                       </>
@@ -279,20 +272,20 @@ const AllStudents = () => {
 
                     {role === "instructor" ? (
                       <>
+                        
                         <select
                           Style="margin:20px; font-size: 16px;"
                           name="search_department"
-                          onChange={(e) => setSearchDepartment(e.target.value)}
+                          onChange={(e) => DepartmentChangeFilter(e)}
                         >
-                          <option value="all">All</option>
+                          <option value="all">Select Department</option>
                           <DepartmentByCompany parentCompany={id} />
                         </select>
                       </>
                     ) : null}
-                    <div className="wrapper-paggination-style"> 
-                    </div>
+
                   </div>
-                  <Table data={students} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick}/>
+                  <Table data={students} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus}/>
 
                 </div>
               </div>

@@ -13,7 +13,7 @@ const AttemptedInductions = () => {
   const [data, setData] = useState(
     document.querySelectorAll("#student_wrapper tbody tr")
   );
-  const sort = 5;
+  const sort = 10;
   const activePag = useRef(0);
   const [loading, setLoading] = useState(true);
   const [test, settest] = useState(0);
@@ -64,8 +64,6 @@ const AttemptedInductions = () => {
     }
     setIsModalOpen(payload);
   };
-
-  
 
   const handlepageLoad = async (event) => {
     const response = await fetch("http://localhost:8081/api/users/inductions", {

@@ -10,6 +10,7 @@ import DepartmentByCompany from "../Department/DepartmentByCompany";
 const images = require.context("../../../../../images/profile", true);
 
 const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
+  console.log(profileData);
   const navigate = useHistory();
 
   const id = useSelector((state) => state.auth.auth.id);
@@ -66,6 +67,42 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     }
   };
 
+ 
+
+  const handleCallback = () => {
+    trackOnclick(false);
+  };
+
+  const loadImage = (imageName) => {
+    return images(`./${imageName}`);
+  };
+
+  const handleFileChange = async (e) => {
+    const img = {
+      preview: URL.createObjectURL(e.target.files[0]),
+      data: e.target.files[0],
+    };
+    setImage(img);
+  };
+
+
+
+  useEffect(() => {
+    // setParentCompany(profileData.parentCompany);
+    
+    setDeptID(profileData.deptID);
+    setMainID(profileData._id);
+    setUserID(profileData.profile._id);
+    setFirstName(profileData.profile.first_name);
+    setLastName(profileData.profile.last_name);
+    setAboutMe(profileData.profile.aboutMe);
+    setAddress(profileData.profile.address);
+    setPreview(profileData.profile.profilePhoto);
+    setEmail(profileData.email);
+    console.log('profileData', profileData);
+    // call to api to update Department Dropdown
+  }, [ isModalOpen]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // validate data
@@ -108,23 +145,23 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     if (error) return ;
 
 
-    let formData = new FormData();
-    formData.append("mainID", mainID);
-    formData.append("deptID", deptID);
-    formData.append("parentCompany", parentCompany);
-    formData.append("first_name", firstName);
-    formData.append("last_name", lastName);
-    formData.append("email", email);
-    formData.append("aboutMe", aboutMe);
-    formData.append("image", image.data);
-    formData.append("profilePhoto", preview);
-    formData.append("address", address);
+    let data = new FormData();
+    data.append("mainID", mainID);
+    data.append("deptID", deptID);
+    data.append("parentCompany", parentCompany);
+    data.append("first_name", firstName);
+    data.append("last_name", lastName);
+    data.append("email", email);
+    data.append("aboutMe", aboutMe);
+    data.append("image", image.data);
+    data.append("profilePhoto", preview);
+    data.append("address", address);
 
     const response = await fetch(
       "http://localhost:8081/api/users/edit/" + userID,
       {
         method: "PUT",
-        body: formData,
+        body: data,
         headers: {
           "x-access-token": token,
         },
@@ -145,35 +182,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     }
   };
 
-  const handleCallback = () => {
-    trackOnclick(false);
-  };
-
-  const loadImage = (imageName) => {
-    return images(`./${imageName}`);
-  };
-
-  const handleFileChange = async (e) => {
-    const img = {
-      preview: URL.createObjectURL(e.target.files[0]),
-      data: e.target.files[0],
-    };
-    setImage(img);
-  };
-
-  useEffect(() => {
-    // setParentCompany(profileData.parentCompany);
-    setDeptID(profileData.deptID);
-    setMainID(profileData._id);
-    setUserID(profileData.profile._id);
-    setFirstName(profileData.profile.first_name);
-    setLastName(profileData.profile.last_name);
-    setAboutMe(profileData.profile.aboutMe);
-    setAddress(profileData.profile.address);
-    setPreview(profileData.profile.profilePhoto);
-    setEmail(profileData.email);
-    // call to api to update Department Dropdown
-  }, [profileData, isModalOpen, option, errors]);
+  
 
   return (
     <Modal className="modal fade" show={isModalOpen}>
@@ -304,7 +313,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     type="text"
                     className="form-control"
                     defaultValue=""
-                    name="first_name"
+                    name="firstName"
                     placeholder=""
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
@@ -325,7 +334,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                   <input
                     type="text"
                     className="form-control"
-                    name="last_name"
+                    name="lastName"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                   />
@@ -397,7 +406,6 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     rows={3}
                     className="form-control"
                     name="address"
-                    placeholder="Enter your current address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                   />

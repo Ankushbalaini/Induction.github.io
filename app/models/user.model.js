@@ -4,7 +4,7 @@ module.exports = mongoose => {
       mongoose.Schema(
         {
           userID : {type: String, unique: true , required: true},
-          parentInstructor: { type: mongoose.Schema.Types.ObjectId, required: true },
+          parentInstructor: { type: mongoose.Schema.Types.ObjectId},
           userID : {type: mongoose.Schema.Types.ObjectId, unique: true , required: true},
           first_name: { type: String, default : null},
           last_name: { type: String, default : null},

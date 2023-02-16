@@ -3,7 +3,7 @@ import React, { useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 import FilterComponent from "../Instructor/FilterComponent";
 import DropDownBlog from "../Dashboard/DropDownBlog";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import swal from "sweetalert";
 import { useSelector } from "react-redux";
 import ActionDropDown from "./ActionDropDown";
@@ -11,11 +11,11 @@ import ActionDropDown from "./ActionDropDown";
 import { tableStyles } from "../Instructor/Instructor/tableStyles";
 
 const Table = props => {
+  const navigate = useHistory();
   const images = require.context("../../../../../images/profile/", true);
 
   const token = useSelector((state) => state.auth.auth.token);
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
-
 
   const loadImage = (imageName) => {
     return images(`./${imageName}`);
@@ -28,44 +28,6 @@ const Table = props => {
     margin: "5px 5px 5px 0"
   };
 
-    // change status
-    const changeUserStatus = (userID, status) => {
-      // user id
-      swal({
-        title: "Are you sure?",
-        text: `Once status Changed, User will get or loss access to account`,
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      }).then(async (willChange) => {
-        if (willChange) {
-          const response = await fetch(
-            "http://localhost:8081/api/users/changeUserStatus",
-            {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-                "x-access-token": token,
-              },
-              body: JSON.stringify({ userID: userID, status: status }),
-            }
-          ).then((data) => data.json());
-  
-          if ("status" in response && response.status == true) {
-            swal("Poof! Your record has been updated!", {
-              icon: "success",
-            }).then(() => {
-              setIsUserStatusChanged(true);
-              //navigate.push("/students");
-            });
-          } else {
-            return swal("Failed", response.message, "error");
-          }
-        } else {
-          swal("Your status is not changed!");
-        }
-      });
-    };
   const columns = [
     {
       name: "Name",
@@ -110,7 +72,7 @@ const Table = props => {
       hide: "sm",
       cell: row => (
         <div 
-        className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`} onClick={() => changeUserStatus(row._id, row.status) } 
+        className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`} onClick={() =>props.changeUserStatus(row._id, row.status) } 
         >
           { (row.status) ? 'Active' : 'Inactive'}
         </div>
@@ -121,7 +83,7 @@ const Table = props => {
       button: true,
       cell: row =>
       <>
-      <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick}/>
+      <ActionDropDown trackOnclick={props.trackOnclick}  profileData={row} trackDeleteClick={props.trackDeleteClick} />
     </>
     }
   ];
@@ -156,6 +118,7 @@ const Table = props => {
   }, [filterText, resetPaginationToggle]);
 
   return (
+    <>
     <DataTable
       title=""
       columns={columns}
@@ -166,6 +129,12 @@ const Table = props => {
       subHeaderComponent={subHeaderComponent}
       customStyles={tableStyles}
     />
+    {/* <UpdateUserModal
+        isModalOpen={isModalOpen}
+        trackOnclick={trackOnclick}
+        profileData={profileData}
+      /> */}
+      </>
   );
 };
 
