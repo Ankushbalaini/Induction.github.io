@@ -18,17 +18,30 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
 
   const [userID, setUserID] = useState(); // User Table id
   const [mainID, setMainID] = useState(); // UserCred table id
-  const [parentCompany, setParentCompany] = useState();
-  const [deptID, setDeptID] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [email, setEmail] = useState();
-  const [aboutMe, setAboutMe] = useState();
+  const [parentCompany, setParentCompany] = useState("");
+  const [deptID, setDeptID] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [aboutMe, setAboutMe] = useState("");
   const [image, setImage] = useState({ preview: "", data: "" });
   const [preview, setPreview] = useState("dummy-user.png");
-  const [address, setAddress] = useState();
+  const [address, setAddress] = useState("");
   const [departmentDropdown, setDepartmentDropdown] = useState();
   const [option, setOption] = useState();
+
+   // validation messages
+   let errorObj = { 
+    email: "",
+    password: "",
+    firstName: "",
+    address: "",
+    parentCompany: "",
+    deptID: "",
+ };
+
+ const [errors, setErrors] = useState(errorObj);
+
 
   const handleCompanyChange = async (e) => {
     // call api to fetch departments
@@ -56,9 +69,44 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // validate data
-    if (firstName === "" || lastName === "" || aboutMe === "") {
-      return swal("Failed", "All fields are required!", "error");
+    // if (parentCompany === "", deptID === "") {
+    //   return swal("Failed", "All fields are required!", "error");
+    // }
+
+    let error = false;
+    const errorObj1 = { ...errorObj }
+
+    if (email === "") {
+      errorObj1.email = "Email is required";
+      error = true;
     }
+    if (parentCompany === "") {
+      errorObj1.parentCompany = "Choose company first!";
+      error = true;
+    }
+    if (deptID === "") {
+      errorObj1.deptID = "Choose Department first!";
+      error = true;
+    }
+   
+    if (firstName === "") {
+      errorObj1.name = "Name is required";
+      error = true;
+    }
+   
+    if (address === "") {
+      errorObj1.address = "address is required";
+      error = true;
+    }
+    if (aboutMe === "") {
+      errorObj1.aboutMe = "About section is  is required";
+      error = true;
+    }
+    
+    setErrors(errorObj1);
+
+    if (error) return ;
+
 
     let formData = new FormData();
     formData.append("mainID", mainID);
@@ -125,7 +173,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     setPreview(profileData.profile.profilePhoto);
     setEmail(profileData.email);
     // call to api to update Department Dropdown
-  }, [profileData, isModalOpen, option]);
+  }, [profileData, isModalOpen, option, errors]);
 
   return (
     <Modal className="modal fade" show={isModalOpen}>
@@ -145,7 +193,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
             <div className="row">
               {/* Super admin starts */}
               {role === "super_admin" ? (
-                <>
+                <div>
                   <div className="col-lg-6">
                     <div className="form-group mb-3">
                       <label
@@ -164,6 +212,11 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                         <option>Select</option>
                         <CompanyDropdown prevSelected={parentCompany} />
                       </select>
+                      {errors.parentCompany && (
+                        <div Style="color:red;font-weight:400">
+                          {errors.parentCompany}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="form-group mb-3">
@@ -183,8 +236,13 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                       <option>Select</option>
                       {option}
                     </select>
+                    {errors.deptID && (
+                      <div Style="color:red;font-weight:400">
+                        {errors.deptID}
+                      </div>
+                    )}
                   </div>
-                </>
+                </div>
               ) : null}
 
               {/* Super admin ends */}
@@ -205,6 +263,11 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     <option>Select</option>
                     <DepartmentByCompany />
                   </select>
+                  {errors.email && (
+                    <div Style="color:red;font-weight:400">
+                      {errors.email}
+                    </div>
+                  )}
                 </div>
               ) : null}
 
@@ -246,6 +309,11 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                   />
+                  {errors.firstName && (
+                    <div Style="color:red;font-weight:400">
+                      {errors.firstName}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="col-lg-6">

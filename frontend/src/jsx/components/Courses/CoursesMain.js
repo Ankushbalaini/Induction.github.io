@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "swiper/css";
-import LazyLoad from 'react-lazy-load';
+
 
 //images
 import course1 from "./../../../images/courses/course1.jpg";

@@ -8,6 +8,8 @@ import swal from "sweetalert";
 import { useSelector } from "react-redux";
 import ActionDropDown from "./ActionDropDown";
 
+import { tableStyles } from "../Instructor/Instructor/tableStyles";
+
 const Table = props => {
   const images = require.context("../../../../../images/profile/", true);
 
@@ -74,10 +76,10 @@ const Table = props => {
       cell: row =>
       <>
        <div className="d-flex align-items-center">
-          <h4 className="mb-0 fs-16 font-w500">
+          <div >
             {row.profile?.first_name}{" "}
             {row.profile?.last_name}
-          </h4>
+          </div>
         </div>
       </>
     },
@@ -162,6 +164,7 @@ const Table = props => {
       pagination
       subHeader
       subHeaderComponent={subHeaderComponent}
+      customStyles={tableStyles}
     />
   );
 };
