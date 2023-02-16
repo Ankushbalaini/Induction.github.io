@@ -144,7 +144,7 @@ const changeUserStatus = (userID, status) =>{
     const handleClear = () => {
       if (filterText) {
         setResetPaginationToggle(!resetPaginationToggle);
-        setFilterText("");
+        setFilterText(" ");
       }
     };
 

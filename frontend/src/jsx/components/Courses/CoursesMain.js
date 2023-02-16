@@ -133,7 +133,7 @@ function CoursesMain() {
       const totalPages = totalRecords / limit;
 
       setShowing(
-        <>
+        <div>
           <h4 className="sm-mb-0 mb-3">
             Showing inside{" "}
             <span>
@@ -142,7 +142,7 @@ function CoursesMain() {
             </span>
             from <span>{totalRecords} </span>
           </h4>
-        </>
+        </div>
       );
     } else {
       // only show dummy html
@@ -161,7 +161,7 @@ function CoursesMain() {
   const content = loading ? (
     <h1>Loading</h1>
   ) : (
-    <>
+    <div>
       <div className="widget-heading d-flex justify-content-between align-items-center">
         <h3 className="m-0">All Inductions ({totalRecords})</h3>
         <div className="col-lg-4">
@@ -316,7 +316,7 @@ function CoursesMain() {
           </ul>
         </div>
       </div>
-    </>
+    </div>
   );
 
   return <>{content}</>;

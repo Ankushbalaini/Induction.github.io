@@ -10,6 +10,11 @@ const tableStyles = {
 		style: {
 			fontSize: '13px'
         }
-    }
+    },
+    subHeader: {
+      style: {
+        minHeight: '52px',
+      },
+    },
   }
   export { tableStyles };

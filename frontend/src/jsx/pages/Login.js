@@ -9,11 +9,7 @@ import {
 } from "../../store/actions/AuthActions";
 
 import loginbg from "../../images/bg-1.jpg";
-
-
 import BJSLogo from "../../images/BJSLogo.png";
-
-
 
 function Login(props) {
   const [email, setEmail] = useState("super@admin.com");

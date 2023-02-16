@@ -30,7 +30,12 @@ const AddInstructor = () => {
   const [aboutMe, setAboutMe] = useState();
 
   // validation messages
-  let errorsObj = { email: "", password: "", cname: "", parentCompany:"",parentDepartment:"" };
+  let errorsObj = { email: "",
+   password: "",
+   cname: "",
+   parentCompany:"",
+   parentDepartment:"" };
+  
   const [errors, setErrors] = useState(errorsObj);
 
   const handleFileChange = async (e) => {
