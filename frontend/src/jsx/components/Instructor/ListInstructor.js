@@ -175,64 +175,7 @@ const Instructors = () => {
     const handlepageLoad = async (event) => {
       const response = await getInstructorApi(role, parentCompany);
       if ("status" in response && response.status == true) {
-
-        /* Prepare data for instructor data-table list, start */
-        // let instructorsListArr = [];
-        // response.data.map(function(row, index){
-        //   let instructorArr = {
-        //     '_id' : row._id,
-        //     'email': row.email,
-        //     'join_date': new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"}),
-        //     'name' : row.profile?.name,
-        //     'status': row.status,
-        //     'row': row
-        //   };
-        //   instructorsListArr.push(instructorArr);
-        // });
-        // //setInstructosList(instructorsListArr);
-        // console.log('prepare instructor list', instructorsListArr);
-        // console.log('data', response.data);
-        // setInstructosList(instructorsListArr);
-        /* Prepare data for instructor data-table list, end */
-
-
-        /* Prepare data for instructor data-table list, start */
-        setInstructosList(response.data);
-        /* Prepare data for instructor data-table list, end */
-        
-        // const rows = response.data.map((row, index) => (
-        //   <tr key={index}>
-        //     <td>
-        //       <div className="d-flex align-items-center">
-        //         <img src={loadImage(row.profile.profilePhoto)} alt="" />
-        //         <h4 className="mb-0 fs-16 font-w500">
-        //           {row.profile?.name}
-        //         </h4>
-        //       </div>
-        //     </td>
-        //     <td>{row.email}</td>
-        //     <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
-        //     <td>
-        //       {/* <span className={`badge  light badge-success`}>{`Active`}</span> */}
-        //       <Link
-        //         className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}
-        //         to="/instructors"
-        //         onClick={() => changeUserStatus(row._id, row.status) }
-                
-        //       >
-        //         { (row.status) ? 'Active' : 'Inactive'}
-        //       </Link>
-              
-        //     </td>
-        //     <td>
-        //     <ActionDropDown trackOnclick={trackOnclick} userData={row} trackDeleteClick={trackDeleteClick}/>
-        //       {/* <DropDownBlog /> */}
-        //     </td>
-        //   </tr>
-        // ));
-        // setStudents(rows);
-        // setIsUserStatusChanged(false);
-        // setData(document.querySelectorAll("#student_wrapper tbody tr"));
+        setInstructosList(response.data); 
       } else {
         return swal("Failed", "Error message", "error");
       }
@@ -264,25 +207,29 @@ const Instructors = () => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h4>Instructor List</h4>
-              <div className="col-lg-4">
+              <h2>Instructor List</h2>
+              <div className="col-sm-3">
                 <select name="parentCompany" className="form-control" onChange={ (e) => filterByCompany(e.target.value) }>
                   <option value="all">All</option>
                   <CompanyDropdown />
                 </select> 
               </div>
             </div>
-            <div className="card-body py-0">
+            <div className="card-body ">
               <div className="table-responsive">
                 <div
                   id="student_wrapper"
-                  className="dataTables_wrapper no-footer"
+                  className="dataTables_wrapper "
                 >
                   {/* <Table data={data} click={clickhandler} /> */}
-                  <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick}/>
+
                 </div>
+                <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} />
+
               </div>
+              
             </div>
+            
           </div>
         </div>
       </div>

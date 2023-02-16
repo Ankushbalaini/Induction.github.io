@@ -6,11 +6,7 @@ class LearningActivityChart extends React.Component {
 		super(props);
 		this.state = {
 			series: [
-				{
-					name: '',
-					data: [60, 70, 80, 50, 60, 50, 90]
-						
-				}, 
+				
 				{
 				  name: '',
 				  data: [40, 50, 40, 60, 90, 70, 90]

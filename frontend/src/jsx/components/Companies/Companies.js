@@ -149,19 +149,23 @@ const Companies = () => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h4>Company List</h4>
+              <h2>Company List</h2>
             </div>
-            <div className="card-body py-0">
+            <div className="card-body">
               <div className="table-responsive">
                 <div
                   id="student_wrapper"
-                  className="dataTables_wrapper no-footer"
+                  className="dataTables_wrapper "
                 >
                   {/* <Table data={data} click={clickhandler} /> */}
-                  <Table data={companies} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick}/>
+                 
                 </div>
+                <Table data={companies} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick}/>
+
               </div>
+              
             </div>
+           
           </div>
         </div>
       </div>

@@ -171,7 +171,7 @@ function CoursesMain() {
       const totalPages = totalRecords / limit;
 
       setShowing(
-        <>
+        <div>
           <h4 className="sm-mb-0 mb-3">
             Showing inside{" "}
             <span>
@@ -180,7 +180,7 @@ function CoursesMain() {
             </span>
             from <span>{totalRecords} </span>
           </h4>
-        </>
+        </div>
       );
     } else {
       // only show dummy html
