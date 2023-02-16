@@ -8,13 +8,15 @@ const tableStyles = {
     },
     rows: {
 		style: {
-			fontSize: '13px'
+			fontSize: '14px'
         }
     },
-    subHeader: {
-      style: {
-        minHeight: '52px',
-      },
-    },
+    ClearButton:{
+      style:{
+        color:"Red"
+      }
+    }
+  
+    
   }
   export { tableStyles };

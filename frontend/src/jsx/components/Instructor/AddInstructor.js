@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef } from "react";
+import React, { Fragment, useState, useRef,useEffect } from "react";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
@@ -17,26 +17,30 @@ const AddInstructor = () => {
   const lrole = useSelector((state) => state.auth.auth.role);
   const token = useSelector((state) => state.auth.auth.token);
 
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [role, setRole] = useState('instructor');
-  const [name, setName] = useState();
-  const [parentCompany, setParentCompany] = useState('');
-  const [parentDepartment, setParentDepartment] = useState('');
-  const [deptID, setDeptID] = useState();
+  const [name, setName] = useState("");
+  const [parentCompany, setParentCompany] = useState("");
+  const [parentDepartment, setParentDepartment] = useState("");
+  const [deptID, setDeptID] = useState("");
   const [profilePhoto, setProfilePhoto] = useState('dummy-user.png');
   const [image, setImage] = useState({preview:'', data:''})
-  const [address, setAddress] = useState();
-  const [aboutMe, setAboutMe] = useState();
+  const [address, setAddress] = useState("");
+  const [aboutMe, setAboutMe] = useState("");
 
   // validation messages
-  let errorsObj = { email: "",
+  let errorObj = { 
+   email: "",
    password: "",
-   cname: "",
+   name: "",
    parentCompany:"",
-   parentDepartment:"" };
+   parentDepartment:"",
+   address: "",
+   aboutMe: "" 
+};
   
-  const [errors, setErrors] = useState(errorsObj);
+  const [errors, setErrors] = useState(errorObj);
 
   const handleFileChange = async (e) => {
     const img = {
@@ -46,10 +50,49 @@ const AddInstructor = () => {
     setImage(img)
   }
 
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    let error = false;
+    const errorObj1 = { ...errorObj }
+
+    if (email === "") {
+      errorObj1.email = "Email is required";
+      error = true;
+    }
+    if (password === "") {
+      errorObj1.password = "Password is required";
+      error = true;
+    }
+    if (name === "") {
+      errorObj1.name = "Name is required";
+      error = true;
+    }
+    if (parentCompany === "") {
+      errorObj1.parentCompany = "Select a parent company is required";
+      error = true;
+    }
+    if (parentDepartment === "") {
+      errorObj1.parentDepartment = "Select a parent company is required";
+      error = true;
+    }
+    if (profilePhoto === "") {
+      errorObj1.profilePhoto = "Profile Picture is required";
+      error = true;
+    }
+    if (address === "") {
+      errorObj1.address = "Address is required";
+      error = true;
+    }
+    if (aboutMe === "") {
+      errorObj1.aboutMe = "About is  is required";
+      error = true;
+    }
+    
+    setErrors(errorObj1);
+
+    if (error) return ;
+    
 
     const data = new FormData();
     data.append('name', name);
@@ -91,6 +134,15 @@ const AddInstructor = () => {
     float: 'right'
   };
 
+  function handleKeyPress(e) {
+    var key = e.key;
+   if (key == key) {
+        setErrors((errorObj == false))
+    }
+}
+
+  useEffect(() => {}, [errors]);
+
   return (
     <Fragment>
       <PageTitle activeMenu="Add Instructor" motherMenu="Instructors" />
@@ -115,11 +167,15 @@ const AddInstructor = () => {
                       className="form-control"
                       onChange={(e) => setEmail(e.target.value)}
                       value={email}
-                      autocomplete="off"
-                      required
-                      Role="presentation"
+                      onKeyPress={(e) => handleKeyPress(e)}
+                      // autocomplete="off"
+                      // Role="presentation"
                     />
-                    {errors.email && <div Style="color:red;font-weight:600;padding:5px;">{errors.email}</div>}
+                    {errors.email && (
+                      <div Style="color:red;font-weight:400">
+                        {errors.email}
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -134,9 +190,14 @@ const AddInstructor = () => {
                       className="form-control"
                       onChange={(e) => setPassword(e.target.value)}
                       value={password}
-                      required
+                      onKeyPress={(e) => handleKeyPress(e)}
+
                     />
-                    {errors.password && <div Style="color:red;font-weight:600;padding:5px;">{errors.password}</div>}
+                    {errors.password && (
+                      <div Style="color:red;font-weight:400">
+                        {errors.password}
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -149,27 +210,40 @@ const AddInstructor = () => {
                   <div className="col-sm-9">
                     <input
                       name="name"
-                      type="text"
+                      type="password"
                       className="form-control"
-                      onChange={(e) => setName(e.target.value) }
+                      onChange={(e) => setName(e.target.value)}
                       value={name}
-                      required
+                      onKeyPress={(e) => handleKeyPress(e)}
+
                     />
-                    {errors.cname && <div Style="color:red;font-weight:600;padding:5px;">{errors.cname}</div>}
+                    {errors.name && (
+                      <div Style="color:red;font-weight:400">
+                        {errors.name}
+                      </div>
+                    )}
+                   
                   </div>
                 </div>
+
                 { (loggedrole == 'super_admin' || loggedrole == 'company' ) ?
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">Parent Company</label>
                   <div className="col-sm-9">
 
                      
-                    <select name="parentCompany" className="form-control" onChange={ (e) => setParentCompany(e.target.value) }>
+                    <select name="parentCompany" className="form-control" onChange={ (e) => setParentCompany(e.target.value) }
+                    onKeyPress={(e) => handleKeyPress(e)}
+                    >
                         <option value="">Select</option>
                         <CompanyDropdown />
                     </select> 
-
-                    {errors.parentCompany && <div Style="color:red;font-weight:600;padding:5px;">{errors.parentCompany}</div>}
+                   
+                    {errors.parentCompany && (
+                      <div Style="color:red;font-weight:400">
+                        {errors.parentCompany}
+                      </div>
+                    )}
 
                   </div>
                 </div>
@@ -180,6 +254,7 @@ const AddInstructor = () => {
                   className="form-control"
                   value={parentCompany}
                 />
+                
                 }
 
               { (loggedrole == 'super_admin' || loggedrole == 'company' ) ?
@@ -188,14 +263,22 @@ const AddInstructor = () => {
                   <div className="col-sm-9">
 
                      
-                    <select name="parentDepartment" className="form-control" onChange={ (e) => setParentDepartment(e.target.value) }>
+                    <select name="parentDepartment" className="form-control" onChange={ (e) => setParentDepartment(e.target.value) }
+                    onKeyPress={(e) => handleKeyPress(e)}
+
+                    >
                         <option value="">Select</option>
                         {/* <DepartmentDropdown parentCompany={parentCompany}/> */}
                         <DepartmentByCompany parentCompany={parentCompany} prevSelected="" />
 
                     </select> 
+                    {errors.parentDepartment && (
+                      <div Style="color:red;font-weight:400">
+                        {errors.parentDepartment}
+                      </div>
+                    )}
 
-                    {errors.parentDepartment && <div Style="color:red;font-weight:600;padding:5px;">{errors.parentDepartment}</div>}
+
 
                   </div>
                 </div>
@@ -217,7 +300,6 @@ const AddInstructor = () => {
                         <DepartmentByCompany parentCompany={id} prevSelected="" />
                     </select> 
 
-                    {errors.deptID && <div Style="color:red;font-weight:600;padding:5px;">{errors.deptID}</div>}
 
                   </div>
                 </div> : null }
@@ -236,6 +318,8 @@ const AddInstructor = () => {
                       onChange={handleFileChange}
                       accept="image/png,image/jpeg,image/jpg"
                     />
+                    
+
                   </div>
                 </div>
 
@@ -249,10 +333,17 @@ const AddInstructor = () => {
                       name="aboutMe"
                       value={aboutMe}
                       onChange={(e) => setAboutMe(e.target.value)}
-                      required
+                      onKeyPress={(e) => handleKeyPress(e)}
+
+                      
                     >
                       {aboutMe}
                     </textarea>
+                    {errors.aboutMe && (
+                      <div Style="color:red;font-weight:400">
+                        {errors.aboutMe}
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -261,12 +352,20 @@ const AddInstructor = () => {
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
+                     
                       name="address"
+                      
                       onChange={(e) => setAddress(e.target.value)}
-                      required
+                      onKeyPress={(e) => handleKeyPress(e)}
+
                     >
                       {address}
                     </textarea>
+                    {errors.address && (
+                      <div Style="color:red;font-weight:400">
+                        {errors.address}
+                      </div>
+                    )}
                   </div>
                 </div>
 

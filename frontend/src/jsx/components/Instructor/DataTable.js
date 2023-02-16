@@ -1,12 +1,14 @@
 import React, { useMemo, useState } from "react";
 
 import DataTable from "react-data-table-component";
+
 import DropDownBlog from "../Dashboard/DropDownBlog";
 import ActionDropDown from "../Dashboard/ActionDropDown";
 import FilterComponent from "./FilterComponent";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
+import styled from 'styled-components';
 
 import { useSelector } from "react-redux";
 import { tableStyles } from "./Instructor/tableStyles";
@@ -29,6 +31,7 @@ const loadImage = (imageName) => {
 
 
 const Table = props => {
+
 
   const columns = [
     {
