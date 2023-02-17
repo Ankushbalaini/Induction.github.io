@@ -47,6 +47,7 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
     setAddress(instructorData.profile.address);
     setProfilePhoto(instructorData.profile.profilePhoto);
     setUserID(instructorData.profile._id);
+    handleSubmit();
   },[isModalOpen])
 
 
@@ -57,7 +58,7 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
       return swal("Failed", "All fields are required!", "error");
     }
 
-    const data = new FormData();
+    let data = new FormData();
     data.append('name', name);
     data.append('email', email);
     data.append('image', image.data);
@@ -85,9 +86,10 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
         //profile
         if(role==='super_admin'){
           navigate.push("/instructors");
-        }else{
-          navigate.push("/instructor-profile");
         }
+        // }else{
+        //   navigate.push("/instructor-profile");
+        // }
         
       });
       
@@ -109,6 +111,7 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
             data-dismiss="modal"
             onClick={handleCallback}
           ></Button>
+          
         </div>
         <div className="modal-body">
           <form className="update-form" onSubmit={handleSubmit}>
@@ -156,11 +159,6 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                       Image <span className="required">*</span>
                     </label>
                     <div className="instructors-media">
-
-
-
-                    {/* <img src={ loadImage(preview) } Style="max-height:100px; max-width:100px; padding:10px; border-radius:10px"></img> */}
-
 
                     </div> 
                     <input type="hidden" value={preview} name="logo" />
@@ -220,12 +218,7 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                     />
                   </div>
                 </div>
-
-
-
               </div>
-
-
           </form>
         </div>
       </div>

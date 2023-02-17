@@ -134,6 +134,8 @@ const AddInstructor = () => {
     float: 'right'
   };
 
+
+   // on click validation remove function
   function handleKeyPress(e) {
     var key = e.key;
    if (key == key) {
