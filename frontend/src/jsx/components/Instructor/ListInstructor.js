@@ -189,9 +189,6 @@ const Instructors = () => {
     handlepageLoad();
   }, [isModalOpen, isUserStatusChanged]);
 
-
-  
-
   // Active pagginarion
   activePag.current === 0 && chageData(0, sort);
   // paggination
@@ -334,7 +331,8 @@ const Instructors = () => {
 
       <UpdateProfile isModalOpen={isModalOpen} 
       trackOnclick={trackOnclick} 
-      instructorData={instructorData}></UpdateProfile>
+      instructorData={instructorData}>
+      </UpdateProfile>
     </>
   );
 };

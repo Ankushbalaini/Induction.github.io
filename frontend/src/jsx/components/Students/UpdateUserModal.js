@@ -99,11 +99,13 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     setAddress(profileData.profile.address);
     setPreview(profileData.profile.profilePhoto);
     setEmail(profileData.email);
-    console.log('profileData', profileData);
+   
     // call to api to update Department Dropdown
   }, [ isModalOpen]);
 
   const handleSubmit = async (e) => {
+    console.log(e.target.value,"ee....");
+  
     e.preventDefault();
     // validate data
     // if (parentCompany === "", deptID === "") {
@@ -175,10 +177,12 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
       }).then((value) => {
         handleCallback();
         //profile
+        if(role==='super_admin'){
         navigate.push("/students");
+        }
       });
     } else {
-      return swal("Failed", "Error message", "error");
+      return swal("Failed", response.message, "error");
     }
   };
 
@@ -188,7 +192,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     <Modal className="modal fade" show={isModalOpen}>
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Update Profile </h5>
+          <h5 className="modal-title">Update Profile</h5>
           <Button
             variant=""
             type="button"
@@ -198,8 +202,9 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
           ></Button>
         </div>
         <div className="modal-body">
-          <form className="update-form" onSubmit={handleSubmit} encType>
+          <form className="update-form" onSubmit={handleSubmit} >
             <div className="row">
+
               {/* Super admin starts */}
               {role === "super_admin" ? (
                 <div>
@@ -253,7 +258,6 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                   </div>
                 </div>
               ) : null}
-
               {/* Super admin ends */}
 
               {/* company start */}
@@ -279,10 +283,9 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                   )}
                 </div>
               ) : null}
-
               {/* company ends */}
 
-              {/* company start */}
+              {/* instructor start */}
               {role === "instructor" ? (
                 <div className="form-group mb-3">
                   <label htmlFor="department" className="text-black font-w600">
@@ -300,8 +303,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                   </select>
                 </div>
               ) : null}
-
-              {/* company ends */}
+              {/* instructor ends */}
 
               <div className="col-lg-6">
                 <div className="form-group mb-3">

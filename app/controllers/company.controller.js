@@ -3,9 +3,6 @@ const db = require("../models");
 const companyModel = db.company;
 const userModel = db.users;
 const userCredModel = db.user_cred;
-// const fileupload = require('express-fileupload');
-// const app = express();
-// app.use(fileupload());
 
 var jwt = require("jsonwebtoken");
 
@@ -33,7 +30,6 @@ exports.list = (req, res) => {
 
 /*
  * @author Singh
- *
  * @method : POST
  * @response JSON
  */

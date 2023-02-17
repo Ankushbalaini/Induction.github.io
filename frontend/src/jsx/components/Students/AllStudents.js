@@ -49,17 +49,6 @@ const AllStudents = () => {
   });
   const [students, setStudents] = useState([]);
 
- 
-  // // Active data
-  // const chageData = (frist, sec) => {
-  //   for (var i = 0; i < data.length; ++i) {
-  //     if (i >= frist && i < sec) {
-  //       data[i].classList.remove("d-none");
-  //     } else {
-  //       data[i].classList.add("d-none");
-  //     }
-  //   }
-  // };
 
   const loadImage = (imageName) => {
     return images(`./${imageName}`);
