@@ -171,7 +171,7 @@ const InstructorDashboard = () =>{
                         </span>
                         <div className="ms-3">
                           <span>Performance</span>
-                          <h4 className="fs-18 mb-0">14</h4>
+                          <h4 className="fs-18 mb-0">33.4</h4>
                         </div>
                       </div>
                     </div>	

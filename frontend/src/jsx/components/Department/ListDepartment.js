@@ -29,9 +29,7 @@ const ListDepartments = () => {
   const [modalData, setModalData] = useState({ name: "" });
   const [editID, setEditID] = useState();
   const token = useSelector((state) => state.auth.auth.token);
- console.log(deptData,"deptdata......")
  const actionHandler = (department) => {
-    console.log("here");
     setIsModalOpen(true);
     setModalData(department);
     setName(department.name);
@@ -39,7 +37,6 @@ const ListDepartments = () => {
     setParentCompany(department.parentCompany);
     setEditID(department._id);
   };
-
   const deleteClick = () => {
     // show delete confirmation msg
     swal({
@@ -102,7 +99,7 @@ const onSubmitHandle = async (e) => {
   useEffect(() => {
     handlepageLoad();
   //  actionHandler();
-  }, [isModalOpen ]);
+  }, [isModalOpen]);
 
   const buttonsty = {
     margin: "auto",
@@ -115,7 +112,7 @@ const onSubmitHandle = async (e) => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h4>Department List</h4>
+              <h2>Department List</h2>
             </div>
             <div className="card-body">
               <div className="table-responsive">
@@ -137,7 +134,7 @@ const onSubmitHandle = async (e) => {
                     data={deptData}
                     actionHandler={actionHandler}
                     deleteClick={deleteClick}
-                  />
+              />
             </div>
           </div>
         </div>
