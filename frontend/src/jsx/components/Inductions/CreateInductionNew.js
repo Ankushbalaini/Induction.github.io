@@ -133,7 +133,6 @@ const CreateInduction = () => {
     }
   };
 
-<<<<<<< HEAD
   const handleCompanyChange = async (e) => {
     // call api to fetch departments
     setParentCompany(e.target.value);
@@ -164,13 +163,12 @@ const CreateInduction = () => {
         setErrors((errorsObj == false))
     }
 }
-=======
-  const buttonStyle = {
-    // margin : "auto",
-    display : "flex",
-    float : "right"
-  }
->>>>>>> master
+
+const buttonStyle = {
+  // margin : "auto",
+  display : "flex",
+  float : "right"
+}
 
   useEffect(() => {
     setLoading(false);
@@ -383,13 +381,7 @@ const CreateInduction = () => {
                       Add New Slide
                     </button>
 
-<<<<<<< HEAD
-                    <button className="btn btn-success" type="submit" >
-                      Submit
-                    </button>
-=======
                     
->>>>>>> master
                   </div>
                 </div>
               </form>
