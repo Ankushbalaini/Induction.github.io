@@ -19,7 +19,7 @@ const Table = props => {
     {
       name : "Status",
       selector:"status",
-      // sortable:true,
+      sortable:true,
       hide: "sm",
       cell: row => (
         <div

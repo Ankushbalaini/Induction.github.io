@@ -33,8 +33,7 @@ export default function ActionDropDown(props) {
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu
-          className="dropdown-menu dropdown-menu-end"
-          align="right"
+          
         >
           <Dropdown.Item onClick={handleCallback}>Edit</Dropdown.Item>
           <Dropdown.Item onClick={trackDDeleteClick}>Delete</Dropdown.Item>

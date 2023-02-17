@@ -8,6 +8,14 @@ import UpdateMcq from "./UpdateMcq";
 
 const ViewMcq = () => {
   const navigate = useHistory();
+  const [test, settest] = useState(0);
+  
+  const [data, setData] = useState(
+    document.querySelectorAll("#student_wrapper tbody tr")
+  );
+
+  const sort = 3;
+  const activePag = useRef(0);
 
   const { id } = useParams();
   const [question, setQuestion] = useState();
@@ -17,6 +25,16 @@ const ViewMcq = () => {
   const [loading, setLoading] = useState(true);
   const [editID, setEditID] = useState();
 
+   // Active data
+   const chageData = (frist, sec) => {
+    for (var i = 0; i < data.length; ++i) {
+      if (i >= frist && i < sec) {
+        data[i].classList.remove("d-none");
+      } else {
+        data[i].classList.add("d-none");
+      }
+    }
+  };
 
   const trackOnclick = (payload, pdata) => {
     if (pdata) {
@@ -63,11 +81,12 @@ const ViewMcq = () => {
       const rows = response.data.map((row, index) => {
         return (
           <tr key={index}>
-            <td> {index + 1} </td>
-            <td> {row.question} </td>
+            <td>{index + 1}</td>
+            <td>{row.question}</td>
             <td>
               <ActionDropDown trackOnclick={trackOnclick} mcqData={row} trackDeleteClick={trackDeleteClick}/>
             </td>
+            
           </tr>
         );
       });
@@ -80,10 +99,25 @@ const ViewMcq = () => {
   };
 
   useEffect(() => {
-    if (loading) {
+    
       handlepageLoad();
-    }
+    
+    setData(document.querySelectorAll("#student_wrapper tbody tr"));
   }, [mcqData]);
+
+   // Active pagginarion
+   activePag.current === 0 && chageData(0, sort);
+   // paggination
+   let paggination = Array(Math.ceil(data.length / sort))
+     .fill()
+     .map((_, i) => i + 1);
+ 
+   // Active paggination & chage data
+   const onClick = (i) => {
+     activePag.current = i;
+     chageData(activePag.current * sort, (activePag.current + 1) * sort);
+     settest(i);
+   };
 
   return (
     <>
@@ -116,24 +150,81 @@ const ViewMcq = () => {
           <div className="col-xl-12">
             <div className="card students-list">
               <div className="card-header border-0 flex-wrap pb-0">
-                <h4>Mcq List</h4>
+                <h2 className="mb-3">Mcq List</h2>
               </div>
               <div className="card-body py-0">
                 <div className="table-responsive">
                   <div className="dataTables_wrapper no-footer">
                     <table
                       className="table display mb-4 dataTablesCard order-table card-table text-black application "
-                      id="application-tbl1_next"
+                      id="student_wrapper"
                     >
                       <thead>
                         <tr>
                           <th>Sr. No</th>
                           <th>Questions</th>
-                          <th>Actions</th>
+                          <th style={{textAlign: "right"}}
+                          >Actions</th>
                         </tr>
                       </thead>
                       <tbody>{tableData}</tbody>
                     </table>
+
+                    <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
+                    <div className="dataTables_info">
+                      Showing {activePag.current * sort + 1} to{" "}
+                      {data.length > (activePag.current + 1) * sort
+                        ? (activePag.current + 1) * sort
+                        : data.length}{" "}
+                      of {data.length} entries
+                    </div>
+                    <div
+                      className="dataTables_paginate paging_simple_numbers mb-0"
+                      id="application-tbl1_paginate"
+                    >
+                      <Link
+                        className="paginate_button previous "
+                        to="/viewmcq/${id}"
+                        onClick={() =>
+                          activePag.current > 0 &&
+                          onClick(activePag.current - 1)
+                        }
+                      >
+                        <i
+                          className="fa fa-angle-double-left"
+                          aria-hidden="true"
+                        ></i>
+                      </Link>
+                      <span>
+                        {paggination.map((number, i) => (
+                          <Link
+                            key={i}
+                            to="/viewmcq/:id"
+                            className={`paginate_button  ${
+                              activePag.current === i ? "current" : ""
+                            } `}
+                            onClick={() => onClick(i)}
+                          >
+                            {number}
+                          </Link>
+                        ))}
+                      </span>
+
+                      <Link
+                        className="paginate_button next"
+                        to="/viewmcq/:id"
+                        onClick={() =>
+                          activePag.current + 1 < paggination.length &&
+                          onClick(activePag.current + 1)
+                        }
+                      >
+                        <i
+                          className="fa fa-angle-double-right"
+                          aria-hidden="true"
+                        ></i>
+                      </Link>
+                    </div>
+                  </div>
                   </div>
                 </div>
               </div>

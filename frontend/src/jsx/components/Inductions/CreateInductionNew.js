@@ -126,6 +126,12 @@ const CreateInduction = () => {
 
   };
 
+  const buttonStyle = {
+    // margin : "auto",
+    display : "flex",
+    float : "right"
+  }
+
   useEffect(() => {
     setLoading(false);
   }, []);
@@ -150,7 +156,7 @@ const CreateInduction = () => {
 
       <div className="col-xl-12 col-lg-12">
         <div className="card">
-          <div className="card-header">
+        <div className="card-header">
             <h4 className="card-title">Create Induction</h4>
           </div>
           <div className="card-body">
@@ -284,6 +290,7 @@ const CreateInduction = () => {
                       <div className="mb-12 row">
                         <div className="col-sm-12">
                           <button
+                         
                             type="button"
                             className="btn btn-primary remove"
                             onClick={() => removeFormFields(index)}
@@ -298,7 +305,12 @@ const CreateInduction = () => {
 
                 <div className="mb-12 row">
                   <div className="col-sm-12">
+
+                  <button className="btn btn-success" type="submit" style={buttonStyle}>
+                      Submit
+                    </button>
                     <button
+                    style={buttonStyle}
                       className="btn btn-primary mx-3"
                       type="button"
                       onClick={() => addFormFields()}
@@ -306,9 +318,7 @@ const CreateInduction = () => {
                       Add New Slide
                     </button>
 
-                    <button className="btn btn-success" type="submit">
-                      Submit
-                    </button>
+                    
                   </div>
                 </div>
               </form>
