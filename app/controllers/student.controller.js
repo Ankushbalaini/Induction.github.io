@@ -13,28 +13,73 @@ const ObjectId = mongoose.Types.ObjectId;
 exports.index = async (req, res) => {
   try {
     const user = req.decoded;
-    let companyID, response;
-    /*
-    if(user.role === 'super_admin'){
-      // super admin 
 
-    } else if(user.role === 'company'){
-      // get user by parent company
-      // parent CompanyID == userID
-
-    } else if (user.role === 'instructor'){
-      // get id of instructor and from that get parent company
-      // here in decode get parentCompany
-    }else{
-      // end user 
-      // no request comes here
-
-    }
-    */
-
+    // for super admin 
     if (user.role === "super_admin") {
-      // super admin
+      // by default on filter = ALL then req.query.company is undefined
+      var filterCompany = (req.query.company === undefined) ? { $exists: true } : ObjectId(req.query.company);
+      var filterDepartment = (req.query.deptID === undefined) ? { $exists: true } : ObjectId(req.query.deptID);
+
+      var query = {
+        role: "user", 
+        parentCompany: filterCompany,
+        deptID : filterDepartment
+      }
     }
+
+    // for company
+    if (user.role === "company") {
+      var filterCompany = ObjectId(user.userID);
+      var filterDepartment = (req.query.deptID === undefined) ? { $exists: true } : ObjectId(req.query.deptID);
+
+      var query = {
+        role: "user", 
+        parentCompany: filterCompany,
+        deptID : filterDepartment
+      }
+    }
+
+
+    // for instructor
+    if (user.role === "instructor") {
+      var filterCompany = ObjectId(user.parentCompany);
+      var filterDepartment = (req.query.deptID === undefined) ? { $exists: true } : ObjectId(req.query.deptID);
+
+      var query = {
+        role: "user", 
+        parentCompany: filterCompany,
+        deptID : filterDepartment
+      }
+    }
+
+
+
+    // super admin
+    UserCred.find(query)
+      .populate("profile")
+      .then((users) => {
+        return res.status(200).send({
+          status: true,
+          message: "API is working fine!",
+          data: users
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          status: false,
+          message: err.message,
+        });
+      });
+      
+
+    
+
+
+
+
+
+
+    /*
 
     if (user.role === "company") {
       // get user by parent company
@@ -263,6 +308,16 @@ exports.index = async (req, res) => {
         });
       return;
     }
+
+
+
+    */
+
+
+
+
+
+
   } catch (err) {
     res.status(500).send({
       status: false,
@@ -272,103 +327,103 @@ exports.index = async (req, res) => {
   }
 };
 
-exports.index_org = (req, res) => {
-  try {
-    UserCred.aggregate([
-      {
-        $match: {
-          $expr: {
-            $and: [
-              {
-                $eq: ["$role", "user"],
-              },
-            ],
-          },
-        },
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "email",
-          foreignField: "email",
-          as: "profile",
-        },
-      },
-      {
-        $unwind: "$profile",
-      },
-      {
-        $project: {
-          _id: 1,
-          email: 1,
-          role: 1,
-          deptID: 1,
-          parentCompany: 1,
-          status: 1,
-          profile: 1,
-          createdAt: 1,
-        },
-      },
-    ])
-      .then((data) => {
-        return res.status(200).send({
-          status: true,
-          message: "All students Listing",
-          data: data,
-        });
-      })
-      .catch((err) => {
-        return res.status(500).send({
-          status: false,
-          message: err.message,
-          data: {},
-        });
-      });
-    return;
-  } catch (err) {
-    res.status(500).send({
-      status: false,
-      message: err.message,
-      data: {},
-    });
-  }
-};
+// exports.index_org = (req, res) => {
+//   try {
+//     UserCred.aggregate([
+//       {
+//         $match: {
+//           $expr: {
+//             $and: [
+//               {
+//                 $eq: ["$role", "user"],
+//               },
+//             ],
+//           },
+//         },
+//       },
+//       {
+//         $lookup: {
+//           from: "users",
+//           localField: "email",
+//           foreignField: "email",
+//           as: "profile",
+//         },
+//       },
+//       {
+//         $unwind: "$profile",
+//       },
+//       {
+//         $project: {
+//           _id: 1,
+//           email: 1,
+//           role: 1,
+//           deptID: 1,
+//           parentCompany: 1,
+//           status: 1,
+//           profile: 1,
+//           createdAt: 1,
+//         },
+//       },
+//     ])
+//       .then((data) => {
+//         return res.status(200).send({
+//           status: true,
+//           message: "All students Listing",
+//           data: data,
+//         });
+//       })
+//       .catch((err) => {
+//         return res.status(500).send({
+//           status: false,
+//           message: err.message,
+//           data: {},
+//         });
+//       });
+//     return;
+//   } catch (err) {
+//     res.status(500).send({
+//       status: false,
+//       message: err.message,
+//       data: {},
+//     });
+//   }
+// };
 
-exports.index_org2 = (req, res) => {
-  var query = { role: "user" };
+// exports.index_org2 = (req, res) => {
+//   var query = { role: "user" };
 
-  if (req.query.company !== undefined) {
-    query.parentCompany = ObjectId(req.query.company);
-  }
+//   if (req.query.company !== undefined) {
+//     query.parentCompany = ObjectId(req.query.company);
+//   }
 
-  if (req.query.deptID !== undefined) {
-    query.deptID = ObjectId(req.query.deptID);
-  }
+//   if (req.query.deptID !== undefined) {
+//     query.deptID = ObjectId(req.query.deptID);
+//   }
 
-  try {
-    UserCred.find(query, { password: 0, token: 0 })
-      .then((users) => {
-        return res.status(200).send({
-          status: true,
-          message: "All students Listing",
-          data: users,
-        });
-      })
-      .catch((err) => {
-        return res.status(500).send({
-          status: false,
-          message: err.message,
-          data: {},
-        });
-      });
-  } catch (err) {
-    res.status(500).send({
-      status: false,
-      message: err.message,
-      data: {},
-    });
-  }
-};
+//   try {
+//     UserCred.find(query, { password: 0, token: 0 })
+//       .then((users) => {
+//         return res.status(200).send({
+//           status: true,
+//           message: "All students Listing",
+//           data: users,
+//         });
+//       })
+//       .catch((err) => {
+//         return res.status(500).send({
+//           status: false,
+//           message: err.message,
+//           data: {},
+//         });
+//       });
+//   } catch (err) {
+//     res.status(500).send({
+//       status: false,
+//       message: err.message,
+//       data: {},
+//     });
+//   }
+// };
 
 //
 const getStudentByCompany = async (req, res) => {
@@ -434,8 +489,8 @@ const getStudentByCompany = async (req, res) => {
  *
  */
 exports.unassigned = (req, res) => {
-  
-  UserCred.find({ role:'user', parentCompany: { $exists: false }  })
+  UserCred.find({ role: "user", parentCompany: { $exists: false } })
+    .populate("profile")
     .then((users) => {
       return res.status(200).send({
         status: true,
@@ -449,6 +504,4 @@ exports.unassigned = (req, res) => {
         message: err.message,
       });
     });
-
-
 };

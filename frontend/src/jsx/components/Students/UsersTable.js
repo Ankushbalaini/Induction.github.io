@@ -7,7 +7,7 @@ import UserPopup from "./UserPopup";
 
 const images = require.context("../../../../../images/profile/", true);
 
-function UsersTable({ filteredUsers , checkUserUpdated }) {
+function UsersTable({ filteredUsers , checkUserUpdated, redirectTo }) {
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
@@ -61,7 +61,6 @@ function UsersTable({ filteredUsers , checkUserUpdated }) {
             icon: "success",
           }).then(() => {
             checkUserUpdated();
-            navigate.push("/users");
           });
         } else {
           return swal("Failed", response.message, "error");
@@ -74,6 +73,7 @@ function UsersTable({ filteredUsers , checkUserUpdated }) {
 
   return (
     <>
+      
       <table
         className="table display mb-4 dataTablesCard order-table card-table text-black application "
         id="application-tbl1_next"
@@ -111,7 +111,7 @@ function UsersTable({ filteredUsers , checkUserUpdated }) {
                   className={`badge light ${
                     user.status ? "badge-success" : "badge-danger"
                   }`}
-                  to="/users"
+                  to={`/${redirectTo}`}
                   onClick={() => changeUserStatus(user._id, user.status)}
                 >
                   {user.status ? "Active" : "Inactive"}

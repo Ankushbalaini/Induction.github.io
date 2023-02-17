@@ -12,7 +12,7 @@ const Users = () => {
   const loggedInID = useSelector((state) => state.auth.auth.id);
   const parentCompany = useSelector((state) => state.auth.auth.parentCompany);
 
-  const [userUpdated,setUserUpdated] = useState(false);
+  const [userUpdated, setUserUpdated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState();
 
@@ -59,7 +59,7 @@ const Users = () => {
   const checkUserUpdated = () => {
     setUserUpdated(true);
     // alert( "User is updated and model closed" );
-  }
+  };
 
   // call api
   const getUserData = async (token) => {
@@ -145,16 +145,22 @@ const Users = () => {
     getUserData(token);
 
     // setData(document.querySelectorAll("#student_wrapper tbody tr"));
-  }, [ companyFilter, deptFilter, loading, userUpdated ]);
+  }, [companyFilter, deptFilter, loading, userUpdated]);
 
   return (
     <>
       {loading ? (
         <h3>Loading</h3>
       ) : (
+
+
         <div className="row">
           <div className="col-xl-12">
             <div className="card students-list">
+
+            <div className="card-header border-0 flex-wrap pb-0">
+              <h4>Users List</h4>
+
               {/* filter at top */}
               <Filters
                 searchFilter={searchFilter}
@@ -163,6 +169,7 @@ const Users = () => {
                 companyFilter={companyFilter}
                 deptFilter={deptFilter}
               />
+              </div>
               <div className="card-body py-0">
                 <div className="table-responsive">
                   <div
@@ -170,7 +177,11 @@ const Users = () => {
                     className="dataTables_wrapper no-footer"
                   >
                     {/* User listing table */}
-                    <UsersTable filteredUsers={filteredUsers} checkUserUpdated={checkUserUpdated}/>
+                    <UsersTable
+                      filteredUsers={filteredUsers}
+                      checkUserUpdated={checkUserUpdated}
+                      redirectTo="users"
+                    />
 
                     <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
                       <div className="dataTables_info">

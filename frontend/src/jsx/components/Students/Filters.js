@@ -9,15 +9,12 @@ function Filters({
   DepartmentFilterHandle,
   companyFilter,
 }) {
-  
   const role = useSelector((state) => state.auth.auth.role);
   const loggedInID = useSelector((state) => state.auth.auth.id);
   const parentCompany = useSelector((state) => state.auth.auth.parentCompany);
 
   return (
-    <div className="card-header border-0 flex-wrap pb-0">
-      <h4>Users List</h4>
-
+    <>
       <div class="input-group search-area w-auto">
         <span class="input-group-text">
           <a href="/react/demo/instructor-students">
@@ -44,26 +41,26 @@ function Filters({
           onChange={(e) => searchFilter(e)}
         />
       </div>
+
       <div class="input-group">
         {role === "super_admin" ? (
           <>
-            <label for="company_filter">Select Company: </label>
+            <label for="company_filter" style={{margin:20, fontSize: 16, minWidth: 100 }}>Select Company: </label>
             <select
-              Style="margin:20px; font-size: 16px;"
               name="company_filter"
-              className="form-control"
+              className="form-control11"
+              style={{margin:20, fontSize: 16 }}
               onChange={(e) => CompanyFilterHandle(e)}
             >
               <option value="All">All</option>
               <CompanyDropdown />
             </select>
 
-            <label for="dept_filter">Select Department: </label>
+            <label for="dept_filter" style={{margin:20, fontSize: 16, minWidth: 100 }}>Select Department: </label>
             <select
-              Style="margin:20px; font-size: 16px;"
               name="dept_filter"
-              className="form-control"
               onChange={(e) => DepartmentFilterHandle(e)}
+              style={{margin:20, fontSize: 16, minWidth: 100 }}
             >
               <option value="All">All</option>
               <DepartmentByCompany parentCompany={companyFilter} />
@@ -72,35 +69,44 @@ function Filters({
         ) : null}
 
         {role === "company" ? (
-          <>
-            <label for="dept_filter">Select Department: </label>
-            <select
-              Style="margin:20px; font-size: 16px;"
-              name="dept_filter"
-              onChange={(e) => DepartmentFilterHandle(e)}
-            >
-              <option value="All">All</option>
+          <div className="row">
+            <div className="col-xl-6">
+              <label for="dept_filter">Select Department: </label>
+            </div>
+            <div className="col-xl-6">
+              <select
+                className="form-control"
+                name="dept_filter"
+                onChange={(e) => DepartmentFilterHandle(e)}
+              >
+                <option value="All">All</option>
 
-              <DepartmentByCompany parentCompany={loggedInID} />
-            </select>
-          </>
+                <DepartmentByCompany parentCompany={loggedInID} />
+              </select>
+            </div>
+          </div>
         ) : null}
 
         {role === "instructor" ? (
-          <>
-            <label for="dept_filter">Select Department:</label>
-            <select
-              Style="margin:20px; font-size: 16px;"
-              name="dept_filter"
-              onChange={(e) => DepartmentFilterHandle(e)}
-            >
-              <option value="All">All</option>
-              <DepartmentByCompany parentCompany={parentCompany} />
-            </select>
-          </>
+          <div className="row">
+            <div className="col-xl-6">
+              <label for="dept_filter">Select Department: </label>
+            </div>
+            <div className="col-xl-6">
+              <select
+                className="form-control"
+                name="dept_filter"
+                onChange={(e) => DepartmentFilterHandle(e)}
+              >
+                <option value="All">All</option>
+
+                <DepartmentByCompany parentCompany={parentCompany} />
+              </select>
+            </div>
+          </div>
         ) : null}
       </div>
-    </div>
+    </>
   );
 }
 export default Filters;

@@ -399,35 +399,41 @@ exports.signUp = (req, res) => {
     );
     user_cred.token = token;
 
+    req.body.userID = user_cred._id;
+    const user_detail = req.body;
+    const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
+    const newuser = new User(userWithoutPwd);
+
+    user_cred.profile =  newuser._id;
+    
     // here call save function
     user_cred
       .save()
       .then((user) => {
-        req.body.userID = user._id;
+        
 
-        const user_detail = req.body;
-        const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
-
-        const newuser = new User(userWithoutPwd);
+        //const user_detail = req.body;
+        //const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
+        //const newuser = new User(userWithoutPwd);
 
         newuser
           .save()
           .then((data) => {
-            res.status(200).send({
+            return res.status(200).send({
               status: true,
               message: "User registered successfully!",
               data: user_cred,
             });
           })
           .catch((err) => {
-            res.status(400).send({
+            return res.status(400).send({
               status: false,
               message: err.message,
             });
           });
       })
       .catch((err) => {
-        res.status(400).send({
+        return res.status(400).send({
           status: false,
           message: err.message,
         });
@@ -729,7 +735,7 @@ exports.edit = async (req, res) => {
   }
 
   if (req.decoded.role === "company") {
-    req.body.parentCompany = ObjectId(req.body.userID);
+    req.body.parentCompany = ObjectId(req.decoded.userID);
   }
 
   if (req.decoded.role === "instructor") {

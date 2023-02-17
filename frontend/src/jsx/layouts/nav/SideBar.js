@@ -418,7 +418,7 @@ const SideBar = () => {
 
                 <li>
                   <Link
-                    className={`${path === "users" ? "mm-active" : ""}`}
+                    className={`${path === "unassigned-users" ? "mm-active" : ""}`}
                     to="/unassigned-users"
                   >
                     Unassigned {" "}

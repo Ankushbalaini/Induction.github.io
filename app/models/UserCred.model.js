@@ -9,7 +9,7 @@ module.exports = (mongoose) => {
         role: { type: String, required: true },
         token: { type: String },
         parentCompany: { type: mongoose.Schema.Types.ObjectId, ref : 'company' },
-        parentInstructor: { type: mongoose.Schema.Types.ObjectId },
+        parentInstructor: { type: mongoose.Schema.Types.ObjectId, },
         deptID:{type: mongoose.Schema.Types.ObjectId },
         totalCompanies: { type: String },
         totalInstructors: { type: String },
@@ -37,7 +37,10 @@ module.exports = (mongoose) => {
             address: { type: String },
             phone: { type: String },
           },
-        ]
+        ], 
+        profile : { type:mongoose.Schema.Types.ObjectId ,  
+          ref : 'users',
+         }
 
       },
       { timestamps: true }
