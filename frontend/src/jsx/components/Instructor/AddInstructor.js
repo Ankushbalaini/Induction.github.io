@@ -37,7 +37,7 @@ const AddInstructor = () => {
    parentCompany:"",
    parentDepartment:"",
    address: "",
-   aboutMe: "" 
+   
 };
   
   const [errors, setErrors] = useState(errorObj);
@@ -69,11 +69,11 @@ const AddInstructor = () => {
       error = true;
     }
     if (parentCompany === "") {
-      errorObj1.parentCompany = "Select a parent company is required";
+      errorObj1.parentCompany = "Parent company is required";
       error = true;
     }
     if (parentDepartment === "") {
-      errorObj1.parentDepartment = "Select a parent company is required";
+      errorObj1.parentDepartment = "Parent Department is required";
       error = true;
     }
     if (profilePhoto === "") {
@@ -82,10 +82,6 @@ const AddInstructor = () => {
     }
     if (address === "") {
       errorObj1.address = "Address is required";
-      error = true;
-    }
-    if (aboutMe === "") {
-      errorObj1.aboutMe = "About is  is required";
       error = true;
     }
     
@@ -335,17 +331,13 @@ const AddInstructor = () => {
                       name="aboutMe"
                       value={aboutMe}
                       onChange={(e) => setAboutMe(e.target.value)}
-                      onKeyPress={(e) => handleKeyPress(e)}
+                      
 
                       
                     >
                       {aboutMe}
                     </textarea>
-                    {errors.aboutMe && (
-                      <div Style="color:red;font-weight:400">
-                        {errors.aboutMe}
-                      </div>
-                    )}
+                   
                   </div>
                 </div>
 

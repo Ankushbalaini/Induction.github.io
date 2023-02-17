@@ -302,6 +302,7 @@ const Companies = () => {
                 <div className="col-lg-12">
                   <div className="form-group mb-3">
                     <Button
+                    style={{margin: "auto", display: "flex"}}
                       type="submit"
                       value="Submit"
                       className="submit btn btn-primary"

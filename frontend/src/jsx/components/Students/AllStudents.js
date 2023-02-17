@@ -210,11 +210,11 @@ const AllStudents = () => {
           <div className="col-xl-12">
             <div className="card students-list">
               <div className="card-header border-0 flex-wrap pb-0">
-                <h4>Students List</h4>
+                <h2>Students List</h2>
               </div>
 
               {role === "super_admin" ? (
-                      <div >
+                      <div>
                           <select className="btn btn-white col-sm-2 border-dark"
                           Style="margin:20px; font-size: 16px; float:right"
                           name="search_department"
@@ -246,7 +246,7 @@ const AllStudents = () => {
                     className="dataTables_wrapper"
                   >       
                     {role === "company" ? (
-                      <>
+                      <div>
                        
                         <select
                           Style="margin:20px; font-size: 16px;"
@@ -256,21 +256,21 @@ const AllStudents = () => {
                           <option value="all">Select Department</option>
                           <DepartmentByCompany parentCompany={id} />
                         </select>
-                      </>
+                      </div>
                     ) : null}
 
                     {role === "instructor" ? (
-                      <>
+                      <div  className="col-sm-3">
                         
-                        <select
-                          Style="margin:20px; font-size: 16px;"
+                        <select 
+                        Style="margin:30px; font-size: 15px;"
                           name="search_department"
                           onChange={(e) => DepartmentChangeFilter(e)}
                         >
                           <option value="all">Select Department</option>
                           <DepartmentByCompany parentCompany={id} />
                         </select>
-                      </>
+                      </div>
                     ) : null}
 
                   </div>

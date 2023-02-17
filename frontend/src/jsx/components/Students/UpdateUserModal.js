@@ -417,6 +417,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
               <div className="col-lg-12">
                 <div className="form-group mb-3">
                   <input
+                  style={{margin: "auto", display: "flex"}}
                     type="submit"
                     value="Update Profile"
                     className="submit btn btn-primary"

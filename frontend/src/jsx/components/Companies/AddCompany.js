@@ -39,7 +39,7 @@ const AddCompany = () => {
     companyID:"",
     logo:"",
     address: "",
-    aboutCompany: "" 
+    
  };
 
  const [errors, setErrors] = useState(errorObj);
@@ -88,10 +88,7 @@ const AddCompany = () => {
       errorObj1.address = "Company address is required";
       error = true;
     }
-    if (aboutCompany === "") {
-      errorObj1.aboutCompany = "About section is  is required";
-      error = true;
-    }
+    
     
     setErrors(errorObj1);
 
@@ -235,6 +232,7 @@ const AddCompany = () => {
                       className="form-control"
                       onChange={(e) => setName(e.target.value) }
                       value={name}
+                      onKeyPress={(e) => handleKeyPress(e)}
                     />
                     {errors.name && (
                       <div Style="color:red;font-weight:400">
@@ -312,11 +310,8 @@ const AddCompany = () => {
                     >
                       {aboutCompany}
                     </textarea>
-                    {errors.aboutCompany && (
-                      <div Style="color:red;font-weight:400">
-                        {errors.aboutCompany}
-                      </div>
-                    )}
+                   
+                   
                   </div>
                 </div>
 

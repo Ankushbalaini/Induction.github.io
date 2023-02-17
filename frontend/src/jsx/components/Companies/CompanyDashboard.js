@@ -115,7 +115,7 @@ if(loading){
 							</span>
 							<div className="ms-3">
 								<span>Performance</span>
-								<h4 className="fs-18 mb-0">14</h4>
+								<h4 className="fs-18 mb-0">33.4</h4>
 							</div>
 						</div>
 					</div>	
@@ -127,37 +127,7 @@ if(loading){
 			</div>
 		</div>
 
-                <div className="col-xl-12">
-              <div className="card">
-                <div className="card-body">
-                  <div className="row">
-                    <div className="col-xl-6 col-xxl-12">
-                      <div className="card-calendar style-1 process-calendar">
-                        <CalendarBlog />
-                        {/* <input type='text' className="form-control d-none" id='datetimepicker' /> */}
-                      </div>
-                    </div>
-
-					
-                    <div className="col-xl-6 redial col-xxl-12">
-                      <p className="text-center">Student Progress this Month</p>
-                        <ScheduleRadilChart />
-                      <p className="my-4 text-center"></p>
-                      <ul className="skil-list">
-                        {/* {contentBlog.map((item, ind)=>(
-                          <li key={ind}>
-                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <rect x="1.5" y="1.5" width="9" height="9" rx="4.5" fill="white" stroke={item.color} strokeWidth="3"/>
-                            </svg>
-                            {item.title}
-                          </li>
-                        ))}                        */}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          
 
 			
 </div>	
