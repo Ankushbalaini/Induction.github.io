@@ -170,7 +170,7 @@ const ListDepartments = () => {
                   <div className="form-group mb-3">
                     <label htmlFor="name" className="text-black font-w600">
                       {" "}
-                      Name {name}<span className="required"></span>
+                      Name <span className="required">*</span>
                     </label>
                     <input
                       type="text"

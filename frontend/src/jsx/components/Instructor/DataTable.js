@@ -70,7 +70,7 @@ const Table = props => {
         <Link
           className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`}
           to="/instructors"
-          onClick={() => changeUserStatus(row._id, row.status) }
+          onClick={() => props.changeUserStatus(row._id, row.status) }
           
         >
           { (row.status) ? 'Active' : 'Inactive'}
@@ -82,7 +82,7 @@ const Table = props => {
       button: true,
       cell: row =>
           <>
-            <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick}/>
+            <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick} />
           </>
     }
   ];
@@ -93,49 +93,49 @@ const Table = props => {
   );
 
   const token = useSelector((state) => state.auth.auth.token);
-  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
+  //const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
   
   // change status
-const changeUserStatus = (userID, status) =>{
+// const changeUserStatusORG = (userID, status) =>{
 
   
-  // user id
-  swal({
-    title: "Are you sure?",
-    text:
-      `Once status Changed, User will get or loss access to account`,
-    icon: "warning",
-    buttons: true,
-    dangerMode: true,
-  }).then(async (willChange) => {
-    if (willChange) {
+//   // user id
+//   swal({
+//     title: "Are you sure?",
+//     text:
+//       `Once status Changed, User will get or loss access to account`,
+//     icon: "warning",
+//     buttons: true,
+//     dangerMode: true,
+//   }).then(async (willChange) => {
+//     if (willChange) {
 
-      const response = await fetch("http://localhost:8081/api/users/changeUserStatus", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token" : token,
-        },
-        body: JSON.stringify({ "userID" : userID, "status": status})
-      }).then((data) => data.json());
+//       const response = await fetch("http://localhost:8081/api/users/changeUserStatus", {
+//         method: "PUT",
+//         headers: {
+//           "Content-Type": "application/json",
+//           "x-access-token" : token,
+//         },
+//         body: JSON.stringify({ "userID" : userID, "status": status})
+//       }).then((data) => data.json());
 
 
-      if ("status" in response && response.status == true) {
-        swal("Poof! Your record has been updated!", {
-          icon: "success",
-        }).then(()=>{
-          setIsUserStatusChanged(true);
-        });
+//       if ("status" in response && response.status == true) {
+//         swal("Poof! Your record has been updated!", {
+//           icon: "success",
+//         }).then(()=>{
+//           setIsUserStatusChanged(true);
+//         });
         
-      } else {
-        return swal("Failed", response.message, "error");
-      }
+//       } else {
+//         return swal("Failed", response.message, "error");
+//       }
 
-    } else {
-      swal("Your status is not changed!");
-    }
-  })
-}
+//     } else {
+//       swal("Your status is not changed!");
+//     }
+//   })
+// }
 
   const filteredItems = props.data.filter(
     item =>

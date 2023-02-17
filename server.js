@@ -11,11 +11,12 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
+
 db.mongoose.set("strictQuery", false);
 // db.url
 db.mongoose
   .connect(
-    "mongodb+srv://bjsadmin:admin@bjs-homedelivery.ql49p3z.mongodb.net/?retryWrites=true&w=majority&tls=true",
+    "mongodb+srv://bjsadmin:admin@bjs-homedelivery.ql49p3z.mongodb.net/induction?retryWrites=true&w=majority&tls=true",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,

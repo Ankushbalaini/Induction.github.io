@@ -349,6 +349,18 @@ const SideBar = () => {
                     </Link>
                   </li>
 
+                  <li>
+                    <Link
+                      className={`${
+                        path === "add-induction" ? "mm-active" : ""
+                      }`}
+                      to="/update-induction/63d6bc15163abe901a4758e1"
+                    >
+                      Update Induction{" "}
+                    </Link>
+                  </li>
+
+
 
                   
 
@@ -391,7 +403,7 @@ const SideBar = () => {
                     className={`${path === "students" ? "mm-active" : ""}`}
                     to="/students"
                   >
-                    All Students{" "}
+                    Students{" "}
                   </Link>
                 </li>
 
@@ -403,6 +415,17 @@ const SideBar = () => {
                     All Users{" "}
                   </Link>
                 </li>
+
+                <li>
+                  <Link
+                    className={`${path === "users" ? "mm-active" : ""}`}
+                    to="/unassigned-users"
+                  >
+                    Unassigned {" "}
+                  </Link>
+                </li>
+
+
 
               </ul>
             </li>

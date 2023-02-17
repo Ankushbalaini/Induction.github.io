@@ -6,12 +6,15 @@ import "swiper/css";
 import course1 from "./../../../images/courses/course1.jpg";
 
 import { useSelector } from "react-redux";
-import CompanyDropdown from '../Companies/CompanyDropdown';
+import CompanyDropdown from "../Companies/CompanyDropdown";
 
 const images = require.context("../../../../../images/inductions/", true);
 
 function CoursesMain() {
-  const [source, setSource] = useState('list');
+  const token = useSelector((state) => state.auth.auth.token);
+  const role = useSelector((state) => state.auth.auth.role);
+
+  const [source, setSource] = useState("list");
   const [filterCompany, setFilterCompany] = useState();
   const [courses, setCourses] = useState();
   const [loading, setloading] = useState(true);
@@ -20,13 +23,7 @@ function CoursesMain() {
   const [totalRecords, setTotalRecords] = useState();
   const [showing, setShowing] = useState();
 
-  // pagination
-  const [prevLink, setPrevLink] = useState(0);
-  const [firstLink, setFirstLink] = useState(1);
-  const [secondLink, setSecondLink] = useState(2);
-  const [nextLink, setNextLink] = useState(3);
-
-  const token = useSelector((state) => state.auth.auth.token);
+  
 
   // api call
   async function getAllInductions(page) {
@@ -40,8 +37,12 @@ function CoursesMain() {
   }
 
   async function filterInductions(page, companyID) {
-    let filterInductionsApi = "http://localhost:8081/api/induction/filter/by/company?page=" + page + "&filterByCompany=" + companyID;
-    if (companyID == 'all') {
+    let filterInductionsApi =
+      "http://localhost:8081/api/induction/filter/by/company?page=" +
+      page +
+      "&filterByCompany=" +
+      companyID;
+    if (companyID == "all") {
       filterInductionsApi = "http://localhost:8081/api/induction?page=" + page;
     }
     return fetch(filterInductionsApi, {
@@ -58,7 +59,7 @@ function CoursesMain() {
   };
 
   const filterByCompany = async (companyID) => {
-    setSource('filter');
+    setSource("filter");
     setFilterCompany(companyID);
     const response = await filterInductions(page, companyID);
     if ("status" in response && response.status == true) {
@@ -67,7 +68,7 @@ function CoursesMain() {
       setloading(false);
       setData(document.querySelectorAll("#student_wrapper .cardDiv"));
     }
-  }
+  };
 
   const handleGetInduction = async (page) => {
     const response = await getAllInductions(page);
@@ -78,25 +79,17 @@ function CoursesMain() {
       setLimit(response.pagination.limit);
 
       setData(document.querySelectorAll("#student_wrapper .cardDiv"));
-
-      
     }
   };
 
   // use effect
   useEffect(() => {
-    if (source == 'filter') {
+    if (source == "filter") {
       filterByCompany(filterCompany);
     } else {
       handleGetInduction(page);
     }
-    
   }, [page, loading, totalRecords]);
-
-  
-
-
-
 
   const [data, setData] = useState(
     document.querySelectorAll("#student_wrapper .cardDiv")
@@ -131,25 +124,30 @@ function CoursesMain() {
     settest(i);
   };
 
-
   const content = loading ? (
     <h1>Loading</h1>
   ) : (
     <>
       <div className="widget-heading d-flex justify-content-between align-items-center">
         <h3 className="m-0">All Inductions ({totalRecords})</h3>
+
+        { (role === 'super_admin') ? 
         <div className="col-lg-4">
-          <select name="parentCompany" className="form-control" onChange={ (e) => filterByCompany(e.target.value) }>
+          <select
+            name="parentCompany"
+            className="form-control"
+            onChange={(e) => filterByCompany(e.target.value)}
+          >
             <option value="all">All</option>
             <CompanyDropdown />
-          </select> 
-        </div>
+          </select>
+        </div> : null }
         {/* <Link to={"./inductions"} className="btn btn-primary btn-sm">
           View all
         </Link> */}
       </div>
-      
-      <div className="row dataTables_wrapper no-footer" id="student_wrapper" >
+
+      <div className="row dataTables_wrapper no-footer" id="student_wrapper">
         {courses.map((data, index) => (
           <div className="col-xl-4 col-md-6 cardDiv" key={index}>
             <div className="card all-crs-wid">
@@ -157,7 +155,11 @@ function CoursesMain() {
                 <div className="courses-bx">
                   <div className="dlab-media">
                     {data.thumbnail !== "" ? (
-                      <img className="img-fluid" src={loadImage(data.thumbnail)} alt="" />
+                      <img
+                        className="img-fluid"
+                        src={loadImage(data.thumbnail)}
+                        alt=""
+                      />
                     ) : (
                       <img className="img-fluid" src={course1} />
                     )}
@@ -166,7 +168,9 @@ function CoursesMain() {
                     <div className="dlab-title d-flex justify-content-between">
                       <div>
                         <h4>
-                          <Link to={`/single-induction-view/${data._id}`}>{data.title}</Link>
+                          <Link to={`/single-induction-view/${data._id}`}>
+                            {data.title}
+                          </Link>
                         </h4>
                         <p className="m-0">
                           {data.subTitle}
@@ -180,21 +184,7 @@ function CoursesMain() {
                           >
                             <circle cx="2" cy="2.5" r="2" fill="#DBDBDB" />
                           </svg>
-                          {/* <span>
-                            5.0
-                            <svg
-                              width="16"
-                              height="15"
-                              viewBox="0 0 16 15"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M8 0.5L9.79611 6.02786H15.6085L10.9062 9.44427L12.7023 14.9721L8 11.5557L3.29772 14.9721L5.09383 9.44427L0.391548 6.02786H6.20389L8 0.5Z"
-                                fill="#FEC64F"
-                              />
-                            </svg>
-                          </span> */}
+                          
                         </p>
                       </div>
                       <h4 className="text-primary">
@@ -231,65 +221,56 @@ function CoursesMain() {
             </div>
           </div>
         ))}
-      
 
-      <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
-                      <div className="dataTables_info">
-                        Showing {activePag.current * sort + 1} to{" "}
-                        {data.length > (activePag.current + 1) * sort
-                          ? (activePag.current + 1) * sort
-                          : data.length}{" "}
-                        of {data.length} entries
-                      </div>
-                      <div
-                        className="dataTables_paginate paging_simple_numbers mb-0"
-                        id="application-tbl1_paginate"
-                      >
-                        <Link
-                          className="paginate_button previous "
-                          to="/inductions"
-                          onClick={() =>
-                            activePag.current > 0 &&
-                            onClick(activePag.current - 1)
-                          }
-                        >
-                          <i
-                            className="fa fa-angle-double-left"
-                            aria-hidden="true"
-                          ></i>
-                        </Link>
-                        <span>
-                          {paggination.map((number, i) => (
-                            <Link
-                              key={i}
-                              to="/inductions"
-                              className={`paginate_button  ${
-                                activePag.current === i ? "current" : ""
-                              } `}
-                              onClick={() => onClick(i)}
-                            >
-                              {number}
-                            </Link>
-                          ))}
-                        </span>
+        <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
+          <div className="dataTables_info">
+            Showing {activePag.current * sort + 1} to{" "}
+            {data.length > (activePag.current + 1) * sort
+              ? (activePag.current + 1) * sort
+              : data.length}{" "}
+            of {data.length} entries
+          </div>
+          <div
+            className="dataTables_paginate paging_simple_numbers mb-0"
+            id="application-tbl1_paginate"
+          >
+            <Link
+              className="paginate_button previous "
+              to="/inductions"
+              onClick={() =>
+                activePag.current > 0 && onClick(activePag.current - 1)
+              }
+            >
+              <i className="fa fa-angle-double-left" aria-hidden="true"></i>
+            </Link>
+            <span>
+              {paggination.map((number, i) => (
+                <Link
+                  key={i}
+                  to="/inductions"
+                  className={`paginate_button  ${
+                    activePag.current === i ? "current" : ""
+                  } `}
+                  onClick={() => onClick(i)}
+                >
+                  {number}
+                </Link>
+              ))}
+            </span>
 
-                        <Link
-                          className="paginate_button next"
-                          to="/inductions"
-                          onClick={() =>
-                            activePag.current + 1 < paggination.length &&
-                            onClick(activePag.current + 1)
-                          }
-                        >
-                          <i
-                            className="fa fa-angle-double-right"
-                            aria-hidden="true"
-                          ></i>
-                        </Link>
-                      </div>
-                    </div>
-
-                    </div>
+            <Link
+              className="paginate_button next"
+              to="/inductions"
+              onClick={() =>
+                activePag.current + 1 < paggination.length &&
+                onClick(activePag.current + 1)
+              }
+            >
+              <i className="fa fa-angle-double-right" aria-hidden="true"></i>
+            </Link>
+          </div>
+        </div>
+      </div>
     </>
   );
 
