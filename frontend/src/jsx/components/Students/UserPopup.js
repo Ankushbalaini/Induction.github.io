@@ -10,7 +10,7 @@ const images = require.context("../../../../../images/profile", true);
 const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
   const navigate = useHistory();
   const id = useSelector((state) => state.auth.auth.id);
-  const userCompany = useSelector((state) => state.auth.auth.parentCompany); // used in case of instructor
+  const instructorParentCompany = useSelector((state) => state.auth.auth.parentCompany); // used in case of instructor
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
 
@@ -138,13 +138,13 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
 
                 {role === "instructor" ? (
                   <div className="form-group mb-3">
-                    <input type="hidden" name="parentCompany" value={userCompany} />
+                    <input type="hidden" name="parentCompany" value={instructorParentCompany} />
                     <label
                       htmlFor="first_name"
                       className="text-black font-w600"
                     >
                       {" "}
-                      Assign Department  comp={id} == dept={state.deptID}<span className="required">*</span>{" "}
+                      Assign Department <span className="required">*</span>{" "}
                     </label>
                     <select
                       className="form-control"
@@ -154,7 +154,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                       required
                     >
                       <DepartmentByCompany
-                        parentCompany={userCompany}
+                        parentCompany={instructorParentCompany}
                         selectedDeptVal={profileData.deptID}
                       />
                     </select>
