@@ -146,7 +146,6 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
       errorObj1.aboutMe = "About section is  is required";
       error = true;
     }
-    
     setErrors(errorObj1);
 
     if (error) return ;
@@ -190,8 +189,6 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
       return swal("Failed", response.message, "error");
     }
   };
-
-  
 
   return (
     <Modal className="modal fade" show={isModalOpen}>
@@ -423,11 +420,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     name="address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                  /> {errors.address && (
-                    <div Style="color:red;font-weight:400">
-                      {errors.address}
-                    </div>
-                  )}
+                  />
                 </div>
               </div>
 
