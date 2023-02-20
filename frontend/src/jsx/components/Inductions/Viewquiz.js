@@ -37,9 +37,11 @@ const ViewMcq = () => {
   };
 
   const trackOnclick = (payload, pdata) => {
+
+  
     if (pdata) {
       setMcqData(pdata);
-      //console.log(pdata);
+     // console.log(pdata,"pdata....");
 
     }
     setIsModalOpen(payload);

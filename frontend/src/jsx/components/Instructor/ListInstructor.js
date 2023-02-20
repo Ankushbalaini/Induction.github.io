@@ -168,7 +168,7 @@ const Instructors = () => {
       const response = await filterInstructorApi(companyID);
 
       if ("status" in response && response.status == true) {
-        // setInstructosList(response.data);
+        setInstructosList(response.data);
    
       } else {
         return swal("Failed", "Something went wrong, please try again later.", "error");

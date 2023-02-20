@@ -37,7 +37,7 @@ module.exports = (mongoose) => {
             address: { type: String },
             phone: { type: String },
           },
-        ],
+        ]
       },
       { timestamps: true }
     )

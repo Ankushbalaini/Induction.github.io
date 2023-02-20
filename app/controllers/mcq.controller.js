@@ -40,7 +40,35 @@ exports.add = (req, res) => {
   }
 };
 
+exports.edit =(req,res)=>{
+  try {
+    const id = (req.params.id);
+  
+    MCQs.findByIdAndUpdate(
+      {_id:id},
+      {$set:req.body},
+      {multi:true}
+    ).then((mcq)=>{
+      return res.status(200).send({
+        status:true,
+        message:"Mcq Has been updated Successfully!",
+        data : mcq,
+      });
+    })
+    .catch((error) => {
+      return res.status(500).send({
+        status: false,
+        message: error.message || "Some error occurred while updating MCQs.",
+      });
+    });
 
+  }catch(err){
+    return res.status(500).send({
+      status:false,
+      message:err.message,
+    })
+  }
+}
 
 /**
  * Working fine for multiple ques add

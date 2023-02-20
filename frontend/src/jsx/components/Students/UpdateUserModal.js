@@ -16,7 +16,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
   const id = useSelector((state) => state.auth.auth.id);
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
-
+  const parentCompanyID=useSelector((state) => state.auth.auth.id);
   const [userID, setUserID] = useState(); // User Table id
   const [mainID, setMainID] = useState(); // UserCred table id
   const [parentCompany, setParentCompany] = useState("");
@@ -36,6 +36,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     email: "",
     password: "",
     firstName: "",
+    lastName:"",
     address: "",
     parentCompany: "",
     deptID: "",
@@ -88,7 +89,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
 
 
   useEffect(() => {
-    // setParentCompany(profileData.parentCompany);
+     setParentCompany(profileData.parentCompany);
     
     setDeptID(profileData.deptID);
     setMainID(profileData._id);
@@ -105,12 +106,11 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
 
   const handleSubmit = async (e) => {
     console.log(e.target.value,"ee....");
-  
+     
+
+
     e.preventDefault();
-    // validate data
-    // if (parentCompany === "", deptID === "") {
-    //   return swal("Failed", "All fields are required!", "error");
-    // }
+   
 
     let error = false;
     const errorObj1 = { ...errorObj }
@@ -129,10 +129,13 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     }
    
     if (firstName === "") {
-      errorObj1.name = "Name is required";
+      errorObj1.firstName = "First Name is required";
       error = true;
     }
-   
+    if (lastName === "") {
+      errorObj1.lastName = "Last Name is required";
+      error = true;
+    }
     if (address === "") {
       errorObj1.address = "address is required";
       error = true;
@@ -223,7 +226,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                         onChange={handleCompanyChange}
                         value={parentCompany}
                       >
-                        <option>Select</option>
+                        <option value={''}>Select</option>
                         <CompanyDropdown prevSelected={parentCompany} />
                       </select>
                       {errors.parentCompany && (
@@ -247,7 +250,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                       onChange={(e) => setDeptID(e.target.value)}
                       value={deptID}
                     >
-                      <option>Select</option>
+                      <option  value={''}>Select</option>
                       {option}
                     </select>
                     {errors.deptID && (
@@ -276,9 +279,9 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     <option>Select</option>
                     <DepartmentByCompany />
                   </select>
-                  {errors.email && (
+                  {errors.deptID && (
                     <div Style="color:red;font-weight:400">
-                      {errors.email}
+                      {errors.deptID}
                     </div>
                   )}
                 </div>
@@ -320,7 +323,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                   />
-                  {errors.firstName && (
+                 {errors.firstName && (
                     <div Style="color:red;font-weight:400">
                       {errors.firstName}
                     </div>
@@ -339,7 +342,11 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     name="lastName"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                  />
+                  />{errors.lastName && (
+                    <div Style="color:red;font-weight:400">
+                      {errors.lastName}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -395,7 +402,11 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     placeholder=""
                     value={aboutMe}
                     onChange={(e) => setAboutMe(e.target.value)}
-                  />
+                  /> {errors.aboutMe && (
+                    <div Style="color:red;font-weight:400">
+                      {errors.aboutMe}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -410,7 +421,11 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     name="address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                  />
+                  /> {errors.address && (
+                    <div Style="color:red;font-weight:400">
+                      {errors.address}
+                    </div>
+                  )}
                 </div>
               </div>
 
