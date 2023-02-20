@@ -10,7 +10,7 @@ import DepartmentByCompany from "../Department/DepartmentByCompany";
 const images = require.context("../../../../../images/profile", true);
 
 const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
-  console.log(profileData);
+
   const navigate = useHistory();
 
   const id = useSelector((state) => state.auth.auth.id);
@@ -91,6 +91,8 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
   useEffect(() => {
      setParentCompany(profileData.parentCompany);
     
+    // setParentCompany(profileData.parentCompany);
+    console.log(profileData,"profile")
     setDeptID(profileData.deptID);
     setMainID(profileData._id);
     setUserID(profileData.profile._id);

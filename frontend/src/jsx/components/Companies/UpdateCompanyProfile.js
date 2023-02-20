@@ -21,6 +21,7 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
   const [image, setImage] = useState({ preview: '', data: '' });
   const [logo, setLogo] = useState(companyData.profile.logo);
   const [preview, setPreview] = useState(companyData.profile.logo);
+
   const [userID, setUserID] = useState(companyData.profile._id);
   
   const handleCallback = () => {
@@ -40,6 +41,7 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
   }
 
   const handleSubmit = async (e) =>{
+
     e.preventDefault();
     // validate data
     if(name.trim() === '' || email.trim() === '' || address.trim() === '' || aboutCompany ==='') {
@@ -73,7 +75,7 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
       }).then((value) => {
         handleCallback();
         //profile
-        navigate.push("/company-profile");
+        // navigate.push("/company-profile");
       });
       
     } else {
@@ -87,6 +89,7 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title">Update Profile</h5>
+          
           <Button
             variant=""
             type="button"
@@ -94,9 +97,11 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
             data-dismiss="modal"
             onClick={handleCallback}
           ></Button>
+
         </div>
         <div className="modal-body">
-          <form className="update-form" onSubmit={handleSubmit}>
+          <form className="update-form"
+           onSubmit={handleSubmit}>
 
 
           <div className="row">

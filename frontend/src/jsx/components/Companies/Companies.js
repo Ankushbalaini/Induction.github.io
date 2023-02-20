@@ -323,7 +323,7 @@ const Companies = () => {
     </Fragment>;
 
     return (
-      <>{pageContent}</>
+      <div>{pageContent}</div>
     );
 };
 

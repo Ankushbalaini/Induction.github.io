@@ -4,7 +4,11 @@ import { useHistory } from "react-router-dom";
 import ActionDropDown from "./ActionDropDown";
 import swal from "sweetalert";
 import { useParams } from "react-router";
+import PageTitle from "../../layouts/PageTitle";
+
 import UpdateMcq from "./UpdateMcq";
+
+import Table from './DataTable';
 
 const ViewMcq = () => {
   const navigate = useHistory();
@@ -19,33 +23,45 @@ const ViewMcq = () => {
 
   const { id } = useParams();
   const [question, setQuestion] = useState();
-  const [mcqData, setMcqData] = useState({});
-  const [tableData, setTableData] = useState();
+  
+  const [mcqData, setMcqData] = useState({
+    question: "",
+    option1:"",
+    option2:"",
+    option3:"",
+    option4:"",
+    answer:"",
+    
+  });
+
+  const [tableData, setTableData] = useState([]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [editID, setEditID] = useState();
 
-   // Active data
-   const chageData = (frist, sec) => {
-    for (var i = 0; i < data.length; ++i) {
-      if (i >= frist && i < sec) {
-        data[i].classList.remove("d-none");
-      } else {
-        data[i].classList.add("d-none");
-      }
-    }
-  };
+  //  // Active data
+  //  const chageData = (frist, sec) => {
+  //   for (var i = 0; i < data.length; ++i) {
+  //     if (i >= frist && i < sec) {
+  //       data[i].classList.remove("d-none");
+  //     } else {
+  //       data[i].classList.add("d-none");
+  //     }
+  //   }
+  // };
 
-  const trackOnclick = (payload, pdata) => {
-
-  
-    if (pdata) {
-      setMcqData(pdata);
-     // console.log(pdata,"pdata....");
-
-    }
-    setIsModalOpen(payload);
-  }
+ 
+    // callback function to update state
+    const trackOnclick = (payload, userData) => {
+     
+      setIsModalOpen(payload);
+      if (userData) {
+        setMcqData(userData);
+      } 
+      
+    };
+    
  
   // callback function to opdate state
   const trackDeleteClick = () => {
@@ -67,62 +83,44 @@ const ViewMcq = () => {
     })
   }
   
-  const actionHandler = (mcq) => {
-    setIsModalOpen(true);
-    //setModalData(mcq);
-    setQuestion(mcq.question);
-    //setEditID(mcq.inductionID);
-  };
 
-  const handlepageLoad = async (e) => {
-    const response = await fetch("http://localhost:8081/api/mcq/" + id, {
-      method: "GET",
-    }).then((user) => user.json());
+  // api call
+async function getMcq(formValues) {
+  return fetch("http://localhost:8081/api/mcq/" + id, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formValues),
+  }).then((data) => data.json());
+}
 
-    if ("status" in response && response.status === true) {
-      const rows = response.data.map((row, index) => {
-        return (
-          <tr key={index}>
-            <td>{index + 1}</td>
-            <td>{row.question}</td>
-            <td>
-              <ActionDropDown trackOnclick={trackOnclick} mcqData={row} trackDeleteClick={trackDeleteClick}/>
-            </td>
-            
-          </tr>
-        );
-      });
 
-      setTableData(rows);
+
+  
+  // on List mcq page first render
+  const handlepageLoad = async (event) => {
+    const response = await getMcq();
+    if ("status" in response && response.status == true) {
+      setTableData(response.data);
       setLoading(false);
     } else {
-      return swal("Failed", response.message, "error");
+      return swal("Failed", "Error message", "error");
     }
   };
 
   useEffect(() => {
-    
+    // setLoading(false);
       handlepageLoad();
-    
-    setData(document.querySelectorAll("#student_wrapper tbody tr"));
-  }, [mcqData]);
+     setData(document.querySelectorAll("#student_wrapper tbody tr"));
+  }, [loading,isModalOpen]);
 
-   // Active pagginarion
-   activePag.current === 0 && chageData(0, sort);
-   // paggination
-   let paggination = Array(Math.ceil(data.length / sort))
-     .fill()
-     .map((_, i) => i + 1);
- 
-   // Active paggination & chage data
-   const onClick = (i) => {
-     activePag.current = i;
-     chageData(activePag.current * sort, (activePag.current + 1) * sort);
-     settest(i);
-   };
 
-  return (
-    <>
+  // console.log(tableData, "tabledata")
+    const pageContent = (loading) ? <h1>loading</h1>: 
+    <Fragment>
+    <PageTitle activeMenu="View Quiz" motherMenu="Inductions" />
+
       <ol className="breadcrumb">
         <li className="breadcrumb-item active">
           <Link
@@ -145,103 +143,138 @@ const ViewMcq = () => {
           </Link>
         </li>
       </ol>
-      {loading ? (
-        <h1>Loading</h1>
-      ) : (
+     
         <div className="row">
           <div className="col-xl-12">
             <div className="card students-list">
               <div className="card-header border-0 flex-wrap pb-0">
-                <h2 className="mb-3">Mcq List</h2>
+                <h2 className="mb-3">MCQ LIST</h2>
               </div>
-              <div className="card-body py-0">
+              <div className="card-body">
                 <div className="table-responsive">
-                  <div className="dataTables_wrapper no-footer">
-                    <table
-                      className="table display mb-4 dataTablesCard order-table card-table text-black application "
-                      id="student_wrapper"
-                    >
-                      <thead>
-                        <tr>
-                          <th>Sr. No</th>
-                          <th>Questions</th>
-                          <th style={{textAlign: "right"}}
-                          >Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>{tableData}</tbody>
-                    </table>
+                  <div className="dataTables_wrapper ">
 
-                    <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
-                    <div className="dataTables_info">
-                      Showing {activePag.current * sort + 1} to{" "}
-                      {data.length > (activePag.current + 1) * sort
-                        ? (activePag.current + 1) * sort
-                        : data.length}{" "}
-                      of {data.length} entries
-                    </div>
-                    <div
-                      className="dataTables_paginate paging_simple_numbers mb-0"
-                      id="application-tbl1_paginate"
-                    >
-                      <Link
-                        className="paginate_button previous "
-                        to="/viewmcq/${id}"
-                        onClick={() =>
-                          activePag.current > 0 &&
-                          onClick(activePag.current - 1)
-                        }
-                      >
-                        <i
-                          className="fa fa-angle-double-left"
-                          aria-hidden="true"
-                        ></i>
-                      </Link>
-                      <span>
-                        {paggination.map((number, i) => (
-                          <Link
-                            key={i}
-                            to="/viewmcq/:id"
-                            className={`paginate_button  ${
-                              activePag.current === i ? "current" : ""
-                            } `}
-                            onClick={() => onClick(i)}
-                          >
-                            {number}
-                          </Link>
-                        ))}
-                      </span>
+                  </div>
+                  <Table data={tableData} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} />
 
-                      <Link
-                        className="paginate_button next"
-                        to="/viewmcq/:id"
-                        onClick={() =>
-                          activePag.current + 1 < paggination.length &&
-                          onClick(activePag.current + 1)
-                        }
-                      >
-                        <i
-                          className="fa fa-angle-double-right"
-                          aria-hidden="true"
-                        ></i>
-                      </Link>
-                    </div>
-                  </div>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      )}
+      
       <UpdateMcq
         isModalOpen={isModalOpen}
         trackOnclick={trackOnclick}
         trackDeleteClick={trackDeleteClick}
         mcqData={mcqData}
+
       />
-    </>
-  );
+
+    </Fragment>
+    return (
+      <div>{pageContent}</div>
+    );
 };
 
 export default ViewMcq;
+
+// const rows = response.data.map((row, index) => {
+//   return (
+//     <tr key={index}>
+//       <td>{index + 1}</td>
+//       <td>{row.question}</td>
+//       <td>
+      
+//         <ActionDropDown trackOnclick={trackOnclick} mcqData={row} trackDeleteClick={trackDeleteClick}/>
+//       </td>
+      
+//     </tr>
+    
+//   );
+// });
+
+
+
+
+// <table
+//                       className="table display mb-4 dataTablesCard order-table card-table text-black application "
+//                       id="student_wrapper"
+//                     >
+//                       <thead>
+//                         <tr>
+//                           <th>Sr. No</th>
+//                           <th>Questions</th>
+//                           <th style={{textAlign: "right"}}
+//                           >Actions</th>
+//                         </tr>
+//                       </thead>
+//                       <tbody>{tableData}</tbody>
+
+                     
+
+//                     </table>
+
+
+
+
+
+
+
+// <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
+// <div className="dataTables_info">
+//   Showing {activePag.current * sort + 1} to{" "}
+//   {data.length > (activePag.current + 1) * sort
+//     ? (activePag.current + 1) * sort
+//     : data.length}{" "}
+//   of {data.length} entries
+// </div>
+// <div
+//   className="dataTables_paginate paging_simple_numbers mb-0"
+//   id="application-tbl1_paginate"
+// >
+//   <Link
+//     className="paginate_button previous "
+//     to="/viewmcq/${id}"
+//     onClick={() =>
+//       activePag.current > 0 &&
+//       onClick(activePag.current - 1)
+//     }
+//   >
+//     <i
+//       className="fa fa-angle-double-left"
+//       aria-hidden="true"
+//     ></i>
+//   </Link>
+//   <span>
+//     {paggination.map((number, i) => (
+//       <Link
+//         key={i}
+//         to="/viewmcq/:id"
+//         className={`paginate_button  ${
+//           activePag.current === i ? "current" : ""
+//         } `}
+//         onClick={() => onClick(i)}
+//       >
+//         {number}
+//       </Link>
+//     ))}
+//   </span>
+
+//   <Link
+//     className="paginate_button next"
+//     to="/viewmcq/:id"
+//     onClick={() =>
+//       activePag.current + 1 < paggination.length &&
+//       onClick(activePag.current + 1)
+//     }
+//   >
+//     <i
+//       className="fa fa-angle-double-right"
+//       aria-hidden="true"
+//     ></i>
+//   </Link>
+
+
+// </div>
+// </div>
