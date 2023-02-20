@@ -104,8 +104,6 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
   }, [ isModalOpen]);
 
   const handleSubmit = async (e) => {
-    console.log(e.target.value,"ee....");
-  
     e.preventDefault();
     // validate data
     // if (parentCompany === "", deptID === "") {
