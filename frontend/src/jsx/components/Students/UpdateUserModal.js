@@ -13,6 +13,10 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
   const navigate = useHistory();
 
   const id = useSelector((state) => state.auth.auth.id);
+
+  const instructorParentCompany = useSelector((state) => state.auth.auth.parentCompany);
+
+
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
 
@@ -224,7 +228,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     value={deptID}
                   >
                     <option>Select</option>
-                    <DepartmentByCompany parentCompany={id} />
+                    <DepartmentByCompany parentCompany={instructorParentCompany} />
                   </select>
                 </div>
               ) : null}

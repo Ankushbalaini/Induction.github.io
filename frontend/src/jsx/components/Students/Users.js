@@ -123,6 +123,8 @@ const Users = () => {
   const CompanyFilterHandle = (e) => {
     // set parent Company
     setCompanyFilter(e.target.value);
+    setDeptFilter("All");
+    
     setSearchField("");
   };
 

@@ -839,36 +839,6 @@ exports.setting = (req, res) => {
 exports.inductions = (req, res) => {
   try {
     const userID = ObjectId(req.decoded.userID);
-
-    // 63d22a6b0fcd4d8baa9cc79f
-    // 63d22a6b0fcd4d8baa9cc79f
-
-    //var distinctIdCode = { $group: { _id: { team_code: "$team_code", team_id: "$team_id" } } }
-    //db.foo.aggregate([distinctIdCode])
-    /*
-    db.user_induction_results.aggregate( [
-      {
-        $group: {
-           _id: userID,
-           count: { $count: { } },
-        }
-      }
-    ] ).then((data)=>{
-      return res.status(200).send({
-        message: "Success here",
-        status: true,
-        data: data
-      });
-    })
-    .catch((err)=>{
-      return res.status(500).send({
-        message: err.message,
-        status: false
-      });
-    });
-
-    */
-
     UserInductionResults.find({ userID: userID })
       .populate({
         path: "inductionID",

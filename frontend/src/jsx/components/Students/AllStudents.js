@@ -64,7 +64,7 @@ const AllStudents = () => {
 
   const CompanyChangeFilter = (e) => {
     setSearchCompany(e.target.value);
-    setLoading(true);
+    //setLoading(true);
 
     setDepartmentOptions(
       <DepartmentByCompany parentCompany={e.target.value} />
@@ -192,8 +192,7 @@ const AllStudents = () => {
     profileData,
     isModalOpen,
     isUserStatusChanged,
-    searchCompany,
-    searchDepartment,
+    searchCompany
   ]);
 
   // Active pagginarion
@@ -216,10 +215,6 @@ const AllStudents = () => {
     display: "flex",
   };
 
-  const sortByName = () => {
-    //
-    alert("Here");
-  };
 
   return (
     <>
@@ -273,9 +268,9 @@ const AllStudents = () => {
                           Style="margin:20px; font-size: 16px;"
                           name="search_company"
                           onChange={(e) => CompanyChangeFilter(e)}
-                          defaultValue={searchCompany}
+                          value={searchCompany}
                         >
-                          <option>Select Company</option>
+                          <option value="All">Select Company</option>
                           <CompanyDropdown />
                         </select>
                         {/* <label Style="margin:20px">Select Department</label> */}
@@ -283,9 +278,9 @@ const AllStudents = () => {
                           Style="margin:20px; font-size: 16px;"
                           name="search_department"
                           onChange={(e) => setSearchDepartment(e.target.value)}
-                          defaultValue={searchDepartment}
+                          value={searchDepartment}
                         >
-                          <option>Select Department</option>
+                          <option  value="All">Select Department</option>
                           {departmentOptions}
                         </select>
                       </>
@@ -298,7 +293,7 @@ const AllStudents = () => {
                           name="search_department"
                           onChange={(e) => setSearchDepartment(e.target.value)}
                         >
-                          <option value="all">All</option>
+                          <option value="All">All</option>
                           <DepartmentByCompany parentCompany={id} />
                         </select>
                       </>
@@ -311,7 +306,7 @@ const AllStudents = () => {
                           name="search_department"
                           onChange={(e) => setSearchDepartment(e.target.value)}
                         >
-                          <option value="all">All</option>
+                          <option value="All">All</option>
                           <DepartmentByCompany parentCompany={id} />
                         </select>
                       </>
@@ -325,7 +320,7 @@ const AllStudents = () => {
                     >
                       <thead>
                         <tr>
-                          <th onClick={sortByName}>Name</th>
+                          <th>Name</th>
                           <th>Student ID</th>
                           <th>Join Date</th>
                           <th>Status</th>

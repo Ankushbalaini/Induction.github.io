@@ -6,6 +6,7 @@ import PageTitle from "../../layouts/PageTitle";
 import JoditEditor from "jodit-react";
 import SlidesList from "./SlidesList";
 import QuizList from "./QuizList";
+import AddQuestion from "./Modals/AddQuestion";
 
 const UpdateInduction = () => {
   // get id from params {id}
@@ -17,6 +18,8 @@ const UpdateInduction = () => {
 
   // page states
   const [loading, setLoading] = useState(true);
+  const [isShowAddQuestion, setIsShowAddQuestion] = useState(false);
+
   const [induction, setInduction] = useState();
   const [slides, setSlides] = useState();
 
@@ -42,7 +45,9 @@ const UpdateInduction = () => {
     // nature
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+e.preventDefault();
+  };
 
   useEffect(() => {
     // get induction by id
@@ -52,6 +57,11 @@ const UpdateInduction = () => {
       callingAPI(id, token);
     }
   }, [loading]);
+
+  // Add question Modal POPUP
+  const onClickHandler = () => {
+    setIsShowAddQuestion(false);
+  };
 
   const pageContent = loading ? (
     <h1>Loading</h1>
@@ -129,26 +139,46 @@ const UpdateInduction = () => {
                     />
                   </div>
                 </div>
+
+                <div className="mb-3 row">
+                  <label className="col-sm-3 col-form-label">
+                    Pass Percentage
+                  </label>
+                  <div className="col-sm-9">
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="passPercentage"
+                      value={induction.passPercentage}
+                      onChange={(e) =>
+                        setInduction({
+                          ...induction,
+                          passPercentage: e.target.value,
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+
                 <div Style="text-align: end">
-                  <button type="button" class="me-2 btn btn-warning light">
-                    Save as Draft
-                  </button>
-                  <button type="button" class="me-2 btn btn-success light">
+                  <button type="button" className="me-2 btn btn-success light">
                     Update & Publish
+                  </button>
+                  <button type="button" className="me-2 btn btn-warning light">
+                    Save as Draft
                   </button>
                 </div>
               </form>
 
               <div className="card-header">
-              <h4 className="card-title"></h4>
-            </div>
-
+                <h4 className="card-title"></h4>
+              </div>
 
               <div className="card-header">
-                <h4 className="card-title">Induction Slides</h4>
-                <button type="button" class="me-2 btn btn-info">
-                  <span class="btn-icon-start text-info">
-                    <i class="fa fa-plus color-info"></i>
+                <h4 className="card-title">Slides</h4>
+                <button type="button" className="me-2 btn btn-info">
+                  <span className="btn-icon-start text-info">
+                    <i className="fa fa-plus color-info"></i>
                   </span>
                   Add
                 </button>
@@ -156,27 +186,37 @@ const UpdateInduction = () => {
                 {/* <button className="btn btn-danger">Add New Slide</button> */}
               </div>
 
-              
-
               <SlidesList Slides={slides} inductionID={id} />
 
               <div className="card-header">
-                <h4 className="card-title">Induction Quiz</h4>
-                <button type="button" class="me-2 btn btn-info">
-                  <span class="btn-icon-start text-info">
-                    <i class="fa fa-plus color-info"></i>
+                <h4 className="card-title">Quiz</h4>
+                <button
+                  type="button"
+                  className="me-2 btn btn-info"
+                  onClick={(e) => setIsShowAddQuestion(true)}
+                >
+                  <span className="btn-icon-start text-info">
+                    <i className="fa fa-plus color-info"></i>
                   </span>
                   Add
                 </button>
               </div>
 
+              {/* Quiz list */}
               <QuizList inductionID={id} />
+
+              {/* Add question popup */}
+              <AddQuestion
+                inductionID={id}
+                isShowAddQuestion={isShowAddQuestion}
+                onClickHandler={onClickHandler}
+                isUpdate={true}
+              />
             </div>
 
             {/* <div className="card-header">
               <h4 className="card-title">Action</h4>
             </div> */}
-
           </div>
         </div>
       </div>

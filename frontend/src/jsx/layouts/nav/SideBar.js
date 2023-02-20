@@ -354,7 +354,7 @@ const SideBar = () => {
                       className={`${
                         path === "add-induction" ? "mm-active" : ""
                       }`}
-                      to="/update-induction/63d6bc15163abe901a4758e1"
+                      to="/update-induction/63ef91f59c145e113579da4b"
                     >
                       Update Induction{" "}
                     </Link>

@@ -100,7 +100,7 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
     <Modal className="modal fade" show={isModalOpen}>
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Update Profile</h5>
+          <h5 className="modal-title">Update Instructor</h5>
           <Button
             variant=""
             type="button"
@@ -114,6 +114,13 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
 
 
           <div className="row">
+                
+
+
+
+
+
+
                 <div className="col-lg-6">
                   <div className="form-group mb-3">
                     <label htmlFor="name" className="text-black font-w600">
