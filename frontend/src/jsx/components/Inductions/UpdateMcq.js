@@ -9,6 +9,7 @@ import { useParams } from "react-router";
 
 
 const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
+     //   console.log(mcqData,"mcqData...");
 
     const navigate = useHistory();
 
