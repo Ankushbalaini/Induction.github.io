@@ -51,15 +51,7 @@ const ViewMcq = () => {
   //   }
   // };
 
-  // const trackOnclick = (payload, pdata) => {
-  //   if (pdata) {
-  //     setMcqData(pdata);
-  //     //console.log(pdata);
-
-  //   }
-  //   setIsModalOpen(payload);
-  // }
-
+ 
     // callback function to update state
     const trackOnclick = (payload, userData) => {
      
