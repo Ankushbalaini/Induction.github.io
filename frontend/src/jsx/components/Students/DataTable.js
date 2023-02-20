@@ -129,11 +129,6 @@ const Table = props => {
       subHeaderComponent={subHeaderComponent}
       customStyles={tableStyles}
     />
-    {/* <UpdateUserModal
-        isModalOpen={isModalOpen}
-        trackOnclick={trackOnclick}
-        profileData={profileData}
-      /> */}
       </>
   );
 };

@@ -5,44 +5,91 @@ import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { Last } from "react-bootstrap/esm/PageItem";
 import { useHistory } from "react-router-dom";
+import { useParams } from "react-router";
 
 
 const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
-        console.log(mcqData,"mcqData...");
 
     const navigate = useHistory();
 
     const token = useSelector((state) => state.auth.auth.token);
-    
-    const [question, setQuestion] = useState();
-    const [option1, setOption1] = useState();
-    const [option2, setOption2] = useState();
-    const [option3, setOption3] = useState();
-    const [option4, setOption4] = useState();
+
+    const [question, setQuestion] = useState(mcqData.question);
+    const [option1, setOption1] = useState(mcqData.option1);
+    const [option2, setOption2] = useState(mcqData.option2);
+    const [option3, setOption3] = useState(mcqData.option3);
+    const [option4, setOption4] = useState(mcqData.option4);
     const [answer, setAnswer] = useState(mcqData.answer);
-  useEffect(()=>{
-    setQuestion(mcqData.question)
-    setOption1(mcqData.option1)
-    setOption2(mcqData.option2)
-    setOption3(mcqData.option3)
-    setOption4(mcqData.option4)
-    setAnswer(mcqData.answer)
-  },[mcqData])
-    // const []
+
+    const [userID, setUserID] = useState(mcqData._id);
+    //console.log(mcqData,"mcqData...userid")
 
 
     const handleCallback = () => {
       trackOnclick(false);
     }
 
+  useEffect(()=>{
+  
+    setQuestion(mcqData.question)
+    setOption1(mcqData.option1)
+    setOption2(mcqData.option2)
+    setOption3(mcqData.option3)
+    setOption4(mcqData.option4)
+    setAnswer(mcqData.answer)
     
+  },[isModalOpen])
+    // const []
+    //console.log(mcqData, "mcq data")
+
+    const handleSubmit = async (e) =>{
+      e.preventDefault();
+      // validate data
+      // if(question.trim() === '' || answer.trim() ==='') {
+      //   return swal("Failed", "All fields are required!", "error");
+      //   //return false;
+      // }
+
+    const data = new FormData();
+    data.append('question', question);
+    data.append('option1', option1);
+    data.append('option2', option2);
+    data.append('option3', option3);
+    data.append('option4', option4);
+    data.append('answer', answer);
 
 
+    const response = await fetch(
+      "http://localhost:8081/api/mcq/edit/" + userID,
+      {
+        method: "PUT",
+        body: data,
+      }
+    ).then((data) => data.json());
+
+    if ("status" in response && response.status == true) {
+      return swal("Success", response.message, "success", {
+        buttons: false,
+        timer: 2000,
+      }).then((value) => {
+        handleCallback();
+        //profile
+        //navigate.push("/viewmcq");
+      });
+      
+    } else {
+      return swal("Failed", response.message, "error");
+    }
+    }
+
+
+  
     return (
         <Modal className="modal fade" show={isModalOpen}>
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Update Mcq </h5>
+           
             <Button
               variant=""
               type="button"
@@ -50,13 +97,13 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
               data-dismiss="modal"
               onClick={handleCallback}
             ></Button>
+
           </div>
           <div className="modal-body">
            <form
               className="update-form"
-              onSubmit={handleCallback}
-              encType
-            >
+              onSubmit={handleSubmit}>
+
               <div className="row" >
                 <div className="col-lg-12">
                   <div className="form-group mb-6">
@@ -88,7 +135,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
                       name="option1"
                       value={option1}
                       onChange={(e)=>setOption1(e.target.value)}
-                      disabled
+                    
 
                     />
                   </div>
@@ -111,9 +158,6 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
                   </div>
                 </div>
 
-
-
-
                 <div className="col-lg-12">
                   <div className="form-group mb-3">
                     <label htmlFor="option3" className="text-black font-w600">
@@ -126,7 +170,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
                       name="option3"
                       value={option3}
                       onChange={(e)=>setOption3(e.target.value)}
-                      disabled
+                      
 
                     />
                   </div>
@@ -145,39 +189,42 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
                       name="option4"
                       value={option4}
                       onChange={(e)=>setOption4(e.target.value)}
-                      disabled
+                   
 
                     />
                   </div>
                 </div>
    
-                       <div className="col-lg-12">
-                          <div className="form-group mb-3">
-                            <label htmlFor="answer" className="text-black font-w600">
-                              {" "}
-                              Correct Answer <span className="required">*</span>
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              name="answer"
-                              value={answer}
-                              onChange={(e)=>setAnswer(e.target.value)}
-                              disabled
+                <div className="col-lg-12">
+                   <div className="form-group mb-3">
+                     <label htmlFor="answer" className="text-black font-w600">
+                       {" "}
+                       Correct Answer <span className="required">*</span>
+                     </label>
+                     <input
+                       type="text"
+                       className="form-control"
+                       name="answer"
+                       value={answer}
+                       onChange={(e)=>setAnswer(e.target.value)}
+                   
+                     />
+                 </div>
         
-                            />
-                        </div>
-                
-                           
-                           <div className="col-lg-12">
-                             <div className="form-group mb-3">
-                               <Button className="btn-primary" onClick={""}>
-                                Update Quiz
-                               </Button>
-                             </div>
-                           </div>
-                       </div>
+                    
+                    <div className="col-lg-12">
+                      <div className="form-group mb-3">
+                        <input 
+                        type="submit"
+                        value="Update Profile"
+                        className="submit btn btn-primary"
+                        name="submit"
+                        />
+                      </div>
                     </div>
+
+                </div>
+             </div>
             </form>
           </div>
         </div>

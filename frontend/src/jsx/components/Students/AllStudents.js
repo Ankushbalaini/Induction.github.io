@@ -35,6 +35,7 @@ const AllStudents = () => {
   const [test, settest] = useState(0);
   
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
+  
   const [profileData, setProfileData] = useState({
     email: "",
     createdAt: "",
@@ -84,7 +85,7 @@ const AllStudents = () => {
   };
   
 
-  // callback function to opdate state
+  // callback function to update state
   const trackDeleteClick = () => {
     swal({
       title: "Are you sure?",

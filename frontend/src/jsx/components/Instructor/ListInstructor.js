@@ -168,7 +168,7 @@ const Instructors = () => {
       const response = await filterInstructorApi(companyID);
 
       if ("status" in response && response.status == true) {
-        // setInstructosList(response.data);
+        setInstructosList(response.data);
    
       } else {
         return swal("Failed", "Something went wrong, please try again later.", "error");
@@ -189,19 +189,19 @@ const Instructors = () => {
     handlepageLoad();
   }, [isModalOpen, isUserStatusChanged]);
 
-  // Active pagginarion
-  activePag.current === 0 && chageData(0, sort);
-  // paggination
-  let paggination = Array(Math.ceil(data.length / sort))
-    .fill()
-    .map((_, i) => i + 1);
+  // // Active pagginarion
+  // activePag.current === 0 && chageData(0, sort);
+  // // paggination
+  // let paggination = Array(Math.ceil(data.length / sort))
+  //   .fill()
+  //   .map((_, i) => i + 1);
 
-  // Active paggination & chage data
-  const onClick = (i) => {
-    activePag.current = i;
-    chageData(activePag.current * sort, (activePag.current + 1) * sort);
-    settest(i);
-  };
+  // // Active paggination & chage data
+  // const onClick = (i) => {
+  //   activePag.current = i;
+  //   chageData(activePag.current * sort, (activePag.current + 1) * sort);
+  //   settest(i);
+  // };
 
   return (
     <>
