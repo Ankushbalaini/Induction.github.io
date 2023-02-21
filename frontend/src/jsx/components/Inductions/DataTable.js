@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 
 import DataTable from "react-data-table-component";
 import DropDownBlog from "../Dashboard/DropDownBlog";
-import ActionDropDown from "../Dashboard/ActionDropDown";
+import ActionDropDown from "../Inductions/ActionDropDown";
 import FilterComponent from "./FilterComponent";
 import { Dropdown } from "react-bootstrap";
 
@@ -12,21 +12,15 @@ const Table = props => {
 
   const columns = [
     {
-      name: "Name",
-      selector: "name",
-      sortable: true,
-      grow: 1,
-      className: 'col-3',
-    },
-    {
-      name: "Email",
-      selector: "email",
+      name: "Sr.No",
+      selector: " ",
       sortable: true,
       hide: "sm",
+      cell: (row,index) => index + 1,
     },
     {
-      name: "Slug",
-      selector: "companyID",
+      name: "Questions",
+      selector: "question",
       sortable: true,
       hide: "sm",
     },
@@ -42,12 +36,13 @@ const Table = props => {
             >
               Edit
             </button>
+
             <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button> */}
             {/* <DropDownBlog /> */}
-            <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick}/>
+          
+            <ActionDropDown trackOnclick={props.trackOnclick} mcqData={row} trackDeleteClick={props.trackDeleteClick}/>
 
-            
-              
+
             </div>
     }
   ];
@@ -98,3 +93,5 @@ const Table = props => {
 };
 
 export default Table;
+
+            // <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick}/>

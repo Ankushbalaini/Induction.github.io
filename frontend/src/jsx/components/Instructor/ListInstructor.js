@@ -68,10 +68,15 @@ const Instructors = () => {
   const sort = 5;
   const activePag = useRef(0);
   const [test, settest] = useState(0);
-  const [students, setStudents] = useState(0);
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
-
-  const [instructorData, setInstructorData] = useState({profile: {name:'', email:'',aboutMe:'',address:'',logo:'',_id:''} });
+  const [instructorData, setInstructorData] = useState({
+  profile: {name:'',
+  email:'',
+  aboutMe:'',
+  address:'',
+  logo:'',
+  _id:''}, 
+  });
   const [instructorsList, setInstructosList] = useState([]);
 
 
@@ -184,22 +189,19 @@ const Instructors = () => {
     handlepageLoad();
   }, [isModalOpen, isUserStatusChanged]);
 
+  // // Active pagginarion
+  // activePag.current === 0 && chageData(0, sort);
+  // // paggination
+  // let paggination = Array(Math.ceil(data.length / sort))
+  //   .fill()
+  //   .map((_, i) => i + 1);
 
-  
-
-  // Active pagginarion
-  activePag.current === 0 && chageData(0, sort);
-  // paggination
-  let paggination = Array(Math.ceil(data.length / sort))
-    .fill()
-    .map((_, i) => i + 1);
-
-  // Active paggination & chage data
-  const onClick = (i) => {
-    activePag.current = i;
-    chageData(activePag.current * sort, (activePag.current + 1) * sort);
-    settest(i);
-  };
+  // // Active paggination & chage data
+  // const onClick = (i) => {
+  //   activePag.current = i;
+  //   chageData(activePag.current * sort, (activePag.current + 1) * sort);
+  //   settest(i);
+  // };
 
   return (
     <>
@@ -208,25 +210,29 @@ const Instructors = () => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h4>Instructor List</h4>
-              <div className="col-lg-4">
+              <h2>Instructor List</h2>
+              <div className="col-sm-3">
                 <select name="parentCompany" className="form-control" onChange={ (e) => filterByCompany(e.target.value) }>
                   <option value="all">All</option>
                   <CompanyDropdown />
                 </select> 
               </div>
             </div>
-            <div className="card-body py-0">
+            <div className="card-body ">
               <div className="table-responsive">
                 <div
                   id="student_wrapper"
-                  className="dataTables_wrapper no-footer"
+                  className="dataTables_wrapper "
                 >
                   {/* <Table data={data} click={clickhandler} /> */}
                   <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus}/>
                 </div>
+                
+
               </div>
+              
             </div>
+            
           </div>
         </div>
       </div>

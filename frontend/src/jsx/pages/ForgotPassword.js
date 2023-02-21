@@ -2,9 +2,9 @@ import React, { useState }from "react";
 import { Link } from "react-router-dom";
 import { connect, useDispatch } from 'react-redux';
 import {
-    loadingToggleAction,
-    signupAction,
-} from '../../store/actions/AuthActions';
+  loadingToggleAction,
+  forgotAction,
+} from "../../store/actions/AuthActions";
 // image
 
 import swal from 'sweetalert';
@@ -15,15 +15,16 @@ import loginbg from "../../images/bg-1.jpg";
 const ForgotPassword = ({ history }) => {
   const [email, setEmail] = useState();
 
-  let errorsObj = { firstName: '', lastName: '', email: '', password: '' };
+  let errorsObj = {  email: '' };
   const [errors, setErrors] = useState(errorsObj);
+  const dispatch = useDispatch();
   
   function onForgot(e) {
     e.preventDefault();
     let error = false;
     const errorObj = { ...errorsObj };
 
-    if (email === '') {
+    if (email === "") {
         errorObj.email = 'Email is Required';
         error = true;
     }
@@ -36,11 +37,26 @@ const ForgotPassword = ({ history }) => {
 }
 
   const handleResetPasswordSubmit = async (e) => {
+
     e.preventDefault();
+
+    let error = false;
+    const errorObj = { ...errorsObj };
+
+    if (email === "") {
+        errorObj.email = 'Email is Required';
+        error = true;
+    }
+
+    setErrors(errorObj);
+    if (error) return;
+
+
     const response = await resetPassword({
       email,
     });
-
+    
+  
     if ("status" in response && response.status == true) {
       swal("Success", response.message, "success", {
         buttons: false,
@@ -63,6 +79,14 @@ const ForgotPassword = ({ history }) => {
     }).then((data) => data.json());
 
   }
+
+  
+	function handleKeyPress(e) {
+		var key = e.key;
+	   if (key == key) {
+			setErrors((errorsObj == false))
+		}
+	}
   
   return (
     <div className="authincation h-100 p-meddle" style={{
@@ -84,7 +108,8 @@ const ForgotPassword = ({ history }) => {
                       </div>
                       <h4 className="text-center mb-4 fs-26 font-w600 text-black text-center">Forgot Password</h4>
                       <form onSubmit={(e) => handleResetPasswordSubmit(e)}>
-                        <div className="form-group  mb-4">
+                        
+                      <div className="form-group  mb-4">
                           <label className="">
                             <strong>Email</strong>
                           </label>
@@ -93,11 +118,14 @@ const ForgotPassword = ({ history }) => {
                             className="form-control"
                             defaultValue=""
                             onChange={(e)=>setEmail(e.target.value)}
+                            onKeyPress={(e) => handleKeyPress(e)}
                           />
-                          {errors.email && <div Style="color:red;font-weight:400">{errors.email}</div>}
+                          {errors.email && (<div Style="color:red;font-weight:400">{errors.email}</div>)}
                         </div>
+
                         <div className="text-center  mb-4">
-                          <button
+                          <button 
+                          
                             type="submit"
                             className="btn btn-primary btn-block"
                           >

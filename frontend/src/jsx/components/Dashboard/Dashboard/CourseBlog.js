@@ -45,7 +45,7 @@ const CourseBlogData = [
  
 export default function CourseBlog(props){
 	return(
-		<>
+		<div>
 			{/* <div className="row">
 				{CourseBlogData.map((item, ind)=>(
 					<div className={`col-xl-4 ${item.coloumClass}`} key={ind} >
@@ -116,6 +116,6 @@ export default function CourseBlog(props){
 
 			
 
-		</>
+		</div>
 	)
 }

@@ -10,6 +10,7 @@ import DepartmentByCompany from "../Department/DepartmentByCompany";
 const images = require.context("../../../../../images/profile", true);
 
 const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
+
   const navigate = useHistory();
 
   const id = useSelector((state) => state.auth.auth.id);
@@ -19,20 +20,34 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
 
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
-
+  const parentCompanyID=useSelector((state) => state.auth.auth.id);
   const [userID, setUserID] = useState(); // User Table id
   const [mainID, setMainID] = useState(); // UserCred table id
-  const [parentCompany, setParentCompany] = useState();
-  const [deptID, setDeptID] = useState();
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [email, setEmail] = useState();
-  const [aboutMe, setAboutMe] = useState();
+  const [parentCompany, setParentCompany] = useState("");
+  const [deptID, setDeptID] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [aboutMe, setAboutMe] = useState("");
   const [image, setImage] = useState({ preview: "", data: "" });
   const [preview, setPreview] = useState("dummy-user.png");
-  const [address, setAddress] = useState();
+  const [address, setAddress] = useState("");
   const [departmentDropdown, setDepartmentDropdown] = useState();
   const [option, setOption] = useState();
+
+   // validation messages
+   let errorObj = { 
+    email: "",
+    password: "",
+    firstName: "",
+    lastName:"",
+    address: "",
+    parentCompany: "",
+    deptID: "",
+ };
+
+ const [errors, setErrors] = useState(errorObj);
+
 
   const handleCompanyChange = async (e) => {
     // call api to fetch departments
@@ -57,49 +72,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // validate data
-    if (firstName === "" || lastName === "" || aboutMe === "") {
-      return swal("Failed", "All fields are required!", "error");
-    }
-
-    let formData = new FormData();
-    formData.append("mainID", mainID);
-    formData.append("deptID", deptID);
-    formData.append("parentCompany", parentCompany);
-    formData.append("first_name", firstName);
-    formData.append("last_name", lastName);
-    formData.append("email", email);
-    formData.append("aboutMe", aboutMe);
-    formData.append("image", image.data);
-    formData.append("profilePhoto", preview);
-    formData.append("address", address);
-
-    const response = await fetch(
-      "http://localhost:8081/api/users/edit/" + userID,
-      {
-        method: "PUT",
-        body: formData,
-        headers: {
-          "x-access-token": token,
-        },
-      }
-    ).then((data) => data.json());
-
-    if ("status" in response && response.status == true) {
-      return swal("Success", response.message, "success", {
-        buttons: false,
-        timer: 2000,
-      }).then((value) => {
-        handleCallback();
-        //profile
-        navigate.push("/students");
-      });
-    } else {
-      return swal("Failed", "Error message", "error");
-    }
-  };
+ 
 
   const handleCallback = () => {
     trackOnclick(false);
@@ -117,8 +90,13 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     setImage(img);
   };
 
+
+
   useEffect(() => {
+     setParentCompany(profileData.parentCompany);
+    
     // setParentCompany(profileData.parentCompany);
+    console.log(profileData,"profile")
     setDeptID(profileData.deptID);
     setMainID(profileData._id);
     setUserID(profileData.profile._id);
@@ -128,14 +106,99 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     setAddress(profileData.profile.address);
     setPreview(profileData.profile.profilePhoto);
     setEmail(profileData.email);
+   
     // call to api to update Department Dropdown
-  }, [profileData, isModalOpen, option]);
+  }, [ isModalOpen]);
+
+  const handleSubmit = async (e) => {
+    console.log(e.target.value,"ee....");
+     
+
+
+    e.preventDefault();
+   
+
+    let error = false;
+    const errorObj1 = { ...errorObj }
+
+    if (email === "") {
+      errorObj1.email = "Email is required";
+      error = true;
+    }
+    if (parentCompany === "") {
+      errorObj1.parentCompany = "Choose company first!";
+      error = true;
+    }
+    if (deptID === "") {
+      errorObj1.deptID = "Choose Department first!";
+      error = true;
+    }
+   
+    if (firstName === "") {
+      errorObj1.firstName = "First Name is required";
+      error = true;
+    }
+    if (lastName === "") {
+      errorObj1.lastName = "Last Name is required";
+      error = true;
+    }
+    if (address === "") {
+      errorObj1.address = "address is required";
+      error = true;
+    }
+    if (aboutMe === "") {
+      errorObj1.aboutMe = "About section is  is required";
+      error = true;
+    }
+    setErrors(errorObj1);
+
+    if (error) return ;
+
+
+    let data = new FormData();
+    data.append("mainID", mainID);
+    data.append("deptID", deptID);
+    data.append("parentCompany", parentCompany);
+    data.append("first_name", firstName);
+    data.append("last_name", lastName);
+    data.append("email", email);
+    data.append("aboutMe", aboutMe);
+    data.append("image", image.data);
+    data.append("profilePhoto", preview);
+    data.append("address", address);
+
+    const response = await fetch(
+      "http://localhost:8081/api/users/edit/" + userID,
+      {
+        method: "PUT",
+        body: data,
+        headers: {
+          "x-access-token": token,
+        },
+      }
+    ).then((data) => data.json());
+
+    if ("status" in response && response.status == true) {
+      return swal("Success", response.message, "success", {
+        buttons: false,
+        timer: 2000,
+      }).then((value) => {
+        handleCallback();
+        //profile
+        if(role==='super_admin'){
+        navigate.push("/students");
+        }
+      });
+    } else {
+      return swal("Failed", response.message, "error");
+    }
+  };
 
   return (
     <Modal className="modal fade" show={isModalOpen}>
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Update Profile </h5>
+          <h5 className="modal-title">Update Profile</h5>
           <Button
             variant=""
             type="button"
@@ -145,11 +208,12 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
           ></Button>
         </div>
         <div className="modal-body">
-          <form className="update-form" onSubmit={handleSubmit} encType>
+          <form className="update-form" onSubmit={handleSubmit} >
             <div className="row">
+
               {/* Super admin starts */}
               {role === "super_admin" ? (
-                <>
+                <div>
                   <div className="col-lg-6">
                     <div className="form-group mb-3">
                       <label
@@ -165,9 +229,14 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                         onChange={handleCompanyChange}
                         value={parentCompany}
                       >
-                        <option>Select</option>
+                        <option value={''}>Select</option>
                         <CompanyDropdown prevSelected={parentCompany} />
                       </select>
+                      {errors.parentCompany && (
+                        <div Style="color:red;font-weight:400">
+                          {errors.parentCompany}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="form-group mb-3">
@@ -184,13 +253,17 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                       onChange={(e) => setDeptID(e.target.value)}
                       value={deptID}
                     >
-                      <option>Select</option>
+                      <option  value={''}>Select</option>
                       {option}
                     </select>
+                    {errors.deptID && (
+                      <div Style="color:red;font-weight:400">
+                        {errors.deptID}
+                      </div>
+                    )}
                   </div>
-                </>
+                </div>
               ) : null}
-
               {/* Super admin ends */}
 
               {/* company start */}
@@ -209,12 +282,16 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     <option>Select</option>
                     <DepartmentByCompany />
                   </select>
+                  {errors.deptID && (
+                    <div Style="color:red;font-weight:400">
+                      {errors.deptID}
+                    </div>
+                  )}
                 </div>
               ) : null}
-
               {/* company ends */}
 
-              {/* company start */}
+              {/* instructor start */}
               {role === "instructor" ? (
                 <div className="form-group mb-3">
                   <label htmlFor="department" className="text-black font-w600">
@@ -232,8 +309,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                   </select>
                 </div>
               ) : null}
-
-              {/* company ends */}
+              {/* instructor ends */}
 
               <div className="col-lg-6">
                 <div className="form-group mb-3">
@@ -245,11 +321,16 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     type="text"
                     className="form-control"
                     defaultValue=""
-                    name="first_name"
+                    name="firstName"
                     placeholder=""
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                   />
+                 {errors.firstName && (
+                    <div Style="color:red;font-weight:400">
+                      {errors.firstName}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="col-lg-6">
@@ -261,10 +342,14 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                   <input
                     type="text"
                     className="form-control"
-                    name="last_name"
+                    name="lastName"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                  />
+                  />{errors.lastName && (
+                    <div Style="color:red;font-weight:400">
+                      {errors.lastName}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -320,7 +405,11 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     placeholder=""
                     value={aboutMe}
                     onChange={(e) => setAboutMe(e.target.value)}
-                  />
+                  /> {errors.aboutMe && (
+                    <div Style="color:red;font-weight:400">
+                      {errors.aboutMe}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -333,7 +422,6 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     rows={3}
                     className="form-control"
                     name="address"
-                    placeholder="Enter your current address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                   />
@@ -343,6 +431,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
               <div className="col-lg-12">
                 <div className="form-group mb-3">
                   <input
+                  style={{margin: "auto", display: "flex"}}
                     type="submit"
                     value="Update Profile"
                     className="submit btn btn-primary"

@@ -74,6 +74,7 @@ import ViewMcq from "./components/Inductions/Viewquiz";
 import AttemptQuiz from "./components/Inductions/Attemptquiz";
 import AttemptedInductions from "./components/Students/AttemptedInductions";
 
+
 const Markup = () => {
   var newState = store.getState();
 
@@ -115,6 +116,7 @@ const Markup = () => {
     { url: "mcq/:inductionID", component: Mcq },
     { url : "viewmcq/:id", component :ViewMcq},
     { url : "attemptquiz/:id",component:AttemptQuiz},
+    
   
     { url: "start-test/:id", component: StarTest },
 
@@ -127,7 +129,6 @@ const Markup = () => {
     { url: "instructor-students", component: InstructorStudents },
 
     { url: "students", component: AllStudents },
-    { url: "users", component: Users },
     { url : "attempted-inductions", component : AttemptedInductions},
     { url: 'unassigned-users', component: UnassignedUsers },
 

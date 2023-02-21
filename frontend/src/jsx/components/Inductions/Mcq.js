@@ -127,8 +127,8 @@ const AddMcq = (props) => {
 
       
 
-      <div className="row">
-        <div className="col-xl-12 col-lg-12 col-md-12">
+      <div className="row d-flex justify-content-center">
+        <div className="col-xl-6 col-lg-12 col-md-12 justify-content-center">
           <div className="card">
             <div className="card-header">
               <h4 className="card-title">Create a Quiz</h4>
@@ -137,7 +137,7 @@ const AddMcq = (props) => {
             <form onSubmit={(e) => onCreate(e)}>
               <div className="card-body">
                 <div className="basic-form">
-                  <h4 className="card-title m-auto">Enter Question</h4>
+                  <h5 className="mb-3">Enter Question</h5>
                   <input type="hidden" name="inductionID" value={inductionID} />
 
                   <div className="form-group ">
@@ -160,7 +160,7 @@ const AddMcq = (props) => {
               <div className="card-body">
                 <div className="basic-form">
                   <div className="form-group ">
-                    <h4 className="card-title mb-3">Enter your Choices</h4>
+                    <h5 className="mb-3">Enter your Choices</h5>
                     <div className="form-group mb-3">
                       <input
                         type="text"
@@ -236,7 +236,7 @@ const AddMcq = (props) => {
                   <Button
                     className="btn btn-success mb-3"
                     variant="primary"
-                    size="lg"
+                    size="m"
                     style={formstyle}
                     type="submit"
                   >
