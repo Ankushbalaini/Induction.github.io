@@ -223,6 +223,7 @@ const AllStudents = () => {
               {role === "super_admin" ? (
           <div className="btn-group" style={{display: "flex", alignItems:"end", justifyContent:"end",gap:"40px", paddingRight: "50px"}} >
 
+          
                 <div className="btn-group" >
                     <label style={{paddingRight:"10px",fontWeight:"bold",paddingTop:"12px"}} className="pb-0"> Select Company </label>
                     <select className="btn btn-white col-sm-2 border-dark"
