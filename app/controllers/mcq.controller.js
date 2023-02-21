@@ -47,7 +47,7 @@ exports.edit =(req,res)=>{
     MCQs.findByIdAndUpdate(
       {_id:id},
       {$set:req.body},
-      {multi:true}
+      {new:true}
     ).then((mcq)=>{
       return res.status(200).send({
         status:true,

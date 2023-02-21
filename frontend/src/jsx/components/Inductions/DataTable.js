@@ -13,11 +13,10 @@ const Table = props => {
   const columns = [
     {
       name: "Sr.No",
-      selector: "#",
+      selector: " ",
       sortable: true,
-      grow: 1,
       hide: "sm",
-      cell: (row, index) => index + 1 
+      cell: (row,index) => index + 1,
     },
     {
       name: "Questions",
