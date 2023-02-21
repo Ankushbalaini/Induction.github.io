@@ -76,8 +76,8 @@ exports.index = async (req, res) => {
     // for super admin 
     if (user.role === "super_admin") {
       // by default on filter = ALL then req.query.company is undefined
-      var filterCompany = (req.query.company === undefined) ? { $exists: true } : ObjectId(req.query.company);
-      var filterDepartment = (req.query.deptID === undefined) ? { $exists: true } : ObjectId(req.query.deptID);
+      var filterCompany = (req.query.company === undefined || req.query.company === 'All') ? { $exists: true } : ObjectId(req.query.company);
+      var filterDepartment = (req.query.deptID === undefined || req.query.deptID==='All') ? { $exists: true } : ObjectId(req.query.deptID);
 
       var query = {
         role: "user", 
@@ -89,7 +89,7 @@ exports.index = async (req, res) => {
     // for company
     if (user.role === "company") {
       var filterCompany = ObjectId(user.userID);
-      var filterDepartment = (req.query.deptID === undefined) ? { $exists: true } : ObjectId(req.query.deptID);
+      var filterDepartment = (req.query.deptID === undefined || req.query.deptID==='All') ? { $exists: true } : ObjectId(req.query.deptID);
 
       var query = {
         role: "user", 
@@ -102,7 +102,7 @@ exports.index = async (req, res) => {
     // for instructor
     if (user.role === "instructor") {
       var filterCompany = ObjectId(user.parentCompany);
-      var filterDepartment = (req.query.deptID === undefined) ? { $exists: true } : ObjectId(req.query.deptID);
+      var filterDepartment = (req.query.deptID === undefined || req.query.deptID==='All') ? { $exists: true } : ObjectId(req.query.deptID);
 
       var query = {
         role: "user", 
@@ -129,14 +129,6 @@ exports.index = async (req, res) => {
           message: err.message,
         });
       });
-      
-
-    
-
-
-
-
-
 
     /*
 
