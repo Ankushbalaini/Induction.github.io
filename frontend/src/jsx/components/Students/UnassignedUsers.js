@@ -179,7 +179,7 @@ const UnassignedUsers = () => {
                       >
                         <Link
                           className="paginate_button previous "
-                          to="/users"
+                          to="/unassigned-users"
                           onClick={() =>
                             activePag.current > 0 &&
                             onClick(activePag.current - 1)
@@ -194,7 +194,7 @@ const UnassignedUsers = () => {
                           {paggination.map((number, i) => (
                             <Link
                               key={i}
-                              to="/users"
+                              to="/unassigned-users"
                               className={`paginate_button  ${
                                 activePag.current === i ? "current" : ""
                               } `}
@@ -207,7 +207,7 @@ const UnassignedUsers = () => {
 
                         <Link
                           className="paginate_button next"
-                          to="/users"
+                          to="/unassigned-users"
                           onClick={() =>
                             activePag.current + 1 < paggination.length &&
                             onClick(activePag.current + 1)

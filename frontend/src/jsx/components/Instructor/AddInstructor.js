@@ -319,9 +319,6 @@ const AddInstructor = () => {
                       name="aboutMe"
                       value={aboutMe}
                       onChange={(e) => setAboutMe(e.target.value)}
-                      
-
-                      
                     >
                       {aboutMe}
                     </textarea>
