@@ -194,7 +194,7 @@ const AddInstructor = () => {
                   <div className="col-sm-9">
                     <input
                       name="name"
-                      type="password"
+                      type="text"
                       className="form-control"
                       onChange={(e) => setName(e.target.value)}
                       value={name}
