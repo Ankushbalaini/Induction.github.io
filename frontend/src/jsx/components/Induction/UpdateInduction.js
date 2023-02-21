@@ -161,10 +161,10 @@ e.preventDefault();
                 </div>
 
                 <div Style="text-align: end">
-                  <button type="button" className="me-2 btn btn-success light">
+                  <button type="submit" value="publish" className="me-2 btn btn-success light">
                     Update & Publish
                   </button>
-                  <button type="button" className="me-2 btn btn-warning light">
+                  <button type="submit" value="draft" className="me-2 btn btn-warning light">
                     Save as Draft
                   </button>
                 </div>

@@ -224,12 +224,12 @@ exports.submitTest = async (req, res) => {
 exports.edit = (req, res) => {
   const id = req.params.id; // question id who needs to update
 
-  return res.status(200).send({
-    status: true,
-    message: "Question has been updated! "+id,
-    data: req.body,
-    user: req.decoded
-});
+  // return res.status(200).send({
+  //   status: true,
+  //   message: "Question has been updated! "+id,
+  //   data: req.body,
+  //   user: req.decoded
+  // });
 
 
   // Question Update
