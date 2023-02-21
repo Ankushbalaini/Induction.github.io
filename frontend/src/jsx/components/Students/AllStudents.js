@@ -221,10 +221,11 @@ const AllStudents = () => {
               </div>
 
               {role === "super_admin" ? (
-                <div>
+                <div className="btn-group" style={{display: "flex", alignItems:"end", justifyContent:"end",gap:"40px", paddingRight: "50px"}} >
 
-                  <div>
-                    <label> Select Company </label>
+          
+                <div className="btn-group" >
+                    <label style={{paddingRight:"10px",fontWeight:"bold",paddingTop:"12px"}} className="pb-0"> Select Company </label>
                     <select className="btn btn-white col-sm-2 border-dark"
                       name="search_company"
                       onChange={(e) => CompanyChangeFilter(e)}
@@ -259,6 +260,11 @@ const AllStudents = () => {
                     id="student_wrapper"
                     className="dataTables_wrapper"
                   >
+                    {/* CompanyChangeFilter */}
+
+                    {/* <label Style="margin:20px">Filter Users</label> */}
+
+
                     {role === "company" ? (
                       <div>
                         <label> Select Deparment</label>
@@ -281,15 +287,18 @@ const AllStudents = () => {
                           name="search_department"
                           onChange={(e) => DepartmentChangeFilter(e)}
                         >
-
                           <option value="All">All</option>
                           <DepartmentByCompany parentCompany={id} />
                         </select>
                       </div>
                     ) : null}
 
+                    {/* <input Style="margin:20px; font-size: 16px;"  type="text" name="search" onChange={(e) => searchByName }  placeholder="Search......"></input> */}
+                    <Table data={students} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus} />
+                    
+                    
                   </div>
-                  <Table data={students} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus} />
+                  
 
                 </div>
               </div>

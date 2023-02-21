@@ -117,7 +117,7 @@ const AddCompany = () => {
     // }
 
 
-    const data = new FormData(e.target);
+    const data = new FormData();
     data.append('name', name);
     data.append('email', email);
     data.append('password', password);

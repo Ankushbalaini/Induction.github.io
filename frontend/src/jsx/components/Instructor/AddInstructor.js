@@ -16,44 +16,41 @@ const AddInstructor = () => {
   const lrole = useSelector((state) => state.auth.auth.role);
   const token = useSelector((state) => state.auth.auth.token);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState('instructor');
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [role, setRole] = useState("instructor");
+  const [name, setName] = useState();
   const [parentCompany, setParentCompany] = useState("");
   const [parentDepartment, setParentDepartment] = useState("");
-  const [deptID, setDeptID] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState('dummy-user.png');
-  const [image, setImage] = useState({preview:'', data:''})
-  const [address, setAddress] = useState("");
-  const [aboutMe, setAboutMe] = useState("");
+  const [deptID, setDeptID] = useState();
+  const [profilePhoto, setProfilePhoto] = useState("dummy-user.png");
+  const [image, setImage] = useState({ preview: "", data: "" });
+  const [address, setAddress] = useState();
+  const [aboutMe, setAboutMe] = useState();
 
   // validation messages
-  let errorObj = { 
-   email: "",
-   password: "",
-   name: "",
-   parentCompany:"",
-   parentDepartment:"",
-   address: "",
-   
-};
-  
-  const [errors, setErrors] = useState(errorObj);
+  let errorsObj = {
+    email: "",
+    password: "",
+    cname: "",
+    parentCompany: "",
+    parentDepartment: "",
+  };
+  const [errors, setErrors] = useState(errorsObj);
 
   const handleFileChange = async (e) => {
     const img = {
       preview: URL.createObjectURL(e.target.files[0]),
       data: e.target.files[0],
-    }
-    setImage(img)
-  }
+    };
+    setImage(img);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     let error = false;
-    const errorObj1 = { ...errorObj }
+    const errorObj1 = { ...errorsObj }
 
     if (email === "") {
       errorObj1.email = "Email is required";
@@ -133,7 +130,7 @@ const AddInstructor = () => {
   function handleKeyPress(e) {
     var key = e.key;
    if (key == key) {
-        setErrors((errorObj == false))
+        setErrors((errorsObj == false))
     }
 }
 
@@ -165,7 +162,7 @@ const AddInstructor = () => {
                       // Role="presentation"
                     />
                     {errors.email && (
-                      <div Style="color:red;font-weight:400">
+                      <div Style="color:red;font-weight:600;padding:5px;">
                         {errors.email}
                       </div>
                     )}
@@ -185,7 +182,7 @@ const AddInstructor = () => {
 
                     />
                     {errors.password && (
-                      <div Style="color:red;font-weight:400">
+                      <div Style="color:red;font-weight:600;padding:5px;">
                         {errors.password}
                       </div>
                     )}

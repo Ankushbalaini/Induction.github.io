@@ -167,7 +167,7 @@ const Instructors = () => {
 
       if ("status" in response && response.status == true) {
         setInstructosList(response.data);
-   
+        
       } else {
         return swal("Failed", "Something went wrong, please try again later.", "error");
       }
@@ -179,7 +179,9 @@ const Instructors = () => {
     const handlepageLoad = async (event) => {
       const response = await getInstructorApi(role, parentCompany);
       if ("status" in response && response.status == true) {
-        setInstructosList(response.data); 
+        /* Prepare data for instructor data-table list, start */
+        setInstructosList(response.data);
+        
       } else {
         return swal("Failed", "Error message", "error");
       }
@@ -225,7 +227,7 @@ const Instructors = () => {
                   {/* <Table data={data} click={clickhandler} /> */}
                   <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus}/>
                 </div>
-                {/* <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus} /> */}
+                
 
               </div>
               
@@ -235,102 +237,8 @@ const Instructors = () => {
         </div>
       </div>
 
-      {/* <div className="row">
-        
-        <div className="col-xl-12">
-          <div className="card students-list">
-            <div className="card-header border-0 flex-wrap pb-0">
-              
-            </div>
-            <div className="card-body py-0">
-              <div className="table-responsive">
-                <div
-                  id="student_wrapper"
-                  className="dataTables_wrapper no-footer"
-                >
-                  <table
-                    className="table display mb-4 dataTablesCard order-table card-table text-black application "
-                    id="application-tbl1_next"
-                  >
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Email ID</th>
-                        <th>Join Date</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {students}
-                    </tbody>
-                  </table>
-                  <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
-                    <div className="dataTables_info">
-                      Showing {activePag.current * sort + 1} to{" "}
-                      {data.length > (activePag.current + 1) * sort
-                        ? (activePag.current + 1) * sort
-                        : data.length}{" "}
-                      of {data.length} entries
-                    </div>
-                    <div
-                      className="dataTables_paginate paging_simple_numbers mb-0"
-                      id="application-tbl1_paginate"
-                    >
-                      <Link
-                        className="paginate_button previous "
-                        to="/instructors"
-                        onClick={() =>
-                          activePag.current > 0 &&
-                          onClick(activePag.current - 1)
-                        }
-                      >
-                        <i
-                          className="fa fa-angle-double-left"
-                          aria-hidden="true"
-                        ></i>
-                      </Link>
-                      <span>
-                        {paggination.map((number, i) => (
-                          <Link
-                            key={i}
-                            to="/instructors"
-                            className={`paginate_button  ${
-                              activePag.current === i ? "current" : ""
-                            } `}
-                            onClick={() => onClick(i)}
-                          >
-                            {number}
-                          </Link>
-                        ))}
-                      </span>
+      <UpdateProfile isModalOpen={isModalOpen} trackOnclick={trackOnclick} instructorData={instructorData}></UpdateProfile>
 
-                      <Link
-                        className="paginate_button next"
-                        to="/instructors"
-                        onClick={() =>
-                          activePag.current + 1 < paggination.length &&
-                          onClick(activePag.current + 1)
-                        }
-                      >
-                        <i
-                          className="fa fa-angle-double-right"
-                          aria-hidden="true"
-                        ></i>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
-
-      <UpdateProfile isModalOpen={isModalOpen} 
-      trackOnclick={trackOnclick} 
-      instructorData={instructorData}>
-      </UpdateProfile>
     </>
   );
 };

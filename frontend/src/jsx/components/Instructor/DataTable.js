@@ -82,9 +82,9 @@ const Table = props => {
       name: "Actions",
       button: true,
       cell: row =>
-          <div>
-            <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick}/>
-          </div>
+          <>
+            <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick} />
+          </>
     }
   ];
 

@@ -23,7 +23,6 @@ const Login = lazy(() => {
     });
 });
 
-
 function App (props) {
     const dispatch = useDispatch();
     useEffect(() => {
