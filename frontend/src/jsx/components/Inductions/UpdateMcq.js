@@ -11,6 +11,7 @@ import { useParams } from "react-router";
 const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
     const navigate = useHistory();
 
+    const id = useSelector((state) => state.auth.auth.id);
     const token = useSelector((state) => state.auth.auth.token);
     const id = useSelector((state)=>state.auth.auth.token);
     const [question, setQuestion] = useState(mcqData.question);
@@ -20,7 +21,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
     const [option4, setOption4] = useState(mcqData.option4);
     const [answer, setAnswer] = useState(mcqData.answer);
 
-    const [userID, setUserID] = useState(mcqData._id);
+   const [userID, setUserID] = useState(mcqData._id);
     //console.log(mcqData,"mcqData...userid")
 
 
@@ -63,6 +64,9 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
       {
         method: "PUT",
         body: data,
+        headers: {
+          "x-access-token": token,
+        },
       }
     ).then((data) => data.json());
 
@@ -87,7 +91,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
         <Modal className="modal fade" show={isModalOpen}>
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Update Mcq </h5>
+            <h5 className="modal-title">Update MCQ</h5>
            
             <Button
               variant=""
@@ -212,12 +216,13 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
         
                     
                     <div className="col-lg-12">
-                      <div className="form-group mb-3">
+                      <div className="form-group mb-3 d-flex justify-content-center">
                         <input 
                         type="submit"
-                        value="Update Profile"
+                        value="Update MCQ"
                         className="submit btn btn-primary"
                         name="submit"
+                        
                         />
                       </div>
                     </div>
