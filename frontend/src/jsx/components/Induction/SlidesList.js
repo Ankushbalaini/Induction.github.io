@@ -15,6 +15,7 @@ const SlidesList = ({ Slides, inductionID }) => {
       className="table display mb-4 dataTablesCard order-table card-table text-black application "
       id="application-tbl1_next"
     >
+      
       <thead>
         <tr>
           <th>Sr. No.</th>
