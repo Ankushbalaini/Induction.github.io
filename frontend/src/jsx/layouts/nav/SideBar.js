@@ -403,7 +403,7 @@ const SideBar = () => {
                     className={`${path === "students" ? "mm-active" : ""}`}
                     to="/students"
                   >
-                    Students{" "}
+                    All User{" "}
                   </Link>
                 </li>
 

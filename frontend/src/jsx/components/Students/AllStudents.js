@@ -217,7 +217,7 @@ const AllStudents = () => {
           <div className="col-xl-12">
             <div className="card students-list">
               <div className="card-header border-0 ">
-                <h2>Students List</h2>
+                <h2>Users List</h2>
               </div>
 
               {role === "super_admin" ? (
