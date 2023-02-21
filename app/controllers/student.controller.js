@@ -116,6 +116,7 @@ exports.index = async (req, res) => {
     // super admin
     UserCred.find(query)
       .populate("profile")
+      .sort( { createdAt : -1 } )
       .then((users) => {
         return res.status(200).send({
           status: true,
@@ -561,6 +562,7 @@ const getStudentByCompany = async (req, res) => {
 exports.unassigned = (req, res) => {
   UserCred.find({ role: "user", parentCompany: { $exists: false } })
     .populate("profile")
+    .sort( { createdAt : -1 } )
     .then((users) => {
       return res.status(200).send({
         status: true,

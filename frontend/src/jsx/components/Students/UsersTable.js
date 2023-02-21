@@ -92,7 +92,7 @@ function UsersTable({ filteredUsers , checkUserUpdated, redirectTo }) {
             <tr key={index}>
               <td>
                 <div className="d-flex align-items-center">
-                  <img src={loadImage(user.profile.profilePhoto)} alt="" />
+                  {/* <img src={loadImage(user?.profile?.profilePhoto)} alt="" /> */}
                   <h4 className="mb-0 fs-16 font-w500">
                     {user.profile?.first_name} {user.profile?.last_name}
                   </h4>
