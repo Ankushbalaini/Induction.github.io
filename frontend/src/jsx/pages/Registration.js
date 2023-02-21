@@ -55,6 +55,13 @@ function Register(props) {
         dispatch(signupAction(firstName, lastName, email, password, role, props.history));
 		
     }
+
+	function handleKeyPress(e) {
+		var key = e.key;
+	   if (key == key) {
+			setErrors((errorsObj == false))
+		}
+	}
 	
 	return (
 		<div className="authincation h-100 p-meddle" style={{
@@ -90,7 +97,12 @@ function Register(props) {
 												<label className="mb-1 ">
 													<strong>First Name</strong>
 												</label>
-												<input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)}  className="form-control"/>
+												<input type="text" 
+												value={firstName} 
+												onChange={(e) => setFirstName(e.target.value)}  
+												className="form-control"
+												onKeyPress={(e) => handleKeyPress(e)}
+												/>
 												{errors.firstName && <div Style="color:red;font-weight:400">{errors.firstName}</div>}
 											</div>
 											
@@ -99,7 +111,12 @@ function Register(props) {
 												<label className="mb-1 ">
 													<strong>Last Name</strong>
 												</label>
-												<input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)}  className="form-control" />
+												<input type="text" 
+												value={lastName} 
+												onChange={(e) => setLastName(e.target.value)}  
+												className="form-control"
+												onKeyPress={(e) => handleKeyPress(e)}
+												/>
 												{errors.lastName && <div Style="color:red;font-weight:400">{errors.lastName}</div>}
 											</div>
 											
@@ -108,7 +125,12 @@ function Register(props) {
 												<label className="mb-1 ">
 												  <strong>Email</strong>
 												</label>
-												<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control" />
+												<input type="email" 
+												value={email} 
+												onChange={(e) => setEmail(e.target.value)} 
+												className="form-control"
+												onKeyPress={(e) => handleKeyPress(e)}
+												/>
 												{errors.email && <div Style="color:red;font-weight:400">{errors.email}</div>}
 											</div>
 											
@@ -125,6 +147,7 @@ function Register(props) {
 													}
 												  className="form-control"
 												  defaultValue="Password"
+												  onKeyPress={(e) => handleKeyPress(e)}
 												/>
 												{errors.password && <div Style="color:red;font-weight:400">{errors.password}</div>}
 											</div>

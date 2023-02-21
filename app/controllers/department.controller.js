@@ -80,7 +80,11 @@ exports.edit = (req, res) => {
   const { name, status } = req.body;
   const id = req.params.id;
 
-  Department.updateOne({ _id: id }, { $set: req.body }, { multi: true })
+  Department.updateOne(
+    { _id: id },
+    { $set: req.body },
+    { multi: true }
+  )
     .then((department) => {
       return res.status(200).send({
         status: true,
@@ -94,6 +98,33 @@ exports.edit = (req, res) => {
         message: err.message,
       });
     });
+
+
+    /*
+
+  Department.findByIdAndUpdate(id, req.body, { useFindAndModify: true })
+    .then(function (department) {
+      if (!department) {
+        return res.status(500).send({
+          status: false,
+          message: "Deparment not found.",
+          
+        });
+      } else {
+        return res.status(200).send({
+          message: "Deparment has been updated successfully",
+          data: department,
+          status: true,
+        });
+      }
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        status: false,
+        message: err.message,
+      });
+    });
+    */
 };
 
 // get the Department

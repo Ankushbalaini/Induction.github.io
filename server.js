@@ -8,6 +8,8 @@ app.use(fileupload());
 // parse requests of content-type - application/json
 app.use(express.json());
 
+// require("dotenv").config();
+
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 

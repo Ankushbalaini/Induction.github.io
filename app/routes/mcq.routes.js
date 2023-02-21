@@ -15,6 +15,7 @@ module.exports = function (app) {
   router.get("/:id", mcq.index);
 
   router.post("/start/:inductionID", mcq.startTest);
+  
 
   acl.config({
     filename: "./nacl.json",

@@ -7,13 +7,12 @@ import { useSelector } from "react-redux";
 
 const images = require.context("../../../../../images/profile/", true);
 
-
 const AttemptedInductions = () => {
   const token = useSelector((state) => state.auth.auth.token);
   const [data, setData] = useState(
     document.querySelectorAll("#student_wrapper tbody tr")
   );
-  const sort = 5;
+  const sort = 10;
   const activePag = useRef(0);
   const [loading, setLoading] = useState(true);
   const [test, settest] = useState(0);
@@ -64,8 +63,6 @@ const AttemptedInductions = () => {
     }
     setIsModalOpen(payload);
   };
-
-  
 
   const handlepageLoad = async (event) => {
     const response = await fetch("http://localhost:8081/api/users/inductions", {
@@ -120,7 +117,7 @@ const AttemptedInductions = () => {
           <div className="col-xl-12">
             <div className="card students-list">
               <div className="card-header border-0 flex-wrap pb-0">
-                <h4>Attempted Inductions</h4>
+                <h2>Attempted Inductions</h2>
               </div>
               <div className="card-body py-0">
                 <div className="table-responsive">
@@ -176,6 +173,7 @@ const AttemptedInductions = () => {
                         ))}
                       </tbody>
                     </table>
+
                     <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
                       <div className="dataTables_info">
                         Showing {activePag.current * sort + 1} to{" "}
@@ -231,6 +229,7 @@ const AttemptedInductions = () => {
                         </Link>
                       </div>
                     </div>
+                    
                   </div>
                 </div>
               </div>

@@ -68,10 +68,15 @@ const Instructors = () => {
   const sort = 5;
   const activePag = useRef(0);
   const [test, settest] = useState(0);
-  const [students, setStudents] = useState(0);
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
-
-  const [instructorData, setInstructorData] = useState({profile: {name:'', email:'',aboutMe:'',address:'',logo:'',_id:''} });
+  const [instructorData, setInstructorData] = useState({
+  profile: {name:'',
+  email:'',
+  aboutMe:'',
+  address:'',
+  logo:'',
+  _id:''}, 
+  });
   const [instructorsList, setInstructosList] = useState([]);
 
 
@@ -162,7 +167,7 @@ const Instructors = () => {
 
       if ("status" in response && response.status == true) {
         setInstructosList(response.data);
-        
+   
       } else {
         return swal("Failed", "Something went wrong, please try again later.", "error");
       }
@@ -174,9 +179,7 @@ const Instructors = () => {
     const handlepageLoad = async (event) => {
       const response = await getInstructorApi(role, parentCompany);
       if ("status" in response && response.status == true) {
-        /* Prepare data for instructor data-table list, start */
-        setInstructosList(response.data);
-        
+        setInstructosList(response.data); 
       } else {
         return swal("Failed", "Error message", "error");
       }
@@ -184,22 +187,19 @@ const Instructors = () => {
     handlepageLoad();
   }, [isModalOpen, isUserStatusChanged]);
 
+  // // Active pagginarion
+  // activePag.current === 0 && chageData(0, sort);
+  // // paggination
+  // let paggination = Array(Math.ceil(data.length / sort))
+  //   .fill()
+  //   .map((_, i) => i + 1);
 
-  
-
-  // Active pagginarion
-  activePag.current === 0 && chageData(0, sort);
-  // paggination
-  let paggination = Array(Math.ceil(data.length / sort))
-    .fill()
-    .map((_, i) => i + 1);
-
-  // Active paggination & chage data
-  const onClick = (i) => {
-    activePag.current = i;
-    chageData(activePag.current * sort, (activePag.current + 1) * sort);
-    settest(i);
-  };
+  // // Active paggination & chage data
+  // const onClick = (i) => {
+  //   activePag.current = i;
+  //   chageData(activePag.current * sort, (activePag.current + 1) * sort);
+  //   settest(i);
+  // };
 
   return (
     <>
@@ -208,13 +208,39 @@ const Instructors = () => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h4>Instructor List</h4>
-              <div className="col-lg-4">
+              <h2>Instructor List</h2>
+              <div className="col-sm-3">
                 <select name="parentCompany" className="form-control" onChange={ (e) => filterByCompany(e.target.value) }>
                   <option value="all">All</option>
                   <CompanyDropdown />
                 </select> 
               </div>
+            </div>
+            <div className="card-body ">
+              <div className="table-responsive">
+                <div
+                  id="student_wrapper"
+                  className="dataTables_wrapper "
+                >
+                  {/* <Table data={data} click={clickhandler} /> */}
+                  <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus}/>
+                </div>
+                {/* <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus} /> */}
+
+              </div>
+              
+            </div>
+            
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="row">
+        
+        <div className="col-xl-12">
+          <div className="card students-list">
+            <div className="card-header border-0 flex-wrap pb-0">
+              
             </div>
             <div className="card-body py-0">
               <div className="table-responsive">
@@ -222,17 +248,89 @@ const Instructors = () => {
                   id="student_wrapper"
                   className="dataTables_wrapper no-footer"
                 >
-                  {/* <Table data={data} click={clickhandler} /> */}
-                  <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus}/>
+                  <table
+                    className="table display mb-4 dataTablesCard order-table card-table text-black application "
+                    id="application-tbl1_next"
+                  >
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Email ID</th>
+                        <th>Join Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {students}
+                    </tbody>
+                  </table>
+                  <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
+                    <div className="dataTables_info">
+                      Showing {activePag.current * sort + 1} to{" "}
+                      {data.length > (activePag.current + 1) * sort
+                        ? (activePag.current + 1) * sort
+                        : data.length}{" "}
+                      of {data.length} entries
+                    </div>
+                    <div
+                      className="dataTables_paginate paging_simple_numbers mb-0"
+                      id="application-tbl1_paginate"
+                    >
+                      <Link
+                        className="paginate_button previous "
+                        to="/instructors"
+                        onClick={() =>
+                          activePag.current > 0 &&
+                          onClick(activePag.current - 1)
+                        }
+                      >
+                        <i
+                          className="fa fa-angle-double-left"
+                          aria-hidden="true"
+                        ></i>
+                      </Link>
+                      <span>
+                        {paggination.map((number, i) => (
+                          <Link
+                            key={i}
+                            to="/instructors"
+                            className={`paginate_button  ${
+                              activePag.current === i ? "current" : ""
+                            } `}
+                            onClick={() => onClick(i)}
+                          >
+                            {number}
+                          </Link>
+                        ))}
+                      </span>
+
+                      <Link
+                        className="paginate_button next"
+                        to="/instructors"
+                        onClick={() =>
+                          activePag.current + 1 < paggination.length &&
+                          onClick(activePag.current + 1)
+                        }
+                      >
+                        <i
+                          className="fa fa-angle-double-right"
+                          aria-hidden="true"
+                        ></i>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      <UpdateProfile isModalOpen={isModalOpen} trackOnclick={trackOnclick} instructorData={instructorData}></UpdateProfile>
-
+      <UpdateProfile isModalOpen={isModalOpen} 
+      trackOnclick={trackOnclick} 
+      instructorData={instructorData}>
+      </UpdateProfile>
     </>
   );
 };

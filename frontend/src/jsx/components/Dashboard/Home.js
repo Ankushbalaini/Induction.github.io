@@ -19,12 +19,7 @@ import { useSelector } from "react-redux";
 const LearningActivityChart = loadable(() =>
 	pMinDelay(import("./Dashboard/LearningActivityChart"), 1000)
 );
-const ScoreActivityChart = loadable(() =>
-	pMinDelay(import("./Dashboard/ScoreActivityChart"), 1000)
-);
-const ProgressChart = loadable(() =>
-	pMinDelay(import("./Dashboard/ProgressChart"), 1000)
-);
+
 
 
 const Home = () => {
@@ -61,7 +56,7 @@ const Home = () => {
 
 	const [dropSelect, setDropSelect] = useState('This Month');
 	return(
-		<>
+		<div>
 			{ (loading) ? <i className="fas fa-atom fa-spin"></i> : <div className="row">
 				<div className="col-xl-12 col-xxl-12">
 					<div className="row">
@@ -74,7 +69,7 @@ const Home = () => {
 											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. </p>
 										</div>	
 										<div className="dlab-img">
-											<img src={Educat} alt="" />
+										<img src={Educat} height="250px" width="100px" alt=""/>
 										</div>	
 										<div className="dlab-icon">
 											<img src={Calpng} alt="" className="cal-img" />
@@ -87,17 +82,15 @@ const Home = () => {
 						<div className="col-xl-12 bt-order">
 							<CourseBlog dashboard={dashboard}/> 
 						</div>
-						{/* <div className="col-xl-12 col-xxl-6">
+						
+						
+						<div className="row">
+					 <div className="col-xl-6 col-xxl-6">
 							<div className="card score-active">
 								<div className="card-header border-0 flex-wrap">
 									<h4>Learning Activity</h4>
 									<ul className="d-flex">
-										<li>
-											<svg className="me-2" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<rect x="1.5" y="1.5" width="9" height="9" rx="4.5" fill="white" stroke="var(--primary)" strokeWidth="3"/>
-											</svg>
-											Last Month
-										</li>
+										
 										<li>
 											<svg className="me-2" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
 											<rect x="1.5" y="1.5" width="9" height="9" rx="4.5" fill="white" stroke="var(--secondary)" strokeWidth="3"/>
@@ -110,11 +103,18 @@ const Home = () => {
 									<LearningActivityChart />
 								</div>
 							</div>
-						</div> */}
+						</div> 
+						<div className="col-xl-6 col-lg-8">
+							<div className="card">
+								<div className="card-body card-calendar home-calendar">								
+									<CalendarBlog />
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-				<div className="col-xl-6 col-xxl-12">
-					<div className="row">
+				
+					
 						{/* <div className="col-xl-12">
 							<div className="card score-active">
 								<div className="card-header border-0 pb-2 flex-wrap">
@@ -162,20 +162,15 @@ const Home = () => {
 								</div>
 							</div>
 						</div> */}
-						<div className="col-xl-12 col-lg-8">
-							<div className="card">
-								<div className="card-body card-calendar home-calendar">								
-									<CalendarBlog />
-								</div>
-							</div>
-						</div>
+						
 					</div>
 				</div>
 				
 				
-			</div>
+			
+			
 			}
-		</>
+		</div>
 	)
 }
 export default Home;

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "swiper/css";
 
+
 //images
 import course1 from "./../../../images/courses/course1.jpg";
 
@@ -66,7 +67,13 @@ function CoursesMain() {
       setCourses(response.data);
       //return;
       setloading(false);
-      setData(document.querySelectorAll("#student_wrapper .cardDiv"));
+      setTotalRecords(response.pagination.totalRecords);
+      setLimit(response.pagination.limit);
+
+
+      
+
+      
     }
   };
 
@@ -81,19 +88,14 @@ function CoursesMain() {
       setData(document.querySelectorAll("#student_wrapper .cardDiv"));
     }
   };
-
-  // use effect
-  useEffect(() => {
-    if (source == "filter") {
-      filterByCompany(filterCompany);
-    } else {
-      handleGetInduction(page);
-    }
-  }, [page, loading, totalRecords]);
-
   const [data, setData] = useState(
-    document.querySelectorAll("#student_wrapper .cardDiv")
+    document.querySelectorAll("#student_wrapper tbody tr")
   );
+
+  // Edit User- Popup
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [profileData, setProfileData] = useState();
+  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
 
   const [test, settest] = useState(0);
   const sort = 6;
@@ -128,26 +130,19 @@ function CoursesMain() {
     <h1>Loading</h1>
   ) : (
     <>
-      <div className="widget-heading d-flex justify-content-between align-items-center">
-        <h3 className="m-0">All Inductions ({totalRecords})</h3>
+    <div className="row" id="student_wrapper">
+       <div className="widget-heading d-flex justify-content-between align-items-center">
+         <h3 className="m-0">All Inductions ({totalRecords})</h3>
+         <div className="col-sm-4">
+           <select name="parentCompany" className="form-control" onChange={(e) => filterByCompany(e.target.value)}>
+             <option value="all">All</option>
+             <CompanyDropdown />
+           </select>
+         </div>     
+       </div>
+     </div>
 
-        { (role === 'super_admin') ? 
-        <div className="col-lg-4">
-          <select
-            name="parentCompany"
-            className="form-control"
-            onChange={(e) => filterByCompany(e.target.value)}
-          >
-            <option value="all">All</option>
-            <CompanyDropdown />
-          </select>
-        </div> : null }
-        {/* <Link to={"./inductions"} className="btn btn-primary btn-sm">
-          View all
-        </Link> */}
-      </div>
-
-      <div className="row dataTables_wrapper no-footer" id="student_wrapper">
+      <div className="row" id="student_wrapper">
         {courses.map((data, index) => (
           <div className="col-xl-4 col-md-6 cardDiv" key={index}>
             <div className="card all-crs-wid">
@@ -184,7 +179,6 @@ function CoursesMain() {
                           >
                             <circle cx="2" cy="2.5" r="2" fill="#DBDBDB" />
                           </svg>
-                          
                         </p>
                       </div>
                       <h4 className="text-primary">
@@ -221,59 +215,68 @@ function CoursesMain() {
             </div>
           </div>
         ))}
-
-        <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
-          <div className="dataTables_info">
-            Showing {activePag.current * sort + 1} to{" "}
-            {data.length > (activePag.current + 1) * sort
-              ? (activePag.current + 1) * sort
-              : data.length}{" "}
-            of {data.length} entries
-          </div>
-          <div
-            className="dataTables_paginate paging_simple_numbers mb-0"
-            id="application-tbl1_paginate"
-          >
-            <Link
-              className="paginate_button previous "
-              to="/inductions"
-              onClick={() =>
-                activePag.current > 0 && onClick(activePag.current - 1)
-              }
-            >
-              <i className="fa fa-angle-double-left" aria-hidden="true"></i>
-            </Link>
-            <span>
-              {paggination.map((number, i) => (
-                <Link
-                  key={i}
-                  to="/inductions"
-                  className={`paginate_button  ${
-                    activePag.current === i ? "current" : ""
-                  } `}
-                  onClick={() => onClick(i)}
-                >
-                  {number}
-                </Link>
-              ))}
-            </span>
-
-            <Link
-              className="paginate_button next"
-              to="/inductions"
-              onClick={() =>
-                activePag.current + 1 < paggination.length &&
-                onClick(activePag.current + 1)
-              }
-            >
-              <i className="fa fa-angle-double-right" aria-hidden="true"></i>
-            </Link>
-          </div>
-        </div>
       </div>
+     
+      {/* <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
+           <div className="dataTables_info">
+             Showing {activePag.current * sort + 1} to{" "}
+             {data.length > (activePag.current + 1) * sort
+               ? (activePag.current + 1) * sort
+               : data.length}{" "}
+             of {data.length} entries
+           </div>
+           <div
+             className="dataTables_paginate paging_simple_numbers mb-0"
+             id="application-tbl1_paginate"
+           >
+             <Link
+               className="paginate_button previous "
+               to="/users"
+               onClick={() =>
+                 activePag.current > 0 &&
+                 onClick(activePag.current - 1)
+               }
+             >
+               <i
+                 className="fa fa-angle-double-left"
+                 aria-hidden="true"
+               ></i>
+             </Link>
+             <span>
+               {paggination.map((number, i) => (
+                 <Link
+                   key={i}
+                   to="/inductions"
+                   className={`paginate_button  ${
+                     activePag.current === i ? "current" : ""
+                   } `}
+                   onClick={() => onClick(i)}
+                 >
+                   {number}
+                 </Link>
+               ))}
+             </span>
+             <Link
+               className="paginate_button next"
+               to="/inductions"
+               onClick={() =>
+                 activePag.current + 1 < paggination.length &&
+                 onClick(activePag.current + 1)
+               }
+             >
+               <i
+                 className="fa fa-angle-double-right"
+                 aria-hidden="true"
+               ></i>
+             </Link>
+           </div>
+         </div> */}
     </>
   );
-
-  return <>{content}</>;
+// const contents = React.lazy(()=>{content})
+  return <>
+    {content}  
+    
+    </>;
 }
 export default CoursesMain;

@@ -151,76 +151,8 @@ const AttemptQuiz = ()=>{
             motherMenu="Quiz"
             pageContent="Attempted Quiz"
           />
-              <div className="row">
-               <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-                 <div className="widget-stat card bg-primary">
-                  <div className="card-body  p-4">
-                    <div className="media">
-                      <span className="me-3">
-                        <i className="la la-users"></i>
-                      </span>
-                      <div className="media-body text-white">
-                        <p className="mb-1">Total Students</p>
-                        <h3 className="text-white">3280</h3>
-                        <div className="progress mb-2 bg-secondary">
-                          <div
-                            className="progress-bar progress-animated bg-light"
-                            style={{ width: "80%" }}
-                          ></div>
-                        </div>
-                        <small>80% Increase in 20 Days</small>
-                      </div>
-                    </div>
-                  </div>
-                 </div>
-                </div>
-              
-                <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-                 <div className="widget-stat card bg-secondary">
-                   <div className="card-body p-4">
-                     <div className="media">
-                       <span className="me-3">
-                         <i className="la la-graduation-cap"></i>
-                       </span>
-                       <div className="media-body text-white">
-                         <p className="mb-1">Total Course</p>
-                         <h3 className="text-white">28</h3>
-                         <div className="progress mb-2 bg-primary">
-                           <div
-                             className="progress-bar progress-animated bg-light"
-                             style={{ width: "76%" }}
-                           ></div>
-                         </div>
-                         <small>76% Increase in 20 Days</small>
-                       </div>
-                     </div>
-                   </div>
-                 </div>
-                </div>
-
-                <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-                 <div className="widget-stat card bg-danger">
-                   <div className="card-body p-4">
-                     <div className="media">
-                       <span className="me-3">
-                         <i className="bi bi-award-fill"></i>
-                       </span>
-                       <div className="media-body text-white">
-                         <p className="mb-1">Student Passed</p>
-                         <h3 className="text-white">4/10</h3>
-                         <div className="progress mb-2 bg-primary">
-                           <div
-                             className="progress-bar progress-animated bg-light"
-                             style={{ width: "76%" }}
-                           ></div>
-                         </div>
-                         <small>76% Increase in 20 Days</small>
-                       </div>
-                     </div>
-                   </div>
-                 </div>
-                </div>
-               </div>
+  
+      
 
             {/* <PageTitle activeMenu="Student Table" motherMenu="Quiz" />  */}
             <div className="col-12">

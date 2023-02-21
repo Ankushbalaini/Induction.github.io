@@ -1,71 +1,65 @@
 import React, { useMemo } from "react";
 
 import DataTable from "react-data-table-component";
-import FilterComponent from "../Companies/FilterComponent";
 import DropDownBlog from "../Dashboard/DropDownBlog";
-import { Link } from "react-router-dom";
+import ActionDropDown from "../Inductions/ActionDropDown";
+import FilterComponent from "./FilterComponent";
+import { Dropdown } from "react-bootstrap";
+
 import { tableStyles } from "../Instructor/Instructor/tableStyles";
 
-const Table = (props) => {
+const Table = props => {
+
   const columns = [
     {
-      name: "Name",
-      selector: "name",
+      name: "Sr.No",
+      selector: "#",
       sortable: true,
       grow: 1,
-      className: "col-3",
-    },
-
-    {
-      name : "Status",
-      selector:"status",
-      sortable:true,
       hide: "sm",
-      cell: row => (
-        <div
-      
-        className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`} >
-        { (row.status) ? 'Active' : 'Inactive'}
-      
-        </div>
-      ),
+      cell: (row, index) => index + 1 
+    },
+    {
+      name: "Questions",
+      selector: "question",
+      sortable: true,
+      hide: "sm",
     },
     {
       name: "Actions",
       button: true,
-      cell: (row) => (
-        <div>
-          <div className="d-flex">
-            <button
+      cell: row =>
+          <div>
+            {/* <button
               onClick={() => props.actionHandler(row)}
-              href="#"
-              className="btn btn-success shadow btn-xs sharp me-1"
+              style={{ marginRight: "5px", minWidth: "80px" }}
+              className="btn btn-warning btn "
             >
-              <i className="fas fa-pencil-alt"></i>
+              Edit
             </button>
-            <button
-              onClick={() => props.deleteClick(row.name)}
-              href="#"
-              className="btn btn-danger shadow btn-xs sharp"
-            >
-              <i className="fa fa-trash"></i>
-            </button>
-          </div>
-        </div>
-      ),
-    },
+
+            <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button> */}
+            {/* <DropDownBlog /> */}
+          
+            <ActionDropDown trackOnclick={props.trackOnclick} mcqData={row} trackDeleteClick={props.trackDeleteClick}/>
+
+
+            </div>
+    }
   ];
 
   const [filterText, setFilterText] = React.useState("");
-  const [resetPaginationToggle, setResetPaginationToggle] =
-    React.useState(false);
+  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
+    false
+  );
   // const filteredItems = data.filter(
   //   item => item.name && item.name.includes(filterText)
   // );
   const filteredItems = props.data.filter(
-    (item) =>
-      JSON.stringify(item).toLowerCase().indexOf(filterText.toLowerCase()) !==
-      -1
+    item =>
+      JSON.stringify(item)
+        .toLowerCase()
+        .indexOf(filterText.toLowerCase()) !== -1
   );
 
   const subHeaderComponent = useMemo(() => {
@@ -78,7 +72,7 @@ const Table = (props) => {
 
     return (
       <FilterComponent
-        onFilter={(e) => setFilterText(e.target.value)}
+        onFilter={e => setFilterText(e.target.value)}
         onClear={handleClear}
         filterText={filterText}
       />
@@ -100,3 +94,5 @@ const Table = (props) => {
 };
 
 export default Table;
+
+            // <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick}/>

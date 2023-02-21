@@ -6,7 +6,9 @@ import { useHistory } from "react-router-dom";
 
 const images = require.context("../../../../../images/profile", true);
 
-const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
+const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
+  console.log(instructorData,"instructorData...");
+
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
@@ -38,14 +40,14 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
 
   // on every render change values
   useEffect(()=>{
-
+   
     setName(instructorData.profile.name);
     setEmail(instructorData.email);
     setAboutMe(instructorData.profile.aboutMe);
     setAddress(instructorData.profile.address);
     setProfilePhoto(instructorData.profile.profilePhoto);
     setUserID(instructorData.profile._id);
-    
+    handleSubmit();
   },[isModalOpen])
 
 
@@ -56,7 +58,7 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
       return swal("Failed", "All fields are required!", "error");
     }
 
-    const data = new FormData();
+    let data = new FormData();
     data.append('name', name);
     data.append('email', email);
     data.append('image', image.data);
@@ -84,9 +86,10 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
         //profile
         if(role==='super_admin'){
           navigate.push("/instructors");
-        }else{
-          navigate.push("/instructor-profile");
         }
+        // }else{
+        //   navigate.push("/instructor-profile");
+        // }
         
       });
       
@@ -108,6 +111,7 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
             data-dismiss="modal"
             onClick={handleCallback}
           ></Button>
+          
         </div>
         <div className="modal-body">
           <form className="update-form" onSubmit={handleSubmit}>
@@ -163,11 +167,6 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                     </label>
                     <div className="instructors-media">
 
-
-
-                    {/* <img src={ loadImage(preview) } Style="max-height:100px; max-width:100px; padding:10px; border-radius:10px"></img> */}
-
-
                     </div> 
                     <input type="hidden" value={preview} name="logo" />
                     <input
@@ -219,6 +218,7 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                 <div className="col-lg-12">
                   <div className="form-group mb-3">
                     <input
+                    style={{margin: "auto", display: "flex"}}
                       type="submit"
                       value="Update Profile"
                       className="submit btn btn-primary"
@@ -226,12 +226,7 @@ const UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                     />
                   </div>
                 </div>
-
-
-
               </div>
-
-
           </form>
         </div>
       </div>
