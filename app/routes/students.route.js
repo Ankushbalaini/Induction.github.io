@@ -35,6 +35,7 @@ module.exports = function (app) {
   });
 
   router.get("/", Student.index);
+  router.get("/unassigned", Student.unassigned );
   app.use("/api/students", router);
   
 };

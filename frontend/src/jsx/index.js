@@ -41,6 +41,13 @@ import CreateInductionNew from "./components/Inductions/CreateInductionNew";
 import SingleInductionView from "./components/Inductions/SingleInductionView";
 import StarTest from './components/Inductions/test/StartTest';
 
+
+// v2 versions
+import Add from './components/Induction/Add';
+import AddSlide from "./components/Slides/Add";
+import UpdateInduction from "./components/Induction/UpdateInduction";
+//add-induction
+
 //Instructors
 //import Instructors from "./components/Dashboard/Instructors";
 import Instructors from "./components/Instructor/ListInstructor";
@@ -53,6 +60,8 @@ import InstructorStudents from "./components/Instructor/InstructorStudents";
 
 // Students
 import AllStudents from "./components/Students/AllStudents";
+import Users from "./components/Students/Users";
+import UnassignedUsers from "./components/Students/UnassignedUsers";
 
 // App
 import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
@@ -99,6 +108,10 @@ const Markup = () => {
     { url: "induction/:id", component: InductionDetail },
     //{ url: "create-induction", component: CreateInduction },
     { url: "create-induction", component: CreateInductionNew },
+    { url: "add-induction", component: Add },
+    { url: "add-slide", component: AddSlide },
+    { url: "update-induction/:id", component: UpdateInduction },
+    
     { url: "single-induction-view/:id", component: SingleInductionView },
     { url: "mcq/:inductionID", component: Mcq },
     { url : "viewmcq/:id", component :ViewMcq},
@@ -117,6 +130,7 @@ const Markup = () => {
 
     { url: "students", component: AllStudents },
     { url : "attempted-inductions", component : AttemptedInductions},
+    { url: 'unassigned-users', component: UnassignedUsers },
 
     // Apps
     { url: "app-profile", component: AppProfile },

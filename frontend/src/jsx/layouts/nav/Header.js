@@ -144,15 +144,26 @@ const Header = ({ onNote }) => {
 					className="dashboard_bar"
 					style={{ textTransform: "capitalize" }}
 				  >
-					{inductionName === "single-induction-view" ? "Induction View" :
-					 inductionName === "viewmcq" ? "View MCQ" :
-                     inductionName === "mcq" ? "Create QUIZ" :
-					 inductionName === "attemptquiz" ? "Attempt Quiz" :
-					  finalName.join(" ").length === 0
+					{inductionName === "single-induction-view" 
+					? "Induction View" 
+					: (inductionName === "update-induction" ) 
+					? "Update Induction":
+					finalName.join(" ").length === 0
 					  ? "Dashboard"
 					  : finalName.join(" ") === "dashboard dark"
 					  ? "Dashboard"
 					  : finalName.join(" ")}
+
+
+
+
+
+
+{/* { (inductionName === "update-induction" ) ? "Update Induction" : finalName.join(" ")} 
+
+{ (inductionName === "single-induction-view") ? "Induction View" : finalName.join(" ") } */}
+
+
 				</div>
             </div>
 			<div className="navbar-nav header-right">

@@ -193,6 +193,7 @@ exports.index = async (req, res) => {
             title: "$title",
             subTitle: "$subTitle",
             thumbnail: "$thumbnail",
+            passPercentage:1,
             description: 1,
             deptID:1,
             parentCompany:1,

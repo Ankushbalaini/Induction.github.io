@@ -26,7 +26,7 @@ const DepartmentByCompany = (props) => {
         const response = await getDepartments(token, company);
         if ("status" in response && response.status == true) {
             const rows = response.data.map((row, index) => (
-                <option value={row._id}>{row.name}</option>
+                <option key={row._id} value={row._id}>{row.name}</option>
             ));
             setOption(rows);
             setLoading(false);

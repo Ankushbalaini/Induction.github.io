@@ -11,7 +11,7 @@ module.exports = mongoose => {
           option3: { type: String },
           option4: { type: String },
           ques_type: {type: String, default: '0'}, // 0 = mcq, 1= true/false
-          status:{type: Boolean, default: 1 } // 1 =active, 0 =inactive
+          status:{type: Boolean, default: true } // 1 =active, 0 =inactive
         },
         { timestamps: true }
       )

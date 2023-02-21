@@ -4,9 +4,8 @@ import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-
-import CompanyDropdown from '../Companies/CompanyDropdown';
-import DepartmentDropdown from '../Department/DepartmentDropdown';
+import CompanyDropdown from "../Companies/CompanyDropdown";
+import DepartmentDropdown from "../Department/DepartmentDropdown";
 
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 
@@ -91,18 +90,17 @@ const AddInstructor = () => {
     
 
     const data = new FormData();
-    data.append('name', name);
-    data.append('email', email);
-    data.append('password', password);
-    data.append('role', role);
-    data.append('parentCompany', parentCompany);
-    data.append('parentDepartment',parentDepartment);
-    data.append('deptID', parentDepartment);
-    data.append('profilePhoto', image.data);
-    data.append('address', address);
-    data.append('aboutMe', aboutMe);
+    data.append("name", name);
+    data.append("email", email);
+    data.append("password", password);
+    data.append("role", role);
+    data.append("parentCompany", parentCompany);
+    data.append("parentDepartment", parentDepartment);
+    data.append("deptID", parentDepartment);
+    data.append("profilePhoto", image.data);
+    data.append("address", address);
+    data.append("aboutMe", aboutMe);
 
-    
     const response = await fetch("http://localhost:8081/api/instructor/add", {
       method: "POST",
       headers: {
@@ -123,11 +121,11 @@ const AddInstructor = () => {
     }
   };
 
-   //css for button
-   const buttonStyle = {
+  //css for button
+  const buttonStyle = {
     margin: "auto",
     display: "flex",
-    float: 'right'
+    float: "right",
   };
 
 
@@ -152,12 +150,9 @@ const AddInstructor = () => {
           </div>
           <div className="card-body">
             <div className="basic-form">
-              <form onSubmit={(e)=>handleSubmit(e)}>
-
+              <form onSubmit={(e) => handleSubmit(e)}>
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">
-                    Email
-                  </label>
+                  <label className="col-sm-3 col-form-label">Email</label>
                   <div className="col-sm-9">
                     <input
                       name="email"
@@ -178,9 +173,7 @@ const AddInstructor = () => {
                 </div>
 
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">
-                    Password
-                  </label>
+                  <label className="col-sm-3 col-form-label">Password</label>
                   <div className="col-sm-9">
                     <input
                       name="password"
@@ -199,16 +192,12 @@ const AddInstructor = () => {
                   </div>
                 </div>
 
-
-
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">
-                    Name
-                  </label>
+                  <label className="col-sm-3 col-form-label">Name</label>
                   <div className="col-sm-9">
                     <input
                       name="name"
-                      type="password"
+                      type="text"
                       className="form-control"
                       onChange={(e) => setName(e.target.value)}
                       value={name}
@@ -243,8 +232,14 @@ const AddInstructor = () => {
                       </div>
                     )}
 
+                      {errors.deptID && (
+                        <div Style="color:red;font-weight:600;padding:5px;">
+                          {errors.deptID}
+                        </div>
+                      )}
+                    </div>
+                    
                   </div>
-                </div>
                 : 
                 <input
                   name="parentCompany"
@@ -305,9 +300,7 @@ const AddInstructor = () => {
                 
 
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">
-                    Photo
-                  </label>
+                  <label className="col-sm-3 col-form-label">Photo</label>
                   <div className="col-sm-9">
                     <input
                       type="file"
@@ -320,8 +313,6 @@ const AddInstructor = () => {
 
                   </div>
                 </div>
-
-                
 
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">About me</label>
@@ -363,10 +354,13 @@ const AddInstructor = () => {
                   </div>
                 </div>
 
-
                 <div className="mb-12 row">
                   <div className="col-sm-12">
-                    <button className="btn btn-success" type="submit" style={buttonStyle} >
+                    <button
+                      className="btn btn-success"
+                      type="submit"
+                      style={buttonStyle}
+                    >
                       Submit
                     </button>
                   </div>

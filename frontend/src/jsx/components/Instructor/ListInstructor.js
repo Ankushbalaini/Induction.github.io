@@ -82,6 +82,7 @@ const Instructors = () => {
 
   // change status
   const changeUserStatus = (userID, status) =>{
+
     // user id
     swal({
       title: "Are you sure?",
@@ -113,6 +114,7 @@ const Instructors = () => {
         } else {
           return swal("Failed", response.message, "error");
         }
+
 
       } else {
         swal("Your status is not changed!");
@@ -158,10 +160,6 @@ const Instructors = () => {
       })
     }
 
-
-  const loadImage = (imageName) => {
-		return images(`./${imageName}`);
-	}	
 
   const filterByCompany = (companyID) => {
     const handlepageLoad = async (event) => {
@@ -225,9 +223,9 @@ const Instructors = () => {
                   className="dataTables_wrapper "
                 >
                   {/* <Table data={data} click={clickhandler} /> */}
-
+                  <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus}/>
                 </div>
-                <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus} />
+                {/* <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus} /> */}
 
               </div>
               

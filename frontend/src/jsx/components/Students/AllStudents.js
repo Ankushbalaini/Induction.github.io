@@ -216,31 +216,30 @@ const AllStudents = () => {
         <div className="row">
           <div className="col-xl-12">
             <div className="card students-list">
-              <div className="card-header border-0 ">
+              <div className="card-header border-0 flex-wrap pb-0">
                 <h2>Students List</h2>
               </div>
 
               {role === "super_admin" ? (
-          <div className="btn-group" style={{display: "flex", alignItems:"end", justifyContent:"end",gap:"40px", paddingRight: "50px"}} >
+                <div>
 
-                <div className="btn-group" >
-                    <label style={{paddingRight:"10px",fontWeight:"bold",paddingTop:"12px"}} className="pb-0"> Select Company </label>
+                  <div>
+                    <label> Select Company </label>
                     <select className="btn btn-white col-sm-2 border-dark"
-                    style={{borderRadius:"8px"}}
                       name="search_company"
                       onChange={(e) => CompanyChangeFilter(e)}
-                      value={searchCompany}>
-                      <option value="All">ALL</option>
+                      value={searchCompany}
+                    >
+                      <option className="col-lg-4" value="All">ALL</option>
                       <CompanyDropdown />
                     </select>
 
-                    </div>
+                  </div>
 
-                  <div className="btn-group">
-                    <label style={{paddingRight:"10px",fontWeight:"bold",paddingTop:"12px"}}> Select Deparment </label>
+                  <div>
+                    <label> Select Deparment </label>
 
                     <select className="btn btn-white col-sm-2 border-dark"
-                    style={{borderRadius:"8px"}}
                       name="search_department"
                       onChange= { (e) => setSearchDepartment(e.target.value) }
                       value={searchDepartment}
@@ -248,10 +247,10 @@ const AllStudents = () => {
                       <option value="All">All</option>
                       {departmentOptions}
                     </select>
+
                   </div>
 
-                
-          </div>
+                </div>
               ) : null}
 
               <div className="card-body">

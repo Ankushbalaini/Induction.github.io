@@ -86,6 +86,8 @@ const SideBar = () => {
       "single-induction-view",
       //"courses",
       "start-test",
+      "add-induction",
+      "add-slide"
     ],
     students = ["students", "add-student"];
 
@@ -324,6 +326,45 @@ const SideBar = () => {
                       Create Induction{" "}
                     </Link>
                   </li>
+
+                  <li>
+                    <Link
+                      className={`${
+                        path === "add-induction" ? "mm-active" : ""
+                      }`}
+                      to="/add-induction"
+                    >
+                      Add Induction{" "}
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link
+                      className={`${
+                        path === "add-induction" ? "mm-active" : ""
+                      }`}
+                      to="/add-slide"
+                    >
+                      Add Slide{" "}
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link
+                      className={`${
+                        path === "add-induction" ? "mm-active" : ""
+                      }`}
+                      to="/update-induction/63ef91f59c145e113579da4b"
+                    >
+                      Update Induction{" "}
+                    </Link>
+                  </li>
+
+
+
+                  
+
+
                 </>
               ) : null}
 
@@ -362,7 +403,7 @@ const SideBar = () => {
                     className={`${path === "students" ? "mm-active" : ""}`}
                     to="/students"
                   >
-                    All Students{" "}
+                    Students{" "}
                   </Link>
                 </li>
 
@@ -374,6 +415,17 @@ const SideBar = () => {
                     All Users{" "}
                   </Link>
                 </li> */}
+
+                <li>
+                  <Link
+                    className={`${path === "unassigned-users" ? "mm-active" : ""}`}
+                    to="/unassigned-users"
+                  >
+                    Unassigned {" "}
+                  </Link>
+                </li>
+
+
 
               </ul>
             </li>

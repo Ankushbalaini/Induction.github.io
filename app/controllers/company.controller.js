@@ -135,7 +135,7 @@ exports.add = (req, res) => {
       }
     } else {
       var Img = req.files.logo;
-      var uploadPath = "images/company/" + Img.name;
+      var uploadPath = "images/profile/" + Img.name;
 
       Img.mv(uploadPath, function (err) {
         if (err) {

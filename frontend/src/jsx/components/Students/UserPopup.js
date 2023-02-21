@@ -4,16 +4,19 @@ import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import CompanyDropdown from "./CompanyDropdown";
-
+import DepartmentByCompany from "../Department/DepartmentByCompany";
 const images = require.context("../../../../../images/profile", true);
 
 const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
   const navigate = useHistory();
   const id = useSelector((state) => state.auth.auth.id);
+  const instructorParentCompany = useSelector((state) => state.auth.auth.parentCompany); // used in case of instructor
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
 
   const intialValue = {
+    parentCompany: profileData.parentCompany,
+    deptID: profileData.deptID,
     userID: profileData.profile._id,
     email: profileData.email,
     first_name: profileData.profile.first_name,
@@ -31,26 +34,15 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
 
     // validate data
     if (
+      state.parentCompany === "" ||
+      state.deptID === "" ||
       state.first_name === "" ||
-      state.last_name === "" ||
-      state.aboutMe === "" ||
-      state.address === ""
+      state.last_name === "" 
     ) {
-      return swal("Failed", "All fields are required!", "error");
+      //return swal("Failed", "Please enter all required fields!", "error");
     }
 
     let formData = new FormData(e.target);
-
-    // formData.append("mainID", mainID);
-    // formData.append("deptID", deptID);
-    // formData.append("parentCompany", parentCompany);
-    // formData.append("first_name", firstName);
-    // formData.append("last_name", lastName);
-    // formData.append("email", email);
-    // formData.append("aboutMe", aboutMe);
-    // formData.append("image", image.data);
-    // formData.append("profilePhoto", preview);
-    // formData.append("address", address);
 
     const response = await fetch(
       "http://localhost:8081/api/users/edit/" + state.userID,
@@ -70,10 +62,10 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
       }).then((value) => {
         handleCallback();
         //profile
-        navigate.push("/students");
+        navigate.push("/users");
       });
     } else {
-      return swal("Failed", "Error message", "error");
+      return swal("Failed", response.message, "error");
     }
   };
 
@@ -107,7 +99,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
           ></Button>
         </div>
         <div className="modal-body">
-          <form className="update-form" onSubmit={handleSubmit} encType>
+          <form className="update-form" onSubmit={handleSubmit}>
             <div className="row">
               {role === "super_admin" ? (
                 <CompanyDropdown
@@ -115,6 +107,60 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                   selectedDeptVal={profileData.deptID}
                 />
               ) : null}
+
+              <div className="col-lg-12">
+                {role === "company" ? (
+
+                  <div className="form-group mb-3">
+                    <input type="hidden" name="parentCompany" value={id} />
+                    <label
+                      htmlFor="first_name"
+                      className="text-black font-w600"
+                    >
+                      {" "}
+                      Assign Department<span className="required">*</span>{" "}
+                    </label>
+                    <select
+                      className="form-control"
+                      name="deptID"
+                      value={state.deptID}
+                      onChange={(e)=>{ setState({...state, deptID: e.target.value })}}
+                      
+                    >
+                      <option value=''>Select</option>
+                      <DepartmentByCompany
+                        parentCompany={id}
+                        selectedDeptVal={state.deptID}
+                      />
+                    </select>
+                  </div>
+                ) : null}
+
+                {role === "instructor" ? (
+                  <div className="form-group mb-3">
+                    <input type="hidden" name="parentCompany" value={instructorParentCompany} />
+                    <label
+                      htmlFor="first_name"
+                      className="text-black font-w600"
+                    >
+                      {" "}
+                      Assign Department <span className="required">*</span>{" "}
+                    </label>
+                    <select
+                      className="form-control"
+                      name="deptID"
+                      value={state.deptID}
+                      onChange={(e)=>{setState({ ...state, deptID: e.target.value })}}
+                      required
+                    >
+                      <DepartmentByCompany
+                        parentCompany={instructorParentCompany}
+                        selectedDeptVal={profileData.deptID}
+                      />
+                    </select>
+                  </div>
+                ) : null}
+              </div>
 
               <div className="col-lg-6">
                 <div className="form-group mb-3">

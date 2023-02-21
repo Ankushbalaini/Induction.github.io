@@ -6,7 +6,8 @@ module.exports = mongoose => {
             slideInductionId : { type: mongoose.Schema.Types.ObjectId },
             slideTitle: { type: String, default : null},
             slideContent: { type: String },
-            slideOrder: {type : String }
+            slideOrder: {type : String },
+            status:{ type : Boolean , default: 1}
         },
         { timestamps: true }
       )

@@ -7,12 +7,15 @@ import "swiper/css";
 import course1 from "./../../../images/courses/course1.jpg";
 
 import { useSelector } from "react-redux";
-import CompanyDropdown from '../Companies/CompanyDropdown';
+import CompanyDropdown from "../Companies/CompanyDropdown";
 
 const images = require.context("../../../../../images/inductions/", true);
 
 function CoursesMain() {
-  const [source, setSource] = useState('list');
+  const token = useSelector((state) => state.auth.auth.token);
+  const role = useSelector((state) => state.auth.auth.role);
+
+  const [source, setSource] = useState("list");
   const [filterCompany, setFilterCompany] = useState();
   const [courses, setCourses] = useState();
   const [loading, setloading] = useState(true);
@@ -21,13 +24,7 @@ function CoursesMain() {
   const [totalRecords, setTotalRecords] = useState();
   const [showing, setShowing] = useState();
 
-  // pagination
-  const [prevLink, setPrevLink] = useState(0);
-  const [firstLink, setFirstLink] = useState(1);
-  const [secondLink, setSecondLink] = useState(2);
-  const [nextLink, setNextLink] = useState(3);
-
-  const token = useSelector((state) => state.auth.auth.token);
+  
 
   // api call
   async function getAllInductions(page) {
@@ -41,8 +38,12 @@ function CoursesMain() {
   }
 
   async function filterInductions(page, companyID) {
-    let filterInductionsApi = "http://localhost:8081/api/induction/filter/by/company?page=" + page + "&filterByCompany=" + companyID;
-    if (companyID == 'all') {
+    let filterInductionsApi =
+      "http://localhost:8081/api/induction/filter/by/company?page=" +
+      page +
+      "&filterByCompany=" +
+      companyID;
+    if (companyID == "all") {
       filterInductionsApi = "http://localhost:8081/api/induction?page=" + page;
     }
     return fetch(filterInductionsApi, {
@@ -59,7 +60,7 @@ function CoursesMain() {
   };
 
   const filterByCompany = async (companyID) => {
-    setSource('filter');
+    setSource("filter");
     setFilterCompany(companyID);
     const response = await filterInductions(page, companyID);
     if ("status" in response && response.status == true) {
@@ -70,25 +71,11 @@ function CoursesMain() {
       setLimit(response.pagination.limit);
 
 
-      setPrevLink(
-        <Link to={"#"} onClick={(e) => setPage(page - 1)} className="">
-          <i className="fas fa-chevron-left"></i>
-        </Link>
-      );
+      
 
-      setFirstLink(
-        <Link
-          to={"#"}
-          onClick={(e) => setPage(1)}
-          className={page === 1 ? "active" : ""}
-        >
-          <i className="fas fa-chevron-left"></i>
-        </Link>
-      );
-
-      pageNate();
+      
     }
-  }
+  };
 
   const handleGetInduction = async (page) => {
     const response = await getAllInductions(page);
@@ -98,23 +85,7 @@ function CoursesMain() {
       setTotalRecords(response.pagination.totalRecords);
       setLimit(response.pagination.limit);
 
-      setPrevLink(
-        <Link to={"#"} onClick={(e) => setPage(page - 1)} className="">
-          <i className="fas fa-chevron-left"></i>
-        </Link>
-      );
-
-      setFirstLink(
-        <Link
-          to={"#"}
-          onClick={(e) => setPage(1)}
-          className={page === 1 ? "active" : ""}
-        >
-          <i className="fas fa-chevron-left"></i>
-        </Link>
-      );
-
-      pageNate();
+      setData(document.querySelectorAll("#student_wrapper .cardDiv"));
     }
   };
   const [data, setData] = useState(
@@ -155,51 +126,6 @@ function CoursesMain() {
     settest(i);
   };
 
-  // use effect
-  useEffect(() => {
-    if (source == 'filter') {
-      filterByCompany(filterCompany);
-    } else {
-      handleGetInduction(page);
-    }
-
-  }, [page, loading, totalRecords]);
-
-  const pageNate = () => {
-    if (totalRecords > limit) {
-      // enable pagination
-      const totalPages = totalRecords / limit;
-
-      setShowing(
-        <div>
-          <h4 className="sm-mb-0 mb-3">
-            Showing inside{" "}
-            <span>
-              {page === 1 ? 1 : (page - 1) * limit} -{" "}
-              {page === 1 ? limit : (page - 1) * limit + limit}{" "}
-            </span>
-            from <span>{totalRecords} </span>
-          </h4>
-        </div>
-      );
-    } else {
-      // only show dummy html
-      setShowing(
-        <h4 className="sm-mb-0 mb-3">
-          Showing Else{" "}
-          <span>
-            {page === 0 ? 1 : page * limit} - {page * limit + limit}{" "}
-          </span>
-          from <span>{totalRecords} </span>
-        </h4>
-      );
-    }
-  };
-
-  const style = {
-    float : "right"
-  }
-
   const content = loading ? (
     <h1>Loading</h1>
   ) : (
@@ -218,13 +144,17 @@ function CoursesMain() {
 
       <div className="row" id="student_wrapper">
         {courses.map((data, index) => (
-          <div className="col-xl-4 col-md-6" key={index}>
+          <div className="col-xl-4 col-md-6 cardDiv" key={index}>
             <div className="card all-crs-wid">
               <div className="card-body">
                 <div className="courses-bx">
                   <div className="dlab-media">
                     {data.thumbnail !== "" ? (
-                      <img className="img-fluid" src={loadImage(data.thumbnail)} alt="" />
+                      <img
+                        className="img-fluid"
+                        src={loadImage(data.thumbnail)}
+                        alt=""
+                      />
                     ) : (
                       <img className="img-fluid" src={course1} />
                     )}
@@ -233,7 +163,9 @@ function CoursesMain() {
                     <div className="dlab-title d-flex justify-content-between">
                       <div>
                         <h4>
-                          <Link to={`/single-induction-view/${data._id}`}>{data.title}</Link>
+                          <Link to={`/single-induction-view/${data._id}`}>
+                            {data.title}
+                          </Link>
                         </h4>
                         <p className="m-0">
                           {data.subTitle}

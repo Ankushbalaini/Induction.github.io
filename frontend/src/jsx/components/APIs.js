@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 
+
 // get Induction By ID 
 export async function getInduction(id, token){
     // const token = useSelector((state) => state.auth.auth.token);
@@ -40,3 +41,5 @@ export async function getData(URL, Token) {
       },
     }).then((data) => data.json());
 }
+
+
