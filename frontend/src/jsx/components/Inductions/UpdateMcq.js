@@ -13,7 +13,6 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
 
     const id = useSelector((state) => state.auth.auth.id);
     const token = useSelector((state) => state.auth.auth.token);
-    const id = useSelector((state)=>state.auth.auth.token);
     const [question, setQuestion] = useState(mcqData.question);
     const [option1, setOption1] = useState(mcqData.option1);
     const [option2, setOption2] = useState(mcqData.option2);
