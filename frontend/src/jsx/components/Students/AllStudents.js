@@ -223,7 +223,7 @@ const AllStudents = () => {
               {role === "super_admin" ? (
                 <div>
 
-                  <div>
+                <div style={{"display":"inline"}}>
                     <label> Select Company </label>
                     <select className="btn btn-white col-sm-2 border-dark"
                       name="search_company"
