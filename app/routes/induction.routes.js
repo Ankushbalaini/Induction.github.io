@@ -35,21 +35,27 @@ module.exports = function (app) {
     }
   });
   
-
+  
   router.get("/", induction.index);
+  
 
   // Create a new Induction
   router.post("/store", induction.store);
 
   // router.post("/add", induction.add);
 
+  
+  router.get("/users", induction.users);
+
   // Retrieve a single User with id
   router.get("/:id", induction.findOne ); 
+  
 
   router.get("/_new/:id", induction.findOne_new ); 
 
   router.post("/updatePassingMarks", induction.updatePassingMarks);
   router.get("/filter/by/company", induction.filterByCompany);
+  
   
   
 
