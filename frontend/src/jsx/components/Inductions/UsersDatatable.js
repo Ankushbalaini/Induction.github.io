@@ -6,7 +6,6 @@ import DropDownBlog from "../Dashboard/DropDownBlog";
 import { Link, useHistory } from "react-router-dom";
 import swal from "sweetalert";
 import { useSelector } from "react-redux";
-import ActionDropDown from "./ActionDropDownInductions";
 import { Modal } from "react-bootstrap";
 import { tableStyles } from "../Instructor/Instructor/tableStyles";
 import { Button } from "react-bootstrap";
