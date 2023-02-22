@@ -16,48 +16,53 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
 
   const [name, setName] = useState(companyData.profile.name);
   const [email, setEmail] = useState(companyData.profile.email);
-  const [aboutCompany, setAboutCompany] = useState(companyData.profile.aboutCompany);
+  const [aboutCompany, setAboutCompany] = useState(
+    companyData.profile.aboutCompany
+  );
   const [address, setAddress] = useState(companyData.profile.address);
-  const [image, setImage] = useState({ preview: '', data: '' });
+  const [image, setImage] = useState({ preview: "", data: "" });
   const [logo, setLogo] = useState(companyData.profile.logo);
   const [preview, setPreview] = useState(companyData.profile.logo);
 
   const [userID, setUserID] = useState(companyData.profile._id);
-  
+
   const handleCallback = () => {
     trackOnclick(false);
   };
 
   const loadImage = (imageName) => {
     return images(`./${imageName}`);
-  }
+  };
 
   const handleFileChange = async (e) => {
     const img = {
       preview: URL.createObjectURL(e.target.files[0]),
       data: e.target.files[0],
-    }
-    setImage(img)
-  }
+    };
+    setImage(img);
+  };
 
-  const handleSubmit = async (e) =>{
-
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // validate data
-    if(name.trim() === '' || email.trim() === '' || address.trim() === '' || aboutCompany ==='') {
+    if (
+      name.trim() === "" ||
+      email.trim() === "" ||
+      address.trim() === "" ||
+      aboutCompany === ""
+    ) {
       return swal("Failed", "All fields are required!", "error");
       //return false;
     }
 
     const data = new FormData();
-    data.append('name', name);
-    data.append('email', email);
-    data.append('logo', image.data);
-    data.append('address', address);
-    data.append('aboutCompany', aboutCompany);
-    data.append('logo_previous', logo);
+    data.append("name", name);
+    data.append("email", email);
+    data.append("logo", image.data);
+    data.append("address", address);
+    data.append("aboutCompany", aboutCompany);
+    data.append("logo_previous", logo);
 
-    
     // const userID = "63cea890edb762dfb4abb220";
 
     const response = await fetch(
@@ -77,12 +82,10 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
         //profile
         // navigate.push("/company-profile");
       });
-      
     } else {
       return swal("Failed", response.message, "error");
     }
-  }
-
+  };
 
   return (
     <Modal className="modal fade" show={isModalOpen}>
@@ -100,127 +103,110 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
 
         </div>
         <div className="modal-body">
-          <form className="update-form"
-           onSubmit={handleSubmit}>
-
-
-          <div className="row">
-                <div className="col-lg-6">
-                  <div className="form-group mb-3">
-                    <label htmlFor="name" className="text-black font-w600">
-                      {" "}
-                      Company Name <span className="required">*</span>{" "}
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      defaultValue=''
-                      name="name"
-                      placeholder=""
-                      value={name}
-                      onChange={(e)=>setName(e.target.value)}
-                    />
-                  </div>
+          <form className="update-form" onSubmit={handleSubmit}>
+            <div className="row">
+              <div className="col-lg-6">
+                <div className="form-group mb-3">
+                  <label htmlFor="name" className="text-black font-w600">
+                    {" "}
+                    Company Name <span className="required">*</span>{" "}
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    defaultValue=""
+                    name="name"
+                    placeholder=""
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
                 </div>
-
-                <div className="col-lg-6">
-                  <div className="form-group mb-3">
-                    <label htmlFor="email" className="text-black font-w600">
-                      {" "}
-                      Email <span className="required">*</span>{" "}
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      defaultValue=''
-                      name="email"
-                      placeholder=""
-                      value={email}
-                      onChange={(e)=>setEmail(e.target.value)}
-                      readOnly
-                    />
-                  </div>
-                </div>
-
-                <div className="col-lg-12">
-                  <div className="form-group mb-3">
-                    <label htmlFor="image" className="text-black font-w600">
-                      {" "}
-                      Company Logo <span className="required">*</span>
-                    </label>
-                    <div className="instructors-media">
-
-
-
-                    {/* <img src={ loadImage(preview) } Style="max-height:100px; max-width:100px; padding:10px; border-radius:10px"></img> */}
-
-
-                    </div> 
-                    <input type="hidden" value={preview} name="logo" />
-                    <input
-                      type="file"
-                      className="form-control"
-                      name="image"
-                      onChange={handleFileChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-lg-12">
-                  <div className="form-group mb-3">
-                    <label htmlFor="last_name" className="text-black font-w600">
-                      {" "}
-                      About Company <span className="required">*</span>
-                    </label>
-                    
-                     <textarea
-                      rows={2}
-                      className="form-control"
-                      name="aboutCompany"
-                      placeholder=""
-                      defaultValue={""}
-                      value={aboutCompany}
-                      onChange={(e)=>setAboutCompany(e.target.value)}
-                      />
-                  </div>
-                </div>
-
-
-                <div className="col-lg-12">
-                  <div className="form-group mb-3">
-                    <label htmlFor="last_name" className="text-black font-w600">
-                      {" "}
-                      Address <span className="required">*</span>
-                    </label>
-                    
-                     <textarea
-                      rows={2}
-                      className="form-control"
-                      name="address"
-                      placeholder=""
-                      defaultValue={""}
-                      value={address}
-                      onChange={(e)=>setAddress(e.target.value)}
-                      />
-                  </div>
-                </div>
-
-                <div className="col-lg-12">
-                  <div className="form-group mb-3">
-                    <input
-                      type="submit"
-                      value="Update Profile"
-                      className="submit btn btn-primary"
-                      name="submit"
-                    />
-                  </div>
-                </div>
-
-
-
               </div>
 
+              <div className="col-lg-6">
+                <div className="form-group mb-3">
+                  <label htmlFor="email" className="text-black font-w600">
+                    {" "}
+                    Email <span className="required">*</span>{" "}
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="email"
+                    placeholder=""
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    readOnly
+                  />
+                </div>
+              </div>
 
+              <div className="col-lg-12">
+                <div className="form-group mb-3">
+                  <label htmlFor="image" className="text-black font-w600">
+                    {" "}
+                    Company Logo <span className="required">*</span>
+                  </label>
+                  <div className="instructors-media">
+                    {/* <img src={ loadImage(preview) } Style="max-height:100px; max-width:100px; padding:10px; border-radius:10px"></img> */}
+                  </div>
+                  <input type="hidden" value={preview} name="logo" />
+                  <input
+                    type="file"
+                    className="form-control"
+                    name="image"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+
+              <div className="col-lg-12">
+                <div className="form-group mb-3">
+                  <label htmlFor="last_name" className="text-black font-w600">
+                    {" "}
+                    About Company <span className="required">*</span>
+                  </label>
+
+                  <textarea
+                    rows={2}
+                    className="form-control"
+                    name="aboutCompany"
+                    placeholder=""
+                    value={aboutCompany}
+                    onChange={(e) => setAboutCompany(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="col-lg-12">
+                <div className="form-group mb-3">
+                  <label htmlFor="last_name" className="text-black font-w600">
+                    {" "}
+                    Address <span className="required">*</span>
+                  </label>
+
+                  <textarea
+                    rows={2}
+                    className="form-control"
+                    name="address"
+                    placeholder=""
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="col-lg-12">
+                <div className="form-group mb-3">
+                  <input
+                    type="submit"
+                    value="Update Profile"
+                    className="submit btn btn-primary"
+                    name="submit"
+                  />
+                </div>
+              </div>
+            </div>
           </form>
         </div>
       </div>

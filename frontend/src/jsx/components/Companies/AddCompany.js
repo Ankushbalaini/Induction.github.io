@@ -131,7 +131,7 @@ const AddCompany = () => {
       body: data,
     }).then((data) => data.json());
     if ("status" in response && response.status == true) {
-      return swal("Success", response.message, "success", {
+      return swal("Company has been created successfully!", response.message, "success", {
         buttons: false,
         timer: 2000,
       }).then((value) => {

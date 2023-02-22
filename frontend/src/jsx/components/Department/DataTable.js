@@ -6,14 +6,14 @@ import DropDownBlog from "../Dashboard/DropDownBlog";
 import { Link } from "react-router-dom";
 import { tableStyles } from "../Instructor/Instructor/tableStyles";
 
-const Table = props => {
+const Table = (props) => {
   const columns = [
     {
       name: "Name",
       selector: "name",
       sortable: true,
       grow: 1,
-      className: 'col-3'
+      className: "col-3",
     },
 
     {
@@ -28,43 +28,44 @@ const Table = props => {
         { (row.status) ? 'Active' : 'Inactive'}
       
         </div>
-        )
+      ),
     },
     {
       name: "Actions",
       button: true,
-      cell: row =>
-          <div>
-            <div className="d-flex">
-            <button onClick={()=>props.actionHandler(row)}
+      cell: (row) => (
+        <div>
+          <div className="d-flex">
+            <button
+              onClick={() => props.actionHandler(row)}
               href="#"
               className="btn btn-success shadow btn-xs sharp me-1"
             >
               <i className="fas fa-pencil-alt"></i>
             </button>
-            <button onClick={() => props.deleteClick(row.name)}
+            <button
+              onClick={() => props.deleteClick(row.name)}
               href="#"
               className="btn btn-danger shadow btn-xs sharp"
             >
               <i className="fa fa-trash"></i>
             </button>
           </div>
-          </div>
-    }
+        </div>
+      ),
+    },
   ];
 
   const [filterText, setFilterText] = React.useState("");
-  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
-    false
-  );
+  const [resetPaginationToggle, setResetPaginationToggle] =
+    React.useState(false);
   // const filteredItems = data.filter(
   //   item => item.name && item.name.includes(filterText)
   // );
   const filteredItems = props.data.filter(
-    item =>
-      JSON.stringify(item)
-        .toLowerCase()
-        .indexOf(filterText.toLowerCase()) !== -1
+    (item) =>
+      JSON.stringify(item).toLowerCase().indexOf(filterText.toLowerCase()) !==
+      -1
   );
 
   const subHeaderComponent = useMemo(() => {
@@ -77,7 +78,7 @@ const Table = props => {
 
     return (
       <FilterComponent
-        onFilter={e => setFilterText(e.target.value)}
+        onFilter={(e) => setFilterText(e.target.value)}
         onClear={handleClear}
         filterText={filterText}
       />

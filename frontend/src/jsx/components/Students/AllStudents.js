@@ -217,16 +217,17 @@ const AllStudents = () => {
           <div className="col-xl-12">
             <div className="card students-list">
               <div className="card-header border-0 ">
-                <h2>Students List</h2>
-              </div>
-
+                <h2>Users List</h2>
+             
+                
               {role === "super_admin" ? (
-          <div className="btn-group" style={{display: "flex", alignItems:"end", justifyContent:"end",gap:"40px", paddingRight: "50px"}} >
+                <div className="row">
+                <div className="btn-group" style={{display: "flex", alignItems:"end", justifyContent:"end",gap:"40px", paddingRight: "20px"}} >
 
           
                 <div className="btn-group" >
                     <label style={{paddingRight:"10px",fontWeight:"bold",paddingTop:"12px"}} className="pb-0"> Select Company </label>
-                    <select className="btn btn-white col-sm-2 border-dark"
+                    <select className="btn btn-white col-sm-2 border-light"
                     style={{borderRadius:"8px"}}
                       name="search_company"
                       onChange={(e) => CompanyChangeFilter(e)}
@@ -237,10 +238,10 @@ const AllStudents = () => {
 
                     </div>
 
-                  <div className="btn-group">
+                  <div className="btn-group" >
                     <label style={{paddingRight:"10px",fontWeight:"bold",paddingTop:"12px"}}> Select Deparment </label>
 
-                    <select className="btn btn-white col-sm-2 border-dark"
+                    <select className="btn btn-white col-sm-2 border-light"
                     style={{borderRadius:"8px"}}
                       name="search_department"
                       onChange= { (e) => setSearchDepartment(e.target.value) }
@@ -253,7 +254,40 @@ const AllStudents = () => {
 
                 
           </div>
+          </div>
               ) : null}
+
+              {role === "company" ? (
+                <div className="btn-group col-sm-4" style={{float:"right",marginBottom:"5px"}} >
+              <label style={{paddingRight:"10px",fontWeight:"bold",paddingTop:"12px"}}> Select Deparment </label>
+                  
+              <select className="btn btn-white col-sm-2 border-light"
+                  style={{borderRadius:"8px"}}
+                    name="search_department"
+                    onChange={(e) => DepartmentChangeFilter(e)}
+                  >
+                    <option value="All">All</option>
+                    <DepartmentByCompany parentCompany={id} />
+                  </select>
+                </div>
+              ) : null}
+
+              {role === "instructor" ? (
+                <div className="btn-group col-sm-4" style={{float:"right",marginBottom:"5px"}} >
+                <label style={{paddingRight:"10px",fontWeight:"bold",paddingTop:"12px"}}> Select Deparment </label>
+                  <select
+                  className="btn btn-white col-sm-2 border-light"
+                  style={{borderRadius:"8px"}}
+                    name="search_department"
+                    onChange={(e) => DepartmentChangeFilter(e)}
+                  >
+                    <option value="All">All</option>
+                    <DepartmentByCompany parentCompany={id} />
+                  </select>
+                </div>
+              ) : null}
+              
+              </div>
 
               <div className="card-body">
                 <div className="table-responsive">
@@ -261,37 +295,14 @@ const AllStudents = () => {
                     id="student_wrapper"
                     className="dataTables_wrapper"
                   >
-                    {role === "company" ? (
-                      <div>
-                        <label> Select Deparment</label>
-                        <select
-                          Style="margin:20px; font-size: 16px;"
-                          name="search_department"
-                          onChange={(e) => DepartmentChangeFilter(e)}
-                        >
-                          <option value="All">All</option>
-                          <DepartmentByCompany parentCompany={id} />
-                        </select>
-                      </div>
-                    ) : null}
 
-                    {role === "instructor" ? (
-                      <div className="col-sm-3">
-                        <label > Select Deparment</label>
-                        <select
-                          Style="margin:30px; font-size: 15px;"
-                          name="search_department"
-                          onChange={(e) => DepartmentChangeFilter(e)}
-                        >
 
-                          <option value="All">All</option>
-                          <DepartmentByCompany parentCompany={id} />
-                        </select>
-                      </div>
-                    ) : null}
-
+                    {/* <input Style="margin:20px; font-size: 16px;"  type="text" name="search" onChange={(e) => searchByName }  placeholder="Search......"></input> */}
+              
+                    
                   </div>
                   <Table data={students} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus} />
+        
 
                 </div>
               </div>

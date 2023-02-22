@@ -2,17 +2,19 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "swiper/css";
 
-
 //images
 import course1 from "./../../../images/courses/course1.jpg";
 
 import { useSelector } from "react-redux";
-import CompanyDropdown from '../Companies/CompanyDropdown';
+import CompanyDropdown from "../Companies/CompanyDropdown";
 
 const images = require.context("../../../../../images/inductions/", true);
 
 function CoursesMain() {
-  const [source, setSource] = useState('list');
+  const token = useSelector((state) => state.auth.auth.token);
+  const role = useSelector((state) => state.auth.auth.role);
+
+  const [source, setSource] = useState("list");
   const [filterCompany, setFilterCompany] = useState();
   const [courses, setCourses] = useState();
   const [loading, setloading] = useState(true);
@@ -20,14 +22,6 @@ function CoursesMain() {
   const [limit, setLimit] = useState(3);
   const [totalRecords, setTotalRecords] = useState();
   const [showing, setShowing] = useState();
-
-  // pagination
-  const [prevLink, setPrevLink] = useState(0);
-  const [firstLink, setFirstLink] = useState(1);
-  const [secondLink, setSecondLink] = useState(2);
-  const [nextLink, setNextLink] = useState(3);
-
-  const token = useSelector((state) => state.auth.auth.token);
 
   // api call
   async function getAllInductions(page) {
@@ -41,8 +35,12 @@ function CoursesMain() {
   }
 
   async function filterInductions(page, companyID) {
-    let filterInductionsApi = "http://localhost:8081/api/induction/filter/by/company?page=" + page + "&filterByCompany=" + companyID;
-    if (companyID == 'all') {
+    let filterInductionsApi =
+      "http://localhost:8081/api/induction/filter/by/company?page=" +
+      page +
+      "&filterByCompany=" +
+      companyID;
+    if (companyID == "all") {
       filterInductionsApi = "http://localhost:8081/api/induction?page=" + page;
     }
     return fetch(filterInductionsApi, {
@@ -59,36 +57,16 @@ function CoursesMain() {
   };
 
   const filterByCompany = async (companyID) => {
-    setSource('filter');
+    setSource("filter");
     setFilterCompany(companyID);
     const response = await filterInductions(page, companyID);
     if ("status" in response && response.status == true) {
       setCourses(response.data);
       //return;
       setloading(false);
-      setTotalRecords(response.pagination.totalRecords);
-      setLimit(response.pagination.limit);
-
-
-      setPrevLink(
-        <Link to={"#"} onClick={(e) => setPage(page - 1)} className="">
-          <i className="fas fa-chevron-left"></i>
-        </Link>
-      );
-
-      setFirstLink(
-        <Link
-          to={"#"}
-          onClick={(e) => setPage(1)}
-          className={page === 1 ? "active" : ""}
-        >
-          <i className="fas fa-chevron-left"></i>
-        </Link>
-      );
-
-      pageNate();
+      setData(document.querySelectorAll("#student_wrapper .cardDiv"));
     }
-  }
+  };
 
   const handleGetInduction = async (page) => {
     const response = await getAllInductions(page);
@@ -98,23 +76,7 @@ function CoursesMain() {
       setTotalRecords(response.pagination.totalRecords);
       setLimit(response.pagination.limit);
 
-      setPrevLink(
-        <Link to={"#"} onClick={(e) => setPage(page - 1)} className="">
-          <i className="fas fa-chevron-left"></i>
-        </Link>
-      );
-
-      setFirstLink(
-        <Link
-          to={"#"}
-          onClick={(e) => setPage(1)}
-          className={page === 1 ? "active" : ""}
-        >
-          <i className="fas fa-chevron-left"></i>
-        </Link>
-      );
-
-      pageNate();
+      setData(document.querySelectorAll("#student_wrapper .cardDiv"));
     }
   };
   const [data, setData] = useState(
@@ -125,6 +87,15 @@ function CoursesMain() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profileData, setProfileData] = useState();
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
+
+  // use effect
+  useEffect(() => {
+    if (source == "filter") {
+      filterByCompany(filterCompany);
+    } else {
+      handleGetInduction(page);
+    }
+  }, [page, loading, totalRecords]);
 
   const [test, settest] = useState(0);
   const sort = 6;
@@ -155,76 +126,92 @@ function CoursesMain() {
     settest(i);
   };
 
-  // use effect
-  useEffect(() => {
-    if (source == 'filter') {
-      filterByCompany(filterCompany);
-    } else {
-      handleGetInduction(page);
-    }
-
-  }, [page, loading, totalRecords]);
-
-  const pageNate = () => {
-    if (totalRecords > limit) {
-      // enable pagination
-      const totalPages = totalRecords / limit;
-
-      setShowing(
-        <div>
-          <h4 className="sm-mb-0 mb-3">
-            Showing inside{" "}
-            <span>
-              {page === 1 ? 1 : (page - 1) * limit} -{" "}
-              {page === 1 ? limit : (page - 1) * limit + limit}{" "}
-            </span>
-            from <span>{totalRecords} </span>
-          </h4>
-        </div>
-      );
-    } else {
-      // only show dummy html
-      setShowing(
-        <h4 className="sm-mb-0 mb-3">
-          Showing Else{" "}
-          <span>
-            {page === 0 ? 1 : page * limit} - {page * limit + limit}{" "}
-          </span>
-          from <span>{totalRecords} </span>
-        </h4>
-      );
-    }
-  };
-
-  const style = {
-    float : "right"
-  }
-
   const content = loading ? (
     <h1>Loading</h1>
   ) : (
     <>
-    <div className="row" id="student_wrapper">
-       <div className="widget-heading d-flex justify-content-between align-items-center">
-         <h3 className="m-0">All Inductions ({totalRecords})</h3>
-         <div className="col-sm-4">
-           <select name="parentCompany" className="form-control" onChange={(e) => filterByCompany(e.target.value)}>
-             <option value="all">All</option>
-             <CompanyDropdown />
-           </select>
-         </div>     
-       </div>
-     </div>
+      <div className="widget-heading d-flex justify-content-between align-items-center">
+        <h3 className="m-0">All Inductions ({totalRecords})</h3>
 
-      <div className="row" id="student_wrapper">
+        {role === "super_admin" ? (
+          <div className="col-lg-4">
+            <select
+              name="parentCompany"
+              className="form-control"
+              onChange={(e) => filterByCompany(e.target.value)}
+            >
+              <option value="all">All</option>
+              <CompanyDropdown />
+            </select>
+          </div>
+        ) : null}
+        {/* <Link to={"./inductions"} className="btn btn-primary btn-sm">
+          View all
+        </Link> */}
+      </div>
+
+      <div className="row dataTables_wrapper no-footer" id="student_wrapper">
         {courses.map((data, index) => (
-          <div className="col-xl-4 col-md-6" key={index}>
+          <div className="col-xl-4 col-md-6 cardDiv" key={index}>
+            {/* <div class="dropdown">
+              <a
+                class="btn-link i-false btn sharp tp-btn-light btn-dark dropdown-toggle"
+                id="react-aria4630117428-23"
+                aria-expanded="false"
+              >
+                <svg
+                  width="24"
+                  height="25"
+                  viewBox="0 0 24 25"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.0012 9.86C11.6544 9.86 11.3109 9.92832 10.9905 10.061C10.67 10.1938 10.3789 10.3883 10.1336 10.6336C9.88835 10.8788 9.6938 11.17 9.56107 11.4905C9.42834 11.8109 9.36002 12.1544 9.36002 12.5012C9.36002 12.848 9.42834 13.1915 9.56107 13.5119C9.6938 13.8324 9.88835 14.1236 10.1336 14.3688C10.3789 14.6141 10.67 14.8086 10.9905 14.9413C11.3109 15.0741 11.6544 15.1424 12.0012 15.1424C12.7017 15.1422 13.3734 14.8638 13.8687 14.3684C14.3639 13.873 14.642 13.2011 14.6418 12.5006C14.6417 11.8001 14.3632 11.1284 13.8678 10.6332C13.3724 10.138 12.7005 9.85984 12 9.86H12.0012ZM3.60122 9.86C3.25437 9.86 2.91092 9.92832 2.59048 10.061C2.27003 10.1938 1.97887 10.3883 1.73361 10.6336C1.48835 10.8788 1.2938 11.17 1.16107 11.4905C1.02834 11.8109 0.960022 12.1544 0.960022 12.5012C0.960022 12.848 1.02834 13.1915 1.16107 13.5119C1.2938 13.8324 1.48835 14.1236 1.73361 14.3688C1.97887 14.6141 2.27003 14.8086 2.59048 14.9413C2.91092 15.0741 3.25437 15.1424 3.60122 15.1424C4.30171 15.1422 4.97345 14.8638 5.46866 14.3684C5.96387 13.873 6.24198 13.2011 6.24182 12.5006C6.24166 11.8001 5.96324 11.1284 5.46781 10.6332C4.97237 10.138 4.30051 9.85984 3.60002 9.86H3.60122ZM20.4012 9.86C20.0544 9.86 19.7109 9.92832 19.3905 10.061C19.07 10.1938 18.7789 10.3883 18.5336 10.6336C18.2884 10.8788 18.0938 11.17 17.9611 11.4905C17.8283 11.8109 17.76 12.1544 17.76 12.5012C17.76 12.848 17.8283 13.1915 17.9611 13.5119C18.0938 13.8324 18.2884 14.1236 18.5336 14.3688C18.7789 14.6141 19.07 14.8086 19.3905 14.9413C19.7109 15.0741 20.0544 15.1424 20.4012 15.1424C21.1017 15.1422 21.7734 14.8638 22.2687 14.3684C22.7639 13.873 23.042 13.2011 23.0418 12.5006C23.0417 11.8001 22.7632 11.1284 22.2678 10.6332C21.7724 10.138 21.1005 9.85984 20.4 9.86H20.4012Z"
+                    fill="#A098AE"
+                  ></path>
+                </svg>
+              </a>
+              <div
+                x-placement="bottom-start"
+                aria-labelledby="react-aria4630117428-23"
+                class="dropdown-menu dropdown-menu-end dropdown-menu"
+                data-popper-reference-hidden="false"
+                data-popper-escaped="false"
+                data-popper-placement="bottom-start"
+                style="position: absolute; inset: 0px auto auto 0px; transform: translate(1493px, 206px);"
+              >
+                <a
+                  data-rr-ui-dropdown-item=""
+                  class="dropdown-item"
+                  role="button"
+                  tabindex="0"
+                  href="#"
+                >
+                  Delete
+                </a>
+                <a
+                  data-rr-ui-dropdown-item=""
+                  class="dropdown-item"
+                  role="button"
+                  tabindex="0"
+                  href="#"
+                >
+                  Edit
+                </a>
+              </div>
+            </div> */}
+
             <div className="card all-crs-wid">
               <div className="card-body">
                 <div className="courses-bx">
                   <div className="dlab-media">
                     {data.thumbnail !== "" ? (
-                      <img className="img-fluid" src={loadImage(data.thumbnail)} alt="" />
+                      <img
+                        className="img-fluid"
+                        src={loadImage(data.thumbnail)}
+                        alt=""
+                      />
                     ) : (
                       <img className="img-fluid" src={course1} />
                     )}
@@ -233,7 +220,9 @@ function CoursesMain() {
                     <div className="dlab-title d-flex justify-content-between">
                       <div>
                         <h4>
-                          <Link to={`/single-induction-view/${data._id}`}>{data.title}</Link>
+                          <Link to={`/single-induction-view/${data._id}`}>
+                            {data.title}
+                          </Link>
                         </h4>
                         <p className="m-0">
                           {data.subTitle}
@@ -283,68 +272,59 @@ function CoursesMain() {
             </div>
           </div>
         ))}
+
+        <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
+          <div className="dataTables_info">
+            Showing {activePag.current * sort + 1} to{" "}
+            {data.length > (activePag.current + 1) * sort
+              ? (activePag.current + 1) * sort
+              : data.length}{" "}
+            of {data.length} entries
+          </div>
+          <div
+            className="dataTables_paginate paging_simple_numbers mb-0"
+            id="application-tbl1_paginate"
+          >
+            <Link
+              className="paginate_button previous "
+              to="/inductions"
+              onClick={() =>
+                activePag.current > 0 && onClick(activePag.current - 1)
+              }
+            >
+              <i className="fa fa-angle-double-left" aria-hidden="true"></i>
+            </Link>
+            <span>
+              {paggination.map((number, i) => (
+                <Link
+                  key={i}
+                  to="/inductions"
+                  className={`paginate_button  ${
+                    activePag.current === i ? "current" : ""
+                  } `}
+                  onClick={() => onClick(i)}
+                >
+                  {number}
+                </Link>
+              ))}
+            </span>
+
+            <Link
+              className="paginate_button next"
+              to="/inductions"
+              onClick={() =>
+                activePag.current + 1 < paggination.length &&
+                onClick(activePag.current + 1)
+              }
+            >
+              <i className="fa fa-angle-double-right" aria-hidden="true"></i>
+            </Link>
+          </div>
+        </div>
       </div>
-     
-      {/* <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
-           <div className="dataTables_info">
-             Showing {activePag.current * sort + 1} to{" "}
-             {data.length > (activePag.current + 1) * sort
-               ? (activePag.current + 1) * sort
-               : data.length}{" "}
-             of {data.length} entries
-           </div>
-           <div
-             className="dataTables_paginate paging_simple_numbers mb-0"
-             id="application-tbl1_paginate"
-           >
-             <Link
-               className="paginate_button previous "
-               to="/users"
-               onClick={() =>
-                 activePag.current > 0 &&
-                 onClick(activePag.current - 1)
-               }
-             >
-               <i
-                 className="fa fa-angle-double-left"
-                 aria-hidden="true"
-               ></i>
-             </Link>
-             <span>
-               {paggination.map((number, i) => (
-                 <Link
-                   key={i}
-                   to="/inductions"
-                   className={`paginate_button  ${
-                     activePag.current === i ? "current" : ""
-                   } `}
-                   onClick={() => onClick(i)}
-                 >
-                   {number}
-                 </Link>
-               ))}
-             </span>
-             <Link
-               className="paginate_button next"
-               to="/inductions"
-               onClick={() =>
-                 activePag.current + 1 < paggination.length &&
-                 onClick(activePag.current + 1)
-               }
-             >
-               <i
-                 className="fa fa-angle-double-right"
-                 aria-hidden="true"
-               ></i>
-             </Link>
-           </div>
-         </div> */}
     </>
   );
-// const contents = React.lazy(()=>{content})
-  return <>
-    {content}  
-    
-    </>;
+  // const contents = React.lazy(()=>{content})
+  return <>{content}</>;
 }
 export default CoursesMain;

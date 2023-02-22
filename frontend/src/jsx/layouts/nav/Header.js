@@ -153,6 +153,17 @@ const Header = ({ onNote }) => {
 					  : finalName.join(" ") === "dashboard dark"
 					  ? "Dashboard"
 					  : finalName.join(" ")}
+
+
+
+
+
+
+{/* { (inductionName === "update-induction" ) ? "Update Induction" : finalName.join(" ")} 
+
+{ (inductionName === "single-induction-view") ? "Induction View" : finalName.join(" ") } */}
+
+
 				</div>
             </div>
 			<div className="navbar-nav header-right">

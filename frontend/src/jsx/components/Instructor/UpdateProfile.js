@@ -100,10 +100,14 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
 
 
   return (
-    <Modal className="modal fade" show={isModalOpen}>
+    <Modal className="modal fade" show={isModalOpen}
+    size="xl"
+    aria-labelledby="contained-modal-title-vcenter"
+    centered
+    >
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Update Profile</h5>
+          <h5 className="modal-title">Update Instructor</h5>
           <Button
             variant=""
             type="button"
@@ -115,7 +119,6 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
         </div>
         <div className="modal-body">
           <form className="update-form" onSubmit={handleSubmit}>
-
 
           <div className="row">
                 <div className="col-lg-6">

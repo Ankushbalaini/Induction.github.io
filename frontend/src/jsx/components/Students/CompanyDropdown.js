@@ -18,6 +18,9 @@ async function getDepartments(token, company) {
 const CompanyDropdown = ({ selectedVal , selectedDeptVal }) => {
 
     const token = useSelector((state) => state.auth.auth.token);
+    const [currentCompany, setCurrentCompany] = useState(selectedVal);
+    const [currentDepartment, setCurrentDepartment] = useState(selectedDeptVal);
+
     const [loading, setLoading] = useState(true);
     const [option, setOption] = useState();
     const [deptOption, setDeptOption] = useState();
@@ -30,39 +33,52 @@ const CompanyDropdown = ({ selectedVal , selectedDeptVal }) => {
                 <option value={row.userID}>{row.name}</option>
             ));
             setOption(rows);
-            setLoading(false);
+            
         }
+
+        if(currentCompany !== '' ){
+            const resp = await getDepartments(token, currentCompany);
+            if ("status" in resp && resp.status == true) {
+
+                const rows = resp.data.map((row, index) => (
+                    <option value={row._id} >{row.name}</option>
+                ));
+                setDeptOption(rows);
+                setLoading(false);
+            }
+        }
+        
     }
 
     // 
-    const handleCompanyChange = (e) =>{
+    const handleCompanyChange = async (e) =>{
 
-        //setLoading(true);
-
-        // deptOption
-        const selectedCompanyVal = e.target.value;
-        
-        const response = getDepartments(token, selectedCompanyVal);
+        const selectedCompany = e.target.value;
+        setCurrentCompany(selectedCompany);
+        if(selectedCompany === ''){
+            return false;
+        }
+        const response = await getDepartments(token, selectedCompany);
         if ("status" in response && response.status == true) {
             const rows = response.data.map((row, index) => (
                 <option value={row._id}>{row.name}</option>
             ));
             setDeptOption(rows);
-            //setLoading(false);
         }
+        
     }
 
     
     useEffect(()=>{
         getCompanyData();
-    }, [loading, deptOption]);
+    }, [loading]);
 
 
     return (
         <>
             <div className="col-lg-12">
                 <div className="form-group mb-3">
-                    <label htmlFor="first_name" className="text-black font-w600">
+                    <label htmlFor="parentCompany" className="text-black font-w600">
                         {" "}
                         Select Company <span className="required">*</span>{" "}
                     </label>
@@ -70,8 +86,10 @@ const CompanyDropdown = ({ selectedVal , selectedDeptVal }) => {
                         name="parentCompany"
                         className="form-control"
                         onChange={(e)=>handleCompanyChange(e)}
-                        value={selectedVal}
+                        value={currentCompany}
+                        required
                     >
+                        <option value=''>Select</option>
                         {option}
                     </select>
                 </div>
@@ -79,16 +97,19 @@ const CompanyDropdown = ({ selectedVal , selectedDeptVal }) => {
 
             <div className="col-lg-12">
                 <div className="form-group mb-3">
-                    <label htmlFor="first_name" className="text-black font-w600">
+                    <label htmlFor="deptID" className="text-black font-w600">
                         {" "}
-                        Select Department-- {deptOption} <span className="required">*</span>{" "}
+                        Select Department <span className="required">*</span>{" "}
                     </label>
                     <select
                         name="deptID"
                         className="form-control"
-                        value={selectedDeptVal}
+                        value={currentDepartment}
+                        onChange={(e)=> setCurrentDepartment(e.target.value) }
+                        required
                     >
-                        {deptOption}
+                        <option value=''>Select</option>
+                        { deptOption }
                     </select>
                 </div>
             </div>

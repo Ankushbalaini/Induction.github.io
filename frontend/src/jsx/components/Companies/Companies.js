@@ -172,7 +172,11 @@ const Companies = () => {
       {/* edit Modal */}
       {/* <UpdateCompanyProfile isModalOpen={isModalOpen} trackOnclick={trackOnclick} companyData={companies}/> */}
 
-      <Modal className="modal fade" show={isModalOpen}>
+      <Modal className="modal fade" show={isModalOpen}
+      size="xl"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      >
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Edit Company Details </h5>
@@ -203,7 +207,6 @@ const Companies = () => {
                       name="name"
                       value={name}
                       onChange={(e)=>setName(e.target.value)}
-                      required
                     />
                   </div>
                 </div>
@@ -221,7 +224,7 @@ const Companies = () => {
                       placeholder="Email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      required
+                      readOnly
                     />
                   </div>
                 </div>
@@ -239,7 +242,7 @@ const Companies = () => {
                       placeholder="Slug"
                       value={companyID}
                       onChange={(e) => setCompanyID(e.target.value)}
-                      required
+                      
                     />
                   </div>
                 </div>
@@ -275,7 +278,7 @@ const Companies = () => {
                       name="address"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
-                      required
+                     
                     />
                   </div>
                 </div>
@@ -294,7 +297,7 @@ const Companies = () => {
                       placeholder="Tell us More"
                       value={aboutCompany}
                       onChange={(e) => setAboutCompany(e.target.value)}
-                      required
+                      
                     />
                   </div>
                 </div>

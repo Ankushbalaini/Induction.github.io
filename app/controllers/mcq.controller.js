@@ -242,3 +242,49 @@ exports.submitTest = async (req, res) => {
   }
 };
 
+
+/**
+ * @description: Finding student by their ID and then updating the profile details
+ *
+ * @param req
+ * @param res
+ */
+exports.edit = (req, res) => {
+  const id = req.params.id; // question id who needs to update
+
+  // return res.status(200).send({
+  //   status: true,
+  //   message: "Question has been updated! "+id,
+  //   data: req.body,
+  //   user: req.decoded
+  // });
+
+
+  // Question Update
+  MCQs.updateOne(
+    { _id: id },
+    { $set: req.body },
+    { multi: true },
+    function (err, ques) {
+      if (err) {
+        return res.status(500).send({
+          status: false,
+          message: err.message,
+        });
+      }
+      if (!ques) {
+        return res.status(500).send({
+          status: false,
+          message: "Question not found!",
+        });
+      } else {
+
+          return res.status(200).send({
+            status: true,
+            message: "Question has been updated!",
+            data: ques,
+        });
+      }
+    }
+  );
+};

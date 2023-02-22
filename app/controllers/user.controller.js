@@ -454,7 +454,6 @@ exports.signUp_org = (req, res) => {
       }
     );
 
-    user_cred.token = token;
     req.body.userID = user_cred._id;
     const user_detail = req.body;
     const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
@@ -465,31 +464,30 @@ exports.signUp_org = (req, res) => {
     user_cred
       .save()
       .then((user) => {
-        req.body.userID = user._id;
+        
 
-        const user_detail = req.body;
-        const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
-
-        const newuser = new User(userWithoutPwd);
+        //const user_detail = req.body;
+        //const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
+        //const newuser = new User(userWithoutPwd);
 
         newuser
           .save()
           .then((data) => {
-            res.status(200).send({
+            return res.status(200).send({
               status: true,
               message: "User registered successfully!",
               data: user_cred,
             });
           })
           .catch((err) => {
-            res.status(400).send({
+            return res.status(400).send({
               status: false,
               message: err.message,
             });
           });
       })
       .catch((err) => {
-        res.status(400).send({
+        return res.status(400).send({
           status: false,
           message: err.message,
         });
@@ -781,55 +779,60 @@ exports.edit = async (req, res) => {
     });                  
     req.body.profilePhoto = Img.name;                                              
   }
-  // check request token values                     
-  if (req.decoded.role === "super_admin") {               
-    req.body.deptID = ObjectId(req.body.deptID);                       
-    req.body.parentCompany = ObjectId(req.body.parentCompany);                
-  }                       
-  if (req.decoded.role === "company") {                       
-    req.body.parentCompany = ObjectId(req.decoded.userID);                                                
-  }                 
-  if (req.decoded.role === "instructor") {                    
-    req.body.parentCompany = ObjectId(req.decoded.parentCompany);          
-  }                                      
-   
-  // users colletion 
-  User.updateOne(                       
-    { _id: id },                   
-    { $set: req.body },                                        
-    { multi: true },                       
-    function (err, user) {                 
-      if (err) {                        
-        return res.status(500).send({                                                 
-          status: false,                                                 
-          message: err.message,                           
-        });                   
-      }                 
-      if (!user) {                        
-        return res.status(500).send({                     
-          status: false,                  
-          message: "User not found!",                                             
-        });               
-      } else {               
-        UserCred.updateOne(                  
-          { _id: req.body.mainID },                                        
-          { $set: req.body },              
-          { multi: true }                                       
-        )                 
-          .then((user) => {                                      
-            return res.status(200).send({                
-              status: true,                         
-              message: "User has been updated!",              
-              data: user,                       
-            });                        
-          })                   
-          .catch((err) => {                       
-            return res.status(500).send({                                 
-              status: false,              
-              message: err.message,                 
-            });            
-          });                  
-      }         
+
+  // check request token values
+  if (req.decoded.role === "super_admin") {
+    req.body.deptID = ObjectId(req.body.deptID);
+    req.body.parentCompany = ObjectId(req.body.parentCompany);
+  }
+
+  if (req.decoded.role === "company") {
+    req.body.parentCompany = ObjectId(req.decoded.userID);
+  }
+
+  if (req.decoded.role === "instructor") {
+    // pass parent company and dept
+    // undefined
+    req.body.parentCompany = ObjectId(req.decoded.parentCompany);
+  }
+
+  // users colletion
+  User.updateOne(
+    { _id: id },
+    { $set: req.body },
+    { multi: true },
+    function (err, user) {
+      if (err) {
+        return res.status(500).send({
+          status: false,
+          message: err.message,
+        });
+      }
+      if (!user) {
+        return res.status(500).send({
+          status: false,
+          message: "User not found!",
+        });
+      } else {
+        UserCred.updateOne(
+          { _id: req.body.mainID },
+          { $set: req.body },
+          { multi: true }
+        )
+          .then((user) => {
+            return res.status(200).send({
+              status: true,
+              message: "User has been updated!",
+              data: user,
+            });
+          })
+          .catch((err) => {
+            return res.status(500).send({
+              status: false,
+              message: err.message,
+            });
+          });
+      }
     }
   );
 };
@@ -888,36 +891,6 @@ exports.setting = (req, res) => {
 exports.inductions = (req, res) => {
   try {
     const userID = ObjectId(req.decoded.userID);
-
-    // 63d22a6b0fcd4d8baa9cc79f
-    // 63d22a6b0fcd4d8baa9cc79f
-
-    //var distinctIdCode = { $group: { _id: { team_code: "$team_code", team_id: "$team_id" } } }
-    //db.foo.aggregate([distinctIdCode])
-    /*
-    db.user_induction_results.aggregate( [
-      {
-        $group: {
-           _id: userID,
-           count: { $count: { } },
-        }
-      }
-    ] ).then((data)=>{
-      return res.status(200).send({
-        message: "Success here",
-        status: true,
-        data: data
-      });
-    })
-    .catch((err)=>{
-      return res.status(500).send({
-        message: err.message,
-        status: false
-      });
-    });
-
-    */
-
     UserInductionResults.find({ userID: userID })
       .populate({
         path: "inductionID",

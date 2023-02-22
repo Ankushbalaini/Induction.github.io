@@ -82,9 +82,9 @@ const Table = props => {
       name: "Actions",
       button: true,
       cell: row =>
-          <div>
-            <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick}/>
-          </div>
+          <>
+            <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick} />
+          </>
     }
   ];
 
@@ -92,49 +92,49 @@ const Table = props => {
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(true);
 
   const token = useSelector((state) => state.auth.auth.token);
-  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
+  //const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
   
   // change status
-const changeUserStatusOG = (userID, status) =>{
+// const changeUserStatusORG = (userID, status) =>{
 
   
-  // user id
-  swal({
-    title: "Are you sure?",
-    text:
-      `Once status Changed, User will get or loss access to account`,
-    icon: "warning",
-    buttons: true,
-    dangerMode: true,
-  }).then(async (willChange) => {
-    if (willChange) {
+//   // user id
+//   swal({
+//     title: "Are you sure?",
+//     text:
+//       `Once status Changed, User will get or loss access to account`,
+//     icon: "warning",
+//     buttons: true,
+//     dangerMode: true,
+//   }).then(async (willChange) => {
+//     if (willChange) {
 
-      const response = await fetch("http://localhost:8081/api/users/changeUserStatus", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token" : token,
-        },
-        body: JSON.stringify({ "userID" : userID, "status": status})
-      }).then((data) => data.json());
+//       const response = await fetch("http://localhost:8081/api/users/changeUserStatus", {
+//         method: "PUT",
+//         headers: {
+//           "Content-Type": "application/json",
+//           "x-access-token" : token,
+//         },
+//         body: JSON.stringify({ "userID" : userID, "status": status})
+//       }).then((data) => data.json());
 
 
-      if ("status" in response && response.status == true) {
-        swal("Poof! Your record has been updated!", {
-          icon: "success",
-        }).then(()=>{
-          setIsUserStatusChanged(true);
-        });
+//       if ("status" in response && response.status == true) {
+//         swal("Poof! Your record has been updated!", {
+//           icon: "success",
+//         }).then(()=>{
+//           setIsUserStatusChanged(true);
+//         });
         
-      } else {
-        return swal("Failed", response.message, "error");
-      }
+//       } else {
+//         return swal("Failed", response.message, "error");
+//       }
 
-    } else {
-      swal("Your status is not changed!");
-    }
-  })
-}
+//     } else {
+//       swal("Your status is not changed!");
+//     }
+//   })
+// }
 
   const filteredItems = props.data.filter(
     item =>

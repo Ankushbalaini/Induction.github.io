@@ -4,9 +4,8 @@ import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-
-import CompanyDropdown from '../Companies/CompanyDropdown';
-import DepartmentDropdown from '../Department/DepartmentDropdown';
+import CompanyDropdown from "../Companies/CompanyDropdown";
+import DepartmentDropdown from "../Department/DepartmentDropdown";
 
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 
@@ -17,44 +16,42 @@ const AddInstructor = () => {
   const lrole = useSelector((state) => state.auth.auth.role);
   const token = useSelector((state) => state.auth.auth.token);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState('instructor');
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [role, setRole] = useState("instructor");
   const [name, setName] = useState("");
   const [parentCompany, setParentCompany] = useState("");
   const [parentDepartment, setParentDepartment] = useState("");
-  const [deptID, setDeptID] = useState("");
-  const [profilePhoto, setProfilePhoto] = useState('dummy-user.png');
-  const [image, setImage] = useState({preview:'', data:''})
+  const [deptID, setDeptID] = useState();
+  const [profilePhoto, setProfilePhoto] = useState("dummy-user.png");
+  const [image, setImage] = useState({ preview: "", data: "" });
   const [address, setAddress] = useState("");
-  const [aboutMe, setAboutMe] = useState("");
+  const [aboutMe, setAboutMe] = useState();
 
   // validation messages
-  let errorObj = { 
-   email: "",
-   password: "",
-   name: "",
-   parentCompany:"",
-   parentDepartment:"",
-   address: "",
-   
-};
-  
-  const [errors, setErrors] = useState(errorObj);
+  let errorsObj = {
+    email: "",
+    password: "",
+    name: "",
+    parentCompany: "",
+    parentDepartment: "",
+    address:""
+  };
+  const [errors, setErrors] = useState(errorsObj);
 
   const handleFileChange = async (e) => {
     const img = {
       preview: URL.createObjectURL(e.target.files[0]),
       data: e.target.files[0],
-    }
-    setImage(img)
-  }
+    };
+    setImage(img);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     let error = false;
-    const errorObj1 = { ...errorObj }
+    const errorObj1 = { ...errorsObj }
 
     if (email === "") {
       errorObj1.email = "Email is required";
@@ -91,18 +88,17 @@ const AddInstructor = () => {
     
 
     const data = new FormData();
-    data.append('name', name);
-    data.append('email', email);
-    data.append('password', password);
-    data.append('role', role);
-    data.append('parentCompany', parentCompany);
-    data.append('parentDepartment',parentDepartment);
-    data.append('deptID', parentDepartment);
-    data.append('profilePhoto', image.data);
-    data.append('address', address);
-    data.append('aboutMe', aboutMe);
+    data.append("name", name);
+    data.append("email", email);
+    data.append("password", password);
+    data.append("role", role);
+    data.append("parentCompany", parentCompany);
+    data.append("parentDepartment", parentDepartment);
+    data.append("deptID", parentDepartment);
+    data.append("profilePhoto", image.data);
+    data.append("address", address);
+    data.append("aboutMe", aboutMe);
 
-    
     const response = await fetch("http://localhost:8081/api/instructor/add", {
       method: "POST",
       headers: {
@@ -112,9 +108,10 @@ const AddInstructor = () => {
     }).then((user) => user.json());
 
     if ("status" in response && response.status === true) {
-      return swal("Success", response.message, "success", {
+      return swal("Instructor has been added successfully!", response.message, "success", {
         buttons: false,
         timer: 2000,
+        icon: "success",
       }).then((value) => {
         navigate.push("/instructors");
       });
@@ -123,11 +120,11 @@ const AddInstructor = () => {
     }
   };
 
-   //css for button
-   const buttonStyle = {
+  //css for button
+  const buttonStyle = {
     margin: "auto",
     display: "flex",
-    float: 'right'
+    float: "right",
   };
 
 
@@ -135,7 +132,7 @@ const AddInstructor = () => {
   function handleKeyPress(e) {
     var key = e.key;
    if (key == key) {
-        setErrors((errorObj == false))
+        setErrors((errorsObj == false))
     }
 }
 
@@ -152,12 +149,9 @@ const AddInstructor = () => {
           </div>
           <div className="card-body">
             <div className="basic-form">
-              <form onSubmit={(e)=>handleSubmit(e)}>
-
+              <form onSubmit={(e) => handleSubmit(e)}>
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">
-                    Email
-                  </label>
+                  <label className="col-sm-3 col-form-label">Email</label>
                   <div className="col-sm-9">
                     <input
                       name="email"
@@ -170,7 +164,7 @@ const AddInstructor = () => {
                       // Role="presentation"
                     />
                     {errors.email && (
-                      <div Style="color:red;font-weight:400">
+                      <div Style="color:red;font-weight:400;padding:5px;">
                         {errors.email}
                       </div>
                     )}
@@ -178,9 +172,7 @@ const AddInstructor = () => {
                 </div>
 
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">
-                    Password
-                  </label>
+                  <label className="col-sm-3 col-form-label">Password</label>
                   <div className="col-sm-9">
                     <input
                       name="password"
@@ -192,23 +184,19 @@ const AddInstructor = () => {
 
                     />
                     {errors.password && (
-                      <div Style="color:red;font-weight:400">
+                      <div Style="color:red;font-weight:400;padding:5px;">
                         {errors.password}
                       </div>
                     )}
                   </div>
                 </div>
 
-
-
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">
-                    Name
-                  </label>
+                  <label className="col-sm-3 col-form-label">Name</label>
                   <div className="col-sm-9">
                     <input
                       name="name"
-                      type="password"
+                      type="text"
                       className="form-control"
                       onChange={(e) => setName(e.target.value)}
                       value={name}
@@ -216,98 +204,101 @@ const AddInstructor = () => {
 
                     />
                     {errors.name && (
-                      <div Style="color:red;font-weight:400">
+                      <div Style="color:red;font-weight:400;padding:5px;">
                         {errors.name}
                       </div>
                     )}
-                   
                   </div>
                 </div>
 
-                { (loggedrole == 'super_admin' || loggedrole == 'company' ) ?
-                <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">Parent Company</label>
-                  <div className="col-sm-9">
+                {/* Super admin dropdowns - company and departments */}
+                {loggedrole == "super_admin" ? (
+                  <>
+                    <div className="mb-3 row">
+                      <label className="col-sm-3 col-form-label">
+                        Parent Company
+                      </label>
+                      <div className="col-sm-9">
+                        <select
+                          name="parentCompany"
+                          className="form-control"
+                          onChange={(e) => setParentCompany(e.target.value)}
+                        >
+                          <option value="">Select</option>
+                          <CompanyDropdown />
+                        </select>
 
-                     
-                    <select name="parentCompany" className="form-control" onChange={ (e) => setParentCompany(e.target.value) }
-                    onKeyPress={(e) => handleKeyPress(e)}
-                    >
-                        <option value="">Select</option>
-                        <CompanyDropdown />
-                    </select> 
-                   
-                    {errors.parentCompany && (
-                      <div Style="color:red;font-weight:400">
-                        {errors.parentCompany}
+                        {errors.parentCompany && (
+                          <div Style="color:red;font-weight:400;padding:5px;">
+                            {errors.parentCompany}
+                          </div>
+                        )}
                       </div>
-                    )}
+                    </div>
 
-                  </div>
-                </div>
-                : 
-                <input
-                  name="parentCompany"
-                  type="hidden"
-                  className="form-control"
-                  value={parentCompany}
-                />
-                
-                }
+                    <div className="mb-3 row">
+                      <label className="col-sm-3 col-form-label">
+                        Parent Department
+                      </label>
+                      <div className="col-sm-9">
+                        <select
+                          name="parentDepartment"
+                          className="form-control"
+                          onChange={(e) => setParentDepartment(e.target.value)}
+                        >
+                          <option value="">Select</option>
+                          {/* <DepartmentDropdown parentCompany={parentCompany}/> */}
+                          <DepartmentByCompany
+                            parentCompany={parentCompany}
+                            prevSelected=""
+                          />
+                        </select>
 
-              { (loggedrole == 'super_admin' || loggedrole == 'company' ) ?
-                <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">Parent Department</label>
-                  <div className="col-sm-9">
-
-                     
-                    <select name="parentDepartment" className="form-control" onChange={ (e) => setParentDepartment(e.target.value) }
-                    onKeyPress={(e) => handleKeyPress(e)}
-
-                    >
-                        <option value="">Select</option>
-                        {/* <DepartmentDropdown parentCompany={parentCompany}/> */}
-                        <DepartmentByCompany parentCompany={parentCompany} prevSelected="" />
-
-                    </select> 
-                    {errors.parentDepartment && (
-                      <div Style="color:red;font-weight:400">
-                        {errors.parentDepartment}
+                        {errors.parentDepartment && (
+                          <div Style="color:red;font-weight:400;padding:5px;">
+                            {errors.parentDepartment}
+                          </div>
+                        )}
                       </div>
-                    )}
+                    </div>
+                  </>
+                ) : null}
 
-
-
-                  </div>
-                </div>
-                : 
-                <input
-                  name="deptID"
-                  type="hidden"
-                  className="form-control"
-                  value={parentDepartment}
-                />
-                }
-
-                { (lrole === 'company') ? 
-                <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">Select Department</label>
-                  <div className="col-sm-9">
-                    <select name="deptID" className="form-control" onChange={ (e) => setDeptID(e.target.value) }>
+                {loggedrole === "company" ? (
+                  <div className="mb-3 row">
+                    <label className="col-sm-3 col-form-label">
+                      Select Department
+                    </label>
+                    <div className="col-sm-9">
+                      <select
+                        name="deptID"
+                        className="form-control"
+                        onChange={(e) => {
+                          // setDeptID(e.target.value);
+                          setParentDepartment(e.target.value);
+                          setParentCompany(id);
+                        }}
+                      >
                         <option value="">Select</option>
-                        <DepartmentByCompany parentCompany={id} prevSelected="" />
-                    </select> 
+                        <DepartmentByCompany
+                          parentCompany={id}
+                          prevSelected=""
+                        />
+                      </select>
 
-
+                      {errors.deptID && (
+                        <div Style="color:red;font-weight:400;padding:5px;">
+                          {errors.deptID}
+                        </div>
+                      )}
+                    </div>
+                    
                   </div>
-                </div> : null }
+                ) : null}
 
-                
 
                 <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">
-                    Photo
-                  </label>
+                  <label className="col-sm-3 col-form-label">Photo</label>
                   <div className="col-sm-9">
                     <input
                       type="file"
@@ -321,8 +312,6 @@ const AddInstructor = () => {
                   </div>
                 </div>
 
-                
-
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">About me</label>
                   <div className="col-sm-9">
@@ -331,9 +320,6 @@ const AddInstructor = () => {
                       name="aboutMe"
                       value={aboutMe}
                       onChange={(e) => setAboutMe(e.target.value)}
-                      
-
-                      
                     >
                       {aboutMe}
                     </textarea>
@@ -346,7 +332,7 @@ const AddInstructor = () => {
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
-                     
+                      type="text"
                       name="address"
                       
                       onChange={(e) => setAddress(e.target.value)}
@@ -363,10 +349,13 @@ const AddInstructor = () => {
                   </div>
                 </div>
 
-
                 <div className="mb-12 row">
                   <div className="col-sm-12">
-                    <button className="btn btn-success" type="submit" style={buttonStyle} >
+                    <button
+                      className="btn btn-success"
+                      type="submit"
+                      style={buttonStyle}
+                    >
                       Submit
                     </button>
                   </div>
