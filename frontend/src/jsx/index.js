@@ -72,7 +72,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import { store } from "../../src/store/store";
 import ViewMcq from "./components/Inductions/Viewquiz";
 import AttemptQuiz from "./components/Inductions/Attemptquiz";
-import AttemptedInductions from "./components/Students/AttemptedInductions";
+import AttemptedInductions from "./components/Inductions/AttemptedInduction";
 
 
 const Markup = () => {

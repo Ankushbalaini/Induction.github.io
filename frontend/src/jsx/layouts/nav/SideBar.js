@@ -360,11 +360,6 @@ const SideBar = () => {
                     </Link>
                   </li>
 
-
-
-                  
-
-
                 </>
               ) : null}
 
@@ -377,7 +372,9 @@ const SideBar = () => {
                 </Link>
               </li>
 
-              { USER_ROLES.USER === role ?
+              { role === "company" ||
+              role === "super_admin" ||
+              role === "instructor"  ?
               <li>
                 <Link
                   className={`${path === "attempted-inductions" ? "mm-active" : ""}`}

@@ -225,9 +225,9 @@ const Instructors = () => {
                   className="dataTables_wrapper "
                 >
                   {/* <Table data={data} click={clickhandler} /> */}
-                  <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus}/>
                 </div>
-                
+                <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus}/>
+
 
               </div>
               

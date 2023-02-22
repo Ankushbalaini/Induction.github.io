@@ -139,9 +139,8 @@ const AddCompany = () => {
         navigate.push("/companies");
       });
     } else {
-      return swal("Failed", "Error message", "error");
+      return swal("Failed", response.message , "error");
     }
-    
   };
 
   function handleKeyPress(e) {
@@ -150,8 +149,8 @@ const AddCompany = () => {
         setErrors((errorObj == false))
     }
 }
-
-
+ 
+ 
    //css for button
    const buttonStyle = {
     margin: "auto",

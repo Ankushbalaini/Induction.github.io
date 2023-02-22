@@ -117,7 +117,7 @@ const AttemptedInductions = () => {
           <div className="col-xl-12">
             <div className="card students-list">
               <div className="card-header border-0 flex-wrap pb-0">
-                <h2>Attempted Inductions</h2>
+                <h2>Attempted Users</h2>
               </div>
               <div className="card-body py-0">
                 <div className="table-responsive">
