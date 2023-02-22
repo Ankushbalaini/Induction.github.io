@@ -127,8 +127,8 @@ const Markup = () => {
     { url: "instructor-dashboard", component: InstructorDashboard },
     { url: "instructor-courses", component: InstructorCourses },
     { url: "instructor-students", component: InstructorStudents },
-
-    { url: "students", component: AllStudents },
+    
+    { url: "users", component: AllStudents },
     { url : "attempted-inductions", component : AttemptedInductions},
     { url: 'unassigned-users', component: UnassignedUsers },
 

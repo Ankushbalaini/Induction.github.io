@@ -201,33 +201,88 @@ const AddInstructor = () => {
                       onKeyPress={(e) => handleKeyPress(e)}
 
                     />
-                    {errors.name && (
-                      <div Style="color:red;font-weight:400">
-                        {errors.name}
+                    {errors.cname && (
+                      <div Style="color:red;font-weight:600;padding:5px;">
+                        {errors.cname}
                       </div>
                     )}
-                   
                   </div>
                 </div>
 
-                { (loggedrole == 'super_admin' || loggedrole == 'company' ) ?
-                <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">Parent Company</label>
-                  <div className="col-sm-9">
+                {/* Super admin dropdowns - company and departments */}
+                {loggedrole == "super_admin" ? (
+                  <>
+                    <div className="mb-3 row">
+                      <label className="col-sm-3 col-form-label">
+                        Parent Company
+                      </label>
+                      <div className="col-sm-9">
+                        <select
+                          name="parentCompany"
+                          className="form-control"
+                          onChange={(e) => setParentCompany(e.target.value)}
+                        >
+                          <option value="">Select</option>
+                          <CompanyDropdown />
+                        </select>
 
-                     
-                    <select name="parentCompany" className="form-control" onChange={ (e) => setParentCompany(e.target.value) }
-                    onKeyPress={(e) => handleKeyPress(e)}
-                    >
-                        <option value="">Select</option>
-                        <CompanyDropdown />
-                    </select> 
-                   
-                    {errors.parentCompany && (
-                      <div Style="color:red;font-weight:400">
-                        {errors.parentCompany}
+                        {errors.parentCompany && (
+                          <div Style="color:red;font-weight:600;padding:5px;">
+                            {errors.parentCompany}
+                          </div>
+                        )}
                       </div>
-                    )}
+                    </div>
+
+                    <div className="mb-3 row">
+                      <label className="col-sm-3 col-form-label">
+                        Parent Department
+                      </label>
+                      <div className="col-sm-9">
+                        <select
+                          name="parentDepartment"
+                          className="form-control"
+                          onChange={(e) => setParentDepartment(e.target.value)}
+                        >
+                          <option value="">Select</option>
+                          {/* <DepartmentDropdown parentCompany={parentCompany}/> */}
+                          <DepartmentByCompany
+                            parentCompany={parentCompany}
+                            prevSelected=""
+                          />
+                        </select>
+
+                        {errors.parentDepartment && (
+                          <div Style="color:red;font-weight:600;padding:5px;">
+                            {errors.parentDepartment}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+
+                {loggedrole === "company" ? (
+                  <div className="mb-3 row">
+                    <label className="col-sm-3 col-form-label">
+                      Select Department
+                    </label>
+                    <div className="col-sm-9">
+                      <select
+                        name="deptID"
+                        className="form-control"
+                        onChange={(e) => {
+                          // setDeptID(e.target.value);
+                          setParentDepartment(e.target.value);
+                          setParentCompany(id);
+                        }}
+                      >
+                        <option value="">Select</option>
+                        <DepartmentByCompany
+                          parentCompany={id}
+                          prevSelected=""
+                        />
+                      </select>
 
                       {errors.deptID && (
                         <div Style="color:red;font-weight:600;padding:5px;">
@@ -237,64 +292,8 @@ const AddInstructor = () => {
                     </div>
                     
                   </div>
-                : 
-                <input
-                  name="parentCompany"
-                  type="hidden"
-                  className="form-control"
-                  value={parentCompany}
-                />
-                
-                }
+                ) : null}
 
-              { (loggedrole == 'super_admin' || loggedrole == 'company' ) ?
-                <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">Parent Department</label>
-                  <div className="col-sm-9">
-
-                     
-                    <select name="parentDepartment" className="form-control" onChange={ (e) => setParentDepartment(e.target.value) }
-                    onKeyPress={(e) => handleKeyPress(e)}
-
-                    >
-                        <option value="">Select</option>
-                        {/* <DepartmentDropdown parentCompany={parentCompany}/> */}
-                        <DepartmentByCompany parentCompany={parentCompany} prevSelected="" />
-
-                    </select> 
-                    {errors.parentDepartment && (
-                      <div Style="color:red;font-weight:400">
-                        {errors.parentDepartment}
-                      </div>
-                    )}
-
-
-
-                  </div>
-                </div>
-                : 
-                <input
-                  name="deptID"
-                  type="hidden"
-                  className="form-control"
-                  value={parentDepartment}
-                />
-                }
-
-                { (lrole === 'company') ? 
-                <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">Select Department</label>
-                  <div className="col-sm-9">
-                    <select name="deptID" className="form-control" onChange={ (e) => setDeptID(e.target.value) }>
-                        <option value="">Select</option>
-                        <DepartmentByCompany parentCompany={id} prevSelected="" />
-                    </select> 
-
-
-                  </div>
-                </div> : null }
-
-                
 
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">Photo</label>
