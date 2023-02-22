@@ -1,6 +1,6 @@
 import React from "react";
 import "./quiz.css";
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import bjslogo from "./../../../../../src/images/bg-1.jpg";
 import swal from "sweetalert";
@@ -48,9 +48,6 @@ const TestQuestions = (props) => {
     float: "right",
     margin: "auto",
   };
-
-  const ref = useRef(null);
-
 
   // setting questions 
   const questions = props.Questions;
