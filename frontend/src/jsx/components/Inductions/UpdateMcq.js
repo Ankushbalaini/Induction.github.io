@@ -237,6 +237,6 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
       </Modal>
 
     )
-}
+} 
 
 export default UpdateMcq;
