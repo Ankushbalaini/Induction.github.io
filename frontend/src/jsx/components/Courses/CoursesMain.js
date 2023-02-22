@@ -12,6 +12,7 @@ import CompanyDropdown from "../Companies/CompanyDropdown";
 const images = require.context("../../../../../images/inductions/", true);
 
 function CoursesMain() {
+
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
 
