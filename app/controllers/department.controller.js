@@ -109,6 +109,10 @@ exports.edit = (req, res) => {
 exports.getDepartment = async (req, res) => {
   const { name, status } = req.body;
   const id = req.params.id;
+  // const department = new Department({
+  //   name: name,
+  //   status: status
+  // });
 
   try {
     const data = await Department.findById(id);
@@ -128,6 +132,7 @@ exports.getDepartment = async (req, res) => {
 // Delete the department
 /**
  * @description: Finding Deparment by their ID and then deleting.
+ *
  * @param req
  * @param res
  */

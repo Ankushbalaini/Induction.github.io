@@ -111,7 +111,7 @@ exports.add_nk = (req, res) => {
   }
 };
 
-exports.add = (req, res) => {
+exports.add = async  (req, res) => {
   try {
     const { email, password, name, address, companyID, aboutCompany } =
       req.body;
@@ -141,15 +141,23 @@ exports.add = (req, res) => {
         if (err) {
           return res.status(500).send({
             status: false,
-            message: err.message,
+            message: err.message,  
           });
         }
       });
       data.logo = Img.name;
     }
-
     
-
+      // Check if email already exists
+    const existingUser = await userCredModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).send({
+        status: false,
+        message: "Email already exists!",
+      });
+    }
+    
+ 
     var user = new userCredModel(data);
     // Create token
     const token = jwt.sign(
@@ -168,9 +176,9 @@ exports.add = (req, res) => {
       res.status(400).send({
         status: false,
         message: err.message,
-      });
-    });
-
+      }); 
+    }); 
+ 
     data.userID = user._id;
     var company = new companyModel(data);
 
@@ -184,12 +192,22 @@ exports.add = (req, res) => {
         });
       })
       .catch((err) => {
-        res.status(400).send({
-          status: false,
-          message: "Some error " + err.message,
-          data: {},
-        });
-      });
+        // Check if company with same companyID already exists
+        if (err.code === 11000) {
+          res.status(409).send({
+            status: false,
+            message: "Company with this Slug already exists!",
+            data: {},
+          });
+        } else {
+          res.status(400).send({
+            status: false,
+            message: "Some error " + err.message,
+            data: {},
+          });
+        }
+      }); 
+    return;
     return;
   } catch (err) {
     res.status(400).send({
@@ -259,6 +277,22 @@ exports.edit = (req, res) => {
     saveData.logo = Img.name;
   }
 
+   // Check for duplicate email
+   companyModel.findOne({ email: saveData.email }, function (err, existingCompany) {
+    if (err) {
+      return res.status(500).send({
+        status: false,
+        message: "Some error occurred while checking for duplicate email!",
+      });
+    }
+
+    if (existingCompany && existingCompany._id.toString() !== id) {
+      return res.status(400).send({
+        status: false,
+        message: "Email already exists!",
+      });
+    }
+
   companyModel
     .findByIdAndUpdate(id, { ...saveData }, { useFindAndModify: true })
     .then(function (user) {
@@ -279,15 +313,16 @@ exports.edit = (req, res) => {
       res.status(500).send({
         status: false,
         message:
-          err.message || "Some error occurred while creating the Deparment.",
+           "Some Slug should be unique.",
       });
-    });
+    }); 
+  });
 };
 
 /**
- *
+ *  
  * @param {*} req
- * @param {*} res
+ * @param {*} res 
  */
 exports.update = (req, res) => {
   try {

@@ -114,12 +114,10 @@ const UpdateQuestion = ({ questionID, isShowAddQuestion, onClickHandler }) => {
   };
 
   return (
-    <Modal className="modal fade" show={isShowAddQuestion}
-   
-    >
+    <Modal className="modal fade" show={isShowAddQuestion}>
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">Add Question</h5>
+          <h5 className="modal-title">Update Question!</h5>
           <Button
             variant=""
             type="button"

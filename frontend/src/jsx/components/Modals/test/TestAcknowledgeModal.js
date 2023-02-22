@@ -10,6 +10,7 @@ const TestAcknowledgeModal = (props) => {
 
   const { id } = useParams();
   const [isAcknowledged, setIsAcknowledged] = useState(false);
+
   return (
     <Modal
       {...props}
@@ -22,6 +23,15 @@ const TestAcknowledgeModal = (props) => {
         Your Evaluation is about to start please read & acknowledge the following terms.
 
         </Modal.Title>
+
+        <Button
+            variant=""
+            type="button"
+            className="btn-close"
+            data-dismiss="modal"
+            onClick={props.hidePopUp}
+          ></Button>
+
       </Modal.Header>
       <Modal.Body>
         {/* <h4>Centered Modal</h4> */}

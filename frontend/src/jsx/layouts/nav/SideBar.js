@@ -87,9 +87,11 @@ const SideBar = () => {
       //"courses",
       "start-test",
       "add-induction",
-      "add-slide"
+      "add-slide",
+      "update-induction",
+      "attempted-inductions"
     ],
-    students = ["students", "add-student"];
+    students = ["students", "add-student", "unassigned-users", "users", "user-inductions"];
 
   return (
     <div
@@ -352,18 +354,23 @@ const SideBar = () => {
                   <li>
                     <Link
                       className={`${
-                        path === "add-induction" ? "mm-active" : ""
+                        path === "update-induction" ? "mm-active" : ""
                       }`}
                       to="/update-induction/63ef91f59c145e113579da4b"
                     >
                       Update Induction{" "}
                     </Link>
                   </li>
-
-
-
-                  
-
+                  <li>
+                    <Link
+                      className={`${
+                        path === "attempted-inductions" ? "mm-active" : ""
+                      }`}
+                      to="/attempted-inductions"
+                    >
+                      Attempted Induction{" "}
+                    </Link>
+                  </li>
 
                 </>
               ) : null}
@@ -381,7 +388,7 @@ const SideBar = () => {
               <li>
                 <Link
                   className={`${path === "attempted-inductions" ? "mm-active" : ""}`}
-                  to="/attempted-inductions"
+                  to="/user-inductions"
                 >
                   Attempted Inductions{" "}
 
@@ -395,38 +402,27 @@ const SideBar = () => {
             <li className={`${students.includes(path) ? "mm-active" : ""}`}>
               <Link className="has-arrow" to="#">
                 <i className="bi bi-people"></i>
-                <span className="nav-text">Students</span>
+                <span className="nav-text">Users</span>
               </Link>
               <ul>
-                <li>
-                  <Link
-                    className={`${path === "students" ? "mm-active" : ""}`}
-                    to="/students"
-                  >
-                    All User{" "}
-                  </Link>
-                </li>
 
-                {/* <li>
+                <li>
                   <Link
                     className={`${path === "users" ? "mm-active" : ""}`}
                     to="/users"
                   >
-                    All Users{" "}
+                    Assigned Users{" "}
                   </Link>
-                </li> */}
+                </li>
 
                 <li>
                   <Link
                     className={`${path === "unassigned-users" ? "mm-active" : ""}`}
                     to="/unassigned-users"
                   >
-                    Unassigned {" "}
+                    Unassigned Users{" "}
                   </Link>
                 </li>
-
-
-
               </ul>
             </li>
           ) : null}

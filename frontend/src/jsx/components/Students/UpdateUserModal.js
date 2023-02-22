@@ -17,6 +17,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
 
   const instructorParentCompany = useSelector((state) => state.auth.auth.parentCompany);
 
+
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
   const parentCompanyID=useSelector((state) => state.auth.auth.id);

@@ -79,16 +79,17 @@ const AddQuestion = ({
       errorObj1.answer = "Answer is required";
       error = true;
     }
-    if (
-      formState.answer.trim() !== formState.option1.trim() ||
-      formState.answer.trim() !== formState.option2.trim() ||
-      formState.answer.trim() !== formState.option3.trim() ||
-      formState.answer.trim() !== formState.option4.trim()
-    ) {
-      errorObj1.answer =
-        "Answer is not matched with any option! Please verify again!";
-      error = true;
-    }
+
+    // if (
+    //   formState.answer.trim() !== formState.option1.trim() ||
+    //   formState.answer.trim() !== formState.option2.trim() ||
+    //   formState.answer.trim() !== formState.option3.trim() ||
+    //   formState.answer.trim() !== formState.option4.trim()
+    // ) {
+    //   errorObj1.answer =
+    //     "Answer is not matched with any option! Please verify again! = "+ formState.answer.trim() + " " + formState.option1.trim()
+    //   error = true;
+    // }
     setErrors(errorObj1);
     
     if (error) return;
@@ -116,7 +117,6 @@ const AddQuestion = ({
   }, [isShowAddQuestion]);
 
 
-
   return (
     <Modal className="modal fade" show={isShowAddQuestion}
     size="xl"
@@ -125,7 +125,7 @@ const AddQuestion = ({
     >
       <div className="modal-content">
         <div className="modal-header">
-          <h5 className="modal-title">{label} Question!</h5>
+          <h5 className="modal-title">{label} Question !</h5>
           <Button
             variant=""
             type="button"
@@ -138,10 +138,10 @@ const AddQuestion = ({
           <form onSubmit={(e) => onFormSubmit(e)}>
             <div className="card-body">
               <div className="basic-form">
-                <h4 className=" mb-3">Enter Question</h4>
+                <h4 className="mb-3">Enter Question</h4>
                 <input type="hidden" name="inductionID" value={inductionID} />
 
-                <div className="form-group mb-3">
+                <div className="form-group ">
                   <textarea
                     className="form-control"
                     rows="3"
@@ -158,11 +158,12 @@ const AddQuestion = ({
                     </div>
                   )}
                 </div>
-             
-         
+              </div>
+            </div>
+            <div className="card-body">
               <div className="basic-form">
                 <div className="form-group ">
-                  <h5 className="mb-3">Enter your Choices</h5>
+                  <h4 className="mb-3">Enter your Choices</h4>
                   <div className="form-group mb-3">
                     <input
                       type="text"
@@ -245,16 +246,15 @@ const AddQuestion = ({
                   </div>
                 </div>
                 <Button
-                  className="btn btn-success"
+                  className="btn btn-success mb-3"
                   variant="primary"
                   size="m"
-                  style={{margin:"auto",display:"flex"}}
+                  style={{display:"flex",margin:"auto"}}
                   type="submit"
                 >
                   {label}
-                </Button>
+                </Button>{" "}
               </div>
-            </div>
             </div>
           </form>
         </div>

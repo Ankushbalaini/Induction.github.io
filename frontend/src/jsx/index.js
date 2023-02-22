@@ -72,7 +72,9 @@ import { ThemeContext } from "../context/ThemeContext";
 import { store } from "../../src/store/store";
 import ViewMcq from "./components/Inductions/Viewquiz";
 import AttemptQuiz from "./components/Inductions/Attemptquiz";
-import AttemptedInductions from "./components/Students/AttemptedInductions";
+import AttemptedInductions from "./components/Inductions/AttemptedInduction";
+import UserAttemptedInductions from "./components/Students/AttemptedInductions";
+
 
 
 const Markup = () => {
@@ -127,8 +129,9 @@ const Markup = () => {
     { url: "instructor-dashboard", component: InstructorDashboard },
     { url: "instructor-courses", component: InstructorCourses },
     { url: "instructor-students", component: InstructorStudents },
-
-    { url: "students", component: AllStudents },
+    
+    { url: "users", component: AllStudents },
+    { url : "user-inductions", component : UserAttemptedInductions},
     { url : "attempted-inductions", component : AttemptedInductions},
     { url: 'unassigned-users', component: UnassignedUsers },
 

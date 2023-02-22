@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory} from "react-router-dom";
 import BackgroundModal from "../../Modals/test/BackgroundModal";
 import Modal from "react-bootstrap/Modal";
 import TestAcknowledgeModal from "../../Modals/test/TestAcknowledgeModal";
@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 
 const StartTest = () => {
+  const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
   const [isAcknowledgementModalOpen, setIsAcknowledgementModalOpen] =
     useState(true);
@@ -71,6 +72,12 @@ const StartTest = () => {
 
   };
 
+  const hidePopUp = () => {
+    setIsAcknowledgementModalOpen(false);
+    navigate.push(`/single-induction-view/${id}`);
+  }
+  
+
   useEffect(() => {}, [questions]);
 
   // In progress
@@ -79,6 +86,7 @@ const StartTest = () => {
       <TestAcknowledgeModal
         show={isAcknowledgementModalOpen}
         startClick={handleStartClick}
+        hidePopUp={hidePopUp}
       />
 
       {questions ? (

@@ -11,6 +11,13 @@ const UPLOADS = {
   PROFILE: "images/profile/",
 };
 
+const USER_ROLES = {
+  SUPER_ADMIN: 'super_admin',
+  COMPANY:'company',
+  INSTRUCTOR:'instructor',
+  USER: 'user'
+}
+
 exports.getMyInductionsCount = (req, res) => {};
 
 /**
@@ -693,14 +700,39 @@ exports.store = async (req, res) => {
     //console.log('req body', req.body); 
     const user      = req.decoded;
     //console.log('user', user); 
-    const thumbnail = uploadThumbnail(req, res);
-
+    
+    
+    
     let iData       = JSON.parse(req.body.induction);
     iData.deptID    = ObjectId(req.body.deptID);
     iData.createdBy = ObjectId(user.userID);
-    //console.log('parent company', user.parentCompany);
-    iData.parentCompany = (user.role ==='company')? ObjectId(user.userID) :ObjectId(user.parentCompany);
+
+    if(USER_ROLES.SUPER_ADMIN === user.role){
+      // take parent Company from request
+      // take deptID from request
+      iData.parentCompany = ObjectId(req.body.parentCompany);
+    }
+
+    if(USER_ROLES.COMPANY === user.role){
+      // take parent Company from token decoded
+      iData.parentCompany = ObjectId(user.userID);
+    }
+
+    if(USER_ROLES.INSTRUCTOR === user.role){
+      // take parent Company from token decoded= parentCompany of instructor
+      iData.parentCompany = ObjectId(user.parentCompany);
+    }
+
+
+
+
+
+
+
+
+    //iData.parentCompany = (user.role ==='company')? ObjectId(user.userID) :ObjectId(user.parentCompany);
     //console.log('company', iData.parentCompany); return;
+    const thumbnail = uploadThumbnail(req, res);
     iData.thumbnail = thumbnail;
 
 
