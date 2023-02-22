@@ -87,7 +87,8 @@ const SideBar = () => {
       //"courses",
       "start-test",
       "add-induction",
-      "add-slide"
+      "add-slide",
+      "update-induction"
     ],
     students = ["students", "add-student", "unassigned-users", "users"];
 
@@ -352,18 +353,13 @@ const SideBar = () => {
                   <li>
                     <Link
                       className={`${
-                        path === "add-induction" ? "mm-active" : ""
+                        path === "update-induction" ? "mm-active" : ""
                       }`}
                       to="/update-induction/63ef91f59c145e113579da4b"
                     >
                       Update Induction{" "}
                     </Link>
                   </li>
-
-
-
-                  
-
 
                 </>
               ) : null}
