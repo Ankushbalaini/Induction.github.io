@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link , useHistory} from "react-router-dom";
+import { Link } from "react-router-dom";
 import "swiper/css";
-import { Dropdown, Button } from "react-bootstrap";
-import swal from "sweetalert";
+import { Dropdown } from "react-bootstrap";
 
 //images
 import course1 from "./../../../images/courses/course1.jpg";
@@ -13,8 +12,7 @@ import CompanyDropdown from "../Companies/CompanyDropdown";
 const images = require.context("../../../../../images/inductions/", true);
 
 function CoursesMain() {
-  const navigate = useHistory();
-  
+
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
 
@@ -130,50 +128,6 @@ function CoursesMain() {
     settest(i);
   };
 
-
-
-
-
-
-  const confirmHandler = (inductionID) => {
-    // user id
-    swal({
-      title: "Are you sure?",
-      text: `Once induction Started, User will need to stick with this.`,
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (willChange) => {
-      if (willChange) {
-        swal("Poof! Your induction has been started!", {
-          icon: "success",
-        }).then(() => {
-          // navigate to induction page
-          // call induction is viewed api- later on
-          
-          
-          navigate.push(`/single-induction-view/${inductionID}`);
-
-
-
-
-        });
-      } else {
-        return swal("Failed", "Induction is not started", "error");
-      }
-    });
-  };
-  
-
-
-
-
-
-
-
-
-
-
   const content = loading ? (
     <h1>Loading</h1>
   ) : (
@@ -287,17 +241,12 @@ function CoursesMain() {
                         </svg>
                         {data.numOfSlides} Slides
                       </span>
-
-                      <Button type="button" className="btn btn-primary btn-sm" onClick={(e) => confirmHandler(`${data._id}`) }>
-                      View
-                      </Button>
-                      {/* <Link
+                      <Link
                         to={`/single-induction-view/${data._id}`}
                         className="btn btn-primary btn-sm"
-                        
                       >
                         View
-                      </Link> */}
+                      </Link>
                     </div>
                   </div>
                 </div>

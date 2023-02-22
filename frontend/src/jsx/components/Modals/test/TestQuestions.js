@@ -148,28 +148,24 @@ const TestQuestions = (props) => {
 
   useEffect(async () => {
 
-    window.addEventListener('visibilitychange', handleTabSwitch);
-    // const element = window;
-    // element.addEventListener('visibilitychange', handleTabSwitch);
-    // console.log('Event listener Started');
+    //document.addEventListener("visibilitychange", handleTabSwitch);
 
     if(showResult){
+
+
       var data = { ...result};
       data.remark = "Test successfully completed";
       const response = await submitTestApi(id, token, data);  
-      navigate.push("/inductions");
-      window.removeEventListener('visibilitychange', handleTabSwitch);
+      
+      //document.removeEventListener("visibilitychange", handleTabSwitch);
+
+      // navigate.push("/inductions");
+      
       setTabChangeCount(0);  
       setActiveWindowEvent(false);  
     }
 
-    // return () => {
-    //   element.removeEventListener('visibilitychange', handleTabSwitch);
-    //   console.log('Event listener removed');
-    // };
-
-
-
+    //return () => document.removeEventListener("visibilitychange", handleTabSwitch);
   }, [showResult, result, activeWindowEvent, tabChangeCount]);
   
 
