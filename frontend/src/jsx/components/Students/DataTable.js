@@ -1,12 +1,50 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 
 import DataTable from "react-data-table-component";
-import FilterComponent from "../Companies/FilterComponent";
+import FilterComponent from "../Instructor/FilterComponent";
 import DropDownBlog from "../Dashboard/DropDownBlog";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import swal from "sweetalert";
+import { useSelector } from "react-redux";
+import ActionDropDown from "./ActionDropDown";
+
+import { tableStyles } from "../Instructor/Instructor/tableStyles";
 
 const Table = props => {
+  const navigate = useHistory();
+  const images = require.context("../../../../../images/profile/", true);
+
+  const token = useSelector((state) => state.auth.auth.token);
+  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
+
+  const loadImage = (imageName) => {
+    return images(`./${imageName}`);
+  };
+
+  const profileImageCss = {
+    height: "3.5rem",
+    width: "3.5rem",
+    borderRadius: "0.625rem",
+    margin: "5px 5px 5px 0"
+  };
+
   const columns = [
+    {
+      name: "Name",
+      selector: "profile.first_name",
+      sortable: true,
+      grow: 1,
+      className: 'col-3',
+      cell: row =>
+      <>
+       <div className="d-flex align-items-center">
+          <div >
+            {row.profile?.first_name}{" "}
+            {row.profile?.last_name}
+          </div>
+        </div>
+      </>
+    },
     {
       name: "Email",
       selector: "email",
@@ -15,21 +53,14 @@ const Table = props => {
       className: 'col-3'
     },
     {
-      name: "Parent Company",
-      selector: "parentCompany",
-      sortable: true,
-      grow: 1,
-      className: 'col-3'
-    },
-    {
-      name: "Department",
-      
+      name: "Join Date",
+      selector: "createdAt",
       sortable: true,
       grow: 1,
       className: 'col-3',
       cell: row => (
         <div>
-          { row.deptID }
+         {new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}
         </div>
         )
     },
@@ -37,12 +68,13 @@ const Table = props => {
     {
       name : "Status",
       selector:"status",
+      sortable: true,
       hide: "sm",
       cell: row => (
-        <div>
-          <span className={`badge badge-rounded ${ (row.status)?"badge-success":"badge-primary"}`}>
-            {(row.status)?'Active':'Inactive'}
-          </span>
+        <div 
+        className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`} onClick={() =>props.changeUserStatus(row._id, row.status) } 
+        >
+          { (row.status) ? 'Active' : 'Inactive'}
         </div>
         )
     },
@@ -50,33 +82,17 @@ const Table = props => {
       name: "Actions",
       button: true,
       cell: row =>
-          <div>
-            <div className="d-flex">
-            <button onClick={()=>props.actionHandler(row)}
-              href="#"
-              className="btn btn-primary shadow btn-xs sharp me-1"
-            >
-              <i className="fas fa-pencil-alt"></i>
-            </button>
-            <button onClick={() => props.deleteClick(row.email)}
-              href="#"
-              className="btn btn-danger shadow btn-xs sharp"
-            >
-              <i className="fa fa-trash"></i>
-            </button>
-          </div>
-          </div>
+      <>
+      <ActionDropDown trackOnclick={props.trackOnclick}  profileData={row} trackDeleteClick={props.trackDeleteClick} />
+    </>
     }
-    
   ];
 
   const [filterText, setFilterText] = React.useState("");
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
     false
   );
-  // const filteredItems = data.filter(
-  //   item => item.name && item.name.includes(filterText)
-  // );
+
   const filteredItems = props.data.filter(
     item =>
       JSON.stringify(item)
@@ -93,7 +109,7 @@ const Table = props => {
     };
 
     return (
-      <FilterComponent
+      <FilterComponent  
         onFilter={e => setFilterText(e.target.value)}
         onClear={handleClear}
         filterText={filterText}
@@ -102,16 +118,18 @@ const Table = props => {
   }, [filterText, resetPaginationToggle]);
 
   return (
+    <>
     <DataTable
       title=""
       columns={columns}
       data={filteredItems}
       defaultSortField="name"
-      striped
       pagination
       subHeader
       subHeaderComponent={subHeaderComponent}
+      customStyles={tableStyles}
     />
+      </>
   );
 };
 

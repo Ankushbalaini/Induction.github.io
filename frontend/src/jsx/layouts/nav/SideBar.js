@@ -89,7 +89,7 @@ const SideBar = () => {
       "add-induction",
       "add-slide"
     ],
-    students = ["students", "add-student"];
+    students = ["students", "add-student", "unassigned-users", "users"];
 
   return (
     <div
@@ -327,7 +327,7 @@ const SideBar = () => {
                     </Link>
                   </li>
 
-                  <li>
+                  {/* <li>
                     <Link
                       className={`${
                         path === "add-induction" ? "mm-active" : ""
@@ -336,7 +336,7 @@ const SideBar = () => {
                     >
                       Add Induction{" "}
                     </Link>
-                  </li>
+                  </li> */}
 
                   <li>
                     <Link
@@ -395,24 +395,24 @@ const SideBar = () => {
             <li className={`${students.includes(path) ? "mm-active" : ""}`}>
               <Link className="has-arrow" to="#">
                 <i className="bi bi-people"></i>
-                <span className="nav-text">Students</span>
+                <span className="nav-text">Users</span>
               </Link>
               <ul>
-                <li>
+                {/* <li>
                   <Link
                     className={`${path === "students" ? "mm-active" : ""}`}
                     to="/students"
                   >
-                    Students{" "}
+                    Assigned Users{" "}
                   </Link>
-                </li>
+                </li> */}
 
                 <li>
                   <Link
                     className={`${path === "users" ? "mm-active" : ""}`}
                     to="/users"
                   >
-                    All Users{" "}
+                    Assigned Users{" "}
                   </Link>
                 </li>
 
@@ -421,12 +421,9 @@ const SideBar = () => {
                     className={`${path === "unassigned-users" ? "mm-active" : ""}`}
                     to="/unassigned-users"
                   >
-                    Unassigned {" "}
+                    Unassigned Users{" "}
                   </Link>
                 </li>
-
-
-
               </ul>
             </li>
           ) : null}

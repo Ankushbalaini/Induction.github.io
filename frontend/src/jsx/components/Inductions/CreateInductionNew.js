@@ -7,6 +7,7 @@ import JoditEditor from "jodit-react";
 import { useSelector } from "react-redux";
 import DepartmentDropdown from "../Department/DepartmentDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
+import CompanyDropdown from "../Companies/CompanyDropdown";
 
 
 const CreateInduction = () => {
@@ -14,9 +15,13 @@ const CreateInduction = () => {
   const [loading, setLoading] = useState(true);
   
   const [image, setImage] = useState({preview:'', data:''})
-  const [title, setTitle] = useState("Fullstack Developer");
-  const [subTitle, setSubTitle] = useState("nodejs, mongo, react , express");
-  const [deptID, setDeptID] = useState();
+  const [title, setTitle] = useState("");
+  const [subTitle, setSubTitle] = useState("");
+  const [deptID, setDeptID] = useState("");
+  const [parentCompany, setParentCompany] = useState("");
+  const [option, setOption] = useState();
+
+
   const [inductionDesc, setInductionDesc] = useState(
     "<h1>Induction description</h1>"
   );
@@ -78,6 +83,10 @@ const CreateInduction = () => {
       errorObj.deptID = "Department is Required";
       error = true;
     }
+    if (parentCompany==''){
+      errorObj.parentCompany = "Parent Company is Required";
+      error = true;
+    }
 
     setErrors(errorObj);
     if (error) return;
@@ -122,9 +131,44 @@ const CreateInduction = () => {
     } else {
       return swal("Failed",  response.message , "error");
     }
-
-
   };
+
+  const handleCompanyChange = async (e) => {
+    // call api to fetch departments
+    setParentCompany(e.target.value);
+    const response = await fetch(
+      "http://localhost:8081/api/department/getDepartmentByComp",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+        body: JSON.stringify({ parentCompany: e.target.value }),
+      }
+    ).then((data) => data.json());
+
+    if ("status" in response && response.status == true) {
+      const rows = response.data.map((row, index) => (
+        <option value={row._id}>{row.name}</option>
+      ));
+      setOption(rows);
+    }
+  };
+ 
+   // on click validation remove function
+  function handleKeyPress(e) {
+    var key = e.key;
+   if (key == key) {
+        setErrors((errorsObj == false))
+    }
+}
+
+const buttonStyle = {
+  // margin : "auto",
+  display : "flex",
+  float : "right"
+}
 
   useEffect(() => {
     setLoading(false);
@@ -150,7 +194,7 @@ const CreateInduction = () => {
 
       <div className="col-xl-12 col-lg-12">
         <div className="card">
-          <div className="card-header">
+        <div className="card-header">
             <h4 className="card-title">Create Induction</h4>
           </div>
           <div className="card-body">
@@ -163,8 +207,11 @@ const CreateInduction = () => {
                       type="text"
                       className="form-control"
                       name="title"
+                      placeholder="Fullstack Developer"
                       onChange={(e) => setTitle(e.target.value)}
                       value={title}
+                      onKeyPress={(e) => handleKeyPress(e)}
+
                     />
                     {errors.title && <div Style="color:red;font-weight:600;padding:5px;">{errors.title}</div>}
                   </div>
@@ -179,14 +226,17 @@ const CreateInduction = () => {
                       type="text"
                       className="form-control"
                       name="subTitle"
+                      placeholder="nodejs, mongo, react , express...."
                       onChange={(e) => setSubTitle(e.target.value)}
-                      value={subTitle}
+                      value={subTitle}        
+                      onKeyPress={(e) => handleKeyPress(e)}
+
                     />
                     {errors.subTitle && <div Style="color:red;font-weight:600;padding:5px;">{errors.subTitle}</div>}
                   </div>
                 </div>
 
-				<div className="mb-3 row">
+			        	<div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
                     Thumbnail
                   </label>
@@ -201,21 +251,41 @@ const CreateInduction = () => {
                   </div>
                 </div>
 
-
-                <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">Department </label>
+              <div className="form-group mb-3">
+                <div className="mb-4 row">
+                  <label className="col-sm-3 col-form-label">Select Company </label>
                   <div className="col-sm-9">
-                    <select name="deptID"
+                  <select
+                    name="parentCompany"
+                    className="form-control"
+                    onChange={handleCompanyChange}
+                    value={parentCompany}
+                    onKeyPress={(e) => handleKeyPress(e)}
+                  >
+                    <option>Select</option>
+                    <CompanyDropdown prevSelected={parentCompany} />
+                 </select>
+                 {errors.parentCompany && <div Style="color:red;font-weight:600;padding:5px;">{errors.parentCompany}</div>}
+
+                </div>
+              </div>
+              <div className="mb-4 row">
+              <label className="col-sm-3 col-form-label">Select Department </label>
+                 <div className="col-sm-9">
+                    <select
+                      name="deptID"
                       className="form-control"
                       onChange={(e) => setDeptID(e.target.value)}
+                      value={deptID}
+                      onKeyPress={(e) => handleKeyPress(e)}
                     >
-                      {/* <DepartmentDropdown /> */}
-                      <DepartmentByCompany />
+                      <option>Select</option>
+                      {option}
                     </select>
-
                     {errors.deptID && <div Style="color:red;font-weight:600;padding:5px;">{errors.deptID}</div>}
+                    </div>
                   </div>
-                </div>
+              </div>
 
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
@@ -227,6 +297,7 @@ const CreateInduction = () => {
                       value={inductionDesc}
                       tabIndex={1} // tabIndex of textarea
                       onBlur={(newContent) => setInductionDesc(newContent)} // preferred to use only this option to update the content for performance reasons
+                      onKeyPress={(e) => handleKeyPress(e)}
                       onChange={(newContent) => {
                         setInductionDesc(newContent);
                       }}
@@ -282,6 +353,7 @@ const CreateInduction = () => {
                       <div className="mb-12 row">
                         <div className="col-sm-12">
                           <button
+                         
                             type="button"
                             className="btn btn-primary remove"
                             onClick={() => removeFormFields(index)}
@@ -296,7 +368,12 @@ const CreateInduction = () => {
 
                 <div className="mb-12 row">
                   <div className="col-sm-12">
+
+                  <button className="btn btn-success" type="submit" style={buttonStyle}>
+                      Submit
+                    </button>
                     <button
+                    style={buttonStyle}
                       className="btn btn-primary mx-3"
                       type="button"
                       onClick={() => addFormFields()}
@@ -304,9 +381,7 @@ const CreateInduction = () => {
                       Add New Slide
                     </button>
 
-                    <button className="btn btn-success" type="submit">
-                      Submit
-                    </button>
+                    
                   </div>
                 </div>
               </form>

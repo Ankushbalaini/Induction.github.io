@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { Last } from "react-bootstrap/esm/PageItem";
 import { useHistory } from "react-router-dom";
+import { useParams } from "react-router";
 
 // api call 
 

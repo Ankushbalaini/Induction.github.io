@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef } from "react";
+import React, { Fragment, useState, useRef,useEffect } from "react";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
@@ -49,6 +49,43 @@ const AddInstructor = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let error = false;
+    const errorObj1 = { ...errorsObj }
+
+    if (email === "") {
+      errorObj1.email = "Email is required";
+      error = true;
+    }
+    if (password === "") {
+      errorObj1.password = "Password is required";
+      error = true;
+    }
+    if (name === "") {
+      errorObj1.name = "Name is required";
+      error = true;
+    }
+    if (parentCompany === "") {
+      errorObj1.parentCompany = "Parent company is required";
+      error = true;
+    }
+    if (parentDepartment === "") {
+      errorObj1.parentDepartment = "Parent Department is required";
+      error = true;
+    }
+    if (profilePhoto === "") {
+      errorObj1.profilePhoto = "Profile Picture is required";
+      error = true;
+    }
+    if (address === "") {
+      errorObj1.address = "Address is required";
+      error = true;
+    }
+    
+    setErrors(errorObj1);
+
+    if (error) return ;
+    
+
     const data = new FormData();
     data.append("name", name);
     data.append("email", email);
@@ -88,6 +125,17 @@ const AddInstructor = () => {
     float: "right",
   };
 
+
+   // on click validation remove function
+  function handleKeyPress(e) {
+    var key = e.key;
+   if (key == key) {
+        setErrors((errorsObj == false))
+    }
+}
+
+  useEffect(() => {}, [errors]);
+
   return (
     <Fragment>
       <PageTitle activeMenu="Add Instructor" motherMenu="Instructors" />
@@ -109,9 +157,9 @@ const AddInstructor = () => {
                       className="form-control"
                       onChange={(e) => setEmail(e.target.value)}
                       value={email}
-                      autocomplete="off"
-                      required
-                      Role="presentation"
+                      onKeyPress={(e) => handleKeyPress(e)}
+                      // autocomplete="off"
+                      // Role="presentation"
                     />
                     {errors.email && (
                       <div Style="color:red;font-weight:600;padding:5px;">
@@ -130,7 +178,8 @@ const AddInstructor = () => {
                       className="form-control"
                       onChange={(e) => setPassword(e.target.value)}
                       value={password}
-                      required
+                      onKeyPress={(e) => handleKeyPress(e)}
+
                     />
                     {errors.password && (
                       <div Style="color:red;font-weight:600;padding:5px;">
@@ -149,7 +198,8 @@ const AddInstructor = () => {
                       className="form-control"
                       onChange={(e) => setName(e.target.value)}
                       value={name}
-                      required
+                      onKeyPress={(e) => handleKeyPress(e)}
+
                     />
                     {errors.cname && (
                       <div Style="color:red;font-weight:600;padding:5px;">
@@ -255,6 +305,8 @@ const AddInstructor = () => {
                       onChange={handleFileChange}
                       accept="image/png,image/jpeg,image/jpg"
                     />
+                    
+
                   </div>
                 </div>
 
@@ -266,10 +318,10 @@ const AddInstructor = () => {
                       name="aboutMe"
                       value={aboutMe}
                       onChange={(e) => setAboutMe(e.target.value)}
-                      required
                     >
                       {aboutMe}
                     </textarea>
+                   
                   </div>
                 </div>
 
@@ -278,12 +330,20 @@ const AddInstructor = () => {
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
+                     
                       name="address"
+                      
                       onChange={(e) => setAddress(e.target.value)}
-                      required
+                      onKeyPress={(e) => handleKeyPress(e)}
+
                     >
                       {address}
                     </textarea>
+                    {errors.address && (
+                      <div Style="color:red;font-weight:400">
+                        {errors.address}
+                      </div>
+                    )}
                   </div>
                 </div>
 

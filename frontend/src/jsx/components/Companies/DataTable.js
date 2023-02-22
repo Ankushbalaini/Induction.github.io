@@ -6,34 +6,35 @@ import ActionDropDown from "../Dashboard/ActionDropDown";
 import FilterComponent from "./FilterComponent";
 import { Dropdown } from "react-bootstrap";
 
+import { tableStyles } from "../Instructor/Instructor/tableStyles";
+
 const Table = props => {
 
-  
   const columns = [
     {
       name: "Name",
       selector: "name",
       sortable: true,
       grow: 1,
-      className: 'col-3'
+      className: 'col-3',
     },
     {
       name: "Email",
       selector: "email",
       sortable: true,
-      hide: "sm"
+      hide: "sm",
     },
     {
       name: "Slug",
       selector: "companyID",
       sortable: true,
-      hide: "sm"
+      hide: "sm",
     },
     {
       name: "Actions",
       button: true,
       cell: row =>
-          <>
+          <div>
             {/* <button
               onClick={() => props.actionHandler(row)}
               style={{ marginRight: "5px", minWidth: "80px" }}
@@ -41,14 +42,13 @@ const Table = props => {
             >
               Edit
             </button>
-
             <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button> */}
             {/* <DropDownBlog /> */}
             <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick}/>
 
             
               
-            </>
+            </div>
     }
   ];
 
@@ -89,10 +89,10 @@ const Table = props => {
       columns={columns}
       data={filteredItems}
       defaultSortField="name"
-      striped
       pagination
       subHeader
       subHeaderComponent={subHeaderComponent}
+      customStyles={tableStyles}
     />
   );
 };

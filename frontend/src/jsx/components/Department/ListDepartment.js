@@ -29,11 +29,7 @@ const ListDepartments = () => {
   const [modalData, setModalData] = useState({ name: "" });
   const [editID, setEditID] = useState();
   const token = useSelector((state) => state.auth.auth.token);
-
-  const actionHandler = (department) => {
-    console.log(
-      "here"
-    );
+ const actionHandler = (department) => {
     setIsModalOpen(true);
     setModalData(department);
     setName(department.name);
@@ -41,12 +37,11 @@ const ListDepartments = () => {
     setParentCompany(department.parentCompany);
     setEditID(department._id);
   };
-
-  const deleteClick = (comp_name) => {
+  const deleteClick = () => {
     // show delete confirmation msg
     swal({
       title: "Are you sure?",
-      text: `Once deleted, you will not be able to recover ${comp_name} company!`,
+      text: `Once deleted, you will not be able to recover department`,
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -60,36 +55,34 @@ const ListDepartments = () => {
   };
 
 
-  //Edit Department submit handler
-  const onSubmitHandle = async (e) => {
-    e.preventDefault();
-
-    const data = new FormData(e.target);
-    //data.append("name", name);
-    //data.append("status", status);
-    // data.append('companyID', companyID)
-
-    const response = await fetch(
-      "http://localhost:8081/api/department/edit/" + editID,
-      {
-        method: "PUT",
-        headers: {
-          // "Content-Type": "application/json",
-          "x-access-token": token,
-        },
-        body: data,
-      }
-    ).then((data) => data.json());
-
-    if ("status" in response && response.status == true) {
-      setIsModalOpen(false);
-      return swal("Success", response.message, "success");
-    } else {
-      return swal("Failed", response.message, "error");
+//Edit Department submit handler
+const onSubmitHandle = async (e) => {
+  e.preventDefault();
+  const data = new FormData(e.target);
+  //data.append("name", name);
+  //data.append("status", status);
+  // data.append('companyID', companyID)
+  const response = await fetch(
+    "http://localhost:8081/api/department/edit/" + editID,
+    {
+      method: "PUT",
+      headers: {
+        // "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+      body: data,
     }
-  };
+  ).then((data) => data.json());
+  if ("status" in response && response.status == true) {
+    setIsModalOpen(false);
+    return swal("Success", response.message, "success");
+  } else {
+    return swal("Failed", response.message, "error");
+  }
+};
 
-  
+
+
 
   const handlepageLoad = async (event) => {
     const response = await getDepartments(token);
@@ -105,7 +98,8 @@ const ListDepartments = () => {
 
   useEffect(() => {
     handlepageLoad();
-  }, [isModalOpen ]);
+  //  actionHandler();
+  }, [isModalOpen]);
 
   const buttonsty = {
     margin: "auto",
@@ -118,34 +112,29 @@ const ListDepartments = () => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h4>Department List</h4>
+              <h2>Department List</h2>
             </div>
-            <div className="card-body py-0">
+            <div className="card-body">
               <div className="table-responsive">
                 <div
                   id="student_wrapper"
-                  className="dataTables_wrapper no-footer"
+                  className="dataTables_wrapper"
                 >
                   <table
                     className="table display mb-4 dataTablesCard order-table card-table text-black application"
                     id="application-tbl1_next"
                   >
-                    {/* <thead>
-                                    <tr>
-                                        <th>Name </th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead> */}
+  
                     <tbody>{departments}</tbody>
                   </table>
-                  <Table
+                 
+                </div>
+              </div>
+              <Table
                     data={deptData}
                     actionHandler={actionHandler}
                     deleteClick={deleteClick}
-                  />
-                </div>
-              </div>
+              />
             </div>
           </div>
         </div>
@@ -186,7 +175,7 @@ const ListDepartments = () => {
                   <div className="form-group mb-3">
                     <label htmlFor="author" className="text-black font-w600">
                       {" "}
-                      Department Status = { status ? 'Active': 'Inactive' }<span className="required"></span>{" "}
+                      Department Status  { status ? 'Active': 'Inactive' }<span className="required"></span>{" "}
                     </label>
                     <select
                       className="form-control"

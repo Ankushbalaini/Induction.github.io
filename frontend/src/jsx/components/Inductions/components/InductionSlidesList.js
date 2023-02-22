@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
-
 import { Tab, Nav, Accordion } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Button, Dropdown, Modal } from "react-bootstrap";
-import swal from "sweetalert";
-import { useHistory } from "react-router-dom";
-
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -23,7 +18,6 @@ const accordionBlog = [
 
 
 function InductionSlidesList({ setCurrentSlideContent, ...props }) {
-  const navigate = useHistory();
   const inductionID = props.inductionID;
   const role = useSelector((state) => state.auth.auth.role);
   const [passMarksModel, setPassMarksModal] = useState(false);
@@ -54,7 +48,6 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
           </div>
         </div>
       ) : null}
-
       {USER_ROLES.COMPANY === role || USER_ROLES.INSTRUCTOR === role ? (
         <div>
           <div className="accordion accordion">
@@ -80,7 +73,6 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
               </Link>
             </div>
           </div>
-
           <div className="accordion accordion">
             <div class="card accordion-item">
               <Link

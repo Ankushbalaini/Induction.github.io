@@ -10,9 +10,9 @@ import DepartmentDropdown from "../Department/DepartmentDropdown";
 const CreateInduction = () => {
   const navigate = useHistory();
   const [loading, setLoading] = useState(true);
-  const [title, setTitle] = useState("Fullstack Developer");
-  const [subTitle, setSubTitle] = useState("nodejs, mongo, react , express");
-  const [deptID, setDeptID] = useState();
+  const [title, setTitle] = useState("");
+  const [subTitle, setSubTitle] = useState("");
+  const [deptID, setDeptID] = useState("");
   const [inductionDesc, setInductionDesc] = useState(
     "<h1>Induction description</h1>"
   );
@@ -113,6 +113,8 @@ const CreateInduction = () => {
     }).then((data) => data.json());
   }
 
+  
+
   const pageContent = loading ? (
     <i className="fas fa-atom fa-spin"></i>
   ) : (
@@ -137,7 +139,7 @@ const CreateInduction = () => {
                       onChange={(e) => setTitle(e.target.value)}
                       value={title}
                     />
-                    {errors.title && <div Style="color:red;font-weight:600;padding:5px;">{errors.title}</div>}
+                    {errors.title && (<div Style="color:red;font-weight:400">{errors.title}</div>)}
                   </div>
                   
 
@@ -153,12 +155,12 @@ const CreateInduction = () => {
                       onChange={(e) => setSubTitle(e.target.value)}
                       value={subTitle}
                     />
-                    {errors.subTitle && <div Style="color:red;font-weight:600;padding:5px;">{errors.subTitle}</div>}
+                    {errors.subTitle && (<div Style="color:red;font-weight:400">{errors.subTitle}</div>)}
                   </div>
                 </div>
 
-                <div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">Department</label>
+                <div className="mb-6 ">
+                  <label className="col-sm-3 col-form-label"> Choose Department </label>
                   <div className="col-sm-9">
                     <select
                       className="form-control"
@@ -167,7 +169,7 @@ const CreateInduction = () => {
                       <DepartmentDropdown />
                     </select>
 
-                    {errors.deptID && <div Style="color:red;font-weight:600;padding:5px;">{errors.deptID}</div>}
+                    {errors.deptID && (<div Style="color:red;font-weight:600">{errors.deptID}</div>)}
                   </div>
                 </div>
 
@@ -258,7 +260,7 @@ const CreateInduction = () => {
                       Add New Slide
                     </button>
 
-                    <button className="btn btn-success" type="submit">
+                    <button className="btn btn-success" type="submit"  >
                       Submit
                     </button>
                   </div>

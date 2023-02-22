@@ -8,7 +8,7 @@ export default function ActionDropDown(props) {
     
   }
 
-  const trackDDeleteClick =() => {
+  const trackDeleteClick =() => {
     props.trackDeleteClick();
   }
 
@@ -33,11 +33,10 @@ export default function ActionDropDown(props) {
           </svg>
         </Dropdown.Toggle>
         <Dropdown.Menu
-          className="dropdown-menu dropdown-menu-end"
-          align="right"
+          
         >
           <Dropdown.Item onClick={handleCallback}>Edit</Dropdown.Item>
-          <Dropdown.Item onClick={trackDDeleteClick}>Delete</Dropdown.Item>
+          <Dropdown.Item onClick={trackDeleteClick}>Delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </>
