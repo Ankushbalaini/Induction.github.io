@@ -11,7 +11,7 @@ import { Modal } from "react-bootstrap";
 import { tableStyles } from "../Instructor/Instructor/tableStyles";
 import { Button } from "react-bootstrap";
 
-const Table = props => {
+const Table = (props) => {
   const navigate = useHistory();
   const images = require.context("../../../../../images/profile/", true);
 
@@ -19,8 +19,8 @@ const Table = props => {
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
   const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const loadImage = (imageName) => {
     return images(`./${imageName}`);
   };
@@ -29,7 +29,7 @@ const Table = props => {
     height: "3.5rem",
     width: "3.5rem",
     borderRadius: "0.625rem",
-    margin: "5px 5px 5px 0"
+    margin: "5px 5px 5px 0",
   };
 
   const columns = [
@@ -38,58 +38,62 @@ const Table = props => {
       selector: "profile.first_name",
       sortable: true,
       grow: 1,
-      className: 'col-3',
-      cell: row =>
-      <>
-       <div className="d-flex align-items-center">
-          <div >
-            {row.profile?.first_name}{" "}
-            {row.profile?.last_name}
+      className: "col-3",
+      cell: (row) => (
+        <>
+          <div className="d-flex align-items-center">
+            <div>
+              {row.profile?.first_name} {row.profile?.last_name}
+            </div>
           </div>
-        </div>
-      </>
+        </>
+      ),
     },
     {
       name: "Email",
       selector: "email",
       sortable: true,
       grow: 1,
-      className: 'col-3'
+      className: "col-3",
     },
     {
       name: "Join Date",
       selector: "createdAt",
       sortable: true,
       grow: 1,
-      className: 'col-3',
-      cell: row => (
+      className: "col-3",
+      cell: (row) => (
         <div>
-         {new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}
+          {new Date(row.createdAt).toLocaleDateString("en-GB", {
+            day: "numeric",
+            year: "numeric",
+          })}
         </div>
-        )
+      ),
     },
-    
 
     {
       name: "Actions",
       button: true,
-      cell: row =>
-      <>
-      <Button to="/students" onClick={handleShow}> View</Button>
-    </>
-    }
+      cell: (row) => (
+        <>
+          <Button onClick={props.showModal}>
+            {" "}
+            View
+          </Button>
+        </>
+      ),
+    },
   ];
 
   const [filterText, setFilterText] = React.useState("");
-  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
-    false
-  );
+  const [resetPaginationToggle, setResetPaginationToggle] =
+    React.useState(false);
 
   const filteredItems = props.data.filter(
-    item =>
-      JSON.stringify(item)
-        .toLowerCase()
-        .indexOf(filterText.toLowerCase()) !== -1
+    (item) =>
+      JSON.stringify(item).toLowerCase().indexOf(filterText.toLowerCase()) !==
+      -1
   );
 
   const subHeaderComponent = useMemo(() => {
@@ -101,31 +105,28 @@ const Table = props => {
     };
 
     return (
-      <FilterComponent  
-        onFilter={e => setFilterText(e.target.value)}
+      <FilterComponent
+        onFilter={(e) => setFilterText(e.target.value)}
         onClear={handleClear}
         filterText={filterText}
       />
     );
   }, [filterText, resetPaginationToggle]);
 
-  
-
   return (
     <>
-    <DataTable
-      title=""
-      columns={columns}
-      data={filteredItems}
-      defaultSortField="name"
-      pagination
-      subHeader
-      subHeaderComponent={subHeaderComponent}
-      customStyles={tableStyles}
-    />
-      </>
+      <DataTable
+        title=""
+        columns={columns}
+        data={filteredItems}
+        defaultSortField="name"
+        pagination
+        subHeader
+        subHeaderComponent={subHeaderComponent}
+        customStyles={tableStyles}
+      />
+    </>
   );
-
 };
 
 export default Table;

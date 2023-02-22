@@ -88,9 +88,10 @@ const SideBar = () => {
       "start-test",
       "add-induction",
       "add-slide",
-      "update-induction"
+      "update-induction",
+      "attempted-inductions"
     ],
-    students = ["students", "add-student", "unassigned-users", "users"];
+    students = ["students", "add-student", "unassigned-users", "users", "user-inductions"];
 
   return (
     <div
@@ -360,6 +361,16 @@ const SideBar = () => {
                       Update Induction{" "}
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      className={`${
+                        path === "attempted-inductions" ? "mm-active" : ""
+                      }`}
+                      to="/attempted-inductions"
+                    >
+                      Attempted Induction{" "}
+                    </Link>
+                  </li>
 
                 </>
               ) : null}
@@ -373,13 +384,11 @@ const SideBar = () => {
                 </Link>
               </li>
 
-              { role === "company" ||
-              role === "super_admin" ||
-              role === "instructor"  ?
+              { USER_ROLES.USER === role ?
               <li>
                 <Link
                   className={`${path === "attempted-inductions" ? "mm-active" : ""}`}
-                  to="/attempted-inductions"
+                  to="/user-inductions"
                 >
                   Attempted Inductions{" "}
 
@@ -396,14 +405,6 @@ const SideBar = () => {
                 <span className="nav-text">Users</span>
               </Link>
               <ul>
-                {/* <li>
-                  <Link
-                    className={`${path === "students" ? "mm-active" : ""}`}
-                    to="/students"
-                  >
-                    Assigned Users{" "}
-                  </Link>
-                </li> */}
 
                 <li>
                   <Link
