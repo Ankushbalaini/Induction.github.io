@@ -162,7 +162,6 @@ const Users = () => {
 
             <div className="card-header border-0 flex-wrap pb-0">
               <h4>Users List</h4>
-
               {/* filter at top */}
               <Filters
                 searchFilter={searchFilter}

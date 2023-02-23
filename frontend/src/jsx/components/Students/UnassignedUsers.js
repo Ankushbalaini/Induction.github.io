@@ -123,7 +123,7 @@ const UnassignedUsers = () => {
             <div className="card students-list">
 
             <div className="card-header border-0 flex-wrap pb-0">
-              <h4>Unassigned Users</h4>
+              <h4>Unassigned Users List</h4>
 
               <div class="input-group search-area w-auto">
                 <span class="input-group-text">

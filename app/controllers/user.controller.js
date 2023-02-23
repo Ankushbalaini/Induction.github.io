@@ -454,7 +454,6 @@ exports.signUp_org = (req, res) => {
       }
     );
 
-    user_cred.token = token;
     req.body.userID = user_cred._id;
     const user_detail = req.body;
     const { ["password"]: pwd, ...userWithoutPwd } = user_detail;

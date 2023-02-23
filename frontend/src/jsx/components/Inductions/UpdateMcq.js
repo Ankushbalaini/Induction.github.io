@@ -70,7 +70,12 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
     }
     }
     return (
-        <Modal className="modal fade" show={isModalOpen}>
+        <Modal className="modal fade" show={isModalOpen}
+        size="xl"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+        
+        >
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Update MCQ</h5>
@@ -88,7 +93,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
               onSubmit={handleSubmit}>
               <div className="row" >
                 <div className="col-lg-12">
-                  <div className="form-group mb-6">
+                  <div className="form-group mb-3">
                     <label htmlFor="question" className="text-black font-w600">
                       {" "}
                       Question  <span className="required">*</span>{" "}

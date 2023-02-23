@@ -206,7 +206,6 @@ const Instructors = () => {
   return (
     <>
       <div className="row">
-        
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
@@ -227,7 +226,7 @@ const Instructors = () => {
                   {/* <Table data={data} click={clickhandler} /> */}
                 </div>
                 <Table data={instructorsList} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} changeUserStatus={changeUserStatus}/>
-
+               
 
               </div>
               
