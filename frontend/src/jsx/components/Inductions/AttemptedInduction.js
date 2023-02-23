@@ -158,8 +158,7 @@ const AllStudents = () => {
       ) : (
         <div className="row">
           <div className="col-xl-12">
-            <div className="card students-list">
-              
+            <div className="card students-list">  
               <div className="card-header border-0 ">
                 <h2>Attempted Users</h2>
                 {role === "super_admin" ? (
@@ -186,6 +185,7 @@ const AllStudents = () => {
                           {" "}
                           Select Company{" "}
                         </label>
+
                         <select
                           className="btn btn-white col-sm-2 border-light"
                           style={{ borderRadius: "8px" }}
@@ -197,6 +197,7 @@ const AllStudents = () => {
                           <CompanyDropdown />
                         </select>
                       </div>
+
                       <div className="btn-group">
                         <label
                           style={{
@@ -208,6 +209,7 @@ const AllStudents = () => {
                           {" "}
                           Select Induction{" "}
                         </label>
+                        
                         <select
                           className="btn btn-white col-sm-2 border-light"
                           style={{ borderRadius: "8px" }}
