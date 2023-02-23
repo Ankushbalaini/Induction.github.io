@@ -47,7 +47,7 @@ const InductionUsers = () => {
     
     queryStr = companyFilter ? `?company=${companyFilter}` 
               : (USER_ROLES.COMPANY === role) ? `?company=${loginUser}` 
-              : (USER_ROLES.INSTRUCTOR === role) ? `?company=${parentCompany}` : null;
+              : (USER_ROLES.INSTRUCTOR === role) ? `?company=${parentCompany}` : '';
     queryStr += inductionFilter ? `&induction=${inductionFilter}` : "";
 
     const response = await fetch(
