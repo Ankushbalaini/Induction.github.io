@@ -58,9 +58,9 @@ const AllStudents = () => {
   };
   const CompanyChangeFilter = (e) => {
     setSearchCompany(e.target.value);
-    setSearchDepartment('All');
+    setSearchDepartment("All");
     // setLoading(true);
-    if (e.target.value !== 'All') {
+    if (e.target.value !== "All") {
       setDepartmentOptions(
         <DepartmentByCompany parentCompany={e.target.value} />
       );
@@ -100,47 +100,12 @@ const AllStudents = () => {
       }
     });
   };
-  // change status
-  const changeUserStatus = (userID, status) => {
-    // user id
-    swal({
-      title: "Are you sure?",
-      text: `Once status Changed, User will get or loss access to account`,
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (willChange) => {
-      if (willChange) {
-        const response = await fetch(
-          "http://localhost:8081/api/users/changeUserStatus",
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              "x-access-token": token,
-            },
-            body: JSON.stringify({ userID: userID, status: status }),
-          }
-        ).then((data) => data.json());
-        if ("status" in response && response.status == true) {
-          swal("Poof! Your record has been updated!", {
-            icon: "success",
-          }).then(() => {
-            setIsUserStatusChanged(!isUserStatusChanged);
-            //navigate.push("/students");
-          });
-        } else {
-          return swal("Failed", response.message, "error");
-        }
-      } else {
-        swal("Your status is not changed!");
-      }
-      handlepageLoad();
-    });
-  };
+
+
+  
   const handlepageLoad = async (event) => {
     var str = "";
-    if (searchCompany !== undefined && searchCompany !== 'All') {
+    if (searchCompany !== undefined && searchCompany !== "All") {
       str = "?company=" + searchCompany;
       if (searchDepartment !== undefined) {
         str += "&deptID=" + searchDepartment;
@@ -165,6 +130,11 @@ const AllStudents = () => {
       return swal("Failed", response.message, "error");
     }
   };
+
+
+  const showModal = () =>{
+    
+  }
   // use effect
   useEffect(() => {
     handlepageLoad();
@@ -174,7 +144,7 @@ const AllStudents = () => {
     isModalOpen,
     isUserStatusChanged,
     searchCompany,
-    searchDepartment
+    searchDepartment,
   ]);
   //css for button
   const buttonStyle = {
@@ -189,112 +159,153 @@ const AllStudents = () => {
         <div className="row">
           <div className="col-xl-12">
             <div className="card students-list">
+              
               <div className="card-header border-0 ">
                 <h2>Attempted Users</h2>
-              {role === "super_admin" ? (
-                <div className="row">
-                <div className="btn-group" style={{display: "flex", alignItems:"end", justifyContent:"end",gap:"40px", paddingRight: "20px"}} >
-                <div className="btn-group" >
-                    <label style={{paddingRight:"10px",fontWeight:"bold",paddingTop:"12px"}} className="pb-0"> Select Company </label>
-                    <select className="btn btn-white col-sm-2 border-light"
-                    style={{borderRadius:"8px"}}
-                      name="search_company"
-                      onChange={(e) => CompanyChangeFilter(e)}
-                      value={searchCompany}>
-                      <option value="All">ALL</option>
-                      <CompanyDropdown />
-                    </select>
+                {role === "super_admin" ? (
+                  <div className="row">
+                    <div
+                      className="btn-group"
+                      style={{
+                        display: "flex",
+                        alignItems: "end",
+                        justifyContent: "end",
+                        gap: "40px",
+                        paddingRight: "20px",
+                      }}
+                    >
+                      <div className="btn-group">
+                        <label
+                          style={{
+                            paddingRight: "10px",
+                            fontWeight: "bold",
+                            paddingTop: "12px",
+                          }}
+                          className="pb-0"
+                        >
+                          {" "}
+                          Select Company{" "}
+                        </label>
+                        <select
+                          className="btn btn-white col-sm-2 border-light"
+                          style={{ borderRadius: "8px" }}
+                          name="search_company"
+                          onChange={(e) => CompanyChangeFilter(e)}
+                          value={searchCompany}
+                        >
+                          <option value="All">ALL</option>
+                          <CompanyDropdown />
+                        </select>
+                      </div>
+                      <div className="btn-group">
+                        <label
+                          style={{
+                            paddingRight: "10px",
+                            fontWeight: "bold",
+                            paddingTop: "12px",
+                          }}
+                        >
+                          {" "}
+                          Select Induction{" "}
+                        </label>
+                        <select
+                          className="btn btn-white col-sm-2 border-light"
+                          style={{ borderRadius: "8px" }}
+                          name="slideInductionId"
+                          value={state.inductionID}
+                          onChange={(e) =>
+                            setState({ ...state, inductionID: e.target.value })
+                          }
+                        >
+                          <option>Select</option>
+                          <InductionDropdown />
+                        </select>
+                      </div>
                     </div>
-                  <div className="btn-group" >
-                    <label style={{paddingRight:"10px",fontWeight:"bold",paddingTop:"12px"}}> Select Induction </label>
-                    <select className="btn btn-white col-sm-2 border-light"
-                    style={{borderRadius:"8px"}}
-                    name="slideInductionId"
-                    value={state.inductionID}
-                    onChange={(e) =>
-                      setState({ ...state, inductionID: e.target.value })
-                    }
-                  >
-                    <option>Select</option>  
-                    <InductionDropdown />
-                  </select>
                   </div>
-          </div>
-          </div>
-              ) : null}
-              {role === "company" ? (
-                <div className="btn-group col-sm-4" style={{float:"right",marginBottom:"5px"}} >
-              <label style={{paddingRight:"10px",fontWeight:"bold",paddingTop:"12px"}}> Select Induction </label>
-              <select className="btn btn-white col-sm-2 border-light"
-                  style={{borderRadius:"8px"}}
-                  name="slideInductionId"
-                  value={state.inductionID}
-                  onChange={(e) =>
-                    setState({ ...state, inductionID: e.target.value })
-                  }
-                >
-                  <option>Select</option>
-                  <InductionDropdown />
-                </select>
-                </div>
-              ) : null}
-              {role === "instructor" ? (
-                <div className="btn-group col-sm-4" style={{float:"right",marginBottom:"5px"}} >
-                <label style={{paddingRight:"10px",fontWeight:"bold",paddingTop:"12px"}}> Select Induction </label>
-                  <select
-                  className="btn btn-white col-sm-2 border-light"
-                  style={{borderRadius:"8px"}}
-                  name="slideInductionId"
-                  value={state.inductionID}
-                  onChange={(e) =>
-                    setState({ ...state, inductionID: e.target.value })
-                  }
-                >
-                  <option>Select</option>
-                  <InductionDropdown />
-                </select>
-                </div>
-              ) : null}
+                ) : null}
+                {role === "company" ? (
+                  <div
+                    className="btn-group col-sm-4"
+                    style={{ float: "right", marginBottom: "5px" }}
+                  >
+                    <label
+                      style={{
+                        paddingRight: "10px",
+                        fontWeight: "bold",
+                        paddingTop: "12px",
+                      }}
+                    >
+                      {" "}
+                      Select Induction{" "}
+                    </label>
+                    <select
+                      className="btn btn-white col-sm-2 border-light"
+                      style={{ borderRadius: "8px" }}
+                      name="slideInductionId"
+                      value={state.inductionID}
+                      onChange={(e) =>
+                        setState({ ...state, inductionID: e.target.value })
+                      }
+                    >
+                      <option>Select</option>
+                      <InductionDropdown />
+                    </select>
+                  </div>
+                ) : null}
+                {role === "instructor" ? (
+                  <div
+                    className="btn-group col-sm-4"
+                    style={{ float: "right", marginBottom: "5px" }}
+                  >
+                    <label
+                      style={{
+                        paddingRight: "10px",
+                        fontWeight: "bold",
+                        paddingTop: "12px",
+                      }}
+                    >
+                      {" "}
+                      Select Induction{" "}
+                    </label>
+                    <select
+                      className="btn btn-white col-sm-2 border-light"
+                      style={{ borderRadius: "8px" }}
+                      name="slideInductionId"
+                      value={state.inductionID}
+                      onChange={(e) =>
+                        setState({ ...state, inductionID: e.target.value })
+                      }
+                    >
+                      <option>Select</option>
+                      <InductionDropdown />
+                    </select>
+                  </div>
+                ) : null}
               </div>
+
+
               <div className="card-body">
                 <div className="table-responsive">
                   <div
                     id="student_wrapper"
                     className="dataTables_wrapper"
-                  >
-                  </div>
-                  <Table data={students} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} show={show}/>
+                  ></div>
+                  <Table
+                    data={students}
+                    trackOnclick={trackOnclick}
+                    showModal={showModal}
+                  />
                 </div>
+
+
               </div>
             </div>
           </div>
         </div>
       )}
-      <UserAttemptedInductioList
-        show ={show}
-       
-      />
+      <UserAttemptedInductioList show={false} />
     </>
   );
 };
 export default AllStudents;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

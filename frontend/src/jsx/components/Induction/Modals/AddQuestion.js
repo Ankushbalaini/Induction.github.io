@@ -79,16 +79,17 @@ const AddQuestion = ({
       errorObj1.answer = "Answer is required";
       error = true;
     }
-    if (
-      formState.answer.trim() !== formState.option1.trim() ||
-      formState.answer.trim() !== formState.option2.trim() ||
-      formState.answer.trim() !== formState.option3.trim() ||
-      formState.answer.trim() !== formState.option4.trim()
-    ) {
-      errorObj1.answer =
-        "Answer is not matched with any option! Please verify again!";
-      error = true;
-    }
+
+    // if (
+    //   formState.answer.trim() !== formState.option1.trim() ||
+    //   formState.answer.trim() !== formState.option2.trim() ||
+    //   formState.answer.trim() !== formState.option3.trim() ||
+    //   formState.answer.trim() !== formState.option4.trim()
+    // ) {
+    //   errorObj1.answer =
+    //     "Answer is not matched with any option! Please verify again! = "+ formState.answer.trim() + " " + formState.option1.trim()
+    //   error = true;
+    // }
     setErrors(errorObj1);
     
     if (error) return;

@@ -132,8 +132,8 @@ const AttemptedInductions = () => {
                       <thead>
                         <tr>
                           <th>Induction Title</th>
-                          {/* <th>Wrong Answers</th>
-                          <th>Correct Answers</th> */}
+                          <th>Correct Answers</th>
+                          <th>Incorrect Answers</th>
                           <th>Remark</th>
                           <th>Test Status</th>
                         </tr>
@@ -150,24 +150,24 @@ const AttemptedInductions = () => {
                                 */}
                                 <h4 className="mb-0 fs-16 font-w500">
                                   {row.inductionID.title}{" "}
-                                </h4> 
+                                </h4>
                               </div>
                             </td>
-                            {/* <td>{row.wrongAnswers}</td>
-                            <td>
-                              {row.correctAnswers}
-                            </td> */}
-                            <td>
-                              {row.remark}
-                            </td>
+
+                            <td>{row.correctAnswers}</td>
+                            <td>{row.wrongAnswers}</td>
+                            <td>{row.remark}</td>
                             <td Style="text-align:left;">
                               <Link
-                                className={`badge light ${(row.testStatus === 'Fail')? 'badge-danger': 'badge-success'}`}
-                                onClick={(e)=>e.preventDefault()}
+                                className={`badge light ${
+                                  row.testStatus === "Fail"
+                                    ? "badge-danger"
+                                    : "badge-success"
+                                }`}
+                                onClick={(e) => e.preventDefault()}
                               >
                                 {row.testStatus}
                               </Link>
-                              
                             </td>
                           </tr>
                         ))}
@@ -229,7 +229,6 @@ const AttemptedInductions = () => {
                         </Link>
                       </div>
                     </div>
-                    
                   </div>
                 </div>
               </div>

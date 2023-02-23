@@ -3,14 +3,16 @@ import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import { useState } from 'react';
 
-const UserAttemptedInductioList = () => {
+const UserAttemptedInductioList = (props) => {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+
     return(
 
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={props.show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>

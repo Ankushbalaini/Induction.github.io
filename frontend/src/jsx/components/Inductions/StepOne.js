@@ -4,6 +4,7 @@ import { useState } from "react";
 const StepOne = () => {
     const [inductionTitle, setInductionTitle] = useState();
 
+    
    return (
       <section>
          <div className="row">

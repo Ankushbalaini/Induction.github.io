@@ -77,54 +77,25 @@ exports.edit = (req, res) => {
       message: "Data to be edit can't be empty!",
     });
   }
-  const { name, status } = req.body;
-  const id = req.params.id;
-
-  Department.updateOne(
-    { _id: id },
-    { $set: req.body },
-    { multi: true }
+  const id = (req.params.id);
+  Department.updateOne( 
+    { _id: id }, 
+    { $set: req.body }, 
+    { multi: true } 
   )
-    .then((department) => {
-      return res.status(200).send({
-        status: true,
-        message: "Department has been updated!",
-        data: department,
-      });
-    })
-    .catch((err) => {
-      return res.status(500).send({
-        status: false,
-        message: err.message,
-      });
-    });
-
-
-    /*
-
-  Department.findByIdAndUpdate(id, req.body, { useFindAndModify: true })
-    .then(function (department) {
-      if (!department) {
-        return res.status(500).send({
-          status: false,
-          message: "Deparment not found.",
-          
-        });
-      } else {
-        return res.status(200).send({
-          message: "Deparment has been updated successfully",
-          data: department,
-          status: true,
-        });
-      }
-    })
-    .catch((err) => {
-      return res.status(500).send({
-        status: false,
-        message: err.message,
-      });
-    });
-    */
+    .then((department) => { 
+      return res.status(200).send({ 
+        status: true, 
+        message: "Department has been updated!", 
+        data: department, 
+      }); 
+    }) 
+    .catch((err) => { 
+      return res.status(500).send({ 
+        status: false,  
+        message: err.message, 
+      }); 
+    }); 
 };
 
 // get the Department
@@ -202,22 +173,22 @@ exports.getAll = async (req, res) => {
     const user = req.decoded;
 
     await Department.find({ parentCompany: ObjectId(user.userID) })
-      .then((data) => {
-        return res.status(200).send({
-          status: true,
-          message: "Successfully Getting Data",
-          data: data,
-          u: user,
-        });
-      })
-      .catch((err) => {
-        return res.status(500).send({
-          status: false,
-          message: err.message,
-        });
-      });
-
-    //const data = await Department.find({ parentCompany: ObjectId(user.userID) });
+          .then((data)=>{
+            return res.status(200).send({
+              status: true,
+              message: "Successfully Getting Data",
+              data: data,
+              u: user
+            });
+          })
+          .catch((err)=>{
+            return res.status(500).send({
+              status: false,
+              message: err.message
+            });
+          });
+   
+   
   } catch (err) {
     return res.status(500).send({
       status: false,
