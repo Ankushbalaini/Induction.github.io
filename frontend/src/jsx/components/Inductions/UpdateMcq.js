@@ -7,7 +7,7 @@ import { Last } from "react-bootstrap/esm/PageItem";
 import { useHistory } from "react-router-dom";
 import { useParams } from "react-router";
 const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
-     //   console.log(mcqData,"mcqData...");
+    console.log(mcqData,"mcqData...");
     const navigate = useHistory();
     const id = useSelector((state) => state.auth.auth.id);
     const token = useSelector((state) => state.auth.auth.token);
@@ -196,4 +196,4 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
       </Modal>
     )
 }
-export default UpdateMcq
+export default UpdateMcq;

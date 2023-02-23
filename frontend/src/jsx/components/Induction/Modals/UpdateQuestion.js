@@ -18,7 +18,7 @@ const AddQuestionAPI = async (token, data) => {
   }).then((ques) => ques.json());
 };
 
-const UpdateQuestion = ({ questionID, isShowAddQuestion, onClickHandler }) => {
+const UpdateQuestion = ({ questionID,inductionID, isShowAddQuestion, onClickHandler }) => {
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
 
@@ -101,7 +101,7 @@ const UpdateQuestion = ({ questionID, isShowAddQuestion, onClickHandler }) => {
         buttons: false,
         timer: 2000,
       }).then((value) => {
-        navigate.push("/viewmcq/" + inductionID);
+        navigate.push("/viewmcq/" );
       });
     } else {
       return swal("Failed", response.message, "error");
@@ -131,7 +131,7 @@ const UpdateQuestion = ({ questionID, isShowAddQuestion, onClickHandler }) => {
             <div className="card-body">
               <div className="basic-form">
                 <h4 className="card-title m-auto">Enter Question</h4>
-                <input type="hidden" name="inductionID" value={inductionID} />
+                <input type="hidden" name="inductionID" />
 
                 <div className="form-group ">
                   <textarea

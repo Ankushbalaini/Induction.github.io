@@ -818,14 +818,14 @@ exports.updatePassingMarks = (req, res) => {
 };
 
 /**
+ * base find
  *
  * @param {*} req
  * @param {*} res
  */
-exports.users = (req, res) => {
-  // here we get userID
+exports.users_org = (req, res) => {
+  // here we get comapnyID
   // inductionID from filters
-
   InductionUsers.aggregate([
     {
       $group: {
@@ -909,4 +909,369 @@ exports.users = (req, res) => {
         message: err.message + " error ",
       });
     });
+};
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+exports.users = (req, res) => {
+  // here we get comapnyID
+  // inductionID from filters
+
+  // parentCompany
+  // inductionID
+  let comapnyID = {};
+  let inductionID = {};
+
+  if (req.query.company === undefined || req.query.company === "All") {
+    InductionUsers.aggregate([
+      {
+        $group: {
+          _id: {
+            userID: "$userID",
+            inductionID: "$inductionID",
+          },
+          total: { $sum: 1 },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id.userID",
+          foreignField: "userID",
+          as: "profile",
+        },
+      },
+      {
+        $lookup: {
+          from: "inductions",
+          localField: "_id.inductionID",
+          foreignField: "_id",
+          as: "inductions",
+        },
+      },
+      {
+        $lookup: {
+          from: "user_induction_results",
+          let: {
+            inductionID: "$_id.inductionID",
+            userID: "$_id.userID",
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    {
+                      $eq: ["$inductionID", "$$inductionID"],
+                    },
+                    {
+                      $eq: ["$userID", "$$userID"],
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+          as: "result",
+        },
+      },
+      {
+        $unwind: "$profile",
+      },
+      {
+        $unwind: "$inductions",
+      },
+      {
+        $project: {
+          _id: 1,
+          userID: 1,
+          inductionID: 1,
+          total: 1,
+          profile: 1,
+          inductions: 1,
+          result: 1,
+        },
+      },
+    ])
+      .then((users) => {
+        return res.status(200).send({
+          status: true,
+          message: "response without filter!",
+          data: users,
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          status: false,
+          message: err.message + " error ",
+        });
+      });
+  } else {
+    comapnyID = ObjectId(req.query.company);
+
+    if (req.query.induction === undefined || req.query.induction === "All") {
+      InductionUsers.aggregate([
+        {
+          $group: {
+            _id: {
+              userID: "$userID",
+              inductionID: "$inductionID",
+            },
+            total: { $sum: 1 },
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "_id.userID",
+            foreignField: "userID",
+            as: "profile",
+          },
+        },
+        {
+          $lookup: {
+            from: "inductions",
+            localField: "_id.inductionID",
+            foreignField: "_id",
+            as: "inductions",
+          },
+        },
+        {
+          $addFields: {
+            inductions: {
+              $arrayElemAt: [
+                {
+                  $filter: {
+                    input: "$inductions",
+                    as: "comp",
+                    cond: {
+                      $eq: ["$$comp.parentCompany", comapnyID],
+                    },
+                  },
+                },
+                0,
+              ],
+            },
+          },
+        },
+
+        {
+          $lookup: {
+            from: "user_induction_results",
+            let: {
+              inductionID: "$_id.inductionID",
+              userID: "$_id.userID",
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      {
+                        $eq: ["$inductionID", "$$inductionID"],
+                      },
+                      {
+                        $eq: ["$userID", "$$userID"],
+                      },
+                    ],
+                  },
+                },
+              },
+            ],
+            as: "result",
+          },
+        },
+        {
+          $unwind: "$profile",
+        },
+        {
+          $unwind: "$inductions",
+        },
+        {
+          $project: {
+            _id: 1,
+            userID: 1,
+            inductionID: 1,
+            total: 1,
+            profile: 1,
+            inductions: 1,
+            result: 1,
+          },
+        },
+      ])
+        .then((users) => {
+          return res.status(200).send({
+            status: true,
+            message: "Api Working fine else!",
+            data: users,
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            status: false,
+            message: err.message + " error ",
+          });
+        });
+    } else {
+      inductionID = ObjectId(req.query.induction);
+
+      InductionUsers.aggregate([
+        {
+          $match: {
+            $and: [{ inductionID: { $eq: inductionID } }],
+          },
+        },
+        {
+          $group: {
+            _id: {
+              userID: "$userID",
+              inductionID: "$inductionID",
+            },
+            total: { $sum: 1 },
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "_id.userID",
+            foreignField: "userID",
+            as: "profile",
+          },
+        },
+        {
+          $lookup: {
+            from: "inductions",
+            localField: "_id.inductionID",
+            foreignField: "_id",
+            as: "inductions",
+          },
+        },
+        {
+          $addFields: {
+            inductions: {
+              $arrayElemAt: [
+                {
+                  $filter: {
+                    input: "$inductions",
+                    as: "comp",
+                    cond: {
+                      $eq: ["$$comp.parentCompany", comapnyID],
+                    },
+                  },
+                },
+                0,
+              ],
+            },
+          },
+        },
+
+        {
+          $lookup: {
+            from: "user_induction_results",
+            let: {
+              inductionID: "$_id.inductionID",
+              userID: "$_id.userID",
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      {
+                        $eq: ["$inductionID", "$$inductionID"],
+                      },
+                      {
+                        $eq: ["$userID", "$$userID"],
+                      },
+                    ],
+                  },
+                },
+              },
+            ],
+            as: "result",
+          },
+        },
+        {
+          $unwind: "$profile",
+        },
+        {
+          $unwind: "$inductions",
+        },
+        {
+          $project: {
+            _id: 1,
+            userID: 1,
+            inductionID: 1,
+            total: 1,
+            profile: 1,
+            inductions: 1,
+            result: 1,
+          },
+        },
+      ])
+        .then((users) => {
+          return res.status(200).send({
+            status: true,
+            message: "Api Working fine!",
+            data: users,
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            status: false,
+            message: err.message + " error ",
+          });
+        });
+    }
+  }
+};
+
+exports.getInductionByCompany = async (req, res) => {
+  try {
+    const user = req.decoded;
+    const userRole = user.role;
+    let data = {};
+
+    switch (userRole) {
+      case USER_ROLES.SUPER_ADMIN:
+        data = await Induction.find({
+          parentCompany: ObjectId(req.body.parentCompany),
+        }, { _id: 1, title: 1 , parentCompany:1} );
+        return res.status(200).send({
+          status: true,
+          message: "Successfully Getting Data",
+          data: data,
+        });
+
+      case USER_ROLES.COMPANY:
+        data = await Induction.find({
+          parentCompany: ObjectId(user.userID),
+        }, { _id: 1, title: 1 , parentCompany:1});
+        return res.status(200).send({
+          status: true,
+          message: "Successfully Getting Data",
+          data: data,
+        });
+
+      default:
+
+        // instructor case
+        data = await Induction.find({
+          parentCompany: ObjectId(user.parentCompany),
+        },{ _id: 1, title: 1 , parentCompany:1});
+        return res.status(200).send({
+          status: true,
+          message: "Successfully Getting Data",
+          data: data,
+        });
+    }
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      message: err.message || "Some error occurred.",
+    });
+  }
 };

@@ -254,7 +254,7 @@ const buttonStyle = {
 
               <div className="form-group mb-3">
                 <div className="mb-4 row">
-                  <label className="col-sm-3 col-form-label">Select Company {parentCompany}</label>
+                  <label className="col-sm-3 col-form-label">Select Company </label>
                   <div className="col-sm-9">
                   <select
                     name="parentCompany"
