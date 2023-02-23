@@ -105,6 +105,11 @@ const QuizList = ({ inductionID, updateQuesHandler }) => {
     }
   }, [mcqData]);
 
+
+  const onClickHandler = () => {
+
+  }
+
   return (
     <>
       {loading ? (
@@ -139,12 +144,24 @@ const QuizList = ({ inductionID, updateQuesHandler }) => {
           </div>
         </div>
       )}
-      <UpdateMcq
+
+      {(isModalOpen) ? 
+        <UpdateMcq
         isModalOpen={isModalOpen}
         trackOnclick={trackOnclick}
         trackDeleteClick={trackDeleteClick}
         mcqData={mcqData}
-      />
+      /> 
+
+      : null }
+
+
+      {/* <UpdateMcq
+        isModalOpen={isModalOpen}
+        trackOnclick={trackOnclick}
+        trackDeleteClick={trackDeleteClick}
+        mcqData={mcqData}
+      /> */}
     </>
   );
 };

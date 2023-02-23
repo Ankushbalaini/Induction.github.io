@@ -5,11 +5,23 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import UserAttemptedInductioList from "../Modals/UserAttemptedInductioList";
+import FiltersForAttempts from "./components/FilterForAttempts";
+
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
 
 const InductionUsers = () => {
   const token = useSelector((state) => state.auth.auth.token);
-  const [searchCompany, setSearchCompany] = useState();
-  const [searchDepartment, setSearchDepartment] = useState();
+  const role = useSelector((state) => state.auth.auth.role);
+  const loginUser = useSelector((state) => state.auth.auth.id);
+  const parentCompany = useSelector((state) => state.auth.auth.parentCompany);
+
+  const [companyFilter, setCompanyFilter] = useState();
+  const [inductionFilter, setInductionFilter] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]); // main listing data
@@ -29,13 +41,25 @@ const InductionUsers = () => {
   };
 
   const handlepageLoad = async (e) => {
-    const response = await fetch("http://localhost:8081/api/induction/users", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token,
-      },
-    }).then((data) => data.json());
+    // query string
+    
+    var queryStr = "";
+    
+    queryStr = companyFilter ? `?company=${companyFilter}` 
+              : (USER_ROLES.COMPANY === role) ? `?company=${loginUser}` 
+              : (USER_ROLES.INSTRUCTOR === role) ? `?company=${parentCompany}` : '';
+    queryStr += inductionFilter ? `&induction=${inductionFilter}` : "";
+
+    const response = await fetch(
+      "http://localhost:8081/api/induction/users" + queryStr,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+      }
+    ).then((data) => data.json());
     if ("status" in response && response.status == true) {
       setUsers(response.data);
       setLoading(false);
@@ -47,12 +71,21 @@ const InductionUsers = () => {
   // use effect
   useEffect(() => {
     handlepageLoad();
-  }, [ ]);
+  }, [companyFilter, inductionFilter]);
   //css for button
   const buttonStyle = {
     margin: "auto",
     display: "flex",
   };
+
+  const CompanyFilterHandle = (e) => {
+    setCompanyFilter(e.target.value);
+    setInductionFilter("All");
+  };
+  const InductionFilterHandle = (e) => {
+    setInductionFilter(e.target.value);
+  };
+
   return (
     <>
       {loading ? (
@@ -60,9 +93,9 @@ const InductionUsers = () => {
       ) : (
         <div className="row">
           <div className="col-xl-12">
-            <div className="card students-list">
+            <div className="card users-list">
               <div className="card-header border-0 ">
-                <h2>Induction Users</h2>
+                {/* <h3>Induction Users</h3> */}
 
                 {/* 
                 <h2>Attempted Induction Users</h2>
@@ -187,6 +220,13 @@ const InductionUsers = () => {
                   </div>
                 ) : null}
                */}
+
+                <FiltersForAttempts
+                  CompanyFilterHandle={CompanyFilterHandle}
+                  InductionFilterHandle={InductionFilterHandle}
+                  companyFilter={companyFilter}
+                  inductionFilter={inductionFilter}
+                />
               </div>
 
               <div className="card-body">
@@ -200,12 +240,13 @@ const InductionUsers = () => {
         </div>
       )}
 
-      { (isModalOpen) ? 
-      <UserAttemptedInductioList
-        isModalOpen={isModalOpen}
-        hidePopUp={hidePopUp}
-        userPopupData={userPopupData}
-      /> : null }
+      {isModalOpen ? (
+        <UserAttemptedInductioList
+          isModalOpen={isModalOpen}
+          hidePopUp={hidePopUp}
+          userPopupData={userPopupData}
+        />
+      ) : null}
     </>
   );
 };

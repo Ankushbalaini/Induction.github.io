@@ -56,6 +56,7 @@ module.exports = function (app) {
   router.post("/updatePassingMarks", induction.updatePassingMarks);
   router.get("/filter/by/company", induction.filterByCompany);
   
+  router.post("/getInductionByCompany", induction.getInductionByCompany);
   
   
 

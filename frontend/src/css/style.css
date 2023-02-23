@@ -33001,3 +33001,8 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   overflow-y: hidden;
   min-height: 200px !important;
 }
+
+.modal-dialog {
+    max-width: 80% !important;
+    margin: 1.75rem auto;
+}
