@@ -33,6 +33,11 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
   const handleClick = (slideData, i) => {
     setCurrentSlideContent(slideData);
     setActive(i);
+
+    currentStep === props.slides.length
+    ? setComplete(true)
+    : setCurrentStep((prev) => prev + 1 );
+ 
   };
 
 
@@ -158,15 +163,15 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
             <Button
               className="btn btn-group mb-3 mt-3"
               style={{display:"flex",float:"right"}}
-              onClick={(slideData) => {
+              onClick={() => {
                 
                 currentStep === props.slides.length
                   ? setComplete(true)
                   : setCurrentStep((prev) => prev + 1 );
-                  setCurrentSlideContent(slideData);
+             
               }}
             >
-              {currentStep === props.slides.length ? "Finish" : "Next"}
+              {currentStep === props.slides.length ? "Finish" : ">"}
             </Button>
           )}
           </div>
@@ -198,10 +203,6 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
           ) : null}
 
         </Accordion>
-
-
-  
-        
       </div>
     </div>
   );
