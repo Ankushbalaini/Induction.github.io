@@ -67,9 +67,21 @@ const SingleInductionView = (props) => {
     setClickedOutside(false);
   };
 
+  const handleFullScreen = () => {
+    const elem = document.documentElement;
+  
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      elem.requestFullscreen();
+    }
+  };
+
+
+
   // API call for fetching all induction details with slides
   const handleGetInductionDetail = async (e) => {
-    // const response = await getInductionDetailById(id, token);
+   
     // getInduction
     const response = await getInduction(id, token);
 
@@ -78,6 +90,8 @@ const SingleInductionView = (props) => {
       setSlideData(response.slides);
       setCurrentSlideContent(response.slides[0]);
       setLoading(false);
+      handleFullScreen();
+    
     }
   };
 
@@ -106,14 +120,15 @@ const SingleInductionView = (props) => {
     document.addEventListener("mousedown", handleClickOutside);
     
     return () => document.removeEventListener("mousedown", handleClickOutside);
-
-
-  }, [loading]);
+    
+ 
+  }, [loading,props.setShowSidebar]);
 
   const PageContent = loading ? (
     <i className="fas fa-atom fa-spin"></i>
   ) : (
     <>
+    
       <div className="col-xl-8 col-xxl-7" ref={myRef} onClick={handleClickInside}>
         <div className="card">
           <div className="card-body">
