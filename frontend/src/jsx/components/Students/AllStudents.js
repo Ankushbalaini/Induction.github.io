@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CompanyDropdown from "../Companies/CompanyDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
+import PageTitle from "../../layouts/PageTitle";
 const images = require.context("../../../../../images/profile/", true);
 const AllStudents = () => {
   const navigate = useHistory();
@@ -172,6 +173,9 @@ const AllStudents = () => {
       {loading ? (
         <h3>Loading</h3>
       ) : (
+        <>
+        <PageTitle activeMenu="Users List" motherMenu="Users" />
+
         <div className="row">
           <div className="col-xl-12">
             <div className="card students-list">
@@ -286,6 +290,7 @@ const AllStudents = () => {
             </div>
           </div>
         </div>
+        </>
       )}
       <UpdateUserModal
         isModalOpen={isModalOpen}

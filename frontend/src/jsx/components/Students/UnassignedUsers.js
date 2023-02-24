@@ -5,7 +5,7 @@ import swal from "sweetalert";
 import { getData } from "../APIs";
 import Filters from "./Filters";
 import UsersTable from "./UsersTable";
-
+import PageTitle from "../../layouts/PageTitle";
 const UnassignedUsers = () => {
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
@@ -118,6 +118,8 @@ const UnassignedUsers = () => {
       {loading ? (
         <h3>Loading</h3>
       ) : (
+        <>
+        <PageTitle activeMenu="Unassigned Users" motherMenu="Users" />
         <div className="row">
           <div className="col-xl-12">
             <div className="card students-list">
@@ -226,6 +228,7 @@ const UnassignedUsers = () => {
             </div>
           </div>
         </div>
+        </>
       )}
     </>
   );

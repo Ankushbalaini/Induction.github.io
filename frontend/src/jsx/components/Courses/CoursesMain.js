@@ -3,6 +3,7 @@ import { Link , useHistory} from "react-router-dom";
 import "swiper/css";
 import { Dropdown, Button } from "react-bootstrap";
 import swal from "sweetalert";
+import PageTitle from "../../layouts/PageTitle";
 
 //images
 import course1 from "./../../../images/courses/course1.jpg";
@@ -181,6 +182,8 @@ function CoursesMain() {
     <h1>Loading</h1>
   ) : (
     <>
+      <PageTitle activeMenu="Inductions" motherMenu="Inductions" />
+
       <div className="widget-heading d-flex justify-content-between align-items-center">
         <h3 className="m-0">All Inductions ({totalRecords})</h3>
 

@@ -1,68 +1,48 @@
-import React, { Fragment, useState, useRef,useEffect } from "react";
+import React, { Fragment, useState, useRef, useEffect } from "react";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 
 const AddCompany = () => {
   const navigate = useHistory();
-  
-  // const intialState = {
-  //   email:'',
-  //   password:'',
-  //   name:'',
-  //   companyID: '',
-  //   image:'',
-  //   address:'',
-  //   aboutCompany: '',
-  //   logo: {
-  //     preview:'',
-  //     data:''
-  //   }
-  // }
-  // // useState 
-  // const [state, setState] = useState(intialState);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [companyID, setCompanyID] = useState("");
   // const [logo, setLogo] = useState();
-  const [image, setImage] = useState({preview:'', data:''})
+  const [image, setImage] = useState({ preview: "", data: "" });
   const [address, setAddress] = useState("");
   const [aboutCompany, setAboutCompany] = useState("");
 
-   // validation messages
-   let errorObj = { 
+  // validation messages
+  let errorObj = {
     email: "",
     password: "",
     name: "",
-    companyID:"",
-    logo:"",
+    companyID: "",
+    logo: "",
     address: "",
-    
- };
+  };
 
- const [errors, setErrors] = useState(errorObj);
-
+  const [errors, setErrors] = useState(errorObj);
 
   // on file change
   const handleFileChange = async (e) => {
     const image = {
       preview: URL.createObjectURL(e.target.files[0]),
       data: e.target.files[0],
-    }
+    };
     // setLogo({logo : img.data });
-    setImage(image)
-  }
-
-
+    setImage(image);
+  };
 
   // on form submit
   let handleSubmit = async (e) => {
     e.preventDefault();
 
     let error = false;
-    const errorObj1 = { ...errorObj }
+    const errorObj1 = { ...errorObj };
 
     if (email === "") {
       errorObj1.email = "Email is required";
@@ -76,11 +56,11 @@ const AddCompany = () => {
       errorObj1.name = "Name is required";
       error = true;
     }
-    if (companyID  === "") {
+    if (companyID === "") {
       errorObj1.companyID = "Slug is required";
       error = true;
     }
-    if (image  === "") {
+    if (image === "") {
       errorObj1.image = "Logo is required";
       error = true;
     }
@@ -88,50 +68,26 @@ const AddCompany = () => {
       errorObj1.address = "Company address is required";
       error = true;
     }
-    
-    
+
     setErrors(errorObj1);
 
-    if (error) return ;
-
-
-    // alert( JSON.stringify(state) );
-
-    // const data = new FormData(e.target);
-
-    // const response = await fetch("http://localhost:8081/api/company/add", {
-    //   method: "POST",
-    //   body: data,
-    // }).then((data) => data.json());
-
-    // if ("status" in response && response.status == true) {
-    //   return swal("Success", response.message, "success", {
-    //     buttons: false,
-    //     timer: 2000,
-    //   }).then((value) => {
-    //     // return <Navigate to="/inductions" />;
-    //     navigate.push("/companies");
-    //   });
-    // } else {
-    //   return swal("Failed", "Error message", "error");
-    // }
-
+    if (error) return;
 
     const data = new FormData();
-    data.append('name', name);
-    data.append('email', email);
-    data.append('password', password);
-    data.append('companyID', companyID);
-    data.append('logo', image.data);
-    data.append('address', address);
-    data.append('aboutCompany', aboutCompany);
+    data.append("name", name);
+    data.append("email", email);
+    data.append("password", password);
+    data.append("companyID", companyID);
+    data.append("logo", image.data);
+    data.append("address", address);
+    data.append("aboutCompany", aboutCompany);
     // let formData = new FormData();
     const response = await fetch("http://localhost:8081/api/company/add", {
       method: "POST",
       body: data,
     }).then((data) => data.json());
     if ("status" in response && response.status == true) {
-      return swal("Company has been created successfully!", response.message, "success", {
+      return swal("Success", response.message, "success", {
         buttons: false,
         timer: 2000,
       }).then((value) => {
@@ -139,23 +95,22 @@ const AddCompany = () => {
         navigate.push("/companies");
       });
     } else {
-      return swal("Failed", response.message , "error");
+      return swal("Failed", response.message, "error");
     }
   };
 
   function handleKeyPress(e) {
     var key = e.key;
-   if (key == key) {
-        setErrors((errorObj == false))
+    if (key == key) {
+      setErrors(errorObj == false);
     }
-}
- 
- 
-   //css for button
-   const buttonStyle = {
+  }
+
+  //css for button
+  const buttonStyle = {
     margin: "auto",
     display: "flex",
-    float: 'right'
+    float: "right",
   };
 
   useEffect(() => {}, [errors]);
@@ -172,7 +127,7 @@ const AddCompany = () => {
           <div className="card-body">
             <div className="basic-form">
               <form
-                onSubmit={(e)=>handleSubmit(e)}
+                onSubmit={(e) => handleSubmit(e)}
                 method="POST"
                 enctype="multipart/form-data"
               >
@@ -187,7 +142,6 @@ const AddCompany = () => {
                       className="form-control"
                       onChange={(e) => setEmail(e.target.value)}
                       onKeyPress={(e) => handleKeyPress(e)}
-
                       value={email}
                     />
                     {errors.email && (
@@ -207,9 +161,8 @@ const AddCompany = () => {
                       type="password"
                       name="password"
                       className="form-control"
-                      onChange={(e) => setPassword(e.target.value) }
+                      onChange={(e) => setPassword(e.target.value)}
                       onKeyPress={(e) => handleKeyPress(e)}
-
                       value={password}
                     />
                     {errors.password && (
@@ -229,14 +182,12 @@ const AddCompany = () => {
                       type="text"
                       name="name"
                       className="form-control"
-                      onChange={(e) => setName(e.target.value) }
+                      onChange={(e) => setName(e.target.value)}
                       value={name}
                       onKeyPress={(e) => handleKeyPress(e)}
                     />
                     {errors.name && (
-                      <div Style="color:red;font-weight:400">
-                        {errors.name}
-                      </div>
+                      <div Style="color:red;font-weight:400">{errors.name}</div>
                     )}
                   </div>
                 </div>
@@ -247,7 +198,7 @@ const AddCompany = () => {
                       type="text"
                       className="form-control"
                       name="companyID"
-                      onChange={(e) => setCompanyID( e.target.value) }
+                      onChange={(e) => setCompanyID(e.target.value)}
                       value={companyID}
                     />
                     {errors.companyID && (
@@ -270,9 +221,7 @@ const AddCompany = () => {
                       accept="image/png,image/jpeg,image/jpg"
                     />
                     {errors.logo && (
-                      <div Style="color:red;font-weight:400">
-                        {errors.logo}
-                      </div>
+                      <div Style="color:red;font-weight:400">{errors.logo}</div>
                     )}
                   </div>
                 </div>
@@ -284,7 +233,7 @@ const AddCompany = () => {
                       className="form-control"
                       name="address"
                       placeholder=""
-                      onChange={(e) => setAddress( e.target.value) }
+                      onChange={(e) => setAddress(e.target.value)}
                     >
                       {address}
                     </textarea>
@@ -305,18 +254,20 @@ const AddCompany = () => {
                       className="form-control"
                       name="aboutCompany"
                       placeholder=""
-                      onChange={(e) => setAboutCompany(e.target.value) }
+                      onChange={(e) => setAboutCompany(e.target.value)}
                     >
                       {aboutCompany}
                     </textarea>
-                   
-                   
                   </div>
                 </div>
 
                 <div className="mb-12 row">
                   <div className="col-sm-12">
-                    <button className="btn btn-success" type="submit" style={buttonStyle}>
+                    <button
+                      className="btn btn-success"
+                      type="submit"
+                      style={buttonStyle}
+                    >
                       Submit
                     </button>
                   </div>

@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
 
-
 const submitTestApi = async (id, token, dataPass) => {
   return await fetch("http://localhost:8081/api/mcq/submit/" + id, {
     method: "POST",
@@ -20,28 +19,25 @@ const submitTestApi = async (id, token, dataPass) => {
   }).then((data) => data.json());
 };
 
-
-
 const TestQuestions = (props) => {
   const navigate = useHistory();
-  const userID = useSelector((state) => state.auth.auth._id);
   const token = useSelector((state) => state.auth.auth.token);
   const { id } = useParams();
 
   const [activeQuestion, setActiveQuestion] = useState(0);
-  const [activeWindowEvent, setActiveWindowEvent] = useState(true);
+  // const [activeWindowEvent, setActiveWindowEvent] = useState(true);
 
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [showResult, setShowResult] = useState(false);
-  const [submitTest, setSubmitTest] = useState(false);
+
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null);
-  const [tabChangeCount , setTabChangeCount] = useState(0);
-  
+  const [tabChangeCount, setTabChangeCount] = useState(0);
+
   const [result, setResult] = useState({
     score: 0,
     correctAnswers: 0,
     wrongAnswers: 0,
-    remark: "Test Failed due to tab changes"
+    remark: "Test Failed due to tab changes",
   });
 
   const buttonsty = {
@@ -49,10 +45,9 @@ const TestQuestions = (props) => {
     margin: "auto",
   };
 
-  // setting questions 
+  // setting questions
   const questions = props.Questions;
 
-  const { question } = questions[activeQuestion];
   let choices = [
     questions[activeQuestion].option1,
     questions[activeQuestion].option2,
@@ -75,7 +70,7 @@ const TestQuestions = (props) => {
     if (activeQuestion !== questions.length - 1) {
       setActiveQuestion((prev) => prev + 1);
     } else {
-      setSubmitTest(true);
+      // setSubmitTest(true);
       setActiveQuestion(0);
       setShowResult(true);
     }
@@ -94,95 +89,112 @@ const TestQuestions = (props) => {
     if (document.exitFullscreen) {
       document.exitFullscreen();
     } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
+      document.webkitExitFullscreen();
     } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
+      document.mozCancelFullScreen();
     } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
+      document.msExitFullscreen();
     }
-  }
-
-  
+  };
 
   const addLeadingZero = (number) => (number > 9 ? number : `0${number}`);
 
-
   const handleTabSwitch = (event) => {
     // console.log("here window events");
-    if (document.visibilityState === 'visible') {
+    if (document.visibilityState === "visible") {
       // console.log('has focus');
     } else {
       console.log(`events ${tabChangeCount}`);
-      if(tabChangeCount > 2){
+      if (tabChangeCount > 2) {
         swal({
           title: "Test Fail.",
-          text:
-            "You are switching tabs more that 3 times in test.",
+          text: "You are switching tabs more that 3 times in test.",
           icon: "warning",
           buttons: true,
           dangerMode: true,
         }).then((willDelete) => {
-
           if (willDelete) {
             swal("Test Fail. and redirecting you to inductions", {
               icon: "warning",
-            }).then(()=>{
+            }).then(() => {
               setTabChangeCount(0);
-              var data = { ...result};
-               submitTestApi(id, token, data); 
-              //window.removeEventListener('visibilitychange', handleTabSwitch);
-              setActiveWindowEvent(false);
+              var data = { ...result };
+              submitTestApi(id, token, data);
+              // window.removeEventListener('visibilitychange', handleTabSwitch);
+              // setActiveWindowEvent(false);
               navigate.push("/inductions");
             });
           }
-
-        })
-      }else{
-        setTabChangeCount(tabChangeCount+1);
+        });
+      } else {
+        setTabChangeCount(tabChangeCount + 1);
       }
     }
   };
 
-  useEffect(async () => {
-
-    //document.addEventListener("visibilitychange", handleTabSwitch);
-
-    if(showResult){
-
-
-      var data = { ...result};
-      data.remark = "Test successfully completed";
-      const response = await submitTestApi(id, token, data);  
-      
-      //document.removeEventListener("visibilitychange", handleTabSwitch);
-
-      // navigate.push("/inductions");
-      
-      setTabChangeCount(0);  
-      setActiveWindowEvent(false);  
+  // async func
+  const submitTestApiCall = async (id, token, data) =>{
+    const response = await submitTestApi(id, token, data);
+    if ("status" in response && response.status == true) {
+      return swal("Success", response.message, "success", {
+        buttons: false,
+        timer: 2000,
+      }).then((value) => {
+        setTabChangeCount(0);
+      });
+    }else{
+      return swal("Failed", response.message, "error");
     }
+  }
 
-    //return () => document.removeEventListener("visibilitychange", handleTabSwitch);
-  }, [showResult, result, activeWindowEvent, tabChangeCount]);
-  
+
+
+  useEffect(() => {
+    if (showResult) {
+      console.log("====use-effect ====");
+      var data = { ...result, remark: "Test successfully completed" };
+      submitTestApiCall(id, token, data);
+    }
+  }, [showResult]);
+
+  // useEffect(async () => {
+
+  //   //document.addEventListener("visibilitychange", handleTabSwitch);
+
+  //   if(showResult){
+
+  //     var data = { ...result};
+  //     data.remark = "Test successfully completed";
+  //     const response = await submitTestApi(id, token, data);
+
+  //     //document.removeEventListener("visibilitychange", handleTabSwitch);
+
+  //     // navigate.push("/inductions");
+
+  //     setTabChangeCount(0);
+  //     setActiveWindowEvent(false);
+  //   }
+
+  //   //return () => document.removeEventListener("visibilitychange", handleTabSwitch);
+  // }, [showResult, result, activeWindowEvent, tabChangeCount]);
 
   return (
-    <div className="background-modal" style={{
-      backgroundImage: "url(" + bjslogo + ")",
-      backgroundSize: "cover",
-    }}
-  >
-
+    <div
+      className="background-modal"
+      style={{
+        backgroundImage: "url(" + bjslogo + ")",
+        backgroundSize: "cover",
+      }}
+    >
       {props.children}
 
       {showResult ? (
         <>
-          
           <div className="quiz-container text-justify display-6">
             <h3>My Score : {result.score}</h3>
             <h3>Correct : {result.correctAnswers}</h3>
             <h3>Wrong : {result.wrongAnswers}</h3>
-            
+
             <h3>
               Thanks For Attempting the test your test results will be shared
               with you shortly!
@@ -191,7 +203,11 @@ const TestQuestions = (props) => {
             <div className="mb-3 row text-justify">
               <div className="col-sm-12 text-center">
                 {/* onClick={exitFullscreen} */}
-                <Link to="/inductions" className="text-justify" onClick={exitFullscreen}>
+                <Link
+                  to="/inductions"
+                  className="text-justify"
+                  onClick={exitFullscreen}
+                >
                   {" "}
                   Click Here to exit.{" "}
                 </Link>
