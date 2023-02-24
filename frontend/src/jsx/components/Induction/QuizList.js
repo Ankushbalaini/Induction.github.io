@@ -69,7 +69,7 @@ const QuizList = ({ inductionID, updateQuesHandler }) => {
             <td> {index + 1} </td>
             <td> {row.question} </td>
             <td> {row.answer} </td>
-            <td> {row.type} </td>
+            {/* <td> {row.type} </td> */}
             <td>
               <Link
                 to={''}
@@ -127,12 +127,12 @@ const QuizList = ({ inductionID, updateQuesHandler }) => {
                     >
                       <thead>
                         <tr>
-                          <th>Sr. No</th>
-                          <th>Questions</th>
-                          <th>Answer</th>
-                          <th>Question Type</th>
-                          <th>Status</th>
-                          <th>Actions</th>
+                          <th Style="max-width: 20%">Sr. No</th>
+                          <th Style="max-width: 20%">Questions</th>
+                          <th Style="max-width: 20%">Answer</th>
+                          {/* <th>Question Type</th> */}
+                          <th Style="max-width: 20%">Status</th>
+                          <th Style="text-align: end">Actions</th>
                         </tr>
                       </thead>
                       <tbody>{tableData}</tbody>

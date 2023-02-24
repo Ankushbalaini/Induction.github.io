@@ -29,15 +29,9 @@ module.exports = (mongoose) => {
             phone: { type: String },
           }
         ],
-        company: [
-          {
-            name: { type: String },
-            logo: { type: String },
-            aboutCompany: { type: String },
-            address: { type: String },
-            phone: { type: String },
-          },
-        ], 
+        company : { type:mongoose.Schema.Types.ObjectId ,  
+          ref : 'company',
+        },
         profile : { type:mongoose.Schema.Types.ObjectId ,  
           ref : 'users',
          }

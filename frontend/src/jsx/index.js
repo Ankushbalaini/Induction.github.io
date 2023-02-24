@@ -45,6 +45,7 @@ import StarTest from './components/Inductions/test/StartTest';
 // v2 versions
 import Add from './components/Induction/Add';
 import AddSlide from "./components/Slides/Add";
+import UpdateSlide from "./components/Induction/UpdateSlide";
 import UpdateInduction from "./components/Induction/UpdateInduction";
 //add-induction
 
@@ -111,7 +112,8 @@ const Markup = () => {
     //{ url: "create-induction", component: CreateInduction },
     { url: "create-induction", component: CreateInductionNew },
     { url: "add-induction", component: Add },
-    { url: "add-slide", component: AddSlide },
+    { url: "add-slide/:id", component: AddSlide }, // induction id passed
+    { url: "update-slide/:id", component: UpdateSlide }, // slide id passed
     { url: "update-induction/:id", component: UpdateInduction },
     
     { url: "single-induction-view/:id", component: SingleInductionView },

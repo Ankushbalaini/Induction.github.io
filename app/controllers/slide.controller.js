@@ -20,7 +20,7 @@ exports.add = (req, res) => {
 
         return res.status(200).send({
           status: true,
-          message: "Add post response",
+          message: "Slide added successfully!",
           data: slide
         });
 
@@ -38,6 +38,54 @@ exports.add = (req, res) => {
   }
 };
 
+
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ *
+ */
+exports.update = (req, res) => {
+  try {
+    const quesID = req.params.id;
+    
+    SlideModel.updateOne(
+      { _id: quesID },
+      { $set: req.body },
+      { multi: false },
+      function (err, question) {
+        if (err) {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+          });
+        }
+        if (!question) {
+          return res.status(500).send({
+            status: false,
+            message: "Slide not found!",
+          });
+        }else{
+          return res.status(200).send({
+            status: true,
+            message: "Slide updated successfully!",
+            data: question
+          });
+        }
+      }
+    );
+
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      message: err.message || "Some error occurred.",
+    });
+  }
+};
+
+
 /**
  * @method get
  *
@@ -51,17 +99,50 @@ exports.findAllByInductionId = (req, res) => {
       if (!data) {
         res
           .status(404)
-          .send({ status: false, message: "Not found User with id " });
+          .send({ status: false, message: "Induction not found!" });
       } else {
         res.send({
           status: true,
           data: data,
-          message: "All slides of this induction",
+          message: "All Slides of this induction",
         });
       }
     })
     .catch((err) => {
-      res.status(500).send({ message: "Error retrieving User with id=" });
+      res.status(500).send({ message: "Error retrieving induction with id="+id });
     });
   return;
+};
+
+
+
+/**
+ * 
+ * 
+ */
+exports.getBySlideId = (req, res) => {
+  try {
+    const id = req.params.id;
+    SlideModel.findOne({ _id: id })
+    .then((data) => {
+      if (!data) {
+        return res
+          .status(404)
+          .send({ status: false, message: "Slide not found!" });
+      } else {
+        return res.send({
+          status: true,
+          data: data,
+          message: "Single slide by id",
+        });
+      }
+    })
+    .catch((err) => {
+      return res.status(500).send({ message: "Error retrieving induction with id="+id });
+    });
+
+      
+  } catch (error) {
+    return res.status(404).send({ status: false, message: error.message });
+  }
 };

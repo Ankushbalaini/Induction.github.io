@@ -49,6 +49,7 @@ module.exports = function (app) {
 
   // Retrieve a single User with id
   router.get("/:id", induction.findOne ); 
+  router.put("/:id", induction.update );
   
 
   router.get("/_new/:id", induction.findOne_new ); 

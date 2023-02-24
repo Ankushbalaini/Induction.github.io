@@ -5,7 +5,7 @@ import InductionDropdown from "./InductionDropdown";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
-
+import { useParams } from "react-router";
 
 // api call
 async function addSlide(formValues, token) {
@@ -20,10 +20,11 @@ async function addSlide(formValues, token) {
 
 // Add Slide Component Start
 const Add = () => {
+  const { id } = useParams(); // this is induction id
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
   const intialState = {
-    inductionID: "",
+    slideInductionId: id,
     slideTitle: "",
     slideContent: "",
     order: "",
@@ -42,7 +43,7 @@ const Add = () => {
         buttons: false,
         timer: 2000,
       }).then((value) => {
-        navigate.push("/inductions");
+        navigate.push(`/update-induction/${state.slideInductionId}`);
       });
     } else {
       return swal("Failed",  response.message , "error");
@@ -61,7 +62,7 @@ const Add = () => {
           <div className="card-body">
             <div className="basic-form">
               <form onSubmit={handleSubmit}>
-                <div className="card-header">
+                {/* <div className="card-header">
                   <h4 className="card-title">Induction Detail</h4>
                 </div>
 
@@ -73,18 +74,18 @@ const Add = () => {
                     <div className="col-sm-9">
                       <select
                         className="form-control"
-                        name="slideInductionId"
+                        name="inductionID"
                         value={state.inductionID}
-                        onChange={(e) =>
-                          setState({ ...state, inductionID: e.target.value })
-                        }
+                        disabled
                       >
                         <option>Select</option>
                         <InductionDropdown />
                       </select>
                     </div>
                   </div>
-                </div>
+                </div> */}
+
+                <input type='hidden' name='slideInductionId' value={state.slideInductionId} />
 
                 <div className="card-header">
                   <h4 className="card-title">Slide Detail</h4>

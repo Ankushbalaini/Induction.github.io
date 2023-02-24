@@ -247,7 +247,6 @@ const AddQuestion = ({
                 <Button
                   className="btn btn-success mb-3"
                   variant="primary"
-                  size="lg"
                   style={formstyle}
                   type="submit"
                 >

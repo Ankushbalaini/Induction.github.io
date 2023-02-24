@@ -111,7 +111,6 @@ const CreateInduction = () => {
 		
 	}
   formData.append('slides', JSON.stringify(slides_json) );
-  
 
 	const response = await fetch("http://localhost:8081/api/induction/store", {
       method: "POST",
@@ -137,6 +136,7 @@ const CreateInduction = () => {
   const handleCompanyChange = async (e) => {
     // call api to fetch departments
     setParentCompany(e.target.value);
+    setOption('');
     const response = await fetch(
       "http://localhost:8081/api/department/getDepartmentByComp",
       {
@@ -153,6 +153,8 @@ const CreateInduction = () => {
       const rows = response.data.map((row, index) => (
         <option value={row._id}>{row.name}</option>
       ));
+      
+      setDeptID('');
       setOption(rows);
     }
   };
@@ -271,7 +273,7 @@ const buttonStyle = {
                 </div>
               </div>
               <div className="mb-4 row">
-              <label className="col-sm-3 col-form-label">Select Department </label>
+              <label className="col-sm-3 col-form-label">Select Department {deptID}</label>
                  <div className="col-sm-9">
                     <select
                       name="deptID"

@@ -6,10 +6,18 @@ const userCredModel = db.user_cred;
 
 var jwt = require("jsonwebtoken");
 
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
+
 // Create and Save a new company
 exports.list = (req, res) => {
   companyModel
     .find({})
+    .sort({ createdAt: -1 })
     .then(function (result) {
       if (result) {
         res.status(200).send({
@@ -27,6 +35,9 @@ exports.list = (req, res) => {
       });
     });
 };
+
+
+
 
 /*
  * @author Singh
@@ -111,7 +122,7 @@ exports.add_nk = (req, res) => {
   }
 };
 
-exports.add = async  (req, res) => {
+exports.add = async (req, res) => {
   try {
     const { email, password, name, address, companyID, aboutCompany } =
       req.body;
@@ -141,14 +152,14 @@ exports.add = async  (req, res) => {
         if (err) {
           return res.status(500).send({
             status: false,
-            message: err.message,  
+            message: err.message,
           });
         }
       });
       data.logo = Img.name;
     }
-    
-      // Check if email already exists
+
+    // Check if email already exists
     const existingUser = await userCredModel.findOne({ email });
     if (existingUser) {
       return res.status(400).send({
@@ -156,12 +167,11 @@ exports.add = async  (req, res) => {
         message: "Email already exists!",
       });
     }
-    
- 
+
     var user = new userCredModel(data);
     // Create token
     const token = jwt.sign(
-      { _id: user._id, email: email, role: "company" },
+      { userID: user._id, email: email, role: "company" },
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
       {
         expiresIn: "2h",
@@ -172,15 +182,20 @@ exports.add = async  (req, res) => {
     user.token = token;
     user.status = true;
     user.role = "company";
+
+    data.userID = user._id;
+    var company = new companyModel(data);
+    user.company = company._id;
+
     user.save().catch((err) => {
       res.status(400).send({
         status: false,
         message: err.message,
-      }); 
-    }); 
- 
-    data.userID = user._id;
-    var company = new companyModel(data);
+      });
+    });
+
+    //data.userID = user._id;
+    //var company = new companyModel(data);
 
     company
       .save()
@@ -206,8 +221,7 @@ exports.add = async  (req, res) => {
             data: {},
           });
         }
-      }); 
-    return;
+      });
     return;
   } catch (err) {
     res.status(400).send({
@@ -219,7 +233,6 @@ exports.add = async  (req, res) => {
 
   return;
 };
-
 
 //Edit the Company
 /**
@@ -250,7 +263,7 @@ exports.edit = (req, res) => {
     });
   }
 
-  if(req.body.companyID !=='' ){
+  if (req.body.companyID !== "") {
     saveData.companyID = req.body.companyID;
   }
 
@@ -277,56 +290,58 @@ exports.edit = (req, res) => {
     saveData.logo = Img.name;
   }
 
-   // Check for duplicate email
-   companyModel.findOne({ email: saveData.email }, function (err, existingCompany) {
-    if (err) {
-      return res.status(500).send({
-        status: false,
-        message: "Some error occurred while checking for duplicate email!",
-      });
-    }
-
-    if (existingCompany && existingCompany._id.toString() !== id) {
-      return res.status(400).send({
-        status: false,
-        message: "Email already exists!",
-      });
-    }
-
-  companyModel
-    .findByIdAndUpdate(id, { ...saveData }, { useFindAndModify: true })
-    .then(function (user) {
-      if (!user) {
-        res.status(404).send({
-          message: "company not found.",
+  // Check for duplicate email
+  companyModel.findOne(
+    { email: saveData.email },
+    function (err, existingCompany) {
+      if (err) {
+        return res.status(500).send({
           status: false,
-        });
-      } else {
-        return res.status(200).send({
-          message: "Company has been updated successfully",
-          status: true,
-          data: user,
+          message: "Some error occurred while checking for duplicate email!",
         });
       }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        status: false,
-        message:
-           "Some Slug should be unique.",
-      });
-    }); 
-  });
+
+      if (existingCompany && existingCompany._id.toString() !== id) {
+        return res.status(400).send({
+          status: false,
+          message: "Email already exists!",
+        });
+      }
+
+      companyModel
+        .findByIdAndUpdate(id, { ...saveData }, { useFindAndModify: true })
+        .then(function (user) {
+          if (!user) {
+            res.status(404).send({
+              message: "company not found.",
+              status: false,
+            });
+          } else {
+            return res.status(200).send({
+              message: "Company has been updated successfully",
+              status: true,
+              data: user,
+            });
+          }
+        })
+        .catch((err) => {
+          res.status(500).send({
+            status: false,
+            message: "Some Slug should be unique.",
+          });
+        });
+    }
+  );
 };
 
 /**
- *  
+ *
  * @param {*} req
- * @param {*} res 
+ * @param {*} res
  */
 exports.update = (req, res) => {
   try {
-    const id = req.params.id; 
+    const id = req.params.id;
     // 63cea890edb762dfb4abb21f
     // 63cea890edb762dfb4abb220
 
@@ -404,3 +419,24 @@ exports.update = (req, res) => {
     });
   }
 };
+
+
+exports.companyDropdownList = (req, res) => {
+  userCredModel
+  .find({ role: USER_ROLES.COMPANY, status:1 }, { _id: 1, email:1,status:1, createdAt: 1 })
+  .populate("company", {_id :1 , name:1, companyID:1, logo:1, address:1, aboutCompany:1 })
+  .sort({ createdAt: -1 })
+  .then((user) => {
+    return res.status(200).send({
+      status: true,
+      message: "Company listing",
+      data: user,
+    });
+  })
+  .catch((err) => {
+    return res.status(500).send({
+      status: false,
+      message: err.message,
+    });
+  });
+}
