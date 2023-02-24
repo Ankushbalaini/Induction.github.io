@@ -7,14 +7,28 @@ import JoditEditor from "jodit-react";
 import SlidesList from "./SlidesList";
 import QuizList from "./QuizList";
 import AddQuestion from "./Modals/AddQuestion";
+import CompanyDropdown from "../Companies/CompanyDropdown";
+import DepartmentByCompany from "../Department/DepartmentByCompany";
+import swal from "sweetalert";
+import { Link, useHistory } from "react-router-dom";
+
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
 
 const UpdateInduction = () => {
+  const navigate = useHistory();
+
   // get id from params {id}
   const { id } = useParams(); // this is induction id
 
   const editor = {};
   // redux store data
   const token = useSelector((state) => state.auth.auth.token);
+  const userRole = useSelector((state) => state.auth.auth.role);
 
   // page states
   const [loading, setLoading] = useState(true);
@@ -22,20 +36,20 @@ const UpdateInduction = () => {
 
   const [induction, setInduction] = useState();
   const [slides, setSlides] = useState();
+  const [inductionStatus, setInductionStatus] = useState(false);
 
-  //   const intialValues = {
-  //     title: induction.title,
-  //     subTitle: induction.subTitle,
-  //     description: induction.description,
-  //   };
-
-  // const [state, setState] = useState(intialValues);
+  // dropdowns
+  const [parentCompany, setParentCompany] = useState();
+  const [deptID, setDeptID] = useState();
+  const [option, setOption] = useState();
 
   // inside async fuinction
   const callingAPI = async (inductionID, token) => {
     const response = await getInduction(inductionID, token);
     if ("status" in response && response.status == true) {
       setInduction(response.data);
+      setParentCompany(response.data.parentCompany);
+      setDeptID(response.data.deptID);
       setSlides(response.slides);
       setLoading(false);
     }
@@ -45,8 +59,71 @@ const UpdateInduction = () => {
     // nature
   };
 
-  const handleSubmit = (e) => {
-e.preventDefault();
+  const handleCompanyChange = async (e) => {
+    // call api to fetch departments
+    setParentCompany(e.target.value);
+    const response = await fetch(
+      "http://localhost:8081/api/department/getDepartmentByComp",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+        body: JSON.stringify({ parentCompany: e.target.value }),
+      }
+    ).then((data) => data.json());
+
+    if ("status" in response && response.status == true) {
+      const rows = response.data.map((row, index) => (
+        <option value={row._id}>{row.name}</option>
+      ));
+      setOption(rows);
+    }
+  };
+
+  /**
+   *
+   * @param {*} e
+   * Update Induction main submit function
+   *
+   */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const updateForm = {
+      parentCompany: parentCompany,
+      deptID: deptID,
+      title: induction.title,
+      subTitle: induction.subTitle,
+      description: induction.description,
+      thumbnail: induction.thumbnail,
+      content: induction.content,
+      passPercentage: induction.passPercentage,
+      status: induction.status
+    };
+
+    // call to API
+    const response = await fetch("http://localhost:8081/api/induction/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+      body: JSON.stringify(updateForm),
+    }).then((data) => data.json());
+
+    if ("status" in response && response.status == true) {
+      return swal("Success", response.message, "success", {
+        buttons: false,
+        timer: 2000,
+      }).then((value) => {
+        // return <Navigate to="/inductions" />;
+        navigate.push("/inductions");
+      });
+    } else {
+      return swal("Failed", response.message, "error");
+    }
   };
 
   useEffect(() => {
@@ -56,7 +133,7 @@ e.preventDefault();
     if (loading) {
       callingAPI(id, token);
     }
-  }, [loading]);
+  }, [loading, parentCompany, deptID]);
 
   // Add question Modal POPUP
   const onClickHandler = () => {
@@ -77,6 +154,49 @@ e.preventDefault();
                 <h4 className="card-title">Update Induction</h4>
               </div>
               <form onSubmit={handleSubmit}>
+                {USER_ROLES.SUPER_ADMIN === userRole ? (
+                  <>
+                    <div className="mb-3 row mt-3">
+                      <label className="col-sm-3 col-form-label">
+                        Parent Company
+                      </label>
+                      <div className="col-sm-9">
+                        <select
+                          name="parentCompany"
+                          className="form-control"
+                          onChange={(e) => {
+                            handleCompanyChange(e);
+                          }}
+                          value={parentCompany}
+                        >
+                          <option value="">Select</option>
+                          <CompanyDropdown prevSelected={parentCompany} />
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="mb-3 row">
+                      <label className="col-sm-3 col-form-label">
+                        Department
+                      </label>
+                      <div className="col-sm-9">
+                        <select
+                          name="deptID"
+                          className="form-control"
+                          onChange={(e) => setDeptID(e.target.value)}
+                          value={deptID}
+                        >
+                          <option>Select</option>
+                          <DepartmentByCompany
+                            parentCompany={parentCompany}
+                            selectedDeptVal={deptID}
+                          />
+                        </select>
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">Title</label>
                   <div className="col-sm-9">
@@ -161,10 +281,28 @@ e.preventDefault();
                 </div>
 
                 <div Style="text-align: end">
-                  <button type="submit" value="publish" className="me-2 btn btn-success light">
+                  <button
+                    name="update"
+                    type="submit"
+                    value="publish"
+                    className="me-2 btn btn-success light"
+                    onClick={(e)=> setInduction({
+                      ...induction,
+                      status: true,
+                    })}
+                  >
                     Update & Publish
                   </button>
-                  <button type="submit" value="draft" className="me-2 btn btn-warning light">
+                  <button
+                    name="update"
+                    type="submit"
+                    value="draft"
+                    className="me-2 btn btn-warning light"
+                    onClick={(e)=> setInduction({
+                      ...induction,
+                      status: false,
+                    })}
+                  >
                     Save as Draft
                   </button>
                 </div>
@@ -174,14 +312,21 @@ e.preventDefault();
                 <h4 className="card-title"></h4>
               </div>
 
-              <div className="card-header">
+              <div className="card-header" id="slides">
                 <h4 className="card-title">Slides</h4>
-                <button type="button" className="me-2 btn btn-info">
+
+                <Link className="me-2 btn btn-info" to={`../add-slide/${id}`}>
                   <span className="btn-icon-start text-info">
                     <i className="fa fa-plus color-info"></i>
                   </span>
                   Add
-                </button>
+                </Link>
+                {/* <button type="button" className="me-2 btn btn-info">
+                  <span className="btn-icon-start text-info">
+                    <i className="fa fa-plus color-info"></i>
+                  </span>
+                  Add
+                </button> */}
 
                 {/* <button className="btn btn-danger">Add New Slide</button> */}
               </div>
@@ -210,7 +355,7 @@ e.preventDefault();
                 inductionID={id}
                 isShowAddQuestion={isShowAddQuestion}
                 onClickHandler={onClickHandler}
-                isUpdate={true}
+                isUpdate={false}
               />
             </div>
 

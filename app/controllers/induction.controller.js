@@ -1,6 +1,8 @@
 const db = require("../models/");
 const Induction = db.induction;
 const SlideModel = db.induction_slides;
+const InductionUsers = db.user_induction_results;
+
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -12,11 +14,11 @@ const UPLOADS = {
 };
 
 const USER_ROLES = {
-  SUPER_ADMIN: 'super_admin',
-  COMPANY:'company',
-  INSTRUCTOR:'instructor',
-  USER: 'user'
-}
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
 
 exports.getMyInductionsCount = (req, res) => {};
 
@@ -59,7 +61,7 @@ exports.index = async (req, res) => {
         {
           $unwind: "$_id",
         },
-        
+
         {
           $project: {
             _id: 1,
@@ -67,13 +69,13 @@ exports.index = async (req, res) => {
             subTitle: "$subTitle",
             thumbnail: "$thumbnail",
             description: 1,
-            deptID:1,
-            parentCompany:1,
-            createdBy:1,
+            deptID: 1,
+            parentCompany: 1,
+            createdBy: 1,
             numOfSlides: { $size: "$slides" },
             slides: "$slides",
           },
-        }
+        },
       ])
         .then((data) => {
           return res.status(200).send({
@@ -81,9 +83,8 @@ exports.index = async (req, res) => {
             message: "Inductions",
             data: data,
             pagination: {
-              totalRecords: data.length
-            }
-            
+              totalRecords: data.length,
+            },
           });
         })
         .catch((err) => {
@@ -91,10 +92,10 @@ exports.index = async (req, res) => {
             status: false,
             message: err.message,
             data: {},
-            totalRecords: 0
+            totalRecords: 0,
           });
         });
-        /*
+      /*
       Induction.find({ createdBy: ObjectId(user.userID) })
         .sort({ createdAt: -1 })
         .limit(limit)
@@ -116,10 +117,7 @@ exports.index = async (req, res) => {
           res.status(500).send({ message: "Error retrieving User with id=" });
         });
         */
-
-
-
-    } else if(user.role == "company"){
+    } else if (user.role == "company") {
       Induction.aggregate([
         {
           $match: { $expr: { $eq: ["$parentCompany", ObjectId(user.userID)] } },
@@ -135,7 +133,7 @@ exports.index = async (req, res) => {
         {
           $unwind: "$_id",
         },
-        
+
         {
           $project: {
             _id: 1,
@@ -143,13 +141,13 @@ exports.index = async (req, res) => {
             subTitle: "$subTitle",
             thumbnail: "$thumbnail",
             description: 1,
-            deptID:1,
-            parentCompany:1,
-            createdBy:1,
+            deptID: 1,
+            parentCompany: 1,
+            createdBy: 1,
             numOfSlides: { $size: "$slides" },
             slides: "$slides",
           },
-        }
+        },
       ])
         .then((data) => {
           return res.status(200).send({
@@ -158,9 +156,8 @@ exports.index = async (req, res) => {
             data: data,
             body: req.decoded,
             pagination: {
-              totalRecords: data.length
-            }
-            
+              totalRecords: data.length,
+            },
           });
         })
         .catch((err) => {
@@ -168,19 +165,19 @@ exports.index = async (req, res) => {
             status: false,
             message: err.message,
             data: {},
-            totalRecords: 0
+            totalRecords: 0,
           });
         });
-
-    }else if(user.role === "user" ){
+    } else if (user.role === "user") {
       // get Parent Company and department of user
-      // then pass to query 
+      // then pass to query
       // inside token - add parent company and department
 
-      
       Induction.aggregate([
         {
-          $match: { $expr: { $eq: ["$parentCompany", ObjectId(user.parentCompany)] } },
+          $match: {
+            $expr: { $eq: ["$parentCompany", ObjectId(user.parentCompany)] },
+          },
         },
         {
           $lookup: {
@@ -193,22 +190,22 @@ exports.index = async (req, res) => {
         {
           $unwind: "$_id",
         },
-        
+
         {
           $project: {
             _id: 1,
             title: "$title",
             subTitle: "$subTitle",
             thumbnail: "$thumbnail",
-            passPercentage:1,
+            passPercentage: 1,
             description: 1,
-            deptID:1,
-            parentCompany:1,
-            createdBy:1,
+            deptID: 1,
+            parentCompany: 1,
+            createdBy: 1,
             numOfSlides: { $size: "$slides" },
             slides: "$slides",
           },
-        }
+        },
       ])
         .then((data) => {
           return res.status(200).send({
@@ -217,9 +214,8 @@ exports.index = async (req, res) => {
             data: data,
             reqbody: req.decoded,
             pagination: {
-              totalRecords: data.length
-            }
-            
+              totalRecords: data.length,
+            },
           });
         })
         .catch((err) => {
@@ -227,17 +223,15 @@ exports.index = async (req, res) => {
             status: false,
             message: err.message,
             data: {},
-            totalRecords: 0
+            totalRecords: 0,
           });
         });
-
-
-    }else{
+    } else {
       // super admin
       // .populate('eventsAttended')
       Induction.aggregate([
         {
-          $match: {  },
+          $match: {},
         },
         {
           $lookup: {
@@ -250,7 +244,7 @@ exports.index = async (req, res) => {
         {
           $unwind: "$_id",
         },
-        
+
         {
           $project: {
             _id: 1,
@@ -258,13 +252,13 @@ exports.index = async (req, res) => {
             subTitle: "$subTitle",
             thumbnail: "$thumbnail",
             description: 1,
-            deptID:1,
-            parentCompany:1,
-            createdBy:1,
+            deptID: 1,
+            parentCompany: 1,
+            createdBy: 1,
             numOfSlides: { $size: "$slides" },
             slides: "$slides",
           },
-        }
+        },
       ])
         .then((data) => {
           return res.status(200).send({
@@ -272,8 +266,8 @@ exports.index = async (req, res) => {
             message: "Inductions",
             data: data,
             pagination: {
-              totalRecords: data.length
-            }
+              totalRecords: data.length,
+            },
           });
         })
         .catch((err) => {
@@ -281,11 +275,11 @@ exports.index = async (req, res) => {
             status: false,
             message: err.message,
             data: {},
-            totalRecords: 0
+            totalRecords: 0,
           });
         });
 
-/*
+      /*
       const Inductions = await Induction.find({});
 
       // return all
@@ -318,11 +312,9 @@ exports.index = async (req, res) => {
           res.status(500).send({ status: false, message: err.message });
         });
         */
-       
     }
 
     return;
-    
   } catch (error) {
     return res.status(403).json({ error: error.message });
   }
@@ -344,7 +336,11 @@ exports.filterByCompany = async (req, res) => {
     const skips = 3 * (page - 1);
     Induction.aggregate([
       {
-        $match: { $expr: { $eq: ["$parentCompany", ObjectId(req.query.filterByCompany)] } },
+        $match: {
+          $expr: {
+            $eq: ["$parentCompany", ObjectId(req.query.filterByCompany)],
+          },
+        },
       },
       {
         $lookup: {
@@ -357,7 +353,7 @@ exports.filterByCompany = async (req, res) => {
       {
         $unwind: "$_id",
       },
-      
+
       {
         $project: {
           _id: 1,
@@ -365,13 +361,13 @@ exports.filterByCompany = async (req, res) => {
           subTitle: "$subTitle",
           thumbnail: "$thumbnail",
           description: 1,
-          deptID:1,
-          parentCompany:1,
-          createdBy:1,
+          deptID: 1,
+          parentCompany: 1,
+          createdBy: 1,
           numOfSlides: { $size: "$slides" },
           slides: "$slides",
         },
-      }
+      },
     ])
       .then((data) => {
         return res.status(200).send({
@@ -379,9 +375,8 @@ exports.filterByCompany = async (req, res) => {
           message: "Inductions",
           data: data,
           pagination: {
-            totalRecords: data.length
-          }
-          
+            totalRecords: data.length,
+          },
         });
       })
       .catch((err) => {
@@ -389,21 +384,15 @@ exports.filterByCompany = async (req, res) => {
           status: false,
           message: err.message,
           data: {},
-          totalRecords: 0
+          totalRecords: 0,
         });
       });
 
     return;
-    
   } catch (error) {
     return res.status(403).json({ error: error.message });
   }
 };
-
-
-
-
-
 
 /**
  * @method post
@@ -697,51 +686,41 @@ exports.findOne = (req, res) => {
  */
 exports.store = async (req, res) => {
   try {
-    //console.log('req body', req.body); 
-    const user      = req.decoded;
-    //console.log('user', user); 
-    
-    
-    
-    let iData       = JSON.parse(req.body.induction);
-    iData.deptID    = ObjectId(req.body.deptID);
+    //console.log('req body', req.body);
+    const user = req.decoded;
+    //console.log('user', user);
+
+    let iData = JSON.parse(req.body.induction);
+    iData.deptID = ObjectId(iData.deptID);
     iData.createdBy = ObjectId(user.userID);
 
-    if(USER_ROLES.SUPER_ADMIN === user.role){
+    if (USER_ROLES.SUPER_ADMIN === user.role) {
       // take parent Company from request
       // take deptID from request
-      iData.parentCompany = ObjectId(req.body.parentCompany);
+      iData.parentCompany = ObjectId(iData.parentCompany);
     }
 
-    if(USER_ROLES.COMPANY === user.role){
+    if (USER_ROLES.COMPANY === user.role) {
       // take parent Company from token decoded
       iData.parentCompany = ObjectId(user.userID);
     }
 
-    if(USER_ROLES.INSTRUCTOR === user.role){
+    if (USER_ROLES.INSTRUCTOR === user.role) {
       // take parent Company from token decoded= parentCompany of instructor
       iData.parentCompany = ObjectId(user.parentCompany);
     }
-
-
-
-
-
-
-
 
     //iData.parentCompany = (user.role ==='company')? ObjectId(user.userID) :ObjectId(user.parentCompany);
     //console.log('company', iData.parentCompany); return;
     const thumbnail = uploadThumbnail(req, res);
     iData.thumbnail = thumbnail;
 
-
     var idata = new Induction(iData);
 
     var attached_slide = req.body.slides;
     slidesData = JSON.parse(attached_slide);
 
-    slidesData.forEach((row) => {  
+    slidesData.forEach((row) => {
       row.slideInductionId = idata._id;
       var slides = new SlideModel(row);
       idata.attachedSlides.push(slides);
@@ -750,29 +729,26 @@ exports.store = async (req, res) => {
     idata
       .save()
       .then((data) => {
-         //slides.save();
-         slidesData.forEach((row) => {
-          
-            row.slideInductionId = data._id;
-            var slide = new SlideModel(row);
-            slide.save();
-          });
+        //slides.save();
+        slidesData.forEach((row) => {
+          row.slideInductionId = data._id;
+          var slide = new SlideModel(row);
+          slide.save();
+        });
 
         return res.status(200).send({
           status: true,
           message: "Induction created",
           data: data,
         });
-
-
-      }).catch((err) => {
+      })
+      .catch((err) => {
         return res.status(500).send({
           status: false,
           message:
             err.message || "Some error occurred while creating new induction.",
         });
       });
-
   } catch (err) {
     return res.status(500).send({
       status: false,
@@ -799,7 +775,7 @@ function uploadThumbnail(req, res) {
     var extension = path.extname(Img.name);
     var file_name = "img-" + Date.now() + extension;
     var uploadPath = UPLOADS.INDUCTIONS + file_name;
-    
+
     Img.mv(uploadPath, file_name, function (err) {
       if (err) {
         return res.status(500).send({
@@ -812,14 +788,14 @@ function uploadThumbnail(req, res) {
   }
 }
 
-
-
-exports.updatePassingMarks = (req, res) =>{
+exports.updatePassingMarks = (req, res) => {
   // req.body.inductionID
   // req.body.passPercentage
-  Induction.findOneAndUpdate( { _id: ObjectId(req.body.inductionID) },
-    { passPercentage: req.body.passPercentage })
-    .then((induction)=>{
+  Induction.findOneAndUpdate(
+    { _id: ObjectId(req.body.inductionID) },
+    { passPercentage: req.body.passPercentage }
+  )
+    .then((induction) => {
       if (induction) {
         return res.status(200).send({
           status: true,
@@ -832,14 +808,531 @@ exports.updatePassingMarks = (req, res) =>{
           message: "Pass Percentage not changed",
         });
       }
-
     })
-    .catch((error)=>{
+    .catch((error) => {
       return res.status(500).send({
         status: false,
         message: error.message,
       });
     });
+};
+
+/**
+ * base find
+ *
+ * @param {*} req
+ * @param {*} res
+ * without filters
+ */
+exports.users_org = (req, res) => {
+  // here we get comapnyID
+  // inductionID from filters
+  InductionUsers.aggregate([
+    {
+      $group: {
+        _id: {
+          userID: "$userID",
+          inductionID: "$inductionID",
+        },
+        total: { $sum: 1 },
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "_id.userID",
+        foreignField: "userID",
+        as: "profile",
+      },
+    },
+    {
+      $lookup: {
+        from: "inductions",
+        localField: "_id.inductionID",
+        foreignField: "_id",
+        as: "inductions",
+      },
+    },
+    {
+      $lookup: {
+        from: "user_induction_results",
+        let: {
+          inductionID: "$_id.inductionID",
+          userID: "$_id.userID",
+        },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  {
+                    $eq: ["$inductionID", "$$inductionID"],
+                  },
+                  {
+                    $eq: ["$userID", "$$userID"],
+                  },
+                ],
+              },
+            },
+          },
+        ],
+        as: "result",
+      },
+    },
+    {
+      $unwind: "$profile",
+    },
+    {
+      $unwind: "$inductions",
+    },
+    {
+      $project: {
+        _id: 1,
+        userID: 1,
+        inductionID: 1,
+        total: 1,
+        profile: 1,
+        inductions: 1,
+        result: 1,
+      },
+    },
+  ])
+    .then((users) => {
+      return res.status(200).send({
+        status: true,
+        message: "!",
+        data: users,
+      });
+    })
+    .catch((err) => {
+      return res.status(500).send({
+        status: false,
+        message: err.message + " error ",
+      });
+    });
+};
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * with Filters
+ */
+exports.users = (req, res) => {
+  // here we get comapnyID
+  // inductionID from filters
+
+  // parentCompany
+  // inductionID
+  let comapnyID = {};
+  let inductionID = {};
+
+  if (req.query.company === undefined || req.query.company === "All") {
+    InductionUsers.aggregate([
+      {
+        $group: {
+          _id: {
+            userID: "$userID",
+            inductionID: "$inductionID",
+          },
+          total: { $sum: 1 },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id.userID",
+          foreignField: "userID",
+          as: "profile",
+        },
+      },
+      {
+        $lookup: {
+          from: "inductions",
+          localField: "_id.inductionID",
+          foreignField: "_id",
+          as: "inductions",
+        },
+      },
+      {
+        $lookup: {
+          from: "user_induction_results",
+          let: {
+            inductionID: "$_id.inductionID",
+            userID: "$_id.userID",
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    {
+                      $eq: ["$inductionID", "$$inductionID"],
+                    },
+                    {
+                      $eq: ["$userID", "$$userID"],
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+          as: "result",
+        },
+      },
+      {
+        $unwind: "$profile",
+      },
+      {
+        $unwind: "$inductions",
+      },
+      {
+        $project: {
+          _id: 1,
+          userID: 1,
+          inductionID: 1,
+          total: 1,
+          profile: 1,
+          inductions: 1,
+          result: 1,
+        },
+      },
+    ])
+      .then((users) => {
+        return res.status(200).send({
+          status: true,
+          message: "response without filter!",
+          data: users,
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          status: false,
+          message: err.message + " error ",
+        });
+      });
+  } else {
+    comapnyID = ObjectId(req.query.company);
+
+    if (req.query.induction === undefined || req.query.induction === "All") {
+      InductionUsers.aggregate([
+        {
+          $group: {
+            _id: {
+              userID: "$userID",
+              inductionID: "$inductionID",
+            },
+            total: { $sum: 1 },
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "_id.userID",
+            foreignField: "userID",
+            as: "profile",
+          },
+        },
+        {
+          $lookup: {
+            from: "inductions",
+            localField: "_id.inductionID",
+            foreignField: "_id",
+            as: "inductions",
+          },
+        },
+        {
+          $addFields: {
+            inductions: {
+              $arrayElemAt: [
+                {
+                  $filter: {
+                    input: "$inductions",
+                    as: "comp",
+                    cond: {
+                      $eq: ["$$comp.parentCompany", comapnyID],
+                    },
+                  },
+                },
+                0,
+              ],
+            },
+          },
+        },
+
+        {
+          $lookup: {
+            from: "user_induction_results",
+            let: {
+              inductionID: "$_id.inductionID",
+              userID: "$_id.userID",
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      {
+                        $eq: ["$inductionID", "$$inductionID"],
+                      },
+                      {
+                        $eq: ["$userID", "$$userID"],
+                      },
+                    ],
+                  },
+                },
+              },
+            ],
+            as: "result",
+          },
+        },
+        {
+          $unwind: "$profile",
+        },
+        {
+          $unwind: "$inductions",
+        },
+        {
+          $project: {
+            _id: 1,
+            userID: 1,
+            inductionID: 1,
+            total: 1,
+            profile: 1,
+            inductions: 1,
+            result: 1,
+          },
+        },
+      ])
+        .then((users) => {
+          return res.status(200).send({
+            status: true,
+            message: "Api Working fine else!",
+            data: users,
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            status: false,
+            message: err.message + " error ",
+          });
+        });
+    } else {
+      inductionID = ObjectId(req.query.induction);
+
+      InductionUsers.aggregate([
+        {
+          $match: {
+            $and: [{ inductionID: { $eq: inductionID } }],
+          },
+        },
+        {
+          $group: {
+            _id: {
+              userID: "$userID",
+              inductionID: "$inductionID",
+            },
+            total: { $sum: 1 },
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "_id.userID",
+            foreignField: "userID",
+            as: "profile",
+          },
+        },
+        {
+          $lookup: {
+            from: "inductions",
+            localField: "_id.inductionID",
+            foreignField: "_id",
+            as: "inductions",
+          },
+        },
+        {
+          $addFields: {
+            inductions: {
+              $arrayElemAt: [
+                {
+                  $filter: {
+                    input: "$inductions",
+                    as: "comp",
+                    cond: {
+                      $eq: ["$$comp.parentCompany", comapnyID],
+                    },
+                  },
+                },
+                0,
+              ],
+            },
+          },
+        },
+
+        {
+          $lookup: {
+            from: "user_induction_results",
+            let: {
+              inductionID: "$_id.inductionID",
+              userID: "$_id.userID",
+            },
+            pipeline: [
+              {
+                $match: {
+                  $expr: {
+                    $and: [
+                      {
+                        $eq: ["$inductionID", "$$inductionID"],
+                      },
+                      {
+                        $eq: ["$userID", "$$userID"],
+                      },
+                    ],
+                  },
+                },
+              },
+            ],
+            as: "result",
+          },
+        },
+        {
+          $unwind: "$profile",
+        },
+        {
+          $unwind: "$inductions",
+        },
+        {
+          $project: {
+            _id: 1,
+            userID: 1,
+            inductionID: 1,
+            total: 1,
+            profile: 1,
+            inductions: 1,
+            result: 1,
+          },
+        },
+      ])
+        .then((users) => {
+          return res.status(200).send({
+            status: true,
+            message: "Api Working fine!",
+            data: users,
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            status: false,
+            message: err.message + " error ",
+          });
+        });
+    }
+  }
+};
+
+exports.getInductionByCompany = async (req, res) => {
+  try {
+    const user = req.decoded;
+    const userRole = user.role;
+    let data = {};
+
+    switch (userRole) {
+      case USER_ROLES.SUPER_ADMIN:
+        data = await Induction.find(
+          {
+            parentCompany: ObjectId(req.body.parentCompany),
+          },
+          { _id: 1, title: 1, parentCompany: 1 }
+        );
+        return res.status(200).send({
+          status: true,
+          message: "Successfully Getting Data",
+          data: data,
+        });
+
+      case USER_ROLES.COMPANY:
+        data = await Induction.find(
+          {
+            parentCompany: ObjectId(user.userID),
+          },
+          { _id: 1, title: 1, parentCompany: 1 }
+        );
+        return res.status(200).send({
+          status: true,
+          message: "Successfully Getting Data",
+          data: data,
+        });
+
+      default:
+        // instructor case
+        data = await Induction.find(
+          {
+            parentCompany: ObjectId(user.parentCompany),
+          },
+          { _id: 1, title: 1, parentCompany: 1 }
+        );
+        return res.status(200).send({
+          status: true,
+          message: "Successfully Getting Data",
+          data: data,
+        });
+    }
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      message: err.message || "Some error occurred.",
+    });
+  }
+};
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ *
+ */
+exports.update = (req, res) => {
+  try {
+    const inductionID = req.params.id;
 
 
-}
+    // return res.status(500).send({
+    //   status: false,
+    //   message: req.body,
+    // });
+    
+    Induction.updateOne(
+      { _id: inductionID },
+      { $set: req.body },
+      { multi: true },
+      function (err, induction) {
+        if (err) {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+          });
+        }
+        if (!induction) {
+          return res.status(500).send({
+            status: false,
+            message: "Induction not found!",
+          });
+        }else{
+          return res.status(200).send({
+            status: true,
+            message: "",
+            data: induction
+          });
+        }
+      }
+    );
+
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      message: err.message || "Some error occurred.",
+    });
+  }
+};

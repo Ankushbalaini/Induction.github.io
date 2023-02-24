@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 
 // React router dom
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 
 // Css
 import "./index.css";
@@ -45,6 +45,7 @@ import StarTest from './components/Inductions/test/StartTest';
 // v2 versions
 import Add from './components/Induction/Add';
 import AddSlide from "./components/Slides/Add";
+import UpdateSlide from "./components/Induction/UpdateSlide";
 import UpdateInduction from "./components/Induction/UpdateInduction";
 //add-induction
 
@@ -74,8 +75,6 @@ import ViewMcq from "./components/Inductions/Viewquiz";
 import AttemptQuiz from "./components/Inductions/Attemptquiz";
 import AttemptedInductions from "./components/Inductions/AttemptedInduction";
 import UserAttemptedInductions from "./components/Students/AttemptedInductions";
-
-
 
 const Markup = () => {
   var newState = store.getState();
@@ -111,10 +110,10 @@ const Markup = () => {
     //{ url: "create-induction", component: CreateInduction },
     { url: "create-induction", component: CreateInductionNew },
     { url: "add-induction", component: Add },
-    { url: "add-slide", component: AddSlide },
+    { url: "add-slide/:id", component: AddSlide }, // induction id passed
+    { url: "update-slide/:id", component: UpdateSlide }, // slide id passed
     { url: "update-induction/:id", component: UpdateInduction },
-    
-    { url: "single-induction-view/:id", component: SingleInductionView },
+    { url: "single-induction-view/:id", component: SingleInductionView  },
     { url: "mcq/:inductionID", component: Mcq },
     { url : "viewmcq/:id", component :ViewMcq},
     { url : "attemptquiz/:id",component:AttemptQuiz},

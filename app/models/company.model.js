@@ -12,9 +12,7 @@ module.exports = mongoose => {
           aboutCompany: {type: String},
           createdBy: { type: mongoose.Schema.Types.ObjectId },
           status:{type: Boolean, default: 0 },
-          deleted:{type: Boolean, default: 0 },
-          
-          
+          deleted:{type: Boolean, default: 0 },          
         },
         { timestamps: true }
       )

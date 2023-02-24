@@ -6,7 +6,7 @@ import swal from "sweetalert";
 
 //images
 import course1 from "./../../../images/courses/course1.jpg";
-
+import SideBar from "../../layouts/nav/SideBar";
 import { useSelector } from "react-redux";
 import CompanyDropdown from "../Companies/CompanyDropdown";
 
@@ -26,6 +26,7 @@ function CoursesMain() {
   const [limit, setLimit] = useState(3);
   const [totalRecords, setTotalRecords] = useState();
   const [showing, setShowing] = useState();
+  const [keyarr, setKeyarr]=useState('')
 
   // api call
   async function getAllInductions(page) {
@@ -129,12 +130,6 @@ function CoursesMain() {
     chageData(activePag.current * sort, (activePag.current + 1) * sort);
     settest(i);
   };
-
-
-
-
-
-
   const confirmHandler = (inductionID) => {
     // user id
     swal({
@@ -165,14 +160,11 @@ function CoursesMain() {
   };
   
 
+//   const handler = (event) => {
 
-
-
-
-
-
-
-
+//   setKeyarr(event.code === 'ArrowUp' ? "up arrow" : "nothing");
+// };
+  
 
   const content = loading ? (
     <h1>Loading</h1>
@@ -305,6 +297,10 @@ function CoursesMain() {
             </div>
           </div>
         ))}
+
+{/* <p>Key pressed is: {keyarr}</p>
+  <input type="text" onKeyPress={(event) => handler(event)} /> */}
+
 
         <div className="d-sm-flex text-center justify-content-between align-items-center mt-3 mb-3">
           <div className="dataTables_info">

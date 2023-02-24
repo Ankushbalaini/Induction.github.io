@@ -2,40 +2,23 @@ import React, { Fragment, useMemo, useState } from "react";
 
 import DataTable from "react-data-table-component";
 import FilterComponent from "../Instructor/FilterComponent";
-import DropDownBlog from "../Dashboard/DropDownBlog";
-import { Link, useHistory } from "react-router-dom";
-import swal from "sweetalert";
 import { useSelector } from "react-redux";
-
-import { Modal } from "react-bootstrap";
 import { tableStyles } from "../Instructor/Instructor/tableStyles";
 import { Button } from "react-bootstrap";
 
 const Table = (props) => {
-  const navigate = useHistory();
-  const images = require.context("../../../../../images/profile/", true);
-
+  
   const token = useSelector((state) => state.auth.auth.token);
-  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
-  const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const loadImage = (imageName) => {
-    return images(`./${imageName}`);
-  };
-
-  const profileImageCss = {
-    height: "3.5rem",
-    width: "3.5rem",
-    borderRadius: "0.625rem",
-    margin: "5px 5px 5px 0",
-  };
+  const onClickHandler  = (row) =>{
+    //console.log(row);
+    props.trackOnclick(true, row);
+  }
 
   const columns = [
     {
       name: "Name",
-      selector: "profile.first_name",
+      //selector: "profile.first_name",
       sortable: true,
       grow: 1,
       className: "col-3",
@@ -50,36 +33,39 @@ const Table = (props) => {
       ),
     },
     {
-      name: "Email",
-      selector: "email",
-      sortable: true,
-      grow: 1,
-      className: "col-3",
-    },
-    {
-      name: "Join Date",
-      selector: "createdAt",
+      name: "Induction",
+      selector: "inductions.title",
       sortable: true,
       grow: 1,
       className: "col-3",
       cell: (row) => (
-        <div>
-          {new Date(row.createdAt).toLocaleDateString("en-GB", {
-            day: "numeric",
-            year: "numeric",
-          })}
-        </div>
+        <>
+          <div className="d-flex align-items-center">
+            <div>
+              { row.inductions.title }
+            </div>
+          </div>
+        </>
       ),
+
+    },
+    {
+      name: "Total Attempted Inductions",
+      selector: "total",
+      sortable: true,
+      grow: 1,
+      className: "col-3",
     },
 
     {
       name: "Actions",
       button: true,
+      sortable: false,
       cell: (row) => (
         <>
-          <Button onClick={props.showModal}>
+          <Button type="button" onClick={() => onClickHandler(row) }>
             {" "}
-            View
+            View All
           </Button>
         </>
       ),
