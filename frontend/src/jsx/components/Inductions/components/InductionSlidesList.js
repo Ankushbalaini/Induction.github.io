@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { TiTick } from "react-icons/ti";
 
+
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -30,16 +31,40 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
   const [complete, setComplete] = useState(false);
   // const [steps, setSteps] = useState([]);
   const [active, setActive] = useState(0);
+  const [isDisabled, setIsDisabled] = useState(false);
+  
+  // const handleClick = (slideData, i) => {
+  //   setCurrentSlideContent(slideData);
+  //   setActive(i);
 
-  const handleClick = (slideData, i) => {
-    setCurrentSlideContent(slideData);
-    setActive(i);
-
-    currentStep === props.slides.length
-    ? setComplete(true)
-    : setCurrentStep((prev) => prev + 1 );
+  //   currentStep === props.slides.length
+  //   ? setComplete(true)
+  //   : setCurrentStep((prev) => prev + 1 );
  
-  };
+  // };
+
+  const handleClick = (slideData, i ) => {
+    const totalSlides = props.slides.length;
+
+    // console.log(" clicked on slide no :"+ i ); // 
+    // console.log(" current clicked slide no :"+ currentStep ); // active slide 
+    // console.log(" total slide nos :"+ totalSlides ); // 10
+
+
+    if(i <= currentStep){
+      setActive(i+1);
+      setCurrentStep(i+1);
+      setCurrentSlideContent(slideData);
+    }else{
+      // sweet alerts
+      console.log("do not skip inductions");
+    }
+  }
+
+
+// const buttond = {
+//   PointerEvent:"none"
+// }
 
 
   return (
@@ -161,9 +186,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
             )}
           </div>
           {!complete && (
-            <Button
-              className="btn btn-group mb-3 mt-3"
-              style={{display:"flex",float:"right"}}
+            <span
               onClick={() => {
                 
                 currentStep === props.slides.length
@@ -172,8 +195,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
              
               }}
             >
-              {currentStep === props.slides.length ? "Finish" : ">"}
-            </Button>
+            </span>
           )}
           </div>
                 
@@ -190,14 +212,16 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
             <div>
               <div className="accordion accordion">
                 <div class="card accordion-item">
+                {currentStep === props.slides.length ?
                   <Link
-               
                     className="btn btn-primary"
                     to={`/start-test/${inductionID}`}
+                  
                   >
-                    Start Test
-                  </Link>
-                  {/* <Button className="btn btn-primary"> Start Test New</Button> */}
+                     Start Test
+                
+                  </Link>:<Link className="disabled-link btn btn-primary" > Start Test</Link> }
+ 
                 </div>
               </div>
             </div>
