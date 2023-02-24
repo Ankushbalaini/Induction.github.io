@@ -24,7 +24,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
   //stepper
   const steps = [];
   const [currentStep, setCurrentStep] = useState(1);
-  const [totalVisted, setTotalVisted] = useState(1);
+  const [totalVisted, setTotalVisted ] = useState(1);
 
   const [complete, setComplete] = useState(false);
   // const [steps, setSteps] = useState([]);

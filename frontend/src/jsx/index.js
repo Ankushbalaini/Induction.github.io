@@ -76,7 +76,7 @@ import AttemptQuiz from "./components/Inductions/Attemptquiz";
 import AttemptedInductions from "./components/Inductions/AttemptedInduction";
 import UserAttemptedInductions from "./components/Students/AttemptedInductions";
 
-const Markup = () => {
+const Markup = withRouter (({location}) => {
   var newState = store.getState();
 
   const [role, setRole] = useState(newState.auth.auth.role);
@@ -177,6 +177,6 @@ const Markup = () => {
       <ScrollToTop />
     </>
   );
-};
+});
 
 export default Markup;
