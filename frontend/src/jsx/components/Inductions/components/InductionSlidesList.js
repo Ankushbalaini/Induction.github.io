@@ -16,6 +16,7 @@ const accordionBlog = [
 ];
 
 
+
 function InductionSlidesList({ setCurrentSlideContent, ...props }) {
   const inductionID = props.inductionID;
   const role = useSelector((state) => state.auth.auth.role);
