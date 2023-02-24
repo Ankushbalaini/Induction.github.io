@@ -1,26 +1,17 @@
 import React, { useRef, Fragment, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 import ActionDropDown from "../Inductions/ActionDropDown";
 import swal from "sweetalert";
-import { useParams } from "react-router";
 import UpdateMcq from "../Inductions/UpdateMcq";
 
 const QuizList = ({ inductionID, updateQuesHandler }) => {
-  const navigate = useHistory();
-
-  // const { id } = useParams();
-  const [question, setQuestion] = useState();
+  const [questions, setQuestions] = useState();
   const [mcqData, setMcqData] = useState({});
-  const [tableData, setTableData] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [editID, setEditID] = useState();
 
   const trackOnclick = (payload, pdata) => {
     if (pdata) {
       setMcqData(pdata);
-      //console.log(pdata);
     }
     setIsModalOpen(payload);
   };
@@ -43,16 +34,6 @@ const QuizList = ({ inductionID, updateQuesHandler }) => {
       }
     });
   };
-  const changeStatus = (e) => {
-    e.preventDefault();
-  };
-
-  const actionHandler = (mcq) => {
-    setIsModalOpen(true);
-    //setModalData(mcq);
-    setQuestion(mcq.question);
-    //setEditID(mcq.inductionID);
-  };
 
   const handlepageLoad = async (e) => {
     const response = await fetch(
@@ -63,36 +44,7 @@ const QuizList = ({ inductionID, updateQuesHandler }) => {
     ).then((user) => user.json());
 
     if ("status" in response && response.status === true) {
-      const rows = response.data.map((row, index) => {
-        return (
-          <tr key={index}>
-            <td> {index + 1} </td>
-            <td> {row.question} </td>
-            <td> {row.answer} </td>
-            {/* <td> {row.type} </td> */}
-            <td>
-              <Link
-                to={''}
-                className={`badge light ${
-                  row.status ? "badge-success" : "badge-danger"
-                }`}
-                onClick={() => changeStatus(row._id, row.status)}
-              >
-                {row.status ? "Active" : "Inactive"}
-              </Link>
-            </td>
-            <td>
-              <ActionDropDown
-                trackOnclick={trackOnclick}
-                mcqData={row}
-                trackDeleteClick={trackDeleteClick}
-              />
-            </td>
-          </tr>
-        );
-      });
-
-      setTableData(rows);
+      setQuestions(response.data);
       setLoading(false);
     } else {
       return swal("Failed", response.message, "error");
@@ -100,15 +52,8 @@ const QuizList = ({ inductionID, updateQuesHandler }) => {
   };
 
   useEffect(() => {
-    if (loading) {
-      handlepageLoad();
-    }
-  }, [mcqData]);
-
-
-  const onClickHandler = () => {
-
-  }
+    handlepageLoad();
+  }, [isModalOpen]);
 
   return (
     <>
@@ -131,11 +76,38 @@ const QuizList = ({ inductionID, updateQuesHandler }) => {
                           <th Style="max-width: 20%">Questions</th>
                           <th Style="max-width: 20%">Answer</th>
                           {/* <th>Question Type</th> */}
-                          <th Style="max-width: 20%">Status</th>
+                          {/* <th Style="max-width: 20%">Status</th> */}
                           <th Style="text-align: end">Actions</th>
                         </tr>
                       </thead>
-                      <tbody>{tableData}</tbody>
+                      <tbody>
+                        {questions.map((row, index) => (
+                          <tr key={index}>
+                            <td> {index + 1} </td>
+                            <td> {row.question} </td>
+                            <td> {row.answer} </td>
+                            {/* <td> {row.type} </td> */}
+                            {/* <td>
+                                  <Link
+                                    to={''}
+                                    className={`badge light ${
+                                      row.status ? "badge-success" : "badge-danger"
+                                    }`}
+                                    onClick={() => changeStatus(row._id, row.status)}
+                                  >
+                                    {row.status ? "Active" : "Inactive"}
+                                  </Link>
+                                </td> */}
+                            <td>
+                              <ActionDropDown
+                                trackOnclick={trackOnclick}
+                                mcqData={row}
+                                trackDeleteClick={trackDeleteClick}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
                     </table>
                   </div>
                 </div>
@@ -145,16 +117,14 @@ const QuizList = ({ inductionID, updateQuesHandler }) => {
         </div>
       )}
 
-      {(isModalOpen) ? 
+      {isModalOpen ? (
         <UpdateMcq
-        isModalOpen={isModalOpen}
-        trackOnclick={trackOnclick}
-        trackDeleteClick={trackDeleteClick}
-        mcqData={mcqData}
-      /> 
-
-      : null }
-
+          isModalOpen={isModalOpen}
+          trackOnclick={trackOnclick}
+          trackDeleteClick={trackDeleteClick}
+          mcqData={mcqData}
+        />
+      ) : null}
 
       {/* <UpdateMcq
         isModalOpen={isModalOpen}

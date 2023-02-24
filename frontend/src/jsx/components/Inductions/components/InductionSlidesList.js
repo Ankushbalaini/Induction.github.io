@@ -207,6 +207,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
               <div className="accordion accordion">
                 <div class="card accordion-item">
                   <Link
+                    
                     className="btn btn-primary"
                     to={`/start-test/${inductionID}`}
                   >

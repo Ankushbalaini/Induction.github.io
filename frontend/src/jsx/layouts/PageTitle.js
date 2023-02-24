@@ -6,7 +6,7 @@ const PageTitle = ({ motherMenu, activeMenu, pageContent }) => {
 
   return (
     <div className="row page-titles mx-0">
-		{ /* <div className="col-sm-6 p-md-0">
+      {/* <div className="col-sm-6 p-md-0">
 			<div className="welcome-text">
 			  <h4>Hi, welcome back!</h4>
 			  <p className="mb-0">
@@ -24,10 +24,27 @@ const PageTitle = ({ motherMenu, activeMenu, pageContent }) => {
 			  </li>
 			</ol>
 		  </div> */}
-			<ol className="breadcrumb">
-				<li className="breadcrumb-item active"><Link to={`/${path[path.length - 1]}`}>{motherMenu}</Link></li>
-				<li className="breadcrumb-item  "><Link to={`/${path[path.length - 1]}`}>{activeMenu}</Link></li>
-			</ol>
+      <ol className="breadcrumb">
+        {activeMenu === "Update Induction" ? 
+			(<>
+			<li className="breadcrumb-item active">
+              <Link to={`/inductions`}>{motherMenu}</Link>
+            </li>
+            <li className="breadcrumb-item  ">
+              <Link to={`/update-induction/${path[path.length - 1]}`}>{activeMenu}</Link>
+            </li>
+			</>
+			) : (
+          <>
+            <li className="breadcrumb-item active">
+              <Link to={`/${path[path.length - 1]}`}>{motherMenu}</Link>
+            </li>
+            <li className="breadcrumb-item  ">
+              <Link to={`/${path[path.length - 1]}`}>{activeMenu}</Link>
+            </li>
+          </>
+        )}
+      </ol>
     </div>
   );
 };

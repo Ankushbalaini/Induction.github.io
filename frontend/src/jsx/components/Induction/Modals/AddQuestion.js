@@ -105,7 +105,8 @@ const AddQuestion = ({
         buttons: false,
         timer: 2000,
       }).then((value) => {
-        navigate.push("/viewmcq/" + inductionID);
+        onClickHandler();
+        navigate.push("/update-induction/" + inductionID);
       });
     } else {
       return swal("Failed", response.message, "error");

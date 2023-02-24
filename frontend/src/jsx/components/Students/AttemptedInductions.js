@@ -4,6 +4,7 @@ import swal from "sweetalert";
 import ActionDropDown from "./ActionDropDown";
 // import UpdateProfile from "./UpdateStudentModal";
 import { useSelector } from "react-redux";
+import PageTitle from "../../layouts/PageTitle";
 
 const images = require.context("../../../../../images/profile/", true);
 
@@ -113,6 +114,8 @@ const AttemptedInductions = () => {
       {loading ? (
         <h3>Loading</h3>
       ) : (
+        <>
+        <PageTitle activeMenu="User Attempts" motherMenu="Inductions" />
         <div className="row">
           <div className="col-xl-12">
             <div className="card students-list">
@@ -188,7 +191,7 @@ const AttemptedInductions = () => {
                       >
                         <Link
                           className="paginate_button previous "
-                          to="/attempted-inductions"
+                          to="/user-inductions"
                           onClick={() =>
                             activePag.current > 0 &&
                             onClick(activePag.current - 1)
@@ -203,7 +206,7 @@ const AttemptedInductions = () => {
                           {paggination.map((number, i) => (
                             <Link
                               key={i}
-                              to="/attempted-inductions"
+                              to="/user-inductions"
                               className={`paginate_button  ${
                                 activePag.current === i ? "current" : ""
                               } `}
@@ -216,7 +219,7 @@ const AttemptedInductions = () => {
 
                         <Link
                           className="paginate_button next"
-                          to="/attempted-inductions"
+                          to="/user-inductions"
                           onClick={() =>
                             activePag.current + 1 < paggination.length &&
                             onClick(activePag.current + 1)
@@ -235,6 +238,7 @@ const AttemptedInductions = () => {
             </div>
           </div>
         </div>
+        </>
       )}
     </>
   );

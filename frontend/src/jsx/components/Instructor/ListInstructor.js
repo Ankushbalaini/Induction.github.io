@@ -9,6 +9,7 @@ import ActionDropDown from "../Dashboard/ActionDropDown";
 import UpdateProfile from "./UpdateProfile";
 import CompanyDropdown from '../Companies/CompanyDropdown';
 import Table from './DataTable';
+import PageTitle from "../../layouts/PageTitle";
 
 const images = require.context("../../../../../images/profile/", true);
 
@@ -205,6 +206,7 @@ const Instructors = () => {
 
   return (
     <>
+      <PageTitle activeMenu="Instructor List" motherMenu="Instructors" />
       <div className="row">
         <div className="col-xl-12">
           <div className="card students-list">

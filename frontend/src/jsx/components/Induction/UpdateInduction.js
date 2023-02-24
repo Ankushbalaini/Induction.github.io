@@ -126,6 +126,14 @@ const UpdateInduction = () => {
     }
   };
 
+  // Add question Modal POPUP
+  const onClickHandler = () => {
+    setIsShowAddQuestion(false);
+    setLoading(true);
+  };
+
+
+
   useEffect(() => {
     // get induction by id
     // i think we need to send this detail with props where we place edit button that time we will pass
@@ -133,12 +141,12 @@ const UpdateInduction = () => {
     if (loading) {
       callingAPI(id, token);
     }
+
+
+
   }, [loading, parentCompany, deptID]);
 
-  // Add question Modal POPUP
-  const onClickHandler = () => {
-    setIsShowAddQuestion(false);
-  };
+  
 
   const pageContent = loading ? (
     <h1>Loading</h1>

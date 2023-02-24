@@ -89,7 +89,8 @@ const SideBar = () => {
       "add-induction",
       "add-slide",
       "update-induction",
-      "attempted-inductions"
+      "attempted-inductions",
+      "user-inductions"
     ],
     students = ["students", "add-student", "unassigned-users", "users", "user-inductions"];
 
@@ -387,10 +388,10 @@ const SideBar = () => {
               { USER_ROLES.USER === role ?
               <li>
                 <Link
-                  className={`${path === "attempted-inductions" ? "mm-active" : ""}`}
+                  className={`${path === "user-inductions" ? "mm-active" : ""}`}
                   to="/user-inductions"
                 >
-                  Attempted Inductions{" "}
+                  User Inductions{" "}
 
                 </Link>
               </li> : null }

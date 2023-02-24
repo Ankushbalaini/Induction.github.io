@@ -3,6 +3,7 @@ import { Link , useHistory} from "react-router-dom";
 import "swiper/css";
 import { Dropdown, Button } from "react-bootstrap";
 import swal from "sweetalert";
+import PageTitle from "../../layouts/PageTitle";
 
 //images
 import course1 from "./../../../images/courses/course1.jpg";
@@ -10,13 +11,22 @@ import SideBar from "../../layouts/nav/SideBar";
 import { useSelector } from "react-redux";
 import CompanyDropdown from "../Companies/CompanyDropdown";
 
+
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
+
+
 const images = require.context("../../../../../images/inductions/", true);
 
 function CoursesMain() {
   const navigate = useHistory();
   
   const token = useSelector((state) => state.auth.auth.token);
-  const role = useSelector((state) => state.auth.auth.role);
+  const userRole = useSelector((state) => state.auth.auth.role);
 
   const [source, setSource] = useState("list");
   const [filterCompany, setFilterCompany] = useState();
@@ -172,10 +182,13 @@ function CoursesMain() {
     <h1>Loading</h1>
   ) : (
     <>
+      <PageTitle activeMenu="Inductions" motherMenu="Inductions" />
+
       <div className="widget-heading d-flex justify-content-between align-items-center">
         <h3 className="m-0">All Inductions ({totalRecords})</h3>
 
-        {role === "super_admin" ? (
+        { USER_ROLES.SUPER_ADMIN === userRole ?
+         (
           <div className="col-lg-4">
             <select
               name="parentCompany"
@@ -197,6 +210,7 @@ function CoursesMain() {
           <div className="col-xl-4 col-md-6 cardDiv" key={index}>
             <div className="card all-crs-wid">
               <div className="card-body">
+                {(USER_ROLES.USER !== userRole) ? 
                 <Dropdown Style="text-align: end ">
                   <Dropdown.Toggle
                     as="a"
@@ -224,7 +238,7 @@ function CoursesMain() {
                       <Link to={`/update-induction/${data._id}`}>Update</Link>
                     </Dropdown.Item>
                   </Dropdown.Menu>
-                </Dropdown>
+                </Dropdown> : null }
 
                 <div className="courses-bx">
                   <div className="dlab-media">
