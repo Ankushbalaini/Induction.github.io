@@ -5,9 +5,15 @@ import { useSelector } from "react-redux";
 import ActionDropDown from "../Students/ActionDropDown";
 
 const SlidesList = ({ Slides, inductionID }) => {
+  const navigate = useHistory();
+
   const changeStatus = () => {};
 
-  const trackOnclick = () => {};
+  const trackOnclick = (payload, data) => {
+    console.log(data, ' edit ------');
+    return navigate.push(`../update-slide/${data._id}`);
+  };
+
   const trackDeleteClick = () => {};
 
   return (
@@ -20,7 +26,7 @@ const SlidesList = ({ Slides, inductionID }) => {
         <tr>
           <th>Sr. No.</th>
           <th>Slide Title</th>
-          <th>Slide Order</th>
+          {/* <th>Slide Order</th> */}
 
           <th>Status</th>
           <th>Created On</th>
@@ -37,7 +43,7 @@ const SlidesList = ({ Slides, inductionID }) => {
                 <h4 className="mb-0 fs-16 font-w500">{row.slideTitle}</h4>
               </div>
             </td>
-            <td>{row.slideOrder}</td>
+            {/* <td>{row.slideOrder}</td> */}
             <td>
               <Link
                 className={`badge light ${

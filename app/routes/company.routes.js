@@ -7,8 +7,9 @@ module.exports = (app) => {
   router.post("/add", company.add);
 
   // list all companies
-  router.get("/list", company.list);
+  router.get("/companyDropdownList", company.companyDropdownList);
 
+  router.get("/list", company.list);
    //update company values
    router.put('/edit/:id',company.edit);
 
@@ -16,6 +17,7 @@ module.exports = (app) => {
   router.put('/update',company.update);
 
 
+  
   // soft delete company
 
   app.use("/api/company", router);

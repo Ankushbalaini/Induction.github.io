@@ -691,13 +691,13 @@ exports.store = async (req, res) => {
     //console.log('user', user);
 
     let iData = JSON.parse(req.body.induction);
-    iData.deptID = ObjectId(req.body.deptID);
+    iData.deptID = ObjectId(iData.deptID);
     iData.createdBy = ObjectId(user.userID);
 
     if (USER_ROLES.SUPER_ADMIN === user.role) {
       // take parent Company from request
       // take deptID from request
-      iData.parentCompany = ObjectId(req.body.parentCompany);
+      iData.parentCompany = ObjectId(iData.parentCompany);
     }
 
     if (USER_ROLES.COMPANY === user.role) {
@@ -822,6 +822,7 @@ exports.updatePassingMarks = (req, res) => {
  *
  * @param {*} req
  * @param {*} res
+ * without filters
  */
 exports.users_org = (req, res) => {
   // here we get comapnyID
@@ -915,6 +916,7 @@ exports.users_org = (req, res) => {
  *
  * @param {*} req
  * @param {*} res
+ * with Filters
  */
 exports.users = (req, res) => {
   // here we get comapnyID
@@ -1237,9 +1239,12 @@ exports.getInductionByCompany = async (req, res) => {
 
     switch (userRole) {
       case USER_ROLES.SUPER_ADMIN:
-        data = await Induction.find({
-          parentCompany: ObjectId(req.body.parentCompany),
-        }, { _id: 1, title: 1 , parentCompany:1} );
+        data = await Induction.find(
+          {
+            parentCompany: ObjectId(req.body.parentCompany),
+          },
+          { _id: 1, title: 1, parentCompany: 1 }
+        );
         return res.status(200).send({
           status: true,
           message: "Successfully Getting Data",
@@ -1247,9 +1252,12 @@ exports.getInductionByCompany = async (req, res) => {
         });
 
       case USER_ROLES.COMPANY:
-        data = await Induction.find({
-          parentCompany: ObjectId(user.userID),
-        }, { _id: 1, title: 1 , parentCompany:1});
+        data = await Induction.find(
+          {
+            parentCompany: ObjectId(user.userID),
+          },
+          { _id: 1, title: 1, parentCompany: 1 }
+        );
         return res.status(200).send({
           status: true,
           message: "Successfully Getting Data",
@@ -1257,17 +1265,70 @@ exports.getInductionByCompany = async (req, res) => {
         });
 
       default:
-
         // instructor case
-        data = await Induction.find({
-          parentCompany: ObjectId(user.parentCompany),
-        },{ _id: 1, title: 1 , parentCompany:1});
+        data = await Induction.find(
+          {
+            parentCompany: ObjectId(user.parentCompany),
+          },
+          { _id: 1, title: 1, parentCompany: 1 }
+        );
         return res.status(200).send({
           status: true,
           message: "Successfully Getting Data",
           data: data,
         });
     }
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      message: err.message || "Some error occurred.",
+    });
+  }
+};
+
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ *
+ */
+exports.update = (req, res) => {
+  try {
+    const inductionID = req.params.id;
+
+
+    // return res.status(500).send({
+    //   status: false,
+    //   message: req.body,
+    // });
+    
+    Induction.updateOne(
+      { _id: inductionID },
+      { $set: req.body },
+      { multi: true },
+      function (err, induction) {
+        if (err) {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+          });
+        }
+        if (!induction) {
+          return res.status(500).send({
+            status: false,
+            message: "Induction not found!",
+          });
+        }else{
+          return res.status(200).send({
+            status: true,
+            message: "",
+            data: induction
+          });
+        }
+      }
+    );
+
   } catch (err) {
     return res.status(500).send({
       status: false,

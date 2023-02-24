@@ -340,7 +340,7 @@ const SideBar = () => {
                     </Link>
                   </li> */}
 
-                  <li>
+                  {/* <li>
                     <Link
                       className={`${
                         path === "add-induction" ? "mm-active" : ""
@@ -349,9 +349,9 @@ const SideBar = () => {
                     >
                       Add Slide{" "}
                     </Link>
-                  </li>
+                  </li> */}
 
-                  <li>
+                  {/* <li>
                     <Link
                       className={`${
                         path === "update-induction" ? "mm-active" : ""
@@ -360,7 +360,7 @@ const SideBar = () => {
                     >
                       Update Induction{" "}
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link
                       className={`${
