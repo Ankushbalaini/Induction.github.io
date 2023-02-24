@@ -177,13 +177,32 @@ const AllStudents = () => {
             <div className="card students-list">
               <div className="card-header border-0 ">
                 <h2>Assigned Users</h2>
-             
               {role === "super_admin" ? (
-                <div className="btn-group" style={{display: "flex", alignItems:"end", justifyContent:"end", paddingRight: "20px"}} >
-               
-                <div>
-                <label style={{fontWeight:"bold",marginLeft:"80px"}}> Select Company </label>
-                    <select className="btn btn-white col-sm-8 border-light"
+                <div className="row">
+                <div
+                  className="btn-group"
+                  style={{
+                    display: "flex",
+                    alignItems: "end",
+                    justifyContent: "end",
+                    gap: "40px",
+                    paddingRight: "20px",
+                  }}
+                >
+                  <div className="btn-group">
+                    <label
+                      style={{
+                        paddingRight: "10px",
+                        fontWeight: "bold",
+                        paddingTop: "12px",
+                      }}
+                      className="pb-0"
+                    >
+                      {" "}
+                      Select Company{" "}
+                    </label>
+
+                    <select className="btn btn-white col-sm-2 border-light"
                     style={{borderRadius:"8px"}}
                       name="search_company"
                       onChange={(e) => CompanyChangeFilter(e)}
@@ -193,9 +212,22 @@ const AllStudents = () => {
                       <CompanyDropdown />
                     </select>
                   </div>
-                  <div>
-                    <label style={{fontWeight:"bold",marginLeft:"60px"}}> Select Deparment </label>
-                    <select className="btn btn-white col-sm-8 border-light"
+                 
+                  <div className="btn-group">
+                  <label
+                    style={{
+                      paddingRight: "10px",
+                      fontWeight: "bold",
+                      paddingTop: "12px",
+                    }}
+                   
+                  >
+                    {" "}
+                    Select Department{" "}
+                  </label>
+
+                    <select className="btn btn-white col-sm-2 border-light"
+                    style={{ borderRadius: "8px" }}
                       name="search_department"
                       onChange= { (e) => setSearchDepartment(e.target.value) }
                       value={searchDepartment}
@@ -204,6 +236,8 @@ const AllStudents = () => {
                       {departmentOptions}
                     </select>
                   </div>
+
+                </div>
                 </div>
               ) : null}
               </div>

@@ -140,7 +140,12 @@ const onSubmitHandle = async (e) => {
         </div>
       </div>
 
-      <Modal className="modal fade" show={isModalOpen}>
+      <Modal className="modal fade" show={isModalOpen}
+       size="xl"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      
+      >
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Edit Department Details</h5>

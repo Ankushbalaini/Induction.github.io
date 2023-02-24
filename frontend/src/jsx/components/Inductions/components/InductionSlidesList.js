@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Tab, Nav, Accordion, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { TiTick } from "react-icons/ti";
+
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -11,10 +13,8 @@ const USER_ROLES = {
 
 const accordionBlog = [
 	{id: 1, title: 'Courses Slides' },
-	// {title: 'Audio' },
-	// {title: 'Module' },
-	// {id: 2, title: 'Quiz' },
 ];
+
 
 
 function InductionSlidesList({ setCurrentSlideContent, ...props }) {
@@ -23,32 +23,28 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
   const [passMarksModel, setPassMarksModal] = useState(false);
   const [passingMarks, setPassingMarks] = useState("");
   const token = useSelector((state) => state.auth.auth.token);
-
+  const [startButton, setStartButton]=useState(false)
+  //stepper
+  const steps = []
+  const [currentStep, setCurrentStep] = useState(1);
+  const [complete, setComplete] = useState(false);
+  // const [steps, setSteps] = useState([]);
   const [active, setActive] = useState(0);
 
   const handleClick = (slideData, i) => {
     setCurrentSlideContent(slideData);
     setActive(i);
+
+    currentStep === props.slides.length
+    ? setComplete(true)
+    : setCurrentStep((prev) => prev + 1 );
+ 
   };
 
 
   return (
     <div className="custome-accordion">
-      {USER_ROLES.USER === role ? (
-        <div>
-          <div className="accordion accordion">
-            <div class="card accordion-item">
-              <Link
-                className="btn btn-primary"
-                to={`/start-test/${inductionID}`}
-              >
-                Start Test
-              </Link>
-              {/* <Button className="btn btn-primary"> Start Test New</Button> */}
-            </div>
-          </div>
-        </div>
-      ) : null}
+     
       {USER_ROLES.COMPANY === role || USER_ROLES.INSTRUCTOR === role ? (
         <div>
           <div className="accordion accordion">
@@ -86,18 +82,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
             </div>
           </div>
 
-          {/* <div className="accordion accordion">
-            <div class="card accordion-item">
-              <Link
-                className="btn btn-primary"
-                to=''
-                name="Set Passing Marks"
-                onClick={showPassingMarksModel}
-              >
-                Set Passing percentage
-              </Link>
-            </div>
-          </div> */}
+       
 
           <div className="accordion accordion">
             <div class="card accordion-item">
@@ -119,13 +104,11 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
         
           <Accordion.Item className="card" key={i} eventKey={`${i}`}>
 
-            {/* <Accordion.Item className="card"> */}
             <Accordion.Header as="h2" className="accordion-header border-0">
               <span className="acc-heading">{data.title}</span>
               { (data.id ===1) ? <span className="ms-auto">({active+1}/{ props.slides.length })</span> : null }
             </Accordion.Header>
             
-            {/* <Accordion.Collapse eventKey={`${active}`} id="collapseOne"> */}
 
             { (data.id === 1 ) ? 
             <Accordion.Collapse eventKey={`${i}`} id="collapseOne" >
@@ -134,92 +117,93 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
                   return (
                     <div
                       key={j}
-                      className={`acc-courses ${(j === active) ? 'active': ''}`}
+                      className={`acc-courses ${currentStep === j + 1  ? 'active': ''}`}
                       onClick={() => handleClick(slide, j)}
                     >
                       <div className="d-flex justify-content-between align-items-center">
                         <div className="d-flex align-items-center">
                           <div class="d-flex justify-content-between align-items-center">
                             <span className="acc-icon">
-                              <svg
-                                width="16"
-                                height="16"
-                                viewBox="0 0 16 16"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M4 13C3.817 13 3.635 12.95 3.474 12.851C3.32918 12.7611 3.20965 12.6358 3.12671 12.4869C3.04378 12.338 3.00016 12.1704 3 12V4C3 3.653 3.18 3.331 3.474 3.149C3.61914 3.05976 3.7846 3.00891 3.95481 3.00121C4.12502 2.99351 4.29439 3.02923 4.447 3.105L12.447 7.105C12.6131 7.1882 12.7528 7.31599 12.8504 7.47405C12.948 7.63212 12.9997 7.81423 12.9997 8C12.9997 8.18578 12.948 8.36789 12.8504 8.52595C12.7528 8.68402 12.6131 8.8118 12.447 8.895L4.447 12.895C4.307 12.965 4.152 13 4 13Z"
-                                  fill="var(--primary)"
-                                />
-                              </svg>
+                            {j + 1 < currentStep || complete ? <TiTick size={30} /> :
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M11.3337 6V4.66666C11.3337 2.79999 9.86699 1.33333 8.00033 1.33333C6.13366 1.33333 4.66699 2.79999 4.66699 4.66666V6C3.53366 6 2.66699 6.86666 2.66699 8V12.6667C2.66699 13.8 3.53366 14.6667 4.66699 14.6667H11.3337C12.467 14.6667 13.3337 13.8 13.3337 12.6667V8C13.3337 6.86666 12.467 6 11.3337 6ZM6.00033 4.66666C6.00033 3.53333 6.86699 2.66666 8.00033 2.66666C9.13366 2.66666 10.0003 3.53333 10.0003 4.66666V6H6.00033V4.66666ZM8.66699 11.3333C8.66699 11.7333 8.40033 12 8.00033 12C7.60033 12 7.33366 11.7333 7.33366 11.3333V9.33333C7.33366 8.93333 7.60033 8.66666 8.00033 8.66666C8.40033 8.66666 8.66699 8.93333 8.66699 9.33333V11.3333Z" fill="#374557"/>
+					</svg>}
                             </span>
                             <h4 className="m-0">{slide.slideTitle}</h4>
+                           
                           </div>
+                          
                         </div>
+                        
                       </div>
+                      
                     </div>
+                   
                   );
+                  
                 })}
-              </div>
-            </Accordion.Collapse>
-            : null }
 
+                <div>
+                <div>
+            {steps?.map((step, i) =>
+              
+              <div
+                key={i}
+                className={`step-item ${currentStep === i + 1 && "active"} ${
+                  (i + 1 < currentStep || complete) && "complete"
+                } `}
+              >
+                <div className="step">
+                  {i + 1 < currentStep || complete ? <TiTick size={40} /> : i + 1}
+                </div>
+                <p className="text-black-500">{step}</p>
+              </div>
+            )}
+          </div>
+          {!complete && (
+            <Button
+              className="btn btn-group mb-3 mt-3"
+              style={{display:"flex",float:"right"}}
+              onClick={() => {
+                
+                currentStep === props.slides.length
+                  ? setComplete(true)
+                  : setCurrentStep((prev) => prev + 1 );
+             
+              }}
+            >
+              {currentStep === props.slides.length ? "Finish" : ">"}
+            </Button>
+          )}
+          </div>
+                
+              </div>
+             
+            </Accordion.Collapse>
+           
+            : null }
           </Accordion.Item> 
 
           ))}
 
+          {USER_ROLES.USER === role ? (
+            <div>
+              <div className="accordion accordion">
+                <div class="card accordion-item">
+                  <Link
+               
+                    className="btn btn-primary"
+                    to={`/start-test/${inductionID}`}
+                  >
+                    Start Test
+                  </Link>
+                  {/* <Button className="btn btn-primary"> Start Test New</Button> */}
+                </div>
+              </div>
+            </div>
+          ) : null}
+
         </Accordion>
-        {/* <Modal className="modal fade" show={passMarksModel}>
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">Update Pass Marks</h5>
-            <Button
-              variant=""
-              type="button"
-              className="btn-close"
-              data-dismiss="modal"
-              // onClick={setPassMarksModal(false)}
-            ></Button>
-          </div>
-          <div className="modal-body">
-                <form onSubmit={e => updatePassMarks(e) }>
-
-                <div className="col-lg-6">
-                  <div className="form-group mb-3">
-                    <label htmlFor="question" className="text-black font-w600">
-                      {" "}
-                      Passing marks  <span className="required">*</span>{" "}
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      defaultValue=''
-                      name="passPercentage"
-                      placeholder=""
-                      value={passingMarks} 
-                      onChange={(e)=>setPassingMarks(e.target.value)}
-                    />
-                  </div>
-                </div>
-
-
-                <div className="col-lg-12">
-                  <div className="form-group mb-3">
-                    <input
-                      type="submit"
-                      value="Update "
-                      className="submit btn btn-primary"
-                      name="Update"
-                    />
-                  </div>
-                </div>
-
-
-                </form>
-          </div>
-        </div>
-      </Modal> */}
       </div>
     </div>
   );

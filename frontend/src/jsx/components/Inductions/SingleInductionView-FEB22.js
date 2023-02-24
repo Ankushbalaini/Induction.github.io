@@ -168,7 +168,8 @@ const SingleInductionView = (props) => {
     </>
   );
 
-  return <div className="row">{PageContent}</div>;
+  return <div className="row">
+  {PageContent}</div>;
 };
 
 export default SingleInductionView;
