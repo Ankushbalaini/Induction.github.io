@@ -62,7 +62,7 @@ const StartTest = () => {
     }
   };
 
-  // handle start test  
+  // handle start test
   const handleStartClick = () => {
     getQuestions();
 

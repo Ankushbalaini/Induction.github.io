@@ -147,9 +147,7 @@ const TestQuestions = (props) => {
 
     //document.addEventListener("visibilitychange", handleTabSwitch);
 
-    if(showResult){
-
-
+    if(showResult) {
       var data = { ...result};
       data.remark = "Test successfully completed";
       const response = await submitTestApi(id, token, data);  
@@ -157,13 +155,13 @@ const TestQuestions = (props) => {
       //document.removeEventListener("visibilitychange", handleTabSwitch);
 
       // navigate.push("/inductions");
-      
+      setShowResult(false);
       setTabChangeCount(0);  
-      setActiveWindowEvent(false);  
+      setActiveWindowEvent(false);
     }
 
     //return () => document.removeEventListener("visibilitychange", handleTabSwitch);
-  }, [showResult, result, activeWindowEvent, tabChangeCount]);
+  }, [ showResult, result, activeWindowEvent, tabChangeCount]);
   
 
   return (
