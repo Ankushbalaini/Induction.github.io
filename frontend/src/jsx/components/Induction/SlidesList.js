@@ -28,7 +28,7 @@ const SlidesList = ({ Slides, inductionID }) => {
           <th>Slide Title</th>
           {/* <th>Slide Order</th> */}
 
-          <th>Status</th>
+          {/* <th>Status</th> */}
           <th>Created On</th>
           <th Style="text-align: end">Action</th>
         </tr>
@@ -44,7 +44,7 @@ const SlidesList = ({ Slides, inductionID }) => {
               </div>
             </td>
             {/* <td>{row.slideOrder}</td> */}
-            <td>
+            {/* <td>
               <Link
                 className={`badge light ${
                   row.status ? "badge-success" : "badge-danger"
@@ -54,7 +54,7 @@ const SlidesList = ({ Slides, inductionID }) => {
               >
                 {row.status ? "Active" : "Inactive"}
               </Link>
-            </td>
+            </td> */}
 
             <td>
               {new Date(row.createdAt).toLocaleDateString("en-GB", {

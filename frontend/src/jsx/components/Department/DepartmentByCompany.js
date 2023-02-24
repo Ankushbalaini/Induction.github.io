@@ -14,7 +14,6 @@ async function getDepartments(token, company) {
     }).then((data) => data.json());
 }
 
-   
 const DepartmentByCompany = (props) => {
     const token = useSelector((state) => state.auth.auth.token);
     const [loading, setLoading] = useState(true);

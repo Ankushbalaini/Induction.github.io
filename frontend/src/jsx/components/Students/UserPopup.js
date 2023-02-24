@@ -86,7 +86,10 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
   };
 
   return (
-    <Modal className="modal fade" show={isModalOpen}>
+    <Modal className="modal fade" show={isModalOpen}  
+    size="xl"
+    aria-labelledby="contained-modal-title-vcenter"
+    centered>
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title">Update Profile </h5>
@@ -250,7 +253,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                     About me
                   </label>
                   <textarea
-                    rows={3}
+                    rows={2}
                     className="form-control"
                     name="aboutMe"
                     value={state.aboutMe}
@@ -267,7 +270,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                     Address
                   </label>
                   <textarea
-                    rows={3}
+                    rows={2}
                     className="form-control"
                     name="address"
                     placeholder="Enter your current address"
@@ -282,6 +285,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
               <div className="col-lg-12">
                 <div className="form-group mb-3">
                   <input
+                  style={{display:"flex",margin:"auto"}}
                     type="submit"
                     value="Update Profile"
                     className="submit btn btn-primary"

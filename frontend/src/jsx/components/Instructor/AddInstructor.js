@@ -19,22 +19,23 @@ const AddInstructor = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [role, setRole] = useState("instructor");
-  const [name, setName] = useState();
+  const [name, setName] = useState("");
   const [parentCompany, setParentCompany] = useState("");
   const [parentDepartment, setParentDepartment] = useState("");
   const [deptID, setDeptID] = useState();
   const [profilePhoto, setProfilePhoto] = useState("dummy-user.png");
   const [image, setImage] = useState({ preview: "", data: "" });
-  const [address, setAddress] = useState();
+  const [address, setAddress] = useState("");
   const [aboutMe, setAboutMe] = useState();
 
   // validation messages
   let errorsObj = {
     email: "",
     password: "",
-    cname: "",
+    name: "",
     parentCompany: "",
     parentDepartment: "",
+    address:""
   };
   const [errors, setErrors] = useState(errorsObj);
 
@@ -107,9 +108,10 @@ const AddInstructor = () => {
     }).then((user) => user.json());
 
     if ("status" in response && response.status === true) {
-      return swal("Success", response.message, "success", {
+      return swal("Instructor has been added successfully!", response.message, "success", {
         buttons: false,
         timer: 2000,
+        icon: "success",
       }).then((value) => {
         navigate.push("/instructors");
       });
@@ -162,7 +164,7 @@ const AddInstructor = () => {
                       // Role="presentation"
                     />
                     {errors.email && (
-                      <div Style="color:red;font-weight:600;padding:5px;">
+                      <div Style="color:red;font-weight:400;padding:5px;">
                         {errors.email}
                       </div>
                     )}
@@ -182,7 +184,7 @@ const AddInstructor = () => {
 
                     />
                     {errors.password && (
-                      <div Style="color:red;font-weight:600;padding:5px;">
+                      <div Style="color:red;font-weight:400;padding:5px;">
                         {errors.password}
                       </div>
                     )}
@@ -201,9 +203,9 @@ const AddInstructor = () => {
                       onKeyPress={(e) => handleKeyPress(e)}
 
                     />
-                    {errors.cname && (
-                      <div Style="color:red;font-weight:600;padding:5px;">
-                        {errors.cname}
+                    {errors.name && (
+                      <div Style="color:red;font-weight:400;padding:5px;">
+                        {errors.name}
                       </div>
                     )}
                   </div>
@@ -227,7 +229,7 @@ const AddInstructor = () => {
                         </select>
 
                         {errors.parentCompany && (
-                          <div Style="color:red;font-weight:600;padding:5px;">
+                          <div Style="color:red;font-weight:400;padding:5px;">
                             {errors.parentCompany}
                           </div>
                         )}
@@ -253,7 +255,7 @@ const AddInstructor = () => {
                         </select>
 
                         {errors.parentDepartment && (
-                          <div Style="color:red;font-weight:600;padding:5px;">
+                          <div Style="color:red;font-weight:400;padding:5px;">
                             {errors.parentDepartment}
                           </div>
                         )}
@@ -285,7 +287,7 @@ const AddInstructor = () => {
                       </select>
 
                       {errors.deptID && (
-                        <div Style="color:red;font-weight:600;padding:5px;">
+                        <div Style="color:red;font-weight:400;padding:5px;">
                           {errors.deptID}
                         </div>
                       )}
@@ -330,7 +332,7 @@ const AddInstructor = () => {
                   <div className="col-sm-9">
                     <textarea
                       className="form-control"
-                     
+                      type="text"
                       name="address"
                       
                       onChange={(e) => setAddress(e.target.value)}

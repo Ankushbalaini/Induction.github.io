@@ -119,7 +119,6 @@ const UpdateQuestion = ({ questionID,inductionID, isShowAddQuestion, onClickHand
         <div className="modal-header">
           <h5 className="modal-title">Update Question!</h5>
           <Button
-            variant=""
             type="button"
             className="btn-close"
             data-dismiss="modal"

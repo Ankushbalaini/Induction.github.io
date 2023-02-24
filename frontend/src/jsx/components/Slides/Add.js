@@ -4,7 +4,7 @@ import PageTitle from "../../layouts/PageTitle";
 import InductionDropdown from "./InductionDropdown";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
-import { useHistory } from "react-router-dom";
+import { Link,useHistory } from "react-router-dom";
 import { useParams } from "react-router";
 
 // api call
@@ -132,6 +132,10 @@ const Add = () => {
                 </div>
 
                 <div class="text-end toolbar toolbar-bottom p-2">
+                <Link class="btn btn-danger sw-btn-next m-3" to={`/update-induction/${id}`} >
+                            Cancel
+                      </Link>
+
                   <button class="btn btn-success sw-btn-next" type="submit">
                     Submit
                   </button>

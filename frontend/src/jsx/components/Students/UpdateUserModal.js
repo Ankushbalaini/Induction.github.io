@@ -71,9 +71,6 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
       setOption(rows);
     }
   };
-
- 
-
   const handleCallback = () => {
     trackOnclick(false);
   };
@@ -90,13 +87,11 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     setImage(img);
   };
 
-
-
   useEffect(() => {
      setParentCompany(profileData.parentCompany);
     
-    // setParentCompany(profileData.parentCompany);
-    console.log(profileData,"profile")
+    setParentCompany(profileData.parentCompany);
+    // console.log(profileData,"profile")
     setDeptID(profileData.deptID);
     setMainID(profileData._id);
     setUserID(profileData.profile._id);
@@ -111,13 +106,9 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
   }, [ isModalOpen]);
 
   const handleSubmit = async (e) => {
-    console.log(e.target.value,"ee....");
-     
-
-
+   
     e.preventDefault();
    
-
     let error = false;
     const errorObj1 = { ...errorObj }
 
@@ -133,7 +124,6 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
       errorObj1.deptID = "Choose Department first!";
       error = true;
     }
-   
     if (firstName === "") {
       errorObj1.firstName = "First Name is required";
       error = true;
@@ -146,14 +136,9 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
       errorObj1.address = "address is required";
       error = true;
     }
-    if (aboutMe === "") {
-      errorObj1.aboutMe = "About section is  is required";
-      error = true;
-    }
     setErrors(errorObj1);
 
     if (error) return ;
-
 
     let data = new FormData();
     data.append("mainID", mainID);
@@ -194,8 +179,20 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
     }
   };
 
+  function handleKeyPress(e) {
+    var key = e.key;
+   if (key == key) {
+        setErrors((errorObj == false))
+    }
+}
+
+
   return (
-    <Modal className="modal fade" show={isModalOpen}>
+    <Modal className="modal fade" show={isModalOpen}
+    size="xl"
+    aria-labelledby="contained-modal-title-vcenter"
+    centered
+    >
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title">Update Profile</h5>
@@ -209,7 +206,8 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
         </div>
         <div className="modal-body">
           <form className="update-form" onSubmit={handleSubmit} >
-            <div className="row">
+           
+          <div className="row">
 
               {/* Super admin starts */}
               {role === "super_admin" ? (
@@ -355,8 +353,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
 
               <div className="col-lg-12">
                 <div className="form-group mb-3">
-                  <label htmlFor="email" className="text-black font-w600">
-                    {" "}
+                  <label className="text-black font-w600">
                     Profile Pic <span className="required">*</span>
                   </label>
                   <div className="instructors-media">
@@ -399,17 +396,13 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     About me
                   </label>
                   <textarea
-                    rows={3}
+                    rows={2}
                     className="form-control"
                     name="aboutMe"
                     placeholder=""
                     value={aboutMe}
                     onChange={(e) => setAboutMe(e.target.value)}
-                  /> {errors.aboutMe && (
-                    <div Style="color:red;font-weight:400">
-                      {errors.aboutMe}
-                    </div>
-                  )}
+                  /> 
                 </div>
               </div>
 
@@ -419,13 +412,22 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                     Address
                   </label>
                   <textarea
-                    rows={3}
+                    rows={2}
                     className="form-control"
                     name="address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
+                    onKeyPress={(e) => handleKeyPress(e)}
                   />
+                  {errors.address && (
+                    <div Style="color:red;font-weight:400">
+                      {errors.address}
+                      </div>
+                  )}
+              
                 </div>
+               
+                 
               </div>
 
               <div className="col-lg-12">
@@ -440,6 +442,7 @@ const UpdateUserModal = ({ isModalOpen, trackOnclick, profileData }) => {
                 </div>
               </div>
             </div>
+
           </form>
         </div>
       </div>

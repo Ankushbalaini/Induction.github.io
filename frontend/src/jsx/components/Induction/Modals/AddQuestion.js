@@ -105,7 +105,8 @@ const AddQuestion = ({
         buttons: false,
         timer: 2000,
       }).then((value) => {
-        navigate.push("/viewmcq/" + inductionID);
+        onClickHandler();
+        navigate.push("/update-induction/" + inductionID);
       });
     } else {
       return swal("Failed", response.message, "error");
@@ -116,12 +117,13 @@ const AddQuestion = ({
     setErrors(errorObj);
   }, [isShowAddQuestion]);
 
-  const formstyle = {
-    float: "right",
-  };
 
   return (
-    <Modal className="modal fade" show={isShowAddQuestion}>
+    <Modal className="modal fade" show={isShowAddQuestion}
+    size="xl"
+    aria-labelledby="contained-modal-title-vcenter"
+    centered
+    >
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title">{label} Question !</h5>
@@ -137,7 +139,7 @@ const AddQuestion = ({
           <form onSubmit={(e) => onFormSubmit(e)}>
             <div className="card-body">
               <div className="basic-form">
-                <h4 className="card-title m-auto">Enter Question</h4>
+                <h4 className="mb-3">Enter Question</h4>
                 <input type="hidden" name="inductionID" value={inductionID} />
 
                 <div className="form-group ">
@@ -162,7 +164,7 @@ const AddQuestion = ({
             <div className="card-body">
               <div className="basic-form">
                 <div className="form-group ">
-                  <h4 className="card-title mb-3">Enter your Choices</h4>
+                  <h4 className="mb-3">Enter your Choices</h4>
                   <div className="form-group mb-3">
                     <input
                       type="text"
@@ -247,7 +249,8 @@ const AddQuestion = ({
                 <Button
                   className="btn btn-success mb-3"
                   variant="primary"
-                  style={formstyle}
+                  size="m"
+                  style={{display:"flex",margin:"auto"}}
                   type="submit"
                 >
                   {label}

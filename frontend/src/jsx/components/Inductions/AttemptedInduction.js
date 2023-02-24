@@ -93,7 +93,7 @@ const InductionUsers = () => {
       ) : (
         <div className="row">
           <div className="col-xl-12">
-            <div className="card users-list">
+            <div className="card students-list">  
               <div className="card-header border-0 ">
                 {/* <h3>Induction Users</h3> */}
 
@@ -123,6 +123,7 @@ const InductionUsers = () => {
                           {" "}
                           Select Company{" "}
                         </label>
+
                         <select
                           className="btn btn-white col-sm-2 border-light"
                           style={{ borderRadius: "8px" }}
@@ -134,6 +135,7 @@ const InductionUsers = () => {
                           <CompanyDropdown />
                         </select>
                       </div>
+
                       <div className="btn-group">
                         <label
                           style={{
@@ -145,6 +147,7 @@ const InductionUsers = () => {
                           {" "}
                           Select Induction{" "}
                         </label>
+                        
                         <select
                           className="btn btn-white col-sm-2 border-light"
                           style={{ borderRadius: "8px" }}

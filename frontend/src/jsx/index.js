@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 
 // React router dom
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 
 // Css
 import "./index.css";
@@ -76,9 +76,7 @@ import AttemptQuiz from "./components/Inductions/Attemptquiz";
 import AttemptedInductions from "./components/Inductions/AttemptedInduction";
 import UserAttemptedInductions from "./components/Students/AttemptedInductions";
 
-
-
-const Markup = () => {
+const Markup = withRouter (({location}) => {
   var newState = store.getState();
 
   const [role, setRole] = useState(newState.auth.auth.role);
@@ -115,8 +113,7 @@ const Markup = () => {
     { url: "add-slide/:id", component: AddSlide }, // induction id passed
     { url: "update-slide/:id", component: UpdateSlide }, // slide id passed
     { url: "update-induction/:id", component: UpdateInduction },
-    
-    { url: "single-induction-view/:id", component: SingleInductionView },
+    { url: "single-induction-view/:id", component: SingleInductionView  },
     { url: "mcq/:inductionID", component: Mcq },
     { url : "viewmcq/:id", component :ViewMcq},
     { url : "attemptquiz/:id",component:AttemptQuiz},
@@ -180,6 +177,6 @@ const Markup = () => {
       <ScrollToTop />
     </>
   );
-};
+});
 
 export default Markup;
