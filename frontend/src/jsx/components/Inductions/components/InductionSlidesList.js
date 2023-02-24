@@ -48,7 +48,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
       {USER_ROLES.COMPANY === role || USER_ROLES.INSTRUCTOR === role ? (
         <div>
           <div className="accordion accordion">
-            <div class="card accordion-item">
+            {/* <div class="card accordion-item">
               <Link
                 className="btn btn-primary"
                 to={`../attemptquiz/${inductionID}`}
@@ -56,7 +56,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
               >
                 Attempted Quiz
               </Link>
-            </div>
+            </div> */}
           </div>
 
           <div className="accordion accordion">
@@ -85,7 +85,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
        
 
           <div className="accordion accordion">
-            <div class="card accordion-item">
+            {/* <div class="card accordion-item">
               <Link
                 className="btn btn-success"
                 to={`../mcq/${inductionID}`}
@@ -93,7 +93,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
               >
                 Activity
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       ) : null}
@@ -126,8 +126,8 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
                             <span className="acc-icon">
                             {j + 1 < currentStep || complete ? <TiTick size={30} /> :
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M11.3337 6V4.66666C11.3337 2.79999 9.86699 1.33333 8.00033 1.33333C6.13366 1.33333 4.66699 2.79999 4.66699 4.66666V6C3.53366 6 2.66699 6.86666 2.66699 8V12.6667C2.66699 13.8 3.53366 14.6667 4.66699 14.6667H11.3337C12.467 14.6667 13.3337 13.8 13.3337 12.6667V8C13.3337 6.86666 12.467 6 11.3337 6ZM6.00033 4.66666C6.00033 3.53333 6.86699 2.66666 8.00033 2.66666C9.13366 2.66666 10.0003 3.53333 10.0003 4.66666V6H6.00033V4.66666ZM8.66699 11.3333C8.66699 11.7333 8.40033 12 8.00033 12C7.60033 12 7.33366 11.7333 7.33366 11.3333V9.33333C7.33366 8.93333 7.60033 8.66666 8.00033 8.66666C8.40033 8.66666 8.66699 8.93333 8.66699 9.33333V11.3333Z" fill="#374557"/>
-					</svg>}
+					                   	<path d="M11.3337 6V4.66666C11.3337 2.79999 9.86699 1.33333 8.00033 1.33333C6.13366 1.33333 4.66699 2.79999 4.66699 4.66666V6C3.53366 6 2.66699 6.86666 2.66699 8V12.6667C2.66699 13.8 3.53366 14.6667 4.66699 14.6667H11.3337C12.467 14.6667 13.3337 13.8 13.3337 12.6667V8C13.3337 6.86666 12.467 6 11.3337 6ZM6.00033 4.66666C6.00033 3.53333 6.86699 2.66666 8.00033 2.66666C9.13366 2.66666 10.0003 3.53333 10.0003 4.66666V6H6.00033V4.66666ZM8.66699 11.3333C8.66699 11.7333 8.40033 12 8.00033 12C7.60033 12 7.33366 11.7333 7.33366 11.3333V9.33333C7.33366 8.93333 7.60033 8.66666 8.00033 8.66666C8.40033 8.66666 8.66699 8.93333 8.66699 9.33333V11.3333Z" fill="#374557"/>
+					                  </svg>}
                             </span>
                             <h4 className="m-0">{slide.slideTitle}</h4>
                            
