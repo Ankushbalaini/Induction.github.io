@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-
 // api call
 async function getCompanies(token) {
     return fetch("http://localhost:8081/api/company/companyDropdownList", {
@@ -21,9 +20,9 @@ const CompanyDropdown = (props) => {
     const [loading, setLoading] = useState(true);
     const [option, setOption] = useState();
 
-    const callApi = async () =>{
+    const callApi = async (token) =>{
         const response = await getCompanies(token);
-        if ("status" in response && response.status == true) { 
+        if ("status" in response && response.status == true) {
             const rows = response.data.map((row, index) => (
                 <option value={row._id}>{ row?.company?.name ?? row._id}</option>
             ));
@@ -34,7 +33,7 @@ const CompanyDropdown = (props) => {
 
     useEffect(()=>{
         if(loading){
-            callApi();
+            callApi(token);
         }
     },[]);
     const pageContent = (loading) ? <option>Loading</option> : <>{option}</>;

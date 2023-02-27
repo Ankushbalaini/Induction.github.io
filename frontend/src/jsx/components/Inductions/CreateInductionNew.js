@@ -273,7 +273,7 @@ const buttonStyle = {
                 </div>
               </div>
               <div className="mb-4 row">
-              <label className="col-sm-3 col-form-label">Select Department {deptID}</label>
+              <label className="col-sm-3 col-form-label">Select Department</label>
                  <div className="col-sm-9">
                     <select
                       name="deptID"
