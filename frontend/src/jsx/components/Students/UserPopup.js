@@ -23,40 +23,6 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
   const token = useSelector((state) => state.auth.auth.token);
   const userRole = useSelector((state) => state.auth.auth.role);
 
-
-/**
- * 
- * {"_id":"63f6120918666f95f712eb0a",
- * "email":"cherry@gmail.com",
- * "password":"admin",
- * "role":"user",
- * "status":true,
- * "deleted":false,
- * "profileData":[],
- * "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2M2Y2MTIwOTE4NjY2Zjk1ZjcxMmViMGEiLCJlbWFpbCI6ImNoZXJyeUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImRlcHRJRCI6IjYzZjc2YWI3ZGQ4MTU3NzdjM2ExNTc2NiIsInBhcmVudENvbXBhbnkiOiI2M2Y0ZTc1ZDBkOTc4ZWEyNjEyMWU4YjQiLCJpYXQiOjE2Nzc0OTk1NjUsImV4cCI6MTY3NzUwNjc2NX0.PEGyNSmXKfY-4hqpeeG1ji780Lah_j1STCPROLhL2K0",
- * "profile":{
- * "_id":"63f6120918666f95f712eb0b",
- * "userID":"63f6120918666f95f712eb0a",
- * "first_name":"cheryy",
- * "last_name":"kaur",
- * "email":"cherry@gmail.com",
- * "profilePhoto":"dummy-user.png",
- * "status":false,
- * "deleted":false,
- * "createdAt":"2023-02-22T13:00:57.820Z",
- * "updatedAt":"2023-02-27T08:13:46.218Z",
- * "__v":0,
- * "aboutMe":"My Selft",
- * "address":""
- * },
- * "createdAt":"2023-02-22T13:00:57.704Z",
- * "updatedAt":"2023-02-27T12:06:05.958Z","__v":90,
- * "deptID":"63f76ab7dd815777c3a15766",
- * "parentCompany":"63f4e75d0d978ea26121e8b4"
- * }
- * 
- */
-
   const intialValue = {
     parentCompany: profileData.parentCompany,
     deptID: profileData.deptID,

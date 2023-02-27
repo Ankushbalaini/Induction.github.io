@@ -63,9 +63,12 @@ import InstructorCourses from "./components/Instructor/InstructorCourses";
 import InstructorStudents from "./components/Instructor/InstructorStudents";
 
 // Students
-import AllStudents from "./components/Students/AllStudents";
+// import AllStudents from "./components/Students/AllStudents";
 import Users from "./components/Users/Users";
-import UnassignedUsers from "./components/Students/UnassignedUsers";
+
+// import UnassignedUsers from "./components/Students/UnassignedUsers";
+import UnassignedUsers from "./components/Users/UnassignedUsers";
+
 
 // App
 import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
