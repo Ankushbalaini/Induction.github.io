@@ -6,7 +6,6 @@ import ActionDropDown from "./ActionDropDown";
 import { useSelector } from "react-redux";
 import PageTitle from "../../layouts/PageTitle";
 
-const images = require.context("../../../../../images/profile/", true);
 
 const AttemptedInductions = () => {
   const token = useSelector((state) => state.auth.auth.token);
@@ -16,7 +15,6 @@ const AttemptedInductions = () => {
   const sort = 10;
   const activePag = useRef(0);
   const [loading, setLoading] = useState(true);
-  const [test, settest] = useState(0);
   const [inductions, setInductions] = useState(0);
   const [profileData, setProfileData] = useState({
     email: "",
@@ -30,16 +28,6 @@ const AttemptedInductions = () => {
     },
   });
 
-  // model popup usestate
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [image, setImage] = useState({ preview: "", data: "" });
-  const [address, setAddress] = useState();
-  const [aboutStudent, setAboutStudent] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalData, setModalData] = useState();
 
   // Active data
   const chageData = (frist, sec) => {
@@ -52,18 +40,6 @@ const AttemptedInductions = () => {
     }
   };
 
-  const loadImage = (imageName) => {
-    return images(`./${imageName}`);
-  };
-
-  // callback function to opdate state
-  const trackOnclick = (payload, pdata) => {
-    if (pdata) {
-      setProfileData(pdata);
-      console.log(pdata);
-    }
-    setIsModalOpen(payload);
-  };
 
   const handlepageLoad = async (event) => {
     const response = await fetch("http://localhost:8081/api/users/inductions", {
@@ -87,7 +63,7 @@ const AttemptedInductions = () => {
   useEffect(() => {
     handlepageLoad();
     setData(document.querySelectorAll("#student_wrapper tbody tr"));
-  }, [profileData, isModalOpen]);
+  }, [profileData]);
 
   // Active pagginarion
   activePag.current === 0 && chageData(0, sort);
@@ -100,7 +76,6 @@ const AttemptedInductions = () => {
   const onClick = (i) => {
     activePag.current = i;
     chageData(activePag.current * sort, (activePag.current + 1) * sort);
-    settest(i);
   };
 
   //css for button
@@ -120,7 +95,7 @@ const AttemptedInductions = () => {
           <div className="col-xl-12">
             <div className="card students-list">
               <div className="card-header border-0 flex-wrap pb-0">
-                <h2>Attempted Users</h2>
+                {/* <h2>Attempted Users</h2> */}
               </div>
               <div className="card-body py-0">
                 <div className="table-responsive">
@@ -139,6 +114,7 @@ const AttemptedInductions = () => {
                           <th>Incorrect Answers</th>
                           <th>Remark</th>
                           <th>Test Status</th>
+                          <th Style='text-align: end'>Date</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -172,6 +148,7 @@ const AttemptedInductions = () => {
                                 {row.testStatus}
                               </Link>
                             </td>
+                            <td>{new Date(row.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric"})}</td>
                           </tr>
                         ))}
                       </tbody>

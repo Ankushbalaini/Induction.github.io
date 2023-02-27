@@ -70,7 +70,13 @@ const SideBar = () => {
 
   // super-admin
 
-  let deshBoard = ["dashboard", "instructor-dashboard", "company-dashboard", "profile", "company-profile"],
+  let deshBoard = [
+      "dashboard",
+      "instructor-dashboard",
+      "company-dashboard",
+      "profile",
+      "company-profile",
+    ],
     department = ["departments", "add-department"],
     companies = ["companies", "add-company"],
     instructor = [
@@ -90,9 +96,9 @@ const SideBar = () => {
       "add-slide",
       "update-induction",
       "attempted-inductions",
-      "user-inductions"
+      "user-inductions",
     ],
-    students = ["students", "add-student", "unassigned-users", "users", "user-inductions"];
+    students = ["students", "add-student", "unassigned-users", "users"];
 
   return (
     <div
@@ -108,7 +114,6 @@ const SideBar = () => {
     >
       <PerfectScrollbar className="dlabnav-scroll">
         <MM className="metismenu" id="menu">
-
           {/* Dashboards - Super Admin */}
           {USER_ROLES.SUPER_ADMIN == role ? (
             <>
@@ -120,9 +125,7 @@ const SideBar = () => {
                 <ul>
                   <li>
                     <Link
-                      className={`${
-                        path === "dashboard" ? "mm-active" : ""
-                      }`}
+                      className={`${path === "dashboard" ? "mm-active" : ""}`}
                       to="/dashboard"
                     >
                       Dashboard
@@ -134,7 +137,7 @@ const SideBar = () => {
           ) : null}
 
           {/* Dashboards - Instructor */}
-          { USER_ROLES.INSTRUCTOR === role ? (
+          {USER_ROLES.INSTRUCTOR === role ? (
             <>
               <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
                 <Link className="" to="/instructor-dashboard">
@@ -162,52 +165,69 @@ const SideBar = () => {
                       Profile
                     </Link>
                   </li>
-
                 </ul>
               </li>
             </>
           ) : null}
 
           {/* Dashboards - Company */}
-          { USER_ROLES.COMPANY === role ?
+          {USER_ROLES.COMPANY === role ? (
+            <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
+              <Link className="" to="/company-dashboard">
+                <i className="bi bi-grid"></i>
+                <span className="nav-text">Dashboard</span>
+              </Link>
+              <ul>
+                <li>
+                  <Link
+                    className={`${
+                      path === "company-dashboard" ? "mm-active" : ""
+                    }`}
+                    to="/company-dashboard"
+                  >
+                    {" "}
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={`${
+                      path === "company-profile" ? "mm-active" : ""
+                    }`}
+                    to="/company-profile"
+                  >
+                    Profile
+                  </Link>
+                </li>
+              </ul>
+            </li>
+          ) : null}
+
+          {/* Dashboards - Super Admin */}
+          {USER_ROLES.USER == role ? (
+            <>
               <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
-                <Link className="" to="/company-dashboard">
+                <Link className="" to="#">
                   <i className="bi bi-grid"></i>
                   <span className="nav-text">Dashboard</span>
                 </Link>
                 <ul>
                   <li>
                     <Link
-                      className={`${path === "company-dashboard" ? "mm-active" : ""}`}
-                      to="/company-dashboard"
-                    >
-                      {" "}
-                      Dashboard
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className={`${
-                        path === "company-profile" ? "mm-active" : ""
-                      }`}
-                      to="/company-profile"
+                      className={`${path === "profile" ? "mm-active" : ""}`}
+                      to="/profile"
                     >
                       Profile
                     </Link>
                   </li>
                 </ul>
               </li>
-               : null
-            }
-
-
-          
-          
-
+            </>
+          ) : null}
 
           {/*  Company Module - Visible to Only Super Admin*/}
 
-          { USER_ROLES.SUPER_ADMIN === role ? (
+          {USER_ROLES.SUPER_ADMIN === role ? (
             <li className={`${companies.includes(path) ? "mm-active" : ""}`}>
               <Link className="has-arrow" to="#">
                 {" "}
@@ -236,9 +256,8 @@ const SideBar = () => {
             </li>
           ) : null}
 
-
           {/* Department - Visible for Super Admin and Company Only */}
-          { role === "company" ? (
+          {role === "company" ? (
             <li className={`${department.includes(path) ? "mm-active" : ""}`}>
               <Link className="has-arrow" to="#">
                 <i className="bi bi-book"></i>
@@ -267,7 +286,6 @@ const SideBar = () => {
               </ul>
             </li>
           ) : null}
-          
 
           {role === "super_admin" || role === "company" ? (
             <li className={`${instructor.includes(path) ? "mm-active" : ""}`}>
@@ -300,14 +318,14 @@ const SideBar = () => {
           ) : null}
 
           <li className={`${inductions.includes(path) ? "mm-active" : ""}`}>
-            <Link className="has-arrow" to="#">
+            <Link className="has-arrow" to="inductions">
               <i className="bi bi-book"></i>
               <span className="nav-text">Inductions</span>
             </Link>
             <ul>
-              {role === "company" ||
-              role === "super_admin" ||
-              role === "instructor" ? (
+              {USER_ROLES.SUPER_ADMIN === role ||
+              USER_ROLES.COMPANY === role ||
+              USER_ROLES.INSTRUCTOR === role ? (
                 <>
                   {/* <li>
                     <Link
@@ -372,7 +390,6 @@ const SideBar = () => {
                       Attempted Induction{" "}
                     </Link>
                   </li>
-
                 </>
               ) : null}
 
@@ -385,28 +402,28 @@ const SideBar = () => {
                 </Link>
               </li>
 
-              { USER_ROLES.USER === role ?
-              <li>
-                <Link
-                  className={`${path === "user-inductions" ? "mm-active" : ""}`}
-                  to="/user-inductions"
-                >
-                  User Inductions{" "}
-
-                </Link>
-              </li> : null }
-
+              {USER_ROLES.USER === role ? (
+                <li>
+                  <Link
+                    className={`${
+                      path === "user-inductions" ? "mm-active" : ""
+                    }`}
+                    to="/user-inductions"
+                  >
+                    User Inductions{" "}
+                  </Link>
+                </li>
+              ) : null}
             </ul>
           </li>
 
-          {role !== "user" ? (
+          {USER_ROLES.USER !== role ? (
             <li className={`${students.includes(path) ? "mm-active" : ""}`}>
               <Link className="has-arrow" to="#">
                 <i className="bi bi-people"></i>
                 <span className="nav-text">Users</span>
               </Link>
               <ul>
-
                 <li>
                   <Link
                     className={`${path === "users" ? "mm-active" : ""}`}
@@ -418,7 +435,9 @@ const SideBar = () => {
 
                 <li>
                   <Link
-                    className={`${path === "unassigned-users" ? "mm-active" : ""}`}
+                    className={`${
+                      path === "unassigned-users" ? "mm-active" : ""
+                    }`}
                     to="/unassigned-users"
                   >
                     Unassigned Users{" "}

@@ -133,7 +133,7 @@ const TestQuestions = (props) => {
   };
 
   // async func
-  const submitTestApiCall = async (id, token, data) =>{
+  const submitTestApiCall = async (id, token, data) => {
     const response = await submitTestApi(id, token, data);
     if ("status" in response && response.status == true) {
       return swal("Success", response.message, "success", {
@@ -142,16 +142,13 @@ const TestQuestions = (props) => {
       }).then((value) => {
         setTabChangeCount(0);
       });
-    }else{
+    } else {
       return swal("Failed", response.message, "error");
     }
-  }
-
-
+  };
 
   useEffect(() => {
     if (showResult) {
-      console.log("====use-effect ====");
       var data = { ...result, remark: "Test successfully completed" };
       submitTestApiCall(id, token, data);
     }
@@ -191,10 +188,11 @@ const TestQuestions = (props) => {
       {showResult ? (
         <>
           <div className="quiz-container text-justify display-6">
-            <h3>My Score : {result.score}</h3>
-            <h3>Correct : {result.correctAnswers}</h3>
-            <h3>Wrong : {result.wrongAnswers}</h3>
-
+            <p>
+              <h3>My Score : {result.score}</h3>
+              <h3>Correct : {result.correctAnswers}</h3>
+              <h3>Wrong : {result.wrongAnswers}</h3>
+            </p>
             <h3>
               Thanks For Attempting the test your test results will be shared
               with you shortly!
