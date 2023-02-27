@@ -156,12 +156,12 @@ function CoursesMain() {
           // navigate to induction page
           // call induction is viewed api- later on
           
+          if( USER_ROLES.USER === userRole){
+            navigate.push(`/view-induction/${inductionID}`);
+          }else{
+            navigate.push(`/single-induction-view/${inductionID}`);
+          }
           
-          navigate.push(`/single-induction-view/${inductionID}`);
-
-
-
-
         });
       } else {
         return swal("Failed", "Induction is not started", "error");
@@ -294,16 +294,17 @@ function CoursesMain() {
                         {data.numOfSlides} Slides
                       </span>
 
+                      { USER_ROLES.USER === userRole ? 
                       <Button type="button" className="btn btn-primary btn-sm" onClick={(e) => confirmHandler(`${data._id}`) }>
                       View
-                      </Button>
-                      {/* <Link
+                      </Button> :
+                      <Link
                         to={`/single-induction-view/${data._id}`}
                         className="btn btn-primary btn-sm"
-                        
                       >
                         View
-                      </Link> */}
+                      </Link>
+                      }
                     </div>
                   </div>
                 </div>

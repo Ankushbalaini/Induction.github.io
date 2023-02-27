@@ -41,6 +41,9 @@ import CreateInductionNew from "./components/Inductions/CreateInductionNew";
 import SingleInductionView from "./components/Inductions/SingleInductionView";
 import StarTest from './components/Inductions/test/StartTest';
 
+// for User v2
+import ViewInduction from "./components/Users/ViewInduction";
+
 
 // v2 versions
 import Add from './components/Induction/Add';
@@ -60,9 +63,12 @@ import InstructorCourses from "./components/Instructor/InstructorCourses";
 import InstructorStudents from "./components/Instructor/InstructorStudents";
 
 // Students
-import AllStudents from "./components/Students/AllStudents";
-import Users from "./components/Students/Users";
-import UnassignedUsers from "./components/Students/UnassignedUsers";
+// import AllStudents from "./components/Students/AllStudents";
+import Users from "./components/Users/Users";
+
+// import UnassignedUsers from "./components/Students/UnassignedUsers";
+import UnassignedUsers from "./components/Users/UnassignedUsers";
+
 
 // App
 import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
@@ -74,7 +80,8 @@ import { store } from "../../src/store/store";
 import ViewMcq from "./components/Inductions/Viewquiz";
 import AttemptQuiz from "./components/Inductions/Attemptquiz";
 import AttemptedInductions from "./components/Inductions/AttemptedInduction";
-import UserAttemptedInductions from "./components/Students/AttemptedInductions";
+import UserAttemptedInductions from "./components/Users/AttemptedInductions";
+
 
 const Markup = () => {
   var newState = store.getState();
@@ -105,9 +112,7 @@ const Markup = () => {
     { url: "add-department", component: AddDepartment },
 
     // Inductions ----
-    // { url: "inductions", component: Inductions },
     { url: "induction/:id", component: InductionDetail },
-    //{ url: "create-induction", component: CreateInduction },
     { url: "create-induction", component: CreateInductionNew },
     { url: "add-induction", component: Add },
     { url: "add-slide/:id", component: AddSlide }, // induction id passed
@@ -119,6 +124,7 @@ const Markup = () => {
     { url : "attemptquiz/:id",component:AttemptQuiz},
     
   
+    // full screen URLs
     { url: "start-test/:id", component: StarTest },
 
 
@@ -129,10 +135,14 @@ const Markup = () => {
     { url: "instructor-courses", component: InstructorCourses },
     { url: "instructor-students", component: InstructorStudents },
     
-    { url: "users", component: AllStudents },
+    //{ url: "users", component: AllStudents },
+    { url: "users", component: Users },
     { url : "user-inductions", component : UserAttemptedInductions},
     { url : "attempted-inductions", component : AttemptedInductions},
     { url: 'unassigned-users', component: UnassignedUsers },
+
+    // full screen URLs
+    { url: 'view-induction/:id', component: ViewInduction },
 
     // Apps
     { url: "app-profile", component: AppProfile },

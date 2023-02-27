@@ -403,16 +403,21 @@ const SideBar = () => {
               </li>
 
               {USER_ROLES.USER === role ? (
+                <>
+                
+
                 <li>
-                  <Link
-                    className={`${
-                      path === "user-inductions" ? "mm-active" : ""
-                    }`}
-                    to="/user-inductions"
-                  >
-                    User Inductions{" "}
-                  </Link>
+                <Link
+                  className={`${
+                    path === "user-inductions" ? "mm-active" : ""
+                  }`}
+                  to="/user-inductions"
+                >
+                  Inductions Attempts{" "}
+                </Link>
                 </li>
+                </>
+
               ) : null}
             </ul>
           </li>

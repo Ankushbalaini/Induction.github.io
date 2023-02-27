@@ -13,13 +13,12 @@ const USER_ROLES = {
   USER: "user",
 };
 
-
 const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
-  
-
   const navigate = useHistory();
   const id = useSelector((state) => state.auth.auth.id);
-  const instructorParentCompany = useSelector((state) => state.auth.auth.parentCompany); // used in case of instructor
+  const instructorParentCompany = useSelector(
+    (state) => state.auth.auth.parentCompany
+  ); // used in case of instructor
   const token = useSelector((state) => state.auth.auth.token);
   const userRole = useSelector((state) => state.auth.auth.role);
 
@@ -46,7 +45,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
       state.parentCompany === "" ||
       state.deptID === "" ||
       state.first_name === "" ||
-      state.last_name === "" 
+      state.last_name === ""
     ) {
       return swal("Failed", "Please enter all required fields!", "error");
     }
@@ -82,10 +81,6 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
     trackOnclick(false);
   };
 
-  // const loadImage = (imageName) => {
-  //   return images(`./${imageName}`);
-  // };
-
   const handleFileChange = async (e) => {
     const img = {
       preview: URL.createObjectURL(e.target.files[0]),
@@ -94,14 +89,10 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
     setImage(img);
   };
 
-
-
-  useEffect(()=>{
-    console.log("profile => "+ JSON.stringify(profileData));
+  useEffect(() => {
+    console.log("profile => " + JSON.stringify(profileData));
     setState(intialValue);
-    //const [state, setState] = useState(intialValue);
-
-  },[isModalOpen]);
+  }, [isModalOpen]);
   return (
     <Modal className="modal fade" show={isModalOpen}>
       <div className="modal-content">
@@ -118,7 +109,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
         <div className="modal-body">
           <form className="update-form" onSubmit={handleSubmit}>
             <div className="row">
-              { USER_ROLES.SUPER_ADMIN === userRole ? (
+              {USER_ROLES.SUPER_ADMIN === userRole ? (
                 <CompanyDropdown
                   selectedVal={profileData.parentCompany}
                   selectedDeptVal={profileData.deptID}
@@ -126,8 +117,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
               ) : null}
 
               <div className="col-lg-12">
-                { USER_ROLES.COMPANY === userRole ? (
-
+                {USER_ROLES.COMPANY === userRole ? (
                   <div className="form-group mb-3">
                     <input type="hidden" name="parentCompany" value={id} />
                     <label
@@ -141,10 +131,11 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                       className="form-control"
                       name="deptID"
                       value={state.deptID}
-                      onChange={(e)=>{ setState({...state, deptID: e.target.value })}}
-                      
+                      onChange={(e) => {
+                        setState({ ...state, deptID: e.target.value });
+                      }}
                     >
-                      <option value=''>Select</option>
+                      <option value="">Select</option>
                       <DepartmentByCompany
                         parentCompany={id}
                         selectedDeptVal={state.deptID}
@@ -153,9 +144,13 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                   </div>
                 ) : null}
 
-                { USER_ROLES.INSTRUCTOR === userRole ? (
+                {USER_ROLES.INSTRUCTOR === userRole ? (
                   <div className="form-group mb-3">
-                    <input type="hidden" name="parentCompany" value={instructorParentCompany} />
+                    <input
+                      type="hidden"
+                      name="parentCompany"
+                      value={instructorParentCompany}
+                    />
                     <label
                       htmlFor="first_name"
                       className="text-black font-w600"
@@ -167,7 +162,9 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                       className="form-control"
                       name="deptID"
                       value={state.deptID}
-                      onChange={(e)=>{setState({ ...state, deptID: e.target.value })}}
+                      onChange={(e) => {
+                        setState({ ...state, deptID: e.target.value });
+                      }}
                       required
                     >
                       <DepartmentByCompany
@@ -299,7 +296,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
               <div className="col-lg-12">
                 <div className="form-group mb-3">
                   <input
-                  style={{display:"flex",margin:"auto"}}
+                    style={{ display: "flex", margin: "auto" }}
                     type="submit"
                     value="Update Profile"
                     className="submit btn btn-primary"
