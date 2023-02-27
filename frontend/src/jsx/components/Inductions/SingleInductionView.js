@@ -86,7 +86,7 @@ const SingleInductionView = (props) => {
       setSlideData(response.slides);
       setCurrentSlideContent(response.slides[0]);
       setLoading(false);
-      handleFullScreen();
+      // handleFullScreen();
     }
   };
 
