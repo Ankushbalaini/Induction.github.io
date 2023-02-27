@@ -4,22 +4,24 @@ import swal from "sweetalert";
 import Form from "react-bootstrap/Form";
 import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 import Table from './DataTable';
 
 // api call
-async function getCompanies(formValues) {
+async function getCompanies(token) {
   return fetch("http://localhost:8081/api/company/list", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formValues),
+      "x-access-token" : token
+    }
   }).then((data) => data.json());
 }
 
 const Companies = () => {
   const navigate = useHistory();
+  const token = useSelector((state) => state.auth.auth.token);
+
   const [loading, setLoading] = useState(true);
   const [companies, setCompanies] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -99,6 +101,9 @@ const Companies = () => {
       "http://localhost:8081/api/company/edit/" + editID,
       {
         method: "PUT",
+        headers: {
+          "x-access-token" : token
+        },
         body: data,
       }
     ).then((data) => data.json());
@@ -130,7 +135,7 @@ const Companies = () => {
 
   // on List companies page first render
   const handlepageLoad = async (event) => {
-    const response = await getCompanies();
+    const response = await getCompanies(token);
     if ("status" in response && response.status == true) {
       setCompanies(response.data);
       setLoading(false);
