@@ -258,7 +258,6 @@ const Companies = () => {
                     <label htmlFor="author" className="text-black font-w600">
                       {" "}
                       Company Logo<span className="required">*</span>{" "}
-                      ({logo})
                       <input type="hidden" name="logo-img" value={logo} />
                     </label>
                     

@@ -204,7 +204,7 @@ exports.add = async (req, res) => {
       .then((data) => {
         res.status(200).send({
           status: true,
-          message: "Success,Company has been Added Successfully!",
+          message: "Company has been Added Successfully!",
           data: data,
         });
       })
@@ -329,7 +329,7 @@ exports.edit = (req, res) => {
         .catch((err) => {
           res.status(500).send({
             status: false,
-            message: "Some Slug should be unique.",
+            message: "Slug already exists!.",
           });
         });
     }
