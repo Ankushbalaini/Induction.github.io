@@ -2,7 +2,8 @@ import React, { useRef, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import ActionDropDown from "./ActionDropDown";
-import UpdateUserModal from "./UpdateUserModal";
+// import UpdateUserModal from "./UpdateUserModal";
+import UpdateUserModal from "./UserPopup";
 import Table from "./DataTable";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -10,11 +11,20 @@ import CompanyDropdown from "../Companies/CompanyDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 import PageTitle from "../../layouts/PageTitle";
 const images = require.context("../../../../../images/profile/", true);
+
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
+
+
 const AllStudents = () => {
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
   const id = useSelector((state) => state.auth.auth.id);
-  const role = useSelector((state) => state.auth.auth.role);
+  const userRole = useSelector((state) => state.auth.auth.role);
   const [searchCompany, setSearchCompany] = useState();
   const [searchDepartment, setSearchDepartment] = useState();
   const [searchName, setSearchName] = useState();
@@ -181,7 +191,7 @@ const AllStudents = () => {
             <div className="card students-list">
               <div className="card-header border-0 ">
                 <h2>Assigned Users</h2>
-              {role === "super_admin" ? (
+              { USER_ROLES.SUPER_ADMIN === userRole ? (
                 <div className="row">
                 <div
                   className="btn-group"
@@ -253,7 +263,7 @@ const AllStudents = () => {
                   >
                     {/* CompanyChangeFilter */}
                     {/* <label Style="margin:20px">Filter Users</label> */}
-                    {role === "company" ? (
+                    { USER_ROLES.COMPANY === userRole ? (
                       <div>
                         <label> Select Deparment</label>
                         <select
@@ -266,7 +276,7 @@ const AllStudents = () => {
                         </select>
                       </div>
                     ) : null}
-                    {role === "instructor" ? (
+                    { USER_ROLES.INSTRUCTOR === userRole ? (
                       <div className="col-sm-3">
                         <label > Select Deparment</label>
                         <select

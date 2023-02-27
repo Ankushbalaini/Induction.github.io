@@ -64,6 +64,7 @@ import InstructorStudents from "./components/Instructor/InstructorStudents";
 
 // Students
 import AllStudents from "./components/Students/AllStudents";
+import Users from "./components/Users/Users";
 import UnassignedUsers from "./components/Students/UnassignedUsers";
 
 // App
@@ -131,7 +132,8 @@ const Markup = () => {
     { url: "instructor-courses", component: InstructorCourses },
     { url: "instructor-students", component: InstructorStudents },
     
-    { url: "users", component: AllStudents },
+    //{ url: "users", component: AllStudents },
+    { url: "users", component: Users },
     { url : "user-inductions", component : UserAttemptedInductions},
     { url : "attempted-inductions", component : AttemptedInductions},
     { url: 'unassigned-users', component: UnassignedUsers },
