@@ -50,6 +50,10 @@ const Companies = () => {
     // set values
   };
 
+  const changeUserStatus = () =>{
+    alert("Work is in progress");
+  }
+
   // callback function to opdate state
   const trackOnclick = (payload, company) => {
     setIsModalOpen(payload);
@@ -160,6 +164,7 @@ const Companies = () => {
                   data={companies}
                   trackOnclick={trackOnclick}
                   trackDeleteClick={trackDeleteClick}
+                  changeUserStatus={changeUserStatus}
                 />
               </div>
             </div>

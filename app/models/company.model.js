@@ -3,7 +3,7 @@ module.exports = mongoose => {
       "company",
       mongoose.Schema(
         {
-          userID: {type: String, required : true},
+          userID: {type: String, required : true, ref: 'user_cred'},
           name: { type: String, required : true},
           email : { type: String, required : true, unique: true},
           address: { type: String, required : true},

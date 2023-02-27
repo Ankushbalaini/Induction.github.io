@@ -21,7 +21,8 @@ const USER_ROLES = {
 // Create and Save a new company
 exports.list = (req, res) => {
   companyModel
-    .find({})
+    .find({}, { _id:1, name:1, email:1, companyID:1, logo:1, userID: 1 })
+    .populate('userID', 'status')
     .sort({ createdAt: -1 })
     .then(function (result) {
       if (result) {

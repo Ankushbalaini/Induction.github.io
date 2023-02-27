@@ -5,6 +5,7 @@ import DropDownBlog from "../Dashboard/DropDownBlog";
 import ActionDropDown from "../Dashboard/ActionDropDown";
 import FilterComponent from "./FilterComponent";
 import { Dropdown } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import { tableStyles } from "../Instructor/Instructor/tableStyles";
 
@@ -35,9 +36,14 @@ const Table = (props) => {
       sortable: true,
       cell: (row) => (
         <div>
-          <pre>
-          { JSON.stringify(row.status) }
-          </pre>
+          <Link
+          className={`badge light ${(row?.userID.status)? 'badge-success': 'badge-danger'}`}
+          to="/companies"
+          onClick={() => props.changeUserStatus(row?.userID._id, row.userID.status) }
+          
+        >
+          { (row?.userID.status) ? 'Active' : 'Inactive'}
+        </Link>
         </div>
       )
     },
@@ -46,15 +52,6 @@ const Table = (props) => {
       button: true,
       cell: (row) => (
         <div>
-          {/* <button
-              onClick={() => props.actionHandler(row)}
-              style={{ marginRight: "5px", minWidth: "80px" }}
-              className="btn btn-warning btn "
-            >
-              Edit
-            </button>
-            <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button> */}
-          {/* <DropDownBlog /> */}
           <ActionDropDown
             trackOnclick={props.trackOnclick}
             userData={row}
