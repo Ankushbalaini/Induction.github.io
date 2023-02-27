@@ -117,9 +117,14 @@ const TestQuestions = (props) => {
               icon: "warning",
             }).then(() => {
               setTabChangeCount(0);
-              var data = { ...result };
+              var data = {
+                score: 0,
+                correctAnswers: 0,
+                wrongAnswers: 0,
+                remark: "Test Failed due to tab changes",
+              };
               submitTestApi(id, token, data);
-              navigate.push("/inductions");
+              navigate.push("/user-inductions");
             });
           }
         });

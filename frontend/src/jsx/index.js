@@ -64,7 +64,6 @@ import InstructorStudents from "./components/Instructor/InstructorStudents";
 
 // Students
 import AllStudents from "./components/Students/AllStudents";
-import Users from "./components/Students/Users";
 import UnassignedUsers from "./components/Students/UnassignedUsers";
 
 // App
@@ -77,7 +76,8 @@ import { store } from "../../src/store/store";
 import ViewMcq from "./components/Inductions/Viewquiz";
 import AttemptQuiz from "./components/Inductions/Attemptquiz";
 import AttemptedInductions from "./components/Inductions/AttemptedInduction";
-import UserAttemptedInductions from "./components/Students/AttemptedInductions";
+import UserAttemptedInductions from "./components/Users/AttemptedInductions";
+
 
 const Markup = () => {
   var newState = store.getState();
@@ -108,9 +108,7 @@ const Markup = () => {
     { url: "add-department", component: AddDepartment },
 
     // Inductions ----
-    // { url: "inductions", component: Inductions },
     { url: "induction/:id", component: InductionDetail },
-    //{ url: "create-induction", component: CreateInduction },
     { url: "create-induction", component: CreateInductionNew },
     { url: "add-induction", component: Add },
     { url: "add-slide/:id", component: AddSlide }, // induction id passed
@@ -122,6 +120,7 @@ const Markup = () => {
     { url : "attemptquiz/:id",component:AttemptQuiz},
     
   
+    // full screen URLs
     { url: "start-test/:id", component: StarTest },
 
 
@@ -137,6 +136,7 @@ const Markup = () => {
     { url : "attempted-inductions", component : AttemptedInductions},
     { url: 'unassigned-users', component: UnassignedUsers },
 
+    // full screen URLs
     { url: 'view-induction/:id', component: ViewInduction },
 
     // Apps
