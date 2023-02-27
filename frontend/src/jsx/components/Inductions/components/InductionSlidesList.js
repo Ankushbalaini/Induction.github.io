@@ -30,16 +30,16 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
   // const [steps, setSteps] = useState([]);
   const [active, setActive] = useState(0);
 
-  // const [keyarr, setKeyarr]=useState('')
+  const [keyarr, setKeyarr]=useState('')
 
-  // const ButtonPress = (event) =>{
-  //   if(event.keyCode == 38){
+  // const ButtonPress = (e) =>{
+  //   if(e.keyCode == 38){
   //       alert('Adding....');
   //   }else(
   //     alert("nothing")
   //   )
   // }
-
+  
 
   const handleClick = (slideData, i) => {
     const totalSlides = props.slides.length;
@@ -228,7 +228,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
                 <div class="card accordion-item">
                   {currentStep === props.slides.length ? (
                     <Link
-                      className="btn btn-primary"
+                      className="btn btn-secondary"
                       to={`/start-test/${inductionID}`}
                     >
                       Start Test
@@ -244,11 +244,11 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
             </div>
           ) : null}
         </Accordion>
-        {/* <p>Key pressed is: {keyarr}</p>
+      
   
         
  
-  <input type="text" onKeyPress={(e) => handler(e)} /> */}
+  {/* <input type="text" onKeyPress={(e) => ButtonPress(e)} />  */}
         
       </div>
     </div>
