@@ -3,6 +3,11 @@ const db = require("../models");
 const companyModel = db.company;
 const userModel = db.users;
 const userCredModel = db.user_cred;
+const UserInductionResults = db.user_induction_results;
+const Induction = db.induction;
+
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 var jwt = require("jsonwebtoken");
 
@@ -439,4 +444,61 @@ exports.companyDropdownList = (req, res) => {
       message: err.message,
     });
   });
+}
+
+
+
+
+/**
+ * 
+ * fetch last 10 records of user attempted inductions filter by company ID
+ * 
+ */
+exports.dashboard = async (req, res) => {
+  try{
+    const userData = req.decoded;
+    var inductionIDs = [];
+    const inductions = await Induction.find({ parentCompany: userData.userID }, { _id:1, title: 1});
+
+    if(inductions.length > 0) {
+      inductions.forEach(function(item){
+        inductionIDs.push(ObjectId(item._id));
+      });
+    }else{
+      return res.status(201).send({
+        status: true,
+        message: "Company do not have any Induction in system!",
+        data: []
+      })
+    }
+    
+    UserInductionResults.find({ inductionID: { $in: inductionIDs } })
+    .sort({ createdAt: -1})
+    .limit(10)
+    .then((results)=>{
+      return res.status(201).send({
+        status: true,
+        message: "Last 10 Results of Company Inductions!",
+        data: {
+            total: results.length,
+            rows: results
+        },
+        inductions: {
+          total: inductions.length,
+          rows: inductions
+        }
+      })
+    }).catch((err)=>{
+      return res.status(500).send({
+        status: false,
+        message: err.message,
+      });
+    });
+
+  }catch(error){
+    return res.status(500).send({
+      status: false,
+      message: error.message,
+    });
+  }
 }
