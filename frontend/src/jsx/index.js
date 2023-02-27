@@ -41,6 +41,9 @@ import CreateInductionNew from "./components/Inductions/CreateInductionNew";
 import SingleInductionView from "./components/Inductions/SingleInductionView";
 import StarTest from './components/Inductions/test/StartTest';
 
+// for User v2
+import ViewInduction from "./components/Users/ViewInduction";
+
 
 // v2 versions
 import Add from './components/Induction/Add';
@@ -133,6 +136,8 @@ const Markup = () => {
     { url : "user-inductions", component : UserAttemptedInductions},
     { url : "attempted-inductions", component : AttemptedInductions},
     { url: 'unassigned-users', component: UnassignedUsers },
+
+    { url: 'view-induction/:id', component: ViewInduction },
 
     // Apps
     { url: "app-profile", component: AppProfile },

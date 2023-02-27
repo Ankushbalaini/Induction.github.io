@@ -156,12 +156,12 @@ function CoursesMain() {
           // navigate to induction page
           // call induction is viewed api- later on
           
+          if( USER_ROLES.USER === userRole){
+            navigate.push(`/view-induction/${inductionID}`);
+          }else{
+            navigate.push(`/single-induction-view/${inductionID}`);
+          }
           
-          navigate.push(`/single-induction-view/${inductionID}`);
-
-
-
-
         });
       } else {
         return swal("Failed", "Induction is not started", "error");

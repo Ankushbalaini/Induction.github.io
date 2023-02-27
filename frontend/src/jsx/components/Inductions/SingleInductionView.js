@@ -1,4 +1,10 @@
-import React, { useEffect,useState,useRef, useMemo,useLayoutEffect } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+  useLayoutEffect,
+} from "react";
 import { useLocation, useParams } from "react-router";
 import { Link } from "react-router-dom";
 
@@ -22,7 +28,7 @@ const getInductionDetailById = async (id, token) => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "x-access-token" : token
+      "x-access-token": token,
     },
   })
     .then((data) => data.json())
@@ -36,7 +42,7 @@ const SingleInductionView = (props) => {
   const [inductionData, setInductionData] = useState();
   const [slideData, setSlideData] = useState();
   const [passingMarksPop, setPassingMarksPop] = useState();
-  const location= useLocation();
+  const location = useLocation();
 
   const [currentSlideContent, setCurrentSlideContent] = useState(null);
   const [isChangeContent, setIsChangeContent] = useState(false);
@@ -63,7 +69,6 @@ const SingleInductionView = (props) => {
 
   const handleFullScreen = () => {
     const elem = document.documentElement;
-  
     if (document.fullscreenElement) {
       document.exitFullscreen();
     } else {
@@ -71,14 +76,10 @@ const SingleInductionView = (props) => {
     }
   };
 
-
-
   // API call for fetching all induction details with slides
   const handleGetInductionDetail = async (e) => {
-   
     // getInduction
     const response = await getInduction(id, token);
-
 
     if ("status" in response && response.status == true) {
       setInductionData(response.data);
@@ -86,21 +87,19 @@ const SingleInductionView = (props) => {
       setCurrentSlideContent(response.slides[0]);
       setLoading(false);
       handleFullScreen();
-    
     }
   };
 
-  const openPopUp= () => {
+  const openPopUp = () => {
     //console.log("openPopUp called");
     setPassingMarksPop(true);
     return;
-  }
+  };
 
-  const hidePopUp = () =>{
+  const hidePopUp = () => {
     //console.log("hidePopUp called");
     setPassingMarksPop(false);
-  }
-
+  };
 
   const setStateOfParent = (newSlide) => {
     setIsChangeContent(true);
@@ -114,11 +113,9 @@ const SingleInductionView = (props) => {
       handleGetInductionDetail();
     }
     document.addEventListener("mousedown", handleClickOutside);
-    
+
     return () => document.removeEventListener("mousedown", handleClickOutside);
-    
- 
-  }, [loading,props.setShowSidebar]);
+  }, [loading, props.setShowSidebar]);
 
   const PageContent = loading ? (
     <i className="fas fa-atom fa-spin"></i>
@@ -132,8 +129,7 @@ const SingleInductionView = (props) => {
 
             {/* Slide content area and onclick changeable */}
 
-            <CurrentSlide currentSlideContent={currentSlideContent} 
-            />
+            <CurrentSlide currentSlideContent={currentSlideContent} />
 
             {/* About Induction Area with tabs */}
           </div>
@@ -148,11 +144,7 @@ const SingleInductionView = (props) => {
         </div>
       </div> */}
 
-          
-
-
-        <div className="col-xl-4 col-xxl-5">
-        
+      <div className="col-xl-4 col-xxl-5">
         <InductionSlidesList
           setStateOfParent={setStateOfParent}
           setCurrentSlideContent={setCurrentSlideContent}
@@ -160,29 +152,33 @@ const SingleInductionView = (props) => {
           inductionID={id}
         />
 
-        { (role === 'instructor') ? <>
-        <div className="accordion accordion">
-          <div class="card accordion-item">
-            <button type="button" class="btn btn-primary m-3" 
-              onClick={() => openPopUp() }>Set Passing Percentage</button>
-          </div>
-        </div>
+        {role === "instructor" ? (
+          <>
+            <div className="accordion accordion">
+              <div class="card accordion-item">
+                <button
+                  type="button"
+                  class="btn btn-primary m-3"
+                  onClick={() => openPopUp()}
+                >
+                  Set Passing Percentage
+                </button>
+              </div>
+            </div>
 
-        <UpdatePassPercentage inductionID={id} passPercentage={inductionData.passPercentage} show={passingMarksPop} hidePopUp={hidePopUp} />
-        </>
-        : null }
+            <UpdatePassPercentage
+              inductionID={id}
+              passPercentage={inductionData.passPercentage}
+              show={passingMarksPop}
+              hidePopUp={hidePopUp}
+            />
+          </>
+        ) : null}
       </div>
-
-      
-
-
-      
     </>
   );
 
-  return <div className="row">
-    {PageContent}
-    </div>;
+  return <div className="row">{PageContent}</div>;
 };
 
 export default SingleInductionView;

@@ -100,11 +100,10 @@ const TestQuestions = (props) => {
   const addLeadingZero = (number) => (number > 9 ? number : `0${number}`);
 
   const handleTabSwitch = (event) => {
-    // console.log("here window events");
     if (document.visibilityState === "visible") {
       // console.log('has focus');
     } else {
-      console.log(`events ${tabChangeCount}`);
+      // console.log(`events ${tabChangeCount}`);
       if (tabChangeCount > 2) {
         swal({
           title: "Test Fail.",
@@ -120,8 +119,6 @@ const TestQuestions = (props) => {
               setTabChangeCount(0);
               var data = { ...result };
               submitTestApi(id, token, data);
-              // window.removeEventListener('visibilitychange', handleTabSwitch);
-              // setActiveWindowEvent(false);
               navigate.push("/inductions");
             });
           }
@@ -148,32 +145,17 @@ const TestQuestions = (props) => {
   };
 
   useEffect(() => {
+    document.addEventListener("visibilitychange", handleTabSwitch);
+
     if (showResult) {
       var data = { ...result, remark: "Test successfully completed" };
       submitTestApiCall(id, token, data);
     }
-  }, [showResult]);
 
-  // useEffect(async () => {
-
-  //   //document.addEventListener("visibilitychange", handleTabSwitch);
-
-  //   if(showResult){
-
-  //     var data = { ...result};
-  //     data.remark = "Test successfully completed";
-  //     const response = await submitTestApi(id, token, data);
-
-  //     //document.removeEventListener("visibilitychange", handleTabSwitch);
-
-  //     // navigate.push("/inductions");
-
-  //     setTabChangeCount(0);
-  //     setActiveWindowEvent(false);
-  //   }
-
-  //   //return () => document.removeEventListener("visibilitychange", handleTabSwitch);
-  // }, [showResult, result, activeWindowEvent, tabChangeCount]);
+    return () => {
+      document.removeEventListener("visibilitychange", handleTabSwitch);
+    };
+  }, [showResult, tabChangeCount]);
 
   return (
     <div
@@ -188,11 +170,10 @@ const TestQuestions = (props) => {
       {showResult ? (
         <>
           <div className="quiz-container text-justify display-6">
-            <p>
-              <h3>My Score : {result.score}</h3>
-              <h3>Correct : {result.correctAnswers}</h3>
-              <h3>Wrong : {result.wrongAnswers}</h3>
-            </p>
+            <h3>My Score : {result.score}</h3>
+            <h3>Correct : {result.correctAnswers}</h3>
+            <h3>Wrong : {result.wrongAnswers}</h3>
+
             <h3>
               Thanks For Attempting the test your test results will be shared
               with you shortly!
