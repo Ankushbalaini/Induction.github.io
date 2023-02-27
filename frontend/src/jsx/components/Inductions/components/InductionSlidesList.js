@@ -3,6 +3,7 @@ import { Tab, Nav, Accordion, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { TiTick } from "react-icons/ti";
+import { useKeyPressEvent } from "react-use";
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -29,36 +30,65 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
   // const [steps, setSteps] = useState([]);
   const [active, setActive] = useState(0);
 
-  const handleClick = (slideData, i ) => {
+  const [keyarr, setKeyarr]=useState('')
+
+  // const ButtonPress = (e) =>{
+  //   if(e.keyCode == 38){
+  //       alert('Adding....');
+  //   }else(
+  //     alert("nothing")
+  //   )
+  // }
+  
+
+  const handleClick = (slideData, i) => {
     const totalSlides = props.slides.length;
 
-    // console.log(" clicked on slide no :"+ i ); // 
-    // console.log(" current clicked slide no :"+ currentStep ); // active slide 
+    // console.log(" clicked on slide no :"+ i ); //
+    // console.log(" current clicked slide no :"+ currentStep ); // active slide
     // console.log(" total slide nos :"+ totalSlides ); // 10
 
-
-    if(i <= currentStep){
-      setActive(i+1);
-      setCurrentStep(i+1);
+    if (i <= currentStep) {
+      setActive(i + 1);
+      setCurrentStep(i + 1);
       setCurrentSlideContent(slideData);
-    }else{
+    } else {
       // sweet alerts
       console.log("do not skip inductions");
     }
-    
-    // console.log(currentStep);
 
-    //currentStep === props.slides.length
-    //   ? setComplete(true)
-    //   : setCurrentStep((prev) => prev + 1);
-  };
+//     // console.log(currentStep);
+
+//     //currentStep === props.slides.length
+//     //   ? setComplete(true)
+//     //   : setCurrentStep((prev) => prev + 1);
+//   };
+
+  
+// //   function handleKeyPress(e) {
+// //     var keyCode = e.key;
+// //    if (keyCode === 38) {
+// //         console.log("up key pressed")
+// //     }
+// // }
+ 
+// // useKeyPressEvent("Up", () => {}, keyarr);
+
+//     const handler = (event) => {
+
+//      setKeyarr(event.key);
+//    };
+
+
+
+  }
 
   return (
     <div className="custome-accordion">
       {USER_ROLES.COMPANY === role || USER_ROLES.INSTRUCTOR === role ? (
         <div>
           <div className="accordion accordion">
-            <div class="card accordion-item">
+            {/* <div class="card accordion-item">
               <Link
                 className="btn btn-primary"
                 to={`../attemptquiz/${inductionID}`}
@@ -66,9 +96,8 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
               >
                 Attempted Quiz
               </Link>
-            </div>
+            </div> */}
           </div>
-
           <div className="accordion accordion">
             <div class="card accordion-item">
               <Link
@@ -91,9 +120,8 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
               </Link>
             </div>
           </div>
-
           <div className="accordion accordion">
-            <div class="card accordion-item">
+            {/* <div class="card accordion-item">
               <Link
                 className="btn btn-success"
                 to={`../mcq/${inductionID}`}
@@ -101,11 +129,10 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
               >
                 Activity
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       ) : null}
-
       <div className="custome-accordion">
         <Accordion className="accordion" defaultActiveKey="0">
           {accordionBlog.map((data, i) => (
@@ -118,7 +145,6 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
                   </span>
                 ) : null}
               </Accordion.Header>
-
               {data.id === 1 ? (
                 <Accordion.Collapse eventKey={`${i}`} id="collapseOne">
                   <div className="accordion-body card-body pt-0">
@@ -159,7 +185,6 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
                         </div>
                       );
                     })}
-
                     <div>
                       <div>
                         {steps?.map((step, i) => (
@@ -183,17 +208,13 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
                         ))}
                       </div>
                       {!complete && (
-                        <Button
-                          className="btn btn-group mb-3 mt-3"
-                          style={{ display: "flex", float: "right" }}
+                        <span
                           onClick={() => {
                             currentStep === props.slides.length
                               ? setComplete(true)
                               : setCurrentStep((prev) => prev + 1);
                           }}
-                        >
-                          {currentStep === props.slides.length ? "Finish" : ">"}
-                        </Button>
+                        ></span>
                       )}
                     </div>
                   </div>
@@ -201,24 +222,34 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
               ) : null}
             </Accordion.Item>
           ))}
-
           {USER_ROLES.USER === role ? (
             <div>
               <div className="accordion accordion">
                 <div class="card accordion-item">
-                  <Link
-                    
-                    className="btn btn-primary"
-                    to={`/start-test/${inductionID}`}
-                  >
-                    Start Test
-                  </Link>
-                  {/* <Button className="btn btn-primary"> Start Test New</Button> */}
+                  {currentStep === props.slides.length ? (
+                    <Link
+                      className="btn btn-secondary"
+                      to={`/start-test/${inductionID}`}
+                    >
+                      Start Test
+                    </Link>
+                  ) : (
+                    <Link className="disabled-link btn btn-primary">
+                      {" "}
+                      Start Test
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
           ) : null}
         </Accordion>
+      
+  
+        
+ 
+  {/* <input type="text" onKeyPress={(e) => ButtonPress(e)} />  */}
+        
       </div>
     </div>
   );

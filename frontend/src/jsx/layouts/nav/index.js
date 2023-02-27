@@ -12,7 +12,7 @@ const JobieNav = ({ title, onClick: ClickToAddEvent, onClick2, onClick3  }) => {
   const onClick = (name) => setToggle(toggle === name ? "" : name);
 
   const location = useLocation();
-  const hideSideBar = location.pathname.includes("single-induction-view");
+  const hideSideBar = location.pathname.includes("single-induction-view") || location.pathname.includes("start-test");
 
   return (
     <Fragment>
