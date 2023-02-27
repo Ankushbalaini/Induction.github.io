@@ -483,7 +483,10 @@ exports.dashboard = async (req, res) => {
             total: results.length,
             rows: results
         },
-        inductions: inductionIDs
+        inductions: {
+          total: inductions.length,
+          rows: inductions
+        }
       })
     }).catch((err)=>{
       return res.status(500).send({
