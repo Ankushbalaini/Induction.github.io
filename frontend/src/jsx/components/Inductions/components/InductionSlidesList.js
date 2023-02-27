@@ -88,7 +88,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
       {USER_ROLES.COMPANY === role || USER_ROLES.INSTRUCTOR === role ? (
         <div>
           <div className="accordion accordion">
-            <div class="card accordion-item">
+            {/* <div class="card accordion-item">
               <Link
                 className="btn btn-primary"
                 to={`../attemptquiz/${inductionID}`}
@@ -96,7 +96,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
               >
                 Attempted Quiz
               </Link>
-            </div>
+            </div> */}
           </div>
           <div className="accordion accordion">
             <div class="card accordion-item">
@@ -121,7 +121,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
             </div>
           </div>
           <div className="accordion accordion">
-            <div class="card accordion-item">
+            {/* <div class="card accordion-item">
               <Link
                 className="btn btn-success"
                 to={`../mcq/${inductionID}`}
@@ -129,7 +129,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
               >
                 Activity
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       ) : null}

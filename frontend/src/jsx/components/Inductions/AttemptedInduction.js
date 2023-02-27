@@ -3,7 +3,7 @@ import swal from "sweetalert";
 import Table from "./InductionUsersDatatable";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import PageTitle from "../../layouts/PageTitle";
 import UserAttemptedInductioList from "../Modals/UserAttemptedInductioList";
 import FiltersForAttempts from "./components/FilterForAttempts";
 
@@ -91,6 +91,8 @@ const InductionUsers = () => {
       {loading ? (
         <h3>Loading</h3>
       ) : (
+        <>
+        <PageTitle activeMenu="Attempted Induction" motherMenu="Inductions" />
         <div className="row">
           <div className="col-xl-12">
             <div className="card students-list">  
@@ -241,6 +243,7 @@ const InductionUsers = () => {
             </div>
           </div>
         </div>
+        </>
       )}
 
       {isModalOpen ? (
