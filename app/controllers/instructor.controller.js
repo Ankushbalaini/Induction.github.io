@@ -359,7 +359,7 @@ exports.edit = (req, res) => {
         res.status(500).send({
           status: false,
           message:
-            err.message || "Some error occurred while creating the Deparment.",
+            err.message || "Some error occurred while creating the Instructor.",
         });
       });
   } catch (err) {
