@@ -3,23 +3,16 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { useEffect } from "react";
+import { format } from 'date-fns'
 import ReactApexChart from "react-apexcharts";
+
 const LearningActivityChart = () => {
   const token = useSelector((state) => state.auth.auth.token);
   const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState([]); // main listing data
+  const [users, setUsers] = useState(); // main listing data
   const [scores, setScores] = useState();
+  const [daywise, setDayWise]=useState();
 
-  // //sample data
-  // const arr = [
-  //     {score: 25, days: "22-02-2023"},
-  //     {score: 10, days: "23-02-2023"},
-  //     {score: 35, days: "24-02-2023"},
-  //     {score: 25, days: "25-02-2023"},
-  //     {score: 15, days: "26-02-2023"},
-  //     {score: 5, days: "27-02-2023"},
-  //     {score: 10, days: "28-02-2023"}
-  // ];
 
   const handlepageLoad = async (e) => {
     // query string
@@ -31,28 +24,81 @@ const LearningActivityChart = () => {
       },
     }).then((data) => data.json());
     if ("status" in response && response.status == true) {
+      console.log(response.data, "response data....")
       setUsers(response.data);
       setLoading(false);
     } else {
       return swal("Failed", response.message, "error");
     }
-    console.log(response.data, "response data....")
-    console.log(users, "users data under api res");
   };
-
-  //calculating average
-  const arr1 = [10, 22, 33, 45, 57];
-  var sum = 0;
-  for (var number of arr1) {
-    sum += number;
-  }
-  let average = sum / arr1.length;
-  console.log("average " + average);
-
-  // use effect
   useEffect(() => {
     handlepageLoad();
   }, []);
+//  console.log(users, "users data...................")
+  // arrays to push data
+  const dataset1 = [];
+  const dataset2 = [];
+
+  // useEffect(() => {
+  // if(users){
+  //   const {rows} = users;
+  //   // console.log(rows,'rows...')
+  //   rows.map(i=>dataset1.push(i.score))
+  //   rows.map(i=>dataset2.push(i.createdAt))
+  //   setScores(dataset1)
+  //   setDayWise(dataset2)
+  // }}, [users]);
+
+  useEffect(() => {
+    if (users) {
+      const { rows } = users;
+      const dateFormat = 'dd MMM yyyy'; // format string for date
+      rows.forEach((i) => {
+        dataset1.push(i.score);
+        dataset2.push(format(new Date(i.createdAt), dateFormat)); // format date string and push to dataset2 array
+      });
+      setScores(dataset1);
+      setDayWise(dataset2);
+    }
+
+    	//filter function
+	var filterArray = daywise.filter(function (num)
+	{
+		 return num.daywise === daywise ;
+	}
+	  );
+	 console.log(filterArray, "filter array");
+
+    //average function
+  var sum = 0;
+  for (var number of dataset1) {
+    sum += number;
+  }
+  let average = sum / dataset1.length;
+
+  console.log("average " + average);
+  }, [users]);
+  
+console.log(scores,"scores")
+// console.log(daywise, "daywise data")
+
+// if(users) {
+//   for(const val of users) {
+//     console.log(val,"val...........")
+//     dataset1.push(val.score);
+//     // dataset2.push(val.createdAt)
+//     console.log(dataset1, "dataset1 array...");
+    
+//     //console.log(dataset1.testStatus, "dataset1 teststatus")
+//   }
+// } 
+
+  //calculating average
+  // const arr1 = [10, 22, 33, 45, 57];
+  
+
+  // use effect
+  
   // console.log("set-users", users);
   //   console.log("dataset1 scores",dataset1.score)
 
@@ -73,10 +119,11 @@ const LearningActivityChart = () => {
 // 	}
 //    )
   const state = {
+ 
     series: [
       {
         name: "",
-        data: [40, 50, 40, 60, 90, 70, 90],
+        data: scores
       },
     ],
     options: {
@@ -128,21 +175,13 @@ const LearningActivityChart = () => {
         },
       },
       xaxis: {
-        categories: [
-          "Sunday",
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
+        categories:daywise,
         labels: {
           style: {
             colors: "#3E4954",
             fontSize: "14px",
             fontFamily: "Poppins",
-            fontWeight: 100,
+            fontWeight: 200,
           },
         },
         axisBorder: {
@@ -244,7 +283,7 @@ const LearningActivityChart = () => {
         options={state.options}
         series={state.series}
         type="area"
-        height={300}
+        height={500}
       />
     </div>
   );
