@@ -6,12 +6,14 @@ import { useEffect } from "react";
 import { format } from 'date-fns'
 import ReactApexChart from "react-apexcharts";
 
-const LearningActivityChart = () => {
+const LearningActivityChart = (props) => {
+  const {averageData, setAverageData} = props;
   const token = useSelector((state) => state.auth.auth.token);
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState(); // main listing data
   const [scores, setScores] = useState();
   const [daywise, setDayWise]=useState();
+  // const [averageData, setAverageData] = useState ();
 
 
   const handlepageLoad = async (e) => {
@@ -39,16 +41,6 @@ const LearningActivityChart = () => {
   const dataset1 = [];
   const dataset2 = [];
 
-  // useEffect(() => {
-  // if(users){
-  //   const {rows} = users;
-  //   // console.log(rows,'rows...')
-  //   rows.map(i=>dataset1.push(i.score))
-  //   rows.map(i=>dataset2.push(i.createdAt))
-  //   setScores(dataset1)
-  //   setDayWise(dataset2)
-  // }}, [users]);
-
   useEffect(() => {
     if (users) {
       const { rows } = users;
@@ -61,63 +53,33 @@ const LearningActivityChart = () => {
       setDayWise(dataset2);
     }
 
-    	//filter function
-	var filterArray = daywise.filter(function (num)
-	{
-		 return num.daywise === daywise ;
-	}
-	  );
-	 console.log(filterArray, "filter array");
+    // //average function
+// const arr1 = [10, 22, 33, 45, 57];
+// var sum = 0;
+// for(var number of arr1){
+// sum += number
+// }
+
+// let average = sum/arr1.length
+//  console.log("average "+average)
 
     //average function
-  var sum = 0;
+  let sum = 0;
   for (var number of dataset1) {
     sum += number;
   }
   let average = sum / dataset1.length;
+  setAverageData(average);
 
-  console.log("average " + average);
+ 
   }, [users]);
-  
+
+
 console.log(scores,"scores")
-// console.log(daywise, "daywise data")
+console.log("average of data outside " + averageData);
 
-// if(users) {
-//   for(const val of users) {
-//     console.log(val,"val...........")
-//     dataset1.push(val.score);
-//     // dataset2.push(val.createdAt)
-//     console.log(dataset1, "dataset1 array...");
-    
-//     //console.log(dataset1.testStatus, "dataset1 teststatus")
-//   }
-// } 
 
-  //calculating average
-  // const arr1 = [10, 22, 33, 45, 57];
-  
 
-  // use effect
-  
-  // console.log("set-users", users);
-  //   console.log("dataset1 scores",dataset1.score)
-
-  // arrays to push data
-  // const dataset1 = [];
-  // const dataset2 = [];
-
-  // for (const val of users) {
-  //   dataset1.push(val.result);
-    // console.log(dataset1, "dataset1 array...");
-    
-    // console.log(dataset1.testStatus, "dataset1 teststatus")
-  // }
-
-//   dataset1.forEach(
-// 	nums=>{
-// 		console.log("Score "+nums.score , "testStatus "+nums.testStatus)
-// 	}
-//    )
   const state = {
  
     series: [
@@ -141,7 +103,7 @@ console.log(scores,"scores")
         enabled: false,
       },
       stroke: {
-        width: [3, 3, 3],
+        width: [6, 6, 6],
         colors: ["var(--secondary)", "var(--primary)"],
         curve: "straight",
       },
@@ -156,7 +118,7 @@ console.log(scores,"scores")
           );
         },
         markers: {
-          fillColors: ["var(--secondary)", "var(--primary)"],
+          fillColors: ["var(--secondary)"],
           width: 16,
           height: 16,
           strokeWidth: 0,
@@ -179,7 +141,7 @@ console.log(scores,"scores")
         labels: {
           style: {
             colors: "#3E4954",
-            fontSize: "14px",
+            fontSize: "15px",
             fontFamily: "Poppins",
             fontWeight: 200,
           },
@@ -194,9 +156,9 @@ console.log(scores,"scores")
           offsetX: -16,
           style: {
             colors: "#3E4954",
-            fontSize: "14px",
+            fontSize: "15px",
             fontFamily: "Poppins",
-            fontWeight: 100,
+            fontWeight: 200,
           },
         },
       },
@@ -283,7 +245,7 @@ console.log(scores,"scores")
         options={state.options}
         series={state.series}
         type="area"
-        height={500}
+        height={400}
       />
     </div>
   );
