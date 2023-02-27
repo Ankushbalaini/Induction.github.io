@@ -228,7 +228,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
                 <div class="card accordion-item">
                   {currentStep === props.slides.length ? (
                     <Link
-                      className="btn btn-primary"
+                      className="btn btn-secondary"
                       to={`/start-test/${inductionID}`}
                     >
                       Start Test
