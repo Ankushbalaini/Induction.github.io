@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { getData } from "../APIs";
-import Filters from "./Filters";
 import UsersTable from "./UsersTable";
 import PageTitle from "../../layouts/PageTitle";
 const UnassignedUsers = () => {

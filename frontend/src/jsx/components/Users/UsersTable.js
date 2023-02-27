@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import { useSelector } from "react-redux";
 import ActionDropDown from "./ActionDropDown";
@@ -7,12 +7,12 @@ import UserPopup from "./UserPopup";
 
 const images = require.context("../../../../../images/profile/", true);
 
-function UsersTable({ filteredUsers , checkUserUpdated, redirectTo }) {
-  const navigate = useHistory();
+/**
+ * User Table Used in Unassigned User listing
+ *
+ */
+function UsersTable({ filteredUsers, checkUserUpdated, redirectTo }) {
   const token = useSelector((state) => state.auth.auth.token);
-  const role = useSelector((state) => state.auth.auth.role);
-  const loggedInID = useSelector((state) => state.auth.auth.id);
-  const parentCompany = useSelector((state) => state.auth.auth.parentCompany);
 
   // Edit User- Popup
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -73,7 +73,6 @@ function UsersTable({ filteredUsers , checkUserUpdated, redirectTo }) {
 
   return (
     <>
-      
       <table
         className="table display mb-4 dataTablesCard order-table card-table text-black application "
         id="application-tbl1_next"
@@ -92,7 +91,7 @@ function UsersTable({ filteredUsers , checkUserUpdated, redirectTo }) {
             <tr key={index}>
               <td>
                 <div className="d-flex align-items-center">
-                  {/* <img src={loadImage(user?.profile?.profilePhoto)} alt="" /> */}
+                  <img src={loadImage(user?.profile?.profilePhoto)} alt="" />
                   <h4 className="mb-0 fs-16 font-w500">
                     {user.profile?.first_name} {user.profile?.last_name}
                   </h4>

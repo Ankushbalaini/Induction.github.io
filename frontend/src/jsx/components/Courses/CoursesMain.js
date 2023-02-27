@@ -294,16 +294,17 @@ function CoursesMain() {
                         {data.numOfSlides} Slides
                       </span>
 
+                      { USER_ROLES.USER === userRole ? 
                       <Button type="button" className="btn btn-primary btn-sm" onClick={(e) => confirmHandler(`${data._id}`) }>
                       View
-                      </Button>
-                      {/* <Link
+                      </Button> :
+                      <Link
                         to={`/single-induction-view/${data._id}`}
                         className="btn btn-primary btn-sm"
-                        
                       >
                         View
-                      </Link> */}
+                      </Link>
+                      }
                     </div>
                   </div>
                 </div>
