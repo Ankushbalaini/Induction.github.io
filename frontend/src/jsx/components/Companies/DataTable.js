@@ -8,15 +8,14 @@ import { Dropdown } from "react-bootstrap";
 
 import { tableStyles } from "../Instructor/Instructor/tableStyles";
 
-const Table = props => {
-
+const Table = (props) => {
   const columns = [
     {
       name: "Name",
       selector: "name",
       sortable: true,
       grow: 1,
-      className: 'col-3',
+      className: "col-3",
     },
     {
       name: "Email",
@@ -31,11 +30,23 @@ const Table = props => {
       hide: "sm",
     },
     {
+      name: "Status",
+      selector: "status",
+      sortable: true,
+      cell: (row) => (
+        <div>
+          <pre>
+          { JSON.stringify(row.status) }
+          </pre>
+        </div>
+      )
+    },
+    {
       name: "Actions",
       button: true,
-      cell: row =>
-          <div>
-            {/* <button
+      cell: (row) => (
+        <div>
+          {/* <button
               onClick={() => props.actionHandler(row)}
               style={{ marginRight: "5px", minWidth: "80px" }}
               className="btn btn-warning btn "
@@ -43,27 +54,27 @@ const Table = props => {
               Edit
             </button>
             <button onClick={() => props.deleteClick(row.name)} className="btn btn-danger btn sweet-confirm" style={{ marginRight: "5px", minWidth: "100px" }}>Delete</button> */}
-            {/* <DropDownBlog /> */}
-            <ActionDropDown trackOnclick={props.trackOnclick} userData={row} trackDeleteClick={props.trackDeleteClick}/>
-
-            
-              
-            </div>
-    }
+          {/* <DropDownBlog /> */}
+          <ActionDropDown
+            trackOnclick={props.trackOnclick}
+            userData={row}
+            trackDeleteClick={props.trackDeleteClick}
+          />
+        </div>
+      ),
+    },
   ];
 
   const [filterText, setFilterText] = React.useState("");
-  const [resetPaginationToggle, setResetPaginationToggle] = React.useState(
-    false
-  );
+  const [resetPaginationToggle, setResetPaginationToggle] =
+    React.useState(false);
   // const filteredItems = data.filter(
   //   item => item.name && item.name.includes(filterText)
   // );
   const filteredItems = props.data.filter(
-    item =>
-      JSON.stringify(item)
-        .toLowerCase()
-        .indexOf(filterText.toLowerCase()) !== -1
+    (item) =>
+      JSON.stringify(item).toLowerCase().indexOf(filterText.toLowerCase()) !==
+      -1
   );
 
   const subHeaderComponent = useMemo(() => {
@@ -76,7 +87,7 @@ const Table = props => {
 
     return (
       <FilterComponent
-        onFilter={e => setFilterText(e.target.value)}
+        onFilter={(e) => setFilterText(e.target.value)}
         onClear={handleClear}
         filterText={filterText}
       />

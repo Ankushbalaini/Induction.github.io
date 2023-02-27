@@ -4,7 +4,7 @@ import PageTitle from "../../layouts/PageTitle";
 import InductionDropdown from "./InductionDropdown";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
-import { Link,useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useParams } from "react-router";
 
 // api call
@@ -46,12 +46,9 @@ const Add = () => {
         navigate.push(`/update-induction/${state.slideInductionId}`);
       });
     } else {
-      return swal("Failed",  response.message , "error");
+      return swal("Failed", response.message, "error");
     }
   };
-
-
-
 
   return (
     <>
@@ -85,7 +82,11 @@ const Add = () => {
                   </div>
                 </div> */}
 
-                <input type='hidden' name='slideInductionId' value={state.slideInductionId} />
+                <input
+                  type="hidden"
+                  name="slideInductionId"
+                  value={state.slideInductionId}
+                />
 
                 <div className="card-header">
                   <h4 className="card-title">Slide Detail</h4>
@@ -132,9 +133,12 @@ const Add = () => {
                 </div>
 
                 <div class="text-end toolbar toolbar-bottom p-2">
-                <Link class="btn btn-danger sw-btn-next m-3" to={`/update-induction/${id}`} >
-                            Cancel
-                      </Link>
+                  <Link
+                    class="btn btn-danger sw-btn-next m-3"
+                    to={`/update-induction/${id}`}
+                  >
+                    Cancel
+                  </Link>
 
                   <button class="btn btn-success sw-btn-next" type="submit">
                     Submit

@@ -18,9 +18,10 @@ import Profile from "./components/Dashboard/Profile";
 import Setting from "./components/Dashboard/Setting";
 
 //Courses----
-import CoursesMain from "./components/Courses/CoursesMain";
-import CourseDetail1 from "./components/Courses/CourseDetail1";
-import CourseDetail2 from "./components/Courses/CourseDetail2";
+// import CoursesMain from "./components/Courses/CoursesMain";
+// import CourseDetail1 from "./components/Courses/CourseDetail1";
+// import CourseDetail2 from "./components/Courses/CourseDetail2";
+import Inductions from "./components/Induction/Inductions";
 
 //Company----
 // import ListCompanies from "./components/Companies/ListCompanies";
@@ -34,9 +35,9 @@ import AllDepartments from "./components/Department/ListDepartment";
 import AddDepartment from "./components/Department/AddDepartment";
 
 //Inductions----
-import Inductions from "./components/Inductions/Inductions";
-import InductionDetail from "./components/Inductions/InductionDetail";
-import CreateInduction from "./components/Inductions/CreateInduction";
+// import Inductions from "./components/Inductions/Inductions";
+// import InductionDetail from "./components/Inductions/InductionDetail";
+// import CreateInduction from "./components/Inductions/CreateInduction";
 import CreateInductionNew from "./components/Inductions/CreateInductionNew";
 import SingleInductionView from "./components/Inductions/SingleInductionView";
 import StarTest from './components/Inductions/test/StartTest';
@@ -71,8 +72,8 @@ import UnassignedUsers from "./components/Users/UnassignedUsers";
 
 
 // App
-import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
-import FilteringTable from "./components/table/FilteringTable/FilteringTable";
+// import AppProfile from "./components/AppsMenu-123/AppProfile/AppProfile";
+// import FilteringTable from "./components/table/FilteringTable/FilteringTable";
 
 import Mcq from "./components/Inductions/Mcq";
 import { ThemeContext } from "../context/ThemeContext";
@@ -98,8 +99,8 @@ const Markup = () => {
     { url: "setting", component: Setting },
     { url: "company-dashboard", component: CompanyDashboard},
 
-    // Courses ----
-    { url: "inductions", component: CoursesMain },
+    // Inductions ----
+    { url: "inductions", component: Inductions },
     // { url: "course-details-1", component: CourseDetail1 },
     // { url: "course-details-2", component: CourseDetail2 },
 
@@ -112,7 +113,7 @@ const Markup = () => {
     { url: "add-department", component: AddDepartment },
 
     // Inductions ----
-    { url: "induction/:id", component: InductionDetail },
+    // { url: "induction/:id", component: InductionDetail },
     { url: "create-induction", component: CreateInductionNew },
     { url: "add-induction", component: Add },
     { url: "add-slide/:id", component: AddSlide }, // induction id passed
@@ -126,12 +127,13 @@ const Markup = () => {
   
     // full screen URLs
     { url: "start-test/:id", component: StarTest },
-
+    { url: 'view-induction/:id', component: ViewInduction },
 
     // Instructors  Pages path
     { url: "instructors", component: Instructors },
     { url: "add-instructor", component: AddInstructor },
     { url: "instructor-dashboard", component: InstructorDashboard },
+
     { url: "instructor-courses", component: InstructorCourses },
     { url: "instructor-students", component: InstructorStudents },
     
@@ -141,12 +143,9 @@ const Markup = () => {
     { url : "attempted-inductions", component : AttemptedInductions},
     { url: 'unassigned-users', component: UnassignedUsers },
 
-    // full screen URLs
-    { url: 'view-induction/:id', component: ViewInduction },
-
     // Apps
-    { url: "app-profile", component: AppProfile },
-    { url: "table-filtering", component: FilteringTable}
+    // { url: "app-profile", component: AppProfile },
+    // { url: "table-filtering", component: FilteringTable}
   ];
 
   let path = window.location.pathname;
