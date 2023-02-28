@@ -1,10 +1,8 @@
 import React, { useMemo } from "react";
 
 import DataTable from "react-data-table-component";
-import DropDownBlog from "../Dashboard/DropDownBlog";
 import ActionDropDown from "../Dashboard/ActionDropDown";
 import FilterComponent from "./FilterComponent";
-import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 import { tableStyles } from "../Instructor/Instructor/tableStyles";
@@ -39,7 +37,7 @@ const Table = (props) => {
           <Link
           className={`badge light ${(row?.userID.status)? 'badge-success': 'badge-danger'}`}
           to="/companies"
-          onClick={() => props.changeUserStatus(row?.userID._id, row.userID.status) }
+          onClick={() => props.changeCompanyStatus(row?.userID._id, row.userID.status) }
           
         >
           { (row?.userID.status) ? 'Active' : 'Inactive'}
