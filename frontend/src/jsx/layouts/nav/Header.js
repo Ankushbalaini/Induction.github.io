@@ -141,6 +141,10 @@ const Header = ({ onNote }) => {
               >
                 {inductionName === "single-induction-view"
                   ? "Induction View"
+                  : inductionName === "add-slide"
+                  ? "Add Slides"
+                  : inductionName === "update-slide"
+                  ? "Update Slides"
                   : inductionName === "update-induction"
                   ? "Update Induction"
                   : inductionName === "viewmcq"

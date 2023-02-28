@@ -27,7 +27,6 @@ exports.create = (req, res) => {
         status: false,
         message: "Invalid , Fields can't be empty",
       });
-      return;
     }
 
     // Create new Department parameter
@@ -48,14 +47,25 @@ exports.create = (req, res) => {
         });
       })
       .catch((err) => {
-        res.status(500).send({
-          status: false,
-          message:
-            err.message ||
-            "Some error occurred while creating the New Deparment.",
-        });
+        // Check if department with same Name already exists
+        if (err.code === 11000) {
+          res.status(409).send({
+            status: false,
+            message: "Department with this Name already exists!",
+            data: {},
+          });
+        } else {
+          console.error(err); // log the error for debugging
+          res.status(500).send({
+            status: false,
+            message:
+              err.message ||
+              "Some error occurred while creating the New Deparment.",
+          });
+        }
       });
   } catch (err) {
+    console.error(err); // log the error for debugging
     return res.status(500).send({
       status: false,
       message:
@@ -77,25 +87,30 @@ exports.edit = (req, res) => {
       message: "Data to be edit can't be empty!",
     });
   }
-  const id = (req.params.id);
-  Department.updateOne( 
-    { _id: id }, 
-    { $set: req.body }, 
-    { multi: true } 
-  )
-    .then((department) => { 
-      return res.status(200).send({ 
-        status: true, 
-        message: "Department has been updated!", 
-        data: department, 
-      }); 
-    }) 
-    .catch((err) => { 
-      return res.status(500).send({ 
-        status: false,  
-        message: err.message, 
-      }); 
-    }); 
+  const id = req.params.id;
+  Department.updateOne({ _id: id }, { $set: req.body }, { multi: true })
+    .then((department) => {
+      return res.status(200).send({
+        status: true,
+        message: "Department has been updated!",
+        data: department,
+      });
+    })
+    .catch((err) => {
+       // Check if department with same Name already exists
+       if (err.code === 11000) {
+        res.status(409).send({
+          status: false,
+          message: "Department with this Name already exists!",
+          data: {},
+        });
+      }else {
+        return res.status(500).send({
+          status: false,
+          message: err.message,
+        });
+      }
+    });
 };
 
 // get the Department
@@ -116,15 +131,22 @@ exports.getDepartment = async (req, res) => {
 
   try {
     const data = await Department.findById(id);
+    if (!data) {
+      return res.status(404).send({
+        status: false,
+        message: "Department not found.",
+      });
+    }
     res.status(200).send({
       message: "Getting department",
       data: data,
       status: true,
     });
-  } catch {
-    res.status(404).send({
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
       status: false,
-      message: "Department not found.",
+      message: "Error retrieving department.",
     });
   }
 };
@@ -173,22 +195,20 @@ exports.getAll = async (req, res) => {
     const user = req.decoded;
 
     await Department.find({ parentCompany: ObjectId(user.userID) })
-          .then((data)=>{
-            return res.status(200).send({
-              status: true,
-              message: "Successfully Getting Data",
-              data: data,
-              u: user
-            });
-          })
-          .catch((err)=>{
-            return res.status(500).send({
-              status: false,
-              message: err.message
-            });
-          });
-   
-   
+      .then((data) => {
+        return res.status(200).send({
+          status: true,
+          message: "Successfully Getting Data",
+          data: data,
+          u: user,
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          status: false,
+          message: err.message,
+        });
+      });
   } catch (err) {
     return res.status(500).send({
       status: false,

@@ -113,6 +113,15 @@ const AddQuestion = ({
     }
   };
 
+  // on keypress remove validations
+  function handleKeyPress(e) {
+    var key = e.key;
+    if (key == key) {
+      setErrors(errorObj == false);
+    }
+  }
+
+
   useEffect(() => {
     setErrors(errorObj);
   }, [isShowAddQuestion]);
@@ -152,6 +161,7 @@ const AddQuestion = ({
                     onChange={(e) => {
                       setFormState({ ...formState, question: e.target.value });
                     }}
+                    onKeyPress={(e) => handleKeyPress(e)}
                   >{formState.question}</textarea>
                   {errors.question && (
                     <div Style="color:red;font-weight:600">
@@ -174,6 +184,7 @@ const AddQuestion = ({
                       onChange={(e) => {
                         setFormState({ ...formState, option1: e.target.value });
                       }}
+                      onKeyPress={(e) => handleKeyPress(e)}
                     />
                     {errors.option1 && (
                       <div Style="color:red;font-weight:600">
@@ -190,6 +201,7 @@ const AddQuestion = ({
                       onChange={(e) =>
                         setFormState({ ...formState, option2: e.target.value })
                       }
+                      onKeyPress={(e) => handleKeyPress(e)}
                     />
                     {errors.option2 && (
                       <div Style="color:red;font-weight:600">
@@ -206,6 +218,7 @@ const AddQuestion = ({
                       onChange={(e) =>
                         setFormState({ ...formState, option3: e.target.value })
                       }
+                      onKeyPress={(e) => handleKeyPress(e)}
                     />
                     {errors.option3 && (
                       <div Style="color:red;font-weight:600">
@@ -222,6 +235,7 @@ const AddQuestion = ({
                       onChange={(e) =>
                         setFormState({ ...formState, option4: e.target.value })
                       }
+                      onKeyPress={(e) => handleKeyPress(e)}
                     />
                     {errors.option4 && (
                       <div Style="color:red;font-weight:600">
@@ -238,6 +252,7 @@ const AddQuestion = ({
                       onChange={(e) =>
                         setFormState({ ...formState, answer: e.target.value })
                       }
+                      onKeyPress={(e) => handleKeyPress(e)}
                     />
                     {errors.answer && (
                       <div Style="color:red;font-weight:600">
