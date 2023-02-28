@@ -20,3 +20,12 @@ const API_URLs = {
     },
 };
 export default API_URLs;
+
+
+export const SLIDE_APIS = {
+  CHANGE_STATUS: {
+    URL: "http://localhost:8081/api/slides/",
+    METHOD: "PUT",
+    REMARK: "pass id and status in body"
+  }
+}

@@ -14,7 +14,7 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
   const role = useSelector((state) => state.auth.auth.role);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [AboutMe, setAboutMe] = useState('');
+  const [aboutMe, setAboutMe] = useState('');
   const [address, setAddress] = useState('');
   const [image, setImage] = useState({ preview: '', data: '' });
   const [profilePhoto, setProfilePhoto] = useState('');
@@ -54,7 +54,7 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
   const handleSubmit = async (e) =>{
     e.preventDefault();
     // validate data
-    if(name.trim() === '' || email.trim() === '' || address.trim() === '' || AboutMe ==='') {
+    if(name.trim() === '' || email.trim() === '' || address.trim() === '' || aboutMe ==='') {
       return swal("Failed", "All fields are required!", "error");
     }
 
@@ -63,7 +63,7 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
     data.append('email', email);
     data.append('image', image.data);
     data.append('address', address);
-    data.append('AboutMe', AboutMe);
+    data.append('aboutMe', aboutMe);
     data.append('profilePhoto', profilePhoto);
 
     
@@ -191,9 +191,9 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
                      <textarea
                       rows={2}
                       className="form-control"
-                      name="AboutMe"
+                      name="aboutMe"
                       placeholder=""
-                      value={AboutMe}
+                      value={aboutMe}
                       onChange={(e)=>setAboutMe(e.target.value)}
                       />
                   </div>

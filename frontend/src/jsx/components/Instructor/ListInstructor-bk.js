@@ -160,32 +160,21 @@ const Instructors = () => {
     handlepageLoad();
   };
 
-  /**
-   * 
-   * @param {*} e 
-   * @returns 
-   */
-  const filterByDepartment = async (e) => {
-    
-    setDeptID(e.target.value);
+  const filterByDepartment = (companyID, deptID) => {
+    const handlepageLoad = async (event) => {
+      const response = await filterInstructorApi(companyID, deptID);
 
-     const URL = `http://localhost:8081/api/instructor?deptID=${e.target.value}`;
-     const response =  await fetch(URL, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token
+      if ("status" in response && response.status == true) {
+        setInstructosList(response.data);
+      } else {
+        return swal(
+          "Failed",
+          "Something went wrong, please try again later.",
+          "error"
+        );
       }
-    }).then((data) => data.json());
-
-    if ("status" in response && response.status == true) {
-      /* Prepare data for instructor data-table list, start */
-      setInstructosList(response.data);
-    } else {
-      return swal("Failed", "Error message", "error");
-    }
-
-
+    };
+    handlepageLoad();
   };
 
 
@@ -217,7 +206,7 @@ const Instructors = () => {
                 { USER_ROLES.SUPER_ADMIN === role ?
                 (<select
                   name="parentCompany"
-                  className="form-cdeptIDontrol"
+                  className="form-control"
                   onChange={(e) => filterByCompany(e.target.value)}
                 >
                   <option value="all">All</option>
@@ -225,12 +214,12 @@ const Instructors = () => {
                 </select> ) : 
                 USER_ROLES.COMPANY === role ?
                   <>
-                    <label>Select Department </label>
+                    <label>Select Department {deptID}</label>
                     <select
                       name="deptID"
                       className="form-control"
                       value={deptID}
-                      onChange={(e) => filterByDepartment(e) }
+                      onChange={(e) => setDeptID(e.target.value)}
                     >
                       <option value="all">All</option>
                       <DepartmentByCompany parentCompany={userID} />

@@ -143,7 +143,7 @@ const UpdateInduction = () => {
     }
 
 
-
+    console.log("rendering Update induction ");
   }, [loading, parentCompany, deptID]);
 
   

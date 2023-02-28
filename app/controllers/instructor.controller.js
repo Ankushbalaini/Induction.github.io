@@ -5,30 +5,45 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const UserInductionResults = db.user_induction_results;
 
-
 var jwt = require("jsonwebtoken");
 const { instructor } = require("../models");
 
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
+
 /**
  * For super Admin
- * 
+ *
  */
-exports.list = (req, res) => {
+exports.index = (req, res) => {
   try {
-    UserCred
-      .aggregate([
+    const user = req.decoded;
+
+    if (
+      USER_ROLES.COMPANY === user.role &&
+      req.query.deptID !== "" &&
+      req.query.deptID !== "all" &&
+      req.query.deptID !== undefined
+    ) {
+      var deptID = ObjectId(req.query.deptID);
+
+      UserCred.aggregate([
         {
           $match: {
             $expr: {
               $and: [
                 {
                   $eq: ["$role", "instructor"],
-                }
+                  $eq: ["$parentCompany", ObjectId(user.userID)],
+                  $eq: ["$deptID", deptID],
+                },
               ],
             },
-            
           },
-          
         },
         { $sort: { createdAt: -1 } },
         {
@@ -47,13 +62,153 @@ exports.list = (req, res) => {
             _id: 1,
             email: 1,
             role: 1,
-            status:1,
+            status: 1,
             parentCompany: 1,
             profile: 1,
-            createdAt: 1
+            createdAt: 1,
           },
         },
       ])
+        .then((data) => {
+          return res.status(200).send({
+            status: true,
+            message: "All Instuctor Listing for company by department",
+            data: data,
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+            data: {},
+          });
+        });
+    } else {
+      UserCred.aggregate([
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $eq: ["$role", "instructor"],
+                  $eq: ["$parentCompany", ObjectId(user.userID)],
+                },
+              ],
+            },
+          },
+        },
+        { $sort: { createdAt: -1 } },
+        {
+          $lookup: {
+            from: "instructors",
+            localField: "_id",
+            foreignField: "userID",
+            as: "profile",
+          },
+        },
+        {
+          $unwind: "$profile",
+        },
+        {
+          $project: {
+            _id: 1,
+            email: 1,
+            role: 1,
+            status: 1,
+            parentCompany: 1,
+            profile: 1,
+            createdAt: 1,
+          },
+        },
+      ])
+        .then((data) => {
+          return res.status(200).send({
+            status: true,
+            message: "All Instuctor Listing for company",
+            data: data,
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+            data: {},
+          });
+        });
+    }
+
+    /*
+    UserCred.find({ role: 'instructor' }, { _id:1, email:1, createdAt:1, status:1  })
+    .populate('instructor', { name:1, logo:1 , profilePhoto: 1, aboutMe: 1,address: 1 })
+    .sort({ createdAt: -1})
+    .then((instructors)=>{
+      return res.status(201).send({
+        status: true,
+        message: "All instructor data",
+        data: instructors
+      });
+    })
+    .catch((err)=>{
+      return res.status(500).send({
+        status: false,
+        message: err.message
+      });
+    });
+    */
+  } catch (error) {
+    return res.status(500).send({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
+/**
+ *
+ * @param {
+ *
+ * } req
+ * @param {*} res
+ * @returns
+ */
+exports.list = (req, res) => {
+  try {
+    UserCred.aggregate([
+      {
+        $match: {
+          $expr: {
+            $and: [
+              {
+                $eq: ["$role", "instructor"],
+              },
+            ],
+          },
+        },
+      },
+      { $sort: { createdAt: -1 } },
+      {
+        $lookup: {
+          from: "instructors",
+          localField: "_id",
+          foreignField: "userID",
+          as: "profile",
+        },
+      },
+      {
+        $unwind: "$profile",
+      },
+      {
+        $project: {
+          _id: 1,
+          email: 1,
+          role: 1,
+          status: 1,
+          parentCompany: 1,
+          profile: 1,
+          createdAt: 1,
+        },
+      },
+    ])
       .then((data) => {
         res.status(200).send({
           status: true,
@@ -78,9 +233,6 @@ exports.list = (req, res) => {
   }
 };
 
-
-
-
 /**
  *
  * @param {*} req
@@ -95,45 +247,44 @@ exports.listByCompany = (req, res) => {
       throw new Error("Parent Company Id not exist.");
     }
 
-    UserCred
-      .aggregate([
-        {
-          $match: {
-            $expr: {
-              $and: [
-                {
-                  $eq: ["$role", "instructor"],
-                },
-                {
-                  $eq: ["$parentCompany", ObjectId(req.query.parentCompany)],
-                },
-              ],
-            },
+    UserCred.aggregate([
+      {
+        $match: {
+          $expr: {
+            $and: [
+              {
+                $eq: ["$role", "instructor"],
+              },
+              {
+                $eq: ["$parentCompany", ObjectId(req.query.parentCompany)],
+              },
+            ],
           },
         },
-        {
-          $lookup: {
-            from: "instructors",
-            localField: "_id",
-            foreignField: "userID",
-            as: "profile",
-          },
+      },
+      {
+        $lookup: {
+          from: "instructors",
+          localField: "_id",
+          foreignField: "userID",
+          as: "profile",
         },
-        {
-          $unwind: "$profile",
+      },
+      {
+        $unwind: "$profile",
+      },
+      {
+        $project: {
+          _id: 1,
+          email: 1,
+          role: 1,
+          status: 1,
+          parentCompany: 1,
+          profile: 1,
+          createdAt: 1,
         },
-        {
-          $project: {
-            _id: 1,
-            email: 1,
-            role: 1,
-            status:1,
-            parentCompany: 1,
-            profile: 1,
-            createdAt: 1,
-          },
-        },
-      ])
+      },
+    ])
       .then((data) => {
         res.status(200).send({
           status: true,
@@ -166,42 +317,41 @@ exports.filterByCompany = (req, res) => {
       throw new Error("Company Id not exist.");
     }
 
-    UserCred
-      .aggregate([
-        {
-          $match: {
-            $expr: {
-              $and: [
-                {
-                  $eq: ["$parentCompany", ObjectId(req.query.filterByCompany)],
-                },
-              ],
-            },
+    UserCred.aggregate([
+      {
+        $match: {
+          $expr: {
+            $and: [
+              {
+                $eq: ["$parentCompany", ObjectId(req.query.filterByCompany)],
+              },
+            ],
           },
         },
-        {
-          $lookup: {
-            from: "instructors",
-            localField: "_id",
-            foreignField: "userID",
-            as: "profile",
-          },
+      },
+      {
+        $lookup: {
+          from: "instructors",
+          localField: "_id",
+          foreignField: "userID",
+          as: "profile",
         },
-        {
-          $unwind: "$profile",
+      },
+      {
+        $unwind: "$profile",
+      },
+      {
+        $project: {
+          _id: 1,
+          email: 1,
+          role: 1,
+          status: 1,
+          parentCompany: 1,
+          profile: 1,
+          createdAt: 1,
         },
-        {
-          $project: {
-            _id: 1,
-            email: 1,
-            role: 1,
-            status:1,
-            parentCompany: 1,
-            profile: 1,
-            createdAt: 1,
-          },
-        },
-      ])
+      },
+    ])
       .then((data) => {
         res.status(200).send({
           status: true,
@@ -225,10 +375,6 @@ exports.filterByCompany = (req, res) => {
     });
   }
 };
-
-
-
-
 
 /**
  *
@@ -266,27 +412,19 @@ exports.add = (req, res) => {
       //instructorData.profilePhoto = Img.name;
     }
 
-    req.body.parentCompany = (user.role === 'company') ? ObjectId(user.userID) : ObjectId(req.body.parentCompany);
+    req.body.parentCompany =
+      user.role === "company"
+        ? ObjectId(user.userID)
+        : ObjectId(req.body.parentCompany);
     //console.log(req.body); return;
     req.body.deptID = ObjectId(req.body.deptID);
-    
     var InstructorCred = new UserCred(req.body);
-
-    // Create token
-    // const token = jwt.sign(
-    //   { userID: InstructorCred._id, email: email, role: 'instructor' },
-    //   "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
-    //   {
-    //     expiresIn: "2h",
-    //   }
-    // );
-    
-    // save user token
-    // InstructorCred.token = token;
-    InstructorCred.save();
 
     req.body.userID = ObjectId(InstructorCred._id);
     var instructorData = new InstructorTable(req.body);
+
+    InstructorCred.instructor = instructorData._id;
+    InstructorCred.save();
 
     instructorData.profilePhoto = Img.name;
 
@@ -299,15 +437,14 @@ exports.add = (req, res) => {
           data: response,
         });
       })
-      
+
       .catch((err) => {
         return res.status(400).send({
-            status: false,
-            message: err.message,
-            data: req.body,
-          });
+          status: false,
+          message: err.message,
+          data: req.body,
+        });
       });
-
   } catch (e) {
     return res.status(400).send({
       status: false,
@@ -317,43 +454,67 @@ exports.add = (req, res) => {
   }
 };
 
-
-
 /**
- * 
+ *
  * @param {*} req
  * @param {*} res
  * @returns
- * 
+ *
  */
 exports.edit = (req, res) => {
- try{
-  
-  const id = ObjectId(req.params.id);
+  try {
+    const id = ObjectId(req.params.id);
 
-  // logo validation
-  if (!req.files || Object.keys(req.files).length === 0) {
-    if (req.body.profilePhoto === "") {
-      return res.status(500).send({
-        status: false,
-        message: "Profile photo is required!",
-      });
-    }
-  } else {
-    var Img = req.files.image;
-    var uploadPath = "images/profile/" + Img.name;
-
-    Img.mv(uploadPath, function (err) {
-      if (err) {
+    // logo validation
+    if (!req.files || Object.keys(req.files).length === 0) {
+      if (req.body.profilePhoto === "") {
         return res.status(500).send({
           status: false,
-          message: err.message,
+          message: "Profile photo is required!",
         });
       }
-    });
-    req.body.profilePhoto = Img.name;
-  }
+    } else {
+      var Img = req.files.image;
+      var uploadPath = "images/profile/" + Img.name;
 
+      Img.mv(uploadPath, function (err) {
+        if (err) {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+          });
+        }
+      });
+      req.body.profilePhoto = Img.name;
+    }
+
+    InstructorTable.updateOne(
+      { _id: id },
+      { $set: req.body },
+      { multi: false },
+      function (err, user) {
+        if (err) {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+          });
+        }
+        if (!user) {
+          return res.status(500).send({
+            status: false,
+            message: "Instructor not found!",
+          });
+        } else {
+          return res.status(200).send({
+            status: true,
+            message: "Instructor has been updated!",
+            data: user,
+          });
+        }
+      }
+    );
+
+    /*
   InstructorTable
     .findByIdAndUpdate(id, { ...req.body }, { useFindAndModify: true })
     .then(function (user) {
@@ -377,14 +538,14 @@ exports.edit = (req, res) => {
           err.message || "Some error occurred while creating the Deparment.",
       });
     });
- }catch(err){
-  res.status(500).send({
-    status: false,
-    message: err.message,
-  });
-
- }
-}
+    */
+  } catch (err) {
+    res.status(500).send({
+      status: false,
+      message: err.message,
+    });
+  }
+};
 
 /**
  * @param {*} req
@@ -393,38 +554,37 @@ exports.edit = (req, res) => {
  */
 exports.inductionsDm = (req, res) => {
   try {
-  //   const userID = ObjectId(req.decoded.userID);
-  //   const indution = req.decoded; 
-  //  const user = req.decoded;
+    //   const userID = ObjectId(req.decoded.userID);
+    //   const indution = req.decoded;
+    //  const user = req.decoded;
 
-  //  if(user.role ==='instructor'){
-  //   UserInductionResults
-  //     .find({ inductionID: ObjectId(user.inductionID) })
-  //     // .populate({
-  //     //   path: 'inductionID',
-  //     //   select: 'title'
-  //     // })
-  //     .sort({ createdAt: -1 })
-  //     .then((data) => {
-  //       return res.status(200).send({
-  //         message: "Success here",
-  //         status: true,
-  //         data: data,
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       return res.status(500).send({
-  //         message: err.message,
-  //         status: false,
-  //       });
-  //     });
-  //  }
-  return res.send(200).send({
-    message:"Hello",
-    status:true,
-    data:data
-  })
-
+    //  if(user.role ==='instructor'){
+    //   UserInductionResults
+    //     .find({ inductionID: ObjectId(user.inductionID) })
+    //     // .populate({
+    //     //   path: 'inductionID',
+    //     //   select: 'title'
+    //     // })
+    //     .sort({ createdAt: -1 })
+    //     .then((data) => {
+    //       return res.status(200).send({
+    //         message: "Success here",
+    //         status: true,
+    //         data: data,
+    //       });
+    //     })
+    //     .catch((err) => {
+    //       return res.status(500).send({
+    //         message: err.message,
+    //         status: false,
+    //       });
+    //     });
+    //  }
+    return res.send(200).send({
+      message: "Hello",
+      status: true,
+      data: data,
+    });
   } catch (err) {
     return res.status(500).send({
       message: err.message,

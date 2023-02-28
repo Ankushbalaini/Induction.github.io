@@ -34,7 +34,10 @@ module.exports = (mongoose) => {
         },
         profile : { type:mongoose.Schema.Types.ObjectId ,  
           ref : 'users',
-         }
+        },
+        instructor : { type:mongoose.Schema.Types.ObjectId ,  
+          ref : 'instructor',
+        },
 
       },
       { timestamps: true }
