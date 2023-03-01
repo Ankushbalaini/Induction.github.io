@@ -347,6 +347,16 @@ const SideBar = () => {
                       Create Induction{" "}
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      className={`${
+                        path === "import-induction" ? "mm-active" : ""
+                      }`}
+                      to="/import-induction"
+                    >
+                      Import Induction{" "}
+                    </Link>
+                  </li>
 
                   {/* <li>
                     <Link
