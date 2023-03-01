@@ -27,7 +27,7 @@ function removeDuplicates(){
     })
     return unique
   }
-console.log(removeDuplicates(dataset1)+"...........remove duplicates")
+
 
 
 
@@ -43,8 +43,8 @@ console.log(removeDuplicates(dataset1)+"...........remove duplicates")
         
         <>
           <div className="d-flex align-items-center">
-            <div>{row.inductions.title}</div>
-            <div>{dataset1}</div>
+            {/* <div>{row.inductions.title}</div> */}
+            <div>{removeDuplicates(dataset1)}</div>
           </div>
         </>
       ),
@@ -90,7 +90,7 @@ console.log(removeDuplicates(dataset1)+"...........remove duplicates")
       <DataTable
         title=""
         columns={columns}
-        users={filteredItems}
+        data={filteredItems}
         defaultSortField="name"
         pagination
         subHeader
