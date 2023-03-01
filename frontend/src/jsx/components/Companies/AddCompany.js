@@ -2,10 +2,11 @@ import React, { Fragment, useState, useRef, useEffect } from "react";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AddCompany = () => {
   const navigate = useHistory();
-
+  const token = useSelector((state) => state.auth.auth.token);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -84,6 +85,9 @@ const AddCompany = () => {
     // let formData = new FormData();
     const response = await fetch("http://localhost:8081/api/company/add", {
       method: "POST",
+      headers: {
+        "x-access-token" : token
+        },
       body: data,
     }).then((data) => data.json());
     if ("status" in response && response.status == true) {
@@ -91,7 +95,6 @@ const AddCompany = () => {
         buttons: false,
         timer: 2000,
       }).then((value) => {
-        // return <Navigate to="/inductions" />;
         navigate.push("/companies");
       });
     } else {

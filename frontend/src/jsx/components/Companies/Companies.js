@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Table from './DataTable';
+import Table from "./DataTable";
 
 // api call
 async function getCompanies(token) {
@@ -13,8 +13,8 @@ async function getCompanies(token) {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      "x-access-token" : token
-    }
+      "x-access-token": token,
+    },
   }).then((data) => data.json());
 }
 
@@ -25,7 +25,7 @@ const Companies = () => {
   const [loading, setLoading] = useState(true);
   const [companies, setCompanies] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalData, setModalData] = useState({ name: ''});
+  const [modalData, setModalData] = useState({ name: "" });
 
   // model popup usestate
   const [name, setName] = useState();
@@ -45,64 +45,62 @@ const Companies = () => {
     setLogo(company.logo);
     setAddress(company.address);
     setAboutCompany(company.aboutCompany);
-    setCompanyID(company.companyID)
+    setCompanyID(company.companyID);
     setEditID(company._id);
     // set values
-  }
+  };
 
   // callback function to opdate state
   const trackOnclick = (payload, company) => {
     setIsModalOpen(payload);
-    if(payload){
+    if (payload) {
       setModalData(company);
       setName(company.name);
       setEmail(company.email);
       setLogo(company.logo);
       setAddress(company.address);
       setAboutCompany(company.aboutCompany);
-      setCompanyID(company.companyID)
+      setCompanyID(company.companyID);
       setEditID(company._id);
     }
-  }
-    // callback function to opdate state
-    const trackDeleteClick = () => {
-      swal({
-        title: "Are you sure?",
-        text:
-          "Once deleted, you will not be able to recover this record!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
-          swal("Poof! Your record has been deleted!", {
-            icon: "success",
-          });
-        } else {
-          swal("Your record is safe!");
-        }
-      })
-    }
-    
+  };
+  // callback function to opdate state
+  const trackDeleteClick = () => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this record!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        swal("Poof! Your record has been deleted!", {
+          icon: "success",
+        });
+      } else {
+        swal("Your record is safe!");
+      }
+    });
+  };
 
   // Edit company submit handler
   const onSubmitHandle = async (e) => {
     e.preventDefault();
     const data = new FormData();
-    data.append('name', name);
-    data.append('email', email);
-    data.append('logo', image.data);
-    data.append('address', address);
-    data.append('aboutCompany', aboutCompany);
-    data.append('logo_previous', logo);
-    data.append('companyID', companyID)
+    data.append("name", name);
+    data.append("email", email);
+    data.append("logo", image.data);
+    data.append("address", address);
+    data.append("aboutCompany", aboutCompany);
+    data.append("logo_previous", logo);
+    data.append("companyID", companyID);
 
     const response = await fetch(
       "http://localhost:8081/api/company/edit/" + editID,
       {
         method: "PUT",
         headers: {
-          "x-access-token" : token
+          "x-access-token": token,
         },
         body: data,
       }
@@ -125,13 +123,10 @@ const Companies = () => {
     setImage(img);
   };
 
-
   // re-render page on every update
   useEffect(() => {
     handlepageLoad();
-  }, [loading,isModalOpen]);
-
- 
+  }, [loading, isModalOpen]);
 
   // on List companies page first render
   const handlepageLoad = async (event) => {
@@ -144,9 +139,9 @@ const Companies = () => {
     }
   };
 
-
-  
-  const pageContent = (loading) ? <h1>loading</h1>: 
+  const pageContent = loading ? (
+    <h1>loading</h1>
+  ) : (
     <Fragment>
       <PageTitle activeMenu="All Companies" motherMenu="Company" />
 
@@ -158,34 +153,32 @@ const Companies = () => {
             </div>
             <div className="card-body">
               <div className="table-responsive">
-                <div
-                  id="student_wrapper"
-                  className="dataTables_wrapper "
-                >
+                <div id="student_wrapper" className="dataTables_wrapper ">
                   {/* <Table data={data} click={clickhandler} /> */}
-                 
                 </div>
-                <Table data={companies} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick}/>
-
+                <Table
+                  data={companies}
+                  trackOnclick={trackOnclick}
+                  trackDeleteClick={trackDeleteClick}
+                />
               </div>
-              
             </div>
-           
           </div>
         </div>
       </div>
       {/* edit Modal */}
       {/* <UpdateCompanyProfile isModalOpen={isModalOpen} trackOnclick={trackOnclick} companyData={companies}/> */}
 
-      <Modal className="modal fade" show={isModalOpen}
-      size="xl"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
+      <Modal
+        className="modal fade"
+        show={isModalOpen}
+        size="xl"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
       >
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Edit Company Details </h5>
-
 
             <Button
               variant=""
@@ -198,7 +191,6 @@ const Companies = () => {
           <div className="modal-body">
             <form className="company-form" onSubmit={(e) => onSubmitHandle(e)}>
               <div className="row">
-
                 <div className="col-lg-6">
                   <div className="form-group mb-3">
                     <label htmlFor="author" className="text-black font-w600">
@@ -211,7 +203,7 @@ const Companies = () => {
                       className="form-control"
                       name="name"
                       value={name}
-                      onChange={(e)=>setName(e.target.value)}
+                      onChange={(e) => setName(e.target.value)}
                     />
                   </div>
                 </div>
@@ -247,21 +239,18 @@ const Companies = () => {
                       placeholder="Slug"
                       value={companyID}
                       onChange={(e) => setCompanyID(e.target.value)}
-                      
                     />
                   </div>
                 </div>
-
 
                 <div className="col-lg-12">
                   <div className="form-group mb-3">
                     <label htmlFor="author" className="text-black font-w600">
                       {" "}
                       Company Logo<span className="required">*</span>{" "}
-                      ({logo})
                       <input type="hidden" name="logo-img" value={logo} />
                     </label>
-                    
+
                     <input
                       type="file"
                       className="form-control"
@@ -283,7 +272,6 @@ const Companies = () => {
                       name="address"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
-                     
                     />
                   </div>
                 </div>
@@ -302,7 +290,6 @@ const Companies = () => {
                       placeholder="Tell us More"
                       value={aboutCompany}
                       onChange={(e) => setAboutCompany(e.target.value)}
-                      
                     />
                   </div>
                 </div>
@@ -310,7 +297,7 @@ const Companies = () => {
                 <div className="col-lg-12">
                   <div className="form-group mb-3">
                     <Button
-                    style={{margin: "auto", display: "flex"}}
+                      style={{ margin: "auto", display: "flex" }}
                       type="submit"
                       value="Submit"
                       className="submit btn btn-primary"
@@ -319,20 +306,15 @@ const Companies = () => {
                     </Button>
                   </div>
                 </div>
-
-
               </div>
             </form>
           </div>
         </div>
       </Modal>
+    </Fragment>
+  );
 
-      
-    </Fragment>;
-
-    return (
-      <div>{pageContent}</div>
-    );
+  return <div>{pageContent}</div>;
 };
 
 export default Companies;

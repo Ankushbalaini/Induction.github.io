@@ -102,7 +102,7 @@ const CreateInduction = () => {
   }, []);
 
   // api call
-  async function saveInduction(formValues) {
+  async function saveInduction(token) {
     return fetch("http://localhost:8081/api/induction/store", {
       method: "POST",
       headers: {

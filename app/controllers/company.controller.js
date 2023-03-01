@@ -180,7 +180,7 @@ exports.add = async (req, res) => {
       .then((data) => {
         res.status(200).send({
           status: true,
-          message: "Success",
+          message: "Company has been Added Successfully!",
           data: data,
         });
       })
@@ -296,7 +296,7 @@ exports.edit = (req, res) => {
         .catch((err) => {
           res.status(500).send({
             status: false,
-            message: "Some Slug should be unique.",
+            message: "Slug already exists!.",
           });
         });
     }
@@ -384,70 +384,96 @@ exports.update = (req, res) => {
 };
 exports.companyDropdownList = (req, res) => {
   userCredModel
-  .find({ role: USER_ROLES.COMPANY, status:1 }, { _id: 1, email:1,status:1, createdAt: 1 })
-  .populate("company", {_id :1 , name:1, companyID:1, logo:1, address:1, aboutCompany:1 })
-  .sort({ createdAt: -1 })
-  .then((user) => {
-    return res.status(200).send({
-      status: true,
-      message: "Company listing",
-      data: user,
+    .find(
+      { role: USER_ROLES.COMPANY, status: 1 },
+      { _id: 1, email: 1, status: 1, createdAt: 1 }
+    )
+    .populate("company", {
+      _id: 1,
+      name: 1,
+      companyID: 1,
+      logo: 1,
+      address: 1,
+      aboutCompany: 1,
+    })
+    .sort({ createdAt: -1 })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send({
+          status: false,
+          message: "No company found",
+        });
+      }
+      return res.status(200).send({
+        status: true,
+        message: "Company listing",
+        data: user,
+      });
+    })
+    .catch((err) => {
+      console.error("Error fetching company dropdown list:", err);
+      return res.status(500).send({
+        status: false,
+        message: "Error fetching company dropdown list",
+      });
     });
-  })
-  .catch((err) => {
-    return res.status(500).send({
-      status: false,
-      message: err.message,
-    });
-  });
-}
+};
+
 /**
  *
  * fetch last 10 records of user attempted inductions filter by company ID
  *
  */
 exports.dashboard = async (req, res) => {
-  try{
+  try {
     const userData = req.decoded;
     var inductionIDs = [];
-    const inductions = await Induction.find({ parentCompany: userData.userID }, { _id:1, title: 1});
-    if(inductions.length > 0) {
-      inductions.forEach(function(item){
+    const inductions = await Induction.find(
+      { parentCompany: userData.userID },
+      { _id: 1, title: 1 }
+    );
+
+    if (inductions.length > 0) {
+      inductions.forEach(function (item) {
         inductionIDs.push(ObjectId(item._id));
       });
-    }else{
+    } else {
       return res.status(201).send({
         status: true,
         message: "Company do not have any Induction in system!",
-        data: []
-      })
-    }
-    UserInductionResults.find({ inductionID: { $in: inductionIDs } })
-    .sort({ createdAt: -1})
-    .limit(10)
-    .then((results)=>{
-      return res.status(201).send({
-        status: true,
-        message: "Last 10 Results of Company Inductions!",
-        data: {
-            total: results.length,
-            rows: results
-        },
-        inductions: {
-          total: inductions.length,
-          rows: inductions
-        }
-      })
-    }).catch((err)=>{
-      return res.status(500).send({
-        status: false,
-        message: err.message,
+        data: [],
       });
-    });
-  }catch(error){
+    }
+
+    UserInductionResults.find({ inductionID: { $in: inductionIDs } })
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .then((results) => {
+        return res.status(201).send({
+          status: true,
+          message: "Last 10 Results of Company Inductions!",
+          data: {
+            total: results.length,
+            rows: results,
+          },
+          inductions: {
+            total: inductions.length,
+            rows: inductions,
+          },
+        });
+      })
+      .catch((err) => {
+        console.error("Error fetching dashboard data:", err);
+        return res.status(500).send({
+          status: false,
+          message: "Error fetching dashboard data",
+        });
+      });
+  } catch (error) {
+    console.error("Error fetching dashboard data:", error);
     return res.status(500).send({
       status: false,
-      message: error.message,
+      message: "Error fetching dashboard data",
     });
   }
-}
+};

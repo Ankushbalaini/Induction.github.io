@@ -4,7 +4,7 @@ import ModalVideo from 'react-modal-video'
 import {Tab, Nav, Accordion} from 'react-bootstrap';
 import 'react-modal-video/css/modal-video.min.css';
 
-import {AboutTabContent} from '../Courses/CourseDetail1'; 
+import {AboutTabContent} from '../Courses-123/CourseDetail1'; 
 import videoimg from    './../../../images/courses/video-img.jpg';
 import pic3 from        './../../../images/courses/pic3.jpg';
 import pic4 from        './../../../images/courses/pic4.jpg';

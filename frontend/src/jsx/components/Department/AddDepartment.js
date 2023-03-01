@@ -7,19 +7,31 @@ import { useSelector } from "react-redux";
 
 const AddDepartment =() =>{
     const navigate = useHistory();
-    const [name,setName] = useState();
+    const [name,setName] = useState("");
     const [status , setStatus] = useState(1);
     const loggedrole = useSelector((state) => state.auth.auth.role);
     const [parentCompany, setParentCompany] = useState('');
     const token = useSelector((state) => state.auth.auth.token);
 
 
+
 // validation messages
-let errorsObj = { name: "", status: "",  parentCompany:"" };
-const [errors, setErrors] = useState(errorsObj);
+let errorObj = { name: "", status: "",  parentCompany:"" };
+const [errors, setErrors] = useState(errorObj);
 
   let handleSubmit = async (event)=>{
     event.preventDefault();
+    let error= false;
+
+    const errorObj1 ={ ...errorObj };
+
+    if (name ==""){
+      errorObj1.name ="Name is required!"
+      error = true;
+    }
+    setErrors(errorObj1);
+    if (error) return;
+
     const deparment ={
         name:name,
         status: status
@@ -76,6 +88,12 @@ const [errors, setErrors] = useState(errorsObj);
     float: 'right'
   };
 
+  function handleKeyPress(event) {
+    var key = event.key;
+    if (key == key) {
+      setErrors(errorObj == false);
+    }
+  }
 
  return (
      <Fragment>
@@ -99,6 +117,7 @@ const [errors, setErrors] = useState(errorsObj);
                                        className="form-control"
                                        placeholder=""
                                        onChange={(e) =>setName(e.target.value)}
+                                       onKeyPress={(e) => handleKeyPress(e)}
                                        value={name}
                                      />
                                {errors.name && <div Style="color:red;font-weight:600;padding:5px;">{errors.name}</div>}

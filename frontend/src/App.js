@@ -15,7 +15,6 @@ import "./css/style.css";
 const SignUp = lazy(() => import('./jsx/pages/Registration'));
 const ForgotPassword = lazy(() => import('./jsx/pages/ForgotPassword'));
 const ResetPassword = lazy(() => import('./jsx/pages/ResetPassword'));
-const CoursesMain = lazy(()=>import('./jsx/components/Courses/CoursesMain'))
 
 const Login = lazy(() => {
     return new Promise(resolve => {

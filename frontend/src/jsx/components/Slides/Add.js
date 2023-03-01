@@ -4,7 +4,7 @@ import PageTitle from "../../layouts/PageTitle";
 import InductionDropdown from "./InductionDropdown";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
-import { Link,useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useParams } from "react-router";
 
 // api call
@@ -33,8 +33,34 @@ const Add = () => {
   const [state, setState] = useState(intialState);
   const editor = useRef(null);
 
+  //Validation messages
+  let errorsObj = { slideTitle: "", slideContent: "" };
+  const [errors, setErrors] = useState(errorsObj);
+
+  // on click validation remove function
+  function handleKeyPress(e) {
+    var key = e.key;
+    if (key == key) {
+      setErrors(errorsObj == false);
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let error = false;
+    const errorObj = { ...errorsObj };
+    if (state.slideTitle === "") {
+      errorObj.slideTitle = "Title is Required!";
+      error = true;
+    }
+    if (state.slideContent === "") {
+      errorObj.slideContent = "Slide Content is Required!";
+      error = true;
+    }
+
+    setErrors(errorObj);
+    if (error) return;
+
     const formData = new FormData(e.target);
     const response = await addSlide(formData, token);
 
@@ -46,12 +72,9 @@ const Add = () => {
         navigate.push(`/update-induction/${state.slideInductionId}`);
       });
     } else {
-      return swal("Failed",  response.message , "error");
+      return swal("Failed", response.message, "error");
     }
   };
-
-
-
 
   return (
     <>
@@ -85,7 +108,11 @@ const Add = () => {
                   </div>
                 </div> */}
 
-                <input type='hidden' name='slideInductionId' value={state.slideInductionId} />
+                <input
+                  type="hidden"
+                  name="slideInductionId"
+                  value={state.slideInductionId}
+                />
 
                 <div className="card-header">
                   <h4 className="card-title">Slide Detail</h4>
@@ -106,7 +133,13 @@ const Add = () => {
                         }
                         name="slideTitle"
                         value={state.slideTitle}
+                        onKeyPress={(e) => handleKeyPress(e)}
                       />
+                      {errors.slideTitle && (
+                        <div Style="color:red;font-weight:400">
+                          {errors.slideTitle}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="mb-3 row">
@@ -126,15 +159,24 @@ const Add = () => {
                         onChange={(newContent) =>
                           setState({ ...state, slideContent: newContent })
                         }
+                        onKeyPress={(e) => handleKeyPress(e)}
                       />
+                      {errors.slideContent && (
+                        <div Style="color:red;font-weight:400">
+                          {errors.slideContent}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
 
                 <div class="text-end toolbar toolbar-bottom p-2">
-                <Link class="btn btn-danger sw-btn-next m-3" to={`/update-induction/${id}`} >
-                            Cancel
-                      </Link>
+                  <Link
+                    class="btn btn-danger sw-btn-next m-3"
+                    to={`/update-induction/${id}`}
+                  >
+                    Cancel
+                  </Link>
 
                   <button class="btn btn-success sw-btn-next" type="submit">
                     Submit
