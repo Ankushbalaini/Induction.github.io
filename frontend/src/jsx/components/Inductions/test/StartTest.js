@@ -74,7 +74,8 @@ const StartTest = () => {
 
   const hidePopUp = () => {
     setIsAcknowledgementModalOpen(false);
-    navigate.push(`/single-induction-view/${id}`);
+    // navigate.push(`/single-induction-view/${id}`);
+    navigate.push(`/view-induction/${id}`);
   }
   
 
