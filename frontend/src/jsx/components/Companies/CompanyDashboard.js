@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import CalendarBlog from "../Dashboard/Dashboard/CalendarBlog";
 import ScheduleRadilChart from "../Dashboard/Dashboard/ScheduleRadilChart";
 import LearningActivityChart from "./LearningActivityChart";
+import AttemtedViewDashboard from "./components/AttemtedViewDashboard"
 
 // api call
 async function getDashboard(token) {
@@ -141,9 +142,13 @@ const CompanyDashboard = () => {
                   <div className="card-body">
                   <LearningActivityChart averageData={averageData} setAverageData={setAverageData} />
                   </div>
+
                 </div>
               </div>
 
+              <div className="col-xl-12">
+                  <AttemtedViewDashboard />
+                  </div>
       </div>
     </>
   );

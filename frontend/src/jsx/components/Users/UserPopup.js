@@ -94,7 +94,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
     setState(intialValue);
   }, [isModalOpen]);
   return (
-    <Modal className="modal fade" show={isModalOpen}>
+    <Modal className="modal fade" show={isModalOpen} >
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title">Update Profile </h5>

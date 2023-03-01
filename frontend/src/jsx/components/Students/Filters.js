@@ -45,7 +45,10 @@ function Filters({
       <div class="input-group">
         {role === "super_admin" ? (
           <>
-            <label for="company_filter" style={{margin:20, fontSize: 16, minWidth: 100 }}>Select Company: </label>
+            <label for="company_filter" style={{margin:20, 
+              fontSize: 16, 
+              minWidth: 100 }}>
+                Select Company: </label>
             <select
               name="company_filter"
               className="form-control11"

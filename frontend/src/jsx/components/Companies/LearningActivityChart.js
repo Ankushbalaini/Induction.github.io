@@ -75,8 +75,8 @@ const LearningActivityChart = (props) => {
   }, [users]);
 
 
-console.log(scores,"scores")
-console.log("average of data outside " + averageData);
+// console.log(scores,"scores")
+// console.log("average of data outside " + averageData);
 
 
 

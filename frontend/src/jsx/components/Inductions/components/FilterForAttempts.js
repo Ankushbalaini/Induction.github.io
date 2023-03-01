@@ -25,38 +25,54 @@ function FiltersForAttempts({
 
   return (
     <>
-      <div class="input-group">
+      <div className="input-group d-flex justify-content-end">
         {USER_ROLES.SUPER_ADMIN == role ? (
           <>
-            <label htmlFor="company_filter" style={{margin:20, fontSize: 16, minWidth: 100 }}>Select Company: </label>
+            
+            <label htmlFor="company_filter"  style={{
+              marginTop:30,
+               fontSize: 15, 
+               fontWeight: 600,
+               minWidth: 50 }}>Select Company </label>
             <select
               name="company_filter"
-              className="form-control11"
-              style={{margin:20, fontSize: 16 }}
+              className="form-control11 btn border-light rounded"
+              style={{margin:20, fontSize: 14 }}
               onChange={(e) => CompanyFilterHandle(e)}
             >
               <option value="All">All</option>
               <CompanyDropdown />
             </select>
-
-            <label htmlFor="induction_filter" style={{margin:20, fontSize: 16, minWidth: 100 }}>Select Induction: </label>
+            
+            <label htmlFor="induction_filter" style={{marginTop:30,
+               fontSize: 15, 
+               fontWeight: 600,
+               minWidth: 50 }}>Select Induction </label>
             <select
               name="induction_filter"
+              className="form-control11 btn border-light rounded"
               onChange={(e) => InductionFilterHandle(e)}
-              style={{margin:20, fontSize: 16, minWidth: 100 }}
+              style={{margin:20,
+                 fontSize: 14,
+                  minWidth: 100 }}
             >
               <option value="All">All</option>
               <InductionsByCompany parentCompany={companyFilter} />
             </select>
+           
           </>
         ) : null}
 
         {USER_ROLES.COMPANY === role ? (
-          <div className="row">
-            <div className="col-xl-6">
-              <label for="induction_filter">Select Induction: </label>
+          <div className="row d-flex justify-content-end">
+            <div className="col-m-3">
+              <label for="induction_filter" 
+              style={{
+                      fontWeight: "bold",
+                            }}
+              className="">Select Induction </label>
             </div>
-            <div className="col-xl-6">
+            <div className="col-m-2">
               <select
                 className="form-control"
                 name="induction_filter"
