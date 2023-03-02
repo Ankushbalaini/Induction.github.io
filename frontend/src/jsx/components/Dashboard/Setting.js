@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
+import { API_ROOT_URL } from "../../constants";
 
 const Setting = (props) => {
   const userID = useSelector((state) => state.auth.auth._id);
@@ -48,7 +49,7 @@ const Setting = (props) => {
 
 
     var data = new FormData(e.target);
-    const response = await fetch('${API_ROOT_URL}/users/setting', {
+    const response = await fetch(`${API_ROOT_URL}/users/setting`, {
         method: 'PUT',
         body: data,
         headers: {
