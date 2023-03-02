@@ -44,7 +44,8 @@ function FiltersForAttempts({
               <CompanyDropdown />
             </select>
             
-            <label htmlFor="induction_filter" style={{marginTop:30,
+            <label htmlFor="induction_filter" 
+            style={{marginTop:30,
                fontSize: 15, 
                fontWeight: 600,
                minWidth: 50 }}>Select Induction </label>
@@ -87,12 +88,22 @@ function FiltersForAttempts({
         ) : null}
 
         {USER_ROLES.INSTRUCTOR === role ? (
-          <div className="row">
-            <div className="col-xl-6">
-              <label for="induction_filter">Select Induction: </label>
+          <div className="row" style={{display:"flex", justifyContent:"end" , alignItems:"end"}}>
+           <div className="col-xl-6">
+              <label for="induction_filter" 
+               style={{
+                fontSize: 15, 
+                fontWeight: 600,
+                paddingLeft:100,
+                paddingBottom:5
+
+                }}
+
+              >Select Induction </label>
             </div>
             <div className="col-xl-6">
               <select
+              style={{margin:"auto"}}
                 className="form-control"
                 name="induction_filter"
                 onChange={(e) => InductionFilterHandle(e)}

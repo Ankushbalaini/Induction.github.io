@@ -77,6 +77,8 @@ const InductionUsers = () => {
   useEffect(() => {
     handlepageLoad();
   }, [companyFilter, inductionFilter]);
+
+
   //css for button
   const buttonStyle = {
     margin: "auto",
@@ -110,7 +112,7 @@ const InductionUsers = () => {
                   <div id="user_wrapper" className="dataTables_wrapper">
             
                 </div>
-                <TableAttempted users={users} setUsers={setUsers} trackOnclick={trackOnclick} />
+                <TableAttempted data={users} trackOnclick={trackOnclick} />
               </div>
          
             </div>

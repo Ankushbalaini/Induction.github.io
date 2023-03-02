@@ -83,10 +83,10 @@ const CreateInduction = () => {
       errorObj.deptID = "Department is Required";
       error = true;
     }
-    if (parentCompany==''){
-      errorObj.parentCompany = "Parent Company is Required";
-      error = true;
-    }
+    // if (parentCompany==''){
+    //   errorObj.parentCompany = "Parent Company is Required";
+    //   error = true;
+    // }
 
     setErrors(errorObj);
     if (error) return;
@@ -137,6 +137,7 @@ const CreateInduction = () => {
     // call api to fetch departments
     setParentCompany(e.target.value);
     setOption('');
+    
     const response = await fetch(
       "http://localhost:8081/api/department/getDepartmentByComp",
       {
@@ -265,6 +266,7 @@ const buttonStyle = {
                     value={parentCompany}
                     onKeyPress={(e) => handleKeyPress(e)}
                   >
+                    
                     <option>Select</option>
                     <CompanyDropdown prevSelected={parentCompany} />
                  </select>

@@ -236,7 +236,7 @@ const Users = () => {
                           </select>
                         </div>
                       </div>
-                    </div>
+                      </div>
                   ) : null}
                 </div>
                 <div className="card-body">
@@ -245,10 +245,22 @@ const Users = () => {
                       {/* CompanyChangeFilter */}
                       {/* <label Style="margin:20px">Filter Users</label> */}
                       {USER_ROLES.COMPANY === userRole ? (
-                        <div>
-                          <label> Select Deparment</label>
+                        <div style={{display:"flex", justifyContent:"end", paddingBottom:"50px"}}>
+                          <label
+                          
+                           style={{
+                             paddingRight: "10px",
+                             fontWeight: "bold",
+                             paddingTop: "12px",
+                             paddingBottom:"30px",
+                           }}
+                           className="pb-0"
+                      
+                          > 
+                          Select Deparment</label>
                           <select
-                            Style="margin:20px; font-size: 16px;"
+                            className="btn btn-white col-xl-2 border-light"
+                            style={{ borderRadius: "8px", marginRight:"20px" }}
                             name="search_department"
                             onChange={(e) => DepartmentChangeFilter(e)}
                           >
@@ -256,18 +268,22 @@ const Users = () => {
                             <DepartmentByCompany parentCompany={id} />
                           </select>
                         </div>
+                        
                       ) : null}
                       {USER_ROLES.INSTRUCTOR === userRole ? (
-                        <div className="col-sm-3">
-                          <label> Select Deparment</label>
+                        <div style={{display:"flex",justifyContent:"end"}}>
+                        <div className="col-xl-3 d-flex float-right">
+                          <label style={{fontWeight:600,margin:"auto",display:"flex", justifyContent:"end" }}> Select Deparment</label>
                           <select
-                            Style="margin:30px; font-size: 15px;"
+                           className="btn"
+                           style={{padding:10, margin:3}}
                             name="search_department"
                             onChange={(e) => DepartmentChangeFilter(e)}
                           >
                             <option value="All">All</option>
                             <DepartmentByCompany parentCompany={id} />
                           </select>
+                        </div>
                         </div>
                       ) : null}
 

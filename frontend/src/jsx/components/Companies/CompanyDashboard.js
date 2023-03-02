@@ -3,7 +3,8 @@ import { useSelector } from "react-redux";
 import CalendarBlog from "../Dashboard/Dashboard/CalendarBlog";
 import ScheduleRadilChart from "../Dashboard/Dashboard/ScheduleRadilChart";
 import LearningActivityChart from "./LearningActivityChart";
-import AttemtedViewDashboard from "./components/AttemtedViewDashboard"
+// import AttemtedViewDashboard from "./components/AttemtedViewDashboard"
+import Companydashboardlisting from "./components/Companydashboardlisting";
 
 // api call
 async function getDashboard(token) {
@@ -146,8 +147,11 @@ const CompanyDashboard = () => {
                 </div>
               </div>
 
-              <div className="col-xl-12">
+              {/* <div className="col-xl-12">
                   <AttemtedViewDashboard />
+                  </div> */}
+                  <div className="col-xl-12">
+                  <Companydashboardlisting />
                   </div>
       </div>
     </>
