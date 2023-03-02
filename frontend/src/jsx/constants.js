@@ -5,7 +5,7 @@ export const USER_ROLES = {
     USER: "user",
 };
 
-
+export const API_ROOT_URL = "http://localhost:8081/api";
 
 export const DASHBOARD = {
     

@@ -54,7 +54,7 @@ const Inductions = () => {
   // api call
   async function getAllInductions() {
     //const id =  '63a5b994d187fa1a5a210934';
-    return fetch("http://localhost:8081/api/induction/", {
+    return fetch("${API_ROOT_URL}/induction/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

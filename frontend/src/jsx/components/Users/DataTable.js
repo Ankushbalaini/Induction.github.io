@@ -71,11 +71,11 @@ const Table = props => {
       sortable: true,
       hide: "sm",
       cell: row => (
-        <div 
+        <Link 
         className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`} onClick={() =>props.changeUserStatus(row._id, row.status) } 
         >
           { (row.status) ? 'Active' : 'Inactive'}
-        </div>
+        </Link>
         )
     },
     {

@@ -16,10 +16,10 @@ const USER_ROLES = {
 
 // api call
 async function getInstructorApi(role, companyID, deptID) {
-  var getInstructorsApi = "http://localhost:8081/api/instructor/list";
+  var getInstructorsApi = "${API_ROOT_URL}/instructor/list";
   if (USER_ROLES.COMPANY === role) {
     var getInstructorsApi =
-      "http://localhost:8081/api/instructor/listByCompany?role=company&parentCompany=" +
+      "${API_ROOT_URL}/instructor/listByCompany?role=company&parentCompany=" +
       companyID;
   }
   return fetch(getInstructorsApi, {
@@ -38,10 +38,10 @@ async function getInstructorApi(role, companyID, deptID) {
  */
 async function filterInstructorApi(companyID, deptID) {
   let filterInstructorsApi =
-    "http://localhost:8081/api/instructor/filterByCompany?filterByCompany=" +
+    "${API_ROOT_URL}/instructor/filterByCompany?filterByCompany=" +
     companyID;
   if (companyID == "all") {
-    filterInstructorsApi = "http://localhost:8081/api/instructor/list";
+    filterInstructorsApi = "${API_ROOT_URL}/instructor/list";
   }
   return fetch(filterInstructorsApi, {
     method: "GET",
@@ -90,7 +90,7 @@ const Instructors = () => {
     }).then(async (willChange) => {
       if (willChange) {
         const response = await fetch(
-          "http://localhost:8081/api/users/changeUserStatus",
+          "${API_ROOT_URL}/users/changeUserStatus",
           {
             method: "PUT",
             headers: {

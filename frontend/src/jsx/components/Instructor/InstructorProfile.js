@@ -37,7 +37,7 @@ const WidgetBlog = ({ changeImage, title, link, Count }) => {
 
 // api call 
 async function getProfileApi (token){
-  const URL = 'http://localhost:8081/api/users/getProfile';
+  const URL = '${API_ROOT_URL}/users/getProfile';
 	return fetch(URL, {
       method: "GET",
       headers: {

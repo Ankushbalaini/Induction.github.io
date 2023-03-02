@@ -48,7 +48,7 @@ const Setting = (props) => {
 
 
     var data = new FormData(e.target);
-    const response = await fetch('http://localhost:8081/api/users/setting', {
+    const response = await fetch('${API_ROOT_URL}/users/setting', {
         method: 'PUT',
         body: data,
         headers: {

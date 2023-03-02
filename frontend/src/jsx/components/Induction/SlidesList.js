@@ -3,50 +3,11 @@ import { Link, useHistory } from "react-router-dom";
 import swal from "sweetalert";
 import { useSelector } from "react-redux";
 import ActionDropDown from "../Students/ActionDropDown";
-import { SLIDE_APIS } from "../API_URLs";
+import { API_ROOT_URL } from "../../constants";
 
-const SlidesList = ({ Slides, inductionID }) => {
+const SlidesList = ({ Slides, inductionID , changeSlideStatus }) => {
   const navigate = useHistory();
-  const token = "";
-
-  // slide status
-  const changeSlideStatus = (id, status) => {
-
-    swal({
-      title: "Are you sure?",
-      text: `Once status Changed, Slide will not show inside slide listing for Users`,
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then(async (willChange) => {
-      if (willChange) {
-        const response = await fetch(
-          SLIDE_APIS.CHANGE_STATUS.URL + id,
-          {
-            method: SLIDE_APIS.CHANGE_STATUS.METHOD,
-            headers: {
-              "Content-Type": "application/json",
-              "x-access-token": token,
-            },
-            body: JSON.stringify({ status: (status) ? false : true }),
-          }
-        ).then((data) => data.json());
-        if ("status" in response && response.status == true) {
-          swal("Poof! Your slide status has been updated!", {
-            icon: "success",
-          }).then(() => {
-            navigate.push(`/update-induction/${inductionID}`);
-            // setIsUserStatusChanged(!isUserStatusChanged);
-          });
-        } else {
-          return swal("Failed", response.message, "error");
-        }
-      } else {
-        swal("Your status is not changed!");
-      }
-    });
-  };
-
+  const token = useSelector((state) => state.auth.auth.token);
 
   const trackOnclick = (payload, data) => {
     // console.log(data, ' edit ------');
@@ -89,11 +50,12 @@ const SlidesList = ({ Slides, inductionID }) => {
             </td>
             {/* <td>{row.slideOrder}</td> */}
             <td>
+              {/* to={`/update-induction/${inductionID}`} */}
               <Link
                 className={`badge light ${
                   row.status ? "badge-success" : "badge-danger"
                 }`}
-                to={`/update-induction/${inductionID}`}
+                
                 onClick={() => changeSlideStatus(row._id, row.status)}
               >
                 {row.status ? "Active" : "Inactive"}

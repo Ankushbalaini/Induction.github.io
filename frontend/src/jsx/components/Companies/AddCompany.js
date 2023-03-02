@@ -2,6 +2,7 @@ import React, { Fragment, useState, useRef, useEffect } from "react";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import { API_ROOT_URL } from "../../constants";
 
 const AddCompany = () => {
   const navigate = useHistory();
@@ -82,7 +83,7 @@ const AddCompany = () => {
     data.append("address", address);
     data.append("aboutCompany", aboutCompany);
     // let formData = new FormData();
-    const response = await fetch("http://localhost:8081/api/company/add", {
+    const response = await fetch(`${API_ROOT_URL}/company/add`, {
       method: "POST",
       body: data,
     }).then((data) => data.json());

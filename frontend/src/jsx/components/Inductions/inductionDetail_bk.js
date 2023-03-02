@@ -54,7 +54,7 @@ const InductionDetail =()=> {
 
 	const getInductionById =  async () =>{
 		//console.log("called1");
-		return fetch('http://localhost:8081/api/induction/'+id, {
+		return fetch('${API_ROOT_URL}/induction/'+id, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ const InductionDetail =()=> {
 
 	const getAllSlides =  async () =>{
 		//console.log("called2");
-		return fetch('http://localhost:8081/api/slides/'+id, {
+		return fetch('${API_ROOT_URL}/slides/'+id, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'

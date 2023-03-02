@@ -15,16 +15,15 @@ const USER_ROLES = {
 const accordionBlog = [{ id: 1, title: "Courses Slides" }];
 
 function SlidesList({ setCurrentSlideContent, ...props }) {
-
   const inductionID = props.inductionID;
   const role = useSelector((state) => state.auth.auth.role);
-  
+
   const token = useSelector((state) => state.auth.auth.token);
-  
+
   //stepper
   const steps = [];
   const [currentStep, setCurrentStep] = useState(1);
-  
+
   const [complete, setComplete] = useState(false);
   const [active, setActive] = useState(0);
 
@@ -46,7 +45,6 @@ function SlidesList({ setCurrentSlideContent, ...props }) {
       console.log("do not skip inductions");
     }
   };
-
 
   return (
     <div className="custome-accordion">

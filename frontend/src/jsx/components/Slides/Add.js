@@ -9,7 +9,7 @@ import { useParams } from "react-router";
 
 // api call
 async function addSlide(formValues, token) {
-  return fetch("http://localhost:8081/api/slides/", {
+  return fetch("${API_ROOT_URL}/slides/", {
     method: "POST",
     headers: {
       "x-access-token": token,

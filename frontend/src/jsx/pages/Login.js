@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { connect, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import {
   loadingToggleAction,
   loginAction,
@@ -11,21 +11,18 @@ import {
 import loginbg from "../../images/bg-1.jpg";
 import BJSLogo from "../../images/BJSLogo.png";
 
+
 function Login(props) {
   const [email, setEmail] = useState("super@admin.com");
-  
-  
+
   let errorsObj = { email: "", password: "" };
   const [errors, setErrors] = useState(errorsObj);
-
 
   const [password, setPassword] = useState("admin");
   const [userType, setUserType] = useState("user");
 
   // const [highlight, setHighlight] = useState("");
   const dispatch = useDispatch();
-
-  
 
   function onLogin(e) {
     e.preventDefault();
@@ -47,19 +44,17 @@ function Login(props) {
     dispatch(loginAction(userType, email, password, props.history));
   }
 
-   //css for button
-   const right = {
-    float: 'right'
+  //css for button
+  const right = {
+    float: "right",
   };
 
   function handleKeyPress(e) {
     var key = e.key;
-   if (key == key) {
-        setErrors((errorsObj == false))
+    if (key == key) {
+      setErrors(errorsObj == false);
     }
-}
-
-
+  }
 
   return (
     <div
@@ -78,17 +73,20 @@ function Login(props) {
                   <div className="row m-0">
                     <div className="col-xl-6 col-md-6 sign text-center">
                       <div>
-                        <div className="text-center my-5" Style="margin-top:15% !important">
-                        <img width="400" src={BJSLogo} alt="" />
+                        <div
+                          className="text-center my-5"
+                          Style="margin-top:15% !important"
+                        >
+                          <img width="400" src={BJSLogo} alt="" />
                         </div>
                       </div>
                     </div>
                     <div className="col-xl-6 col-md-6 m-auto">
                       <div className="sign-in-your">
-                      <Row className="mb-4">
-                        <span className="fs-22 font-w600 text-black text-center">
-                          Log In To Your Account
-                        </span>
+                        <Row className="mb-4">
+                          <span className="fs-22 font-w600 text-black text-center">
+                            Log In To Your Account
+                          </span>
                         </Row>
                         <div className="login-social"></div>
                         {props.errorMessage && (
@@ -102,7 +100,6 @@ function Login(props) {
                           </div>
                         )}
                         <form onSubmit={onLogin}>
-                          
                           {/* <div className="mb-3">
                             <label className="mb-1">
                               <strong>Select User Type</strong>
@@ -138,7 +135,7 @@ function Login(props) {
                             />
                             {errors.email && (
                               <div Style="color:red;font-weight:400">
-                                 {errors.email}
+                                {errors.email}
                               </div>
                             )}
                           </div>
@@ -152,7 +149,6 @@ function Login(props) {
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
                               onKeyPress={(e) => handleKeyPress(e)}
-                             
                             />
                             {errors.password && (
                               <div Style="color:red;font-weight:400">
@@ -177,19 +173,28 @@ function Login(props) {
                               </div>
                             </div>
                             <div className="container">
-                            <Row>
-                              <Col>
-                                <div className="mb-3">
-                                  <Link to="./page-register" className="text-primary">Sign up</Link>
-                                </div>
-                              </Col>
-                            <Col >
-                            <Link to="./forgot-password" className="text-primary" style={right}>
-                            Forgot password
-                          </Link>
-                            </Col>
-                          </Row>
-                          </div>
+                              <Row>
+                                <Col>
+                                  <div className="mb-3">
+                                    <Link
+                                      to="./page-register"
+                                      className="text-primary"
+                                    >
+                                      Sign up
+                                    </Link>
+                                  </div>
+                                </Col>
+                                <Col>
+                                  <Link
+                                    to="./forgot-password"
+                                    className="text-primary"
+                                    style={right}
+                                  >
+                                    Forgot password
+                                  </Link>
+                                </Col>
+                              </Row>
+                            </div>
                           </div>
                           <div className="text-center">
                             <button

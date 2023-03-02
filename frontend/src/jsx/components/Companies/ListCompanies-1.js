@@ -13,7 +13,7 @@ const images = require.context("../../../../../images/company/", true);
 
 // api call
 async function getCompanies(formValues) {
-  return fetch("http://localhost:8081/api/company/list", {
+  return fetch("${API_ROOT_URL}/company/list", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -89,7 +89,7 @@ const ListCompanies = () => {
     data.append('logo_previous', logo);
 
     const response = await fetch(
-      "http://localhost:8081/api/company/edit/" + editID,
+      "${API_ROOT_URL}/company/edit/" + editID,
       {
         method: "PUT",
         body: data,

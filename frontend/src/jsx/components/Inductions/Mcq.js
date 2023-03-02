@@ -73,7 +73,7 @@ const AddMcq = (props) => {
     const data = new FormData(e.target);
     
     //api call
-    const response = await fetch("http://localhost:8081/api/mcq/add", {
+    const response = await fetch("${API_ROOT_URL}/mcq/add", {
       method: "POST",
       headers: {
         "x-access-token": token,

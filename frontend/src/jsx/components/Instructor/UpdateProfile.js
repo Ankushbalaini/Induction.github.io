@@ -70,7 +70,7 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
     // const userID = "63cea890edb762dfb4abb220";
 
     const response = await fetch(
-      "http://localhost:8081/api/instructor/edit/" + userID,
+      "${API_ROOT_URL}/instructor/edit/" + userID,
       {
         method: "PUT",
         body: data,

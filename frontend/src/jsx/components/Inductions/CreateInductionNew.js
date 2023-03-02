@@ -8,19 +8,18 @@ import { useSelector } from "react-redux";
 import DepartmentDropdown from "../Department/DepartmentDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 import CompanyDropdown from "../Companies/CompanyDropdown";
-
+import { API_ROOT_URL } from "../../constants";
 
 const CreateInduction = () => {
   const navigate = useHistory();
   const [loading, setLoading] = useState(true);
-  
-  const [image, setImage] = useState({preview:'', data:''})
+
+  const [image, setImage] = useState({ preview: "", data: "" });
   const [title, setTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");
   const [deptID, setDeptID] = useState("");
   const [parentCompany, setParentCompany] = useState("");
   const [option, setOption] = useState();
-
 
   const [inductionDesc, setInductionDesc] = useState(
     "<h1>Induction description</h1>"
@@ -40,9 +39,9 @@ const CreateInduction = () => {
     const img = {
       preview: URL.createObjectURL(e.target.files[0]),
       data: e.target.files[0],
-    }
-    setImage(img)
-  }
+    };
+    setImage(img);
+  };
 
   const handleChange = (i, e) => {
     let newFormValues = [...formValues];
@@ -70,20 +69,20 @@ const CreateInduction = () => {
     e.preventDefault();
     let error = false;
     const errorObj = { ...errorsObj };
-    if (title === '') {
+    if (title === "") {
       errorObj.title = "Title is Required";
       error = true;
     }
-    if (subTitle === '') {
+    if (subTitle === "") {
       errorObj.subTitle = "Sub title is Required";
       error = true;
     }
 
-    if (deptID === '') {
+    if (deptID === "") {
       errorObj.deptID = "Department is Required";
       error = true;
     }
-    if (parentCompany==''){
+    if (parentCompany == "") {
       errorObj.parentCompany = "Parent Company is Required";
       error = true;
     }
@@ -91,28 +90,26 @@ const CreateInduction = () => {
     setErrors(errorObj);
     if (error) return;
 
-	const inductionDetail = {
-		title: title,
-		subTitle: subTitle,
-		deptID: deptID,
-		description: inductionDesc,
-		content: "",
-    parentCompany: parentCompany
-	};
+    const inductionDetail = {
+      title: title,
+      subTitle: subTitle,
+      deptID: deptID,
+      description: inductionDesc,
+      content: "",
+      parentCompany: parentCompany,
+    };
 
+    let formData = new FormData();
+    formData.append("induction", JSON.stringify(inductionDetail));
+    formData.append("thumbnail", image.data);
+    // formData.append('slides', JSON.stringify(formValues));
+    let slides_json = [];
+    for (var i = 0; i < formValues.length; i++) {
+      slides_json.push(formValues[i]);
+    }
+    formData.append("slides", JSON.stringify(slides_json));
 
-	let formData = new FormData();
-	formData.append('induction', JSON.stringify(inductionDetail));
-	formData.append('thumbnail', image.data);
-	// formData.append('slides', JSON.stringify(formValues));
-  let slides_json = [];
-	for (var i = 0; i < formValues.length; i++) {
-    slides_json.push( formValues[i]);
-		
-	}
-  formData.append('slides', JSON.stringify(slides_json) );
-
-	const response = await fetch("http://localhost:8081/api/induction/store", {
+    const response = await fetch(`${API_ROOT_URL}/induction/store`, {
       method: "POST",
       headers: {
         "x-access-token": token,
@@ -129,16 +126,16 @@ const CreateInduction = () => {
         navigate.push("/inductions");
       });
     } else {
-      return swal("Failed",  response.message , "error");
+      return swal("Failed", response.message, "error");
     }
   };
 
   const handleCompanyChange = async (e) => {
     // call api to fetch departments
     setParentCompany(e.target.value);
-    setOption('');
+    setOption("");
     const response = await fetch(
-      "http://localhost:8081/api/department/getDepartmentByComp",
+      `${API_ROOT_URL}/department/getDepartmentByComp`,
       {
         method: "POST",
         headers: {
@@ -153,41 +150,29 @@ const CreateInduction = () => {
       const rows = response.data.map((row, index) => (
         <option value={row._id}>{row.name}</option>
       ));
-      
-      setDeptID('');
+
+      setDeptID("");
       setOption(rows);
     }
   };
- 
-   // on click validation remove function
+
+  // on click validation remove function
   function handleKeyPress(e) {
     var key = e.key;
-   if (key == key) {
-        setErrors((errorsObj == false))
+    if (key == key) {
+      setErrors(errorsObj == false);
     }
-}
+  }
 
-const buttonStyle = {
-  // margin : "auto",
-  display : "flex",
-  float : "right"
-}
+  const buttonStyle = {
+    // margin : "auto",
+    display: "flex",
+    float: "right",
+  };
 
   useEffect(() => {
     setLoading(false);
   }, []);
-
-  // api call
-  async function saveInduction(formValues) {
-    return fetch("http://localhost:8081/api/induction/store", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token,
-      },
-      body: JSON.stringify(formValues),
-    }).then((data) => data.json());
-  }
 
   const pageContent = loading ? (
     <i className="fas fa-atom fa-spin"></i>
@@ -197,7 +182,7 @@ const buttonStyle = {
 
       <div className="col-xl-12 col-lg-12">
         <div className="card">
-        <div className="card-header">
+          <div className="card-header">
             <h4 className="card-title">Create Induction</h4>
           </div>
           <div className="card-body">
@@ -214,12 +199,13 @@ const buttonStyle = {
                       onChange={(e) => setTitle(e.target.value)}
                       value={title}
                       onKeyPress={(e) => handleKeyPress(e)}
-
                     />
-                    {errors.title && <div Style="color:red;font-weight:600;padding:5px;">{errors.title}</div>}
+                    {errors.title && (
+                      <div Style="color:red;font-weight:600;padding:5px;">
+                        {errors.title}
+                      </div>
+                    )}
                   </div>
-                  
-
                 </div>
 
                 <div className="mb-3 row">
@@ -231,18 +217,19 @@ const buttonStyle = {
                       name="subTitle"
                       placeholder="nodejs, mongo, react , express...."
                       onChange={(e) => setSubTitle(e.target.value)}
-                      value={subTitle}        
+                      value={subTitle}
                       onKeyPress={(e) => handleKeyPress(e)}
-
                     />
-                    {errors.subTitle && <div Style="color:red;font-weight:600;padding:5px;">{errors.subTitle}</div>}
+                    {errors.subTitle && (
+                      <div Style="color:red;font-weight:600;padding:5px;">
+                        {errors.subTitle}
+                      </div>
+                    )}
                   </div>
                 </div>
 
-			        	<div className="mb-3 row">
-                  <label className="col-sm-3 col-form-label">
-                    Thumbnail
-                  </label>
+                <div className="mb-3 row">
+                  <label className="col-sm-3 col-form-label">Thumbnail</label>
                   <div className="col-sm-9">
                     <input
                       type="file"
@@ -254,41 +241,52 @@ const buttonStyle = {
                   </div>
                 </div>
 
-              <div className="form-group mb-3">
-                <div className="mb-4 row">
-                  <label className="col-sm-3 col-form-label">Select Company </label>
-                  <div className="col-sm-9">
-                  <select
-                    name="parentCompany"
-                    className="form-control"
-                    onChange={handleCompanyChange}
-                    value={parentCompany}
-                    onKeyPress={(e) => handleKeyPress(e)}
-                  >
-                    <option>Select</option>
-                    <CompanyDropdown prevSelected={parentCompany} />
-                 </select>
-                 {errors.parentCompany && <div Style="color:red;font-weight:600;padding:5px;">{errors.parentCompany}</div>}
-
-                </div>
-              </div>
-              <div className="mb-4 row">
-              <label className="col-sm-3 col-form-label">Select Department</label>
-                 <div className="col-sm-9">
-                    <select
-                      name="deptID"
-                      className="form-control"
-                      onChange={(e) => setDeptID(e.target.value)}
-                      value={deptID}
-                      onKeyPress={(e) => handleKeyPress(e)}
-                    >
-                      <option>Select</option>
-                      {option}
-                    </select>
-                    {errors.deptID && <div Style="color:red;font-weight:600;padding:5px;">{errors.deptID}</div>}
+                <div className="form-group mb-3">
+                  <div className="mb-4 row">
+                    <label className="col-sm-3 col-form-label">
+                      Select Company{" "}
+                    </label>
+                    <div className="col-sm-9">
+                      <select
+                        name="parentCompany"
+                        className="form-control"
+                        onChange={handleCompanyChange}
+                        value={parentCompany}
+                        onKeyPress={(e) => handleKeyPress(e)}
+                      >
+                        <option>Select</option>
+                        <CompanyDropdown prevSelected={parentCompany} />
+                      </select>
+                      {errors.parentCompany && (
+                        <div Style="color:red;font-weight:600;padding:5px;">
+                          {errors.parentCompany}
+                        </div>
+                      )}
                     </div>
                   </div>
-              </div>
+                  <div className="mb-4 row">
+                    <label className="col-sm-3 col-form-label">
+                      Select Department
+                    </label>
+                    <div className="col-sm-9">
+                      <select
+                        name="deptID"
+                        className="form-control"
+                        onChange={(e) => setDeptID(e.target.value)}
+                        value={deptID}
+                        onKeyPress={(e) => handleKeyPress(e)}
+                      >
+                        <option>Select</option>
+                        {option}
+                      </select>
+                      {errors.deptID && (
+                        <div Style="color:red;font-weight:600;padding:5px;">
+                          {errors.deptID}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
 
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
@@ -356,7 +354,6 @@ const buttonStyle = {
                       <div className="mb-12 row">
                         <div className="col-sm-12">
                           <button
-                         
                             type="button"
                             className="btn btn-primary remove"
                             onClick={() => removeFormFields(index)}
@@ -371,20 +368,21 @@ const buttonStyle = {
 
                 <div className="mb-12 row">
                   <div className="col-sm-12">
-
-                  <button className="btn btn-success" type="submit" style={buttonStyle}>
+                    <button
+                      className="btn btn-success"
+                      type="submit"
+                      style={buttonStyle}
+                    >
                       Submit
                     </button>
                     <button
-                    style={buttonStyle}
+                      style={buttonStyle}
                       className="btn btn-primary mx-3"
                       type="button"
                       onClick={() => addFormFields()}
                     >
                       Add New Slide
                     </button>
-
-                    
                   </div>
                 </div>
               </form>

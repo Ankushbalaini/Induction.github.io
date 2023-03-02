@@ -4,6 +4,8 @@ import {
     loginConfirmedAction,
     logout,
 } from '../store/actions/AuthActions';
+import { API_ROOT_URL } from "../jsx/constants";
+
 
 export function signUp(firstName, lastName, email, password, role) {
     //axios call
@@ -15,10 +17,8 @@ export function signUp(firstName, lastName, email, password, role) {
         role,
         returnSecureToken: true,
     };
-    // `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD3RPAp3nuETDn9OQimqn_YF6zdzqWITII`,
-
     return axios.post(
-        `http://localhost:8081/api/users/`,
+        `${API_ROOT_URL}/users`,
         postData,
     );
 }
@@ -31,7 +31,7 @@ export function login(role, email, password) {
         returnSecureToken: true,
     };
     return axios.post(
-        `http://localhost:8081/api/users/login`,
+        `${API_ROOT_URL}/users/login`,
         postData,
     );
 }

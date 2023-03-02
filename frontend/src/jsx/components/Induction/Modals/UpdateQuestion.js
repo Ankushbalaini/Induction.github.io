@@ -7,9 +7,10 @@ import { Button, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
+import { API_ROOT_URL } from "../../../constants";
 
 const AddQuestionAPI = async (token, data) => {
-  return await fetch("http://localhost:8081/api/mcq/add", {
+  return await fetch(`${API_ROOT_URL}/mcq/add`, {
     method: "POST",
     headers: {
       "x-access-token": token,
@@ -18,7 +19,12 @@ const AddQuestionAPI = async (token, data) => {
   }).then((ques) => ques.json());
 };
 
-const UpdateQuestion = ({ questionID,inductionID, isShowAddQuestion, onClickHandler }) => {
+const UpdateQuestion = ({
+  questionID,
+  inductionID,
+  isShowAddQuestion,
+  onClickHandler,
+}) => {
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
 
@@ -101,7 +107,7 @@ const UpdateQuestion = ({ questionID,inductionID, isShowAddQuestion, onClickHand
         buttons: false,
         timer: 2000,
       }).then((value) => {
-        navigate.push("/viewmcq/" );
+        navigate.push("/viewmcq/");
       });
     } else {
       return swal("Failed", response.message, "error");

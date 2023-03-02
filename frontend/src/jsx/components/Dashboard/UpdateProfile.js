@@ -58,7 +58,7 @@ const UpdateProfile = ({isModalOpen, trackOnclick, profileData}) => {
       formData.append('profilePhoto', preview)
 
 
-      const response = await fetch('http://localhost:8081/api/users/update', {
+      const response = await fetch('${API_ROOT_URL}/users/update', {
         method: 'PUT',
         body: formData,
         headers: {

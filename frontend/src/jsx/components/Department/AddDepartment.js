@@ -59,7 +59,7 @@ const [errors, setErrors] = useState(errorsObj);
     //         timer: 2000,
     //       });
     // }
-     return fetch ("http://localhost:8081/api/department/add" ,{
+     return fetch ("${API_ROOT_URL}/department/add" ,{
          method : "POST",
          headers :{
              "Content-Type" : "application/json",

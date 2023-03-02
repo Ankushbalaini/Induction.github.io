@@ -6,10 +6,11 @@ import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Table from "./DataTable";
+import { API_ROOT_URL } from "../../constants";
 
 // api call
 async function getCompanies(token) {
-  return fetch("http://localhost:8081/api/company/list", {
+  return fetch(`${API_ROOT_URL}/company/list`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -95,16 +96,13 @@ const Companies = () => {
     data.append("logo_previous", logo);
     data.append("companyID", companyID);
 
-    const response = await fetch(
-      "http://localhost:8081/api/company/edit/" + editID,
-      {
-        method: "PUT",
-        headers: {
-          "x-access-token": token,
-        },
-        body: data,
-      }
-    ).then((data) => data.json());
+    const response = await fetch(`${API_ROOT_URL}/company/edit/${editID}`, {
+      method: "PUT",
+      headers: {
+        "x-access-token": token,
+      },
+      body: data,
+    }).then((data) => data.json());
 
     if ("status" in response && response.status == true) {
       setIsModalOpen(false);

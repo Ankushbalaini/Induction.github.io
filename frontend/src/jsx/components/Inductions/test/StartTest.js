@@ -21,7 +21,7 @@ const StartTest = () => {
 
   // get Questions
   const getQuestions = async () => {
-    const response = await fetch("http://localhost:8081/api/mcq/" + id, {
+    const response = await fetch("${API_ROOT_URL}/mcq/" + id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -48,7 +48,7 @@ const StartTest = () => {
   }
 
   const startTestApi = async () => {
-    const response = await fetch("http://localhost:8081/api/mcq/start/" + id, {
+    const response = await fetch("${API_ROOT_URL}/mcq/start/" + id, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

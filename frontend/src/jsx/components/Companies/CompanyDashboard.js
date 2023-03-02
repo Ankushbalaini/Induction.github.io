@@ -2,46 +2,42 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CalendarBlog from "../Dashboard/Dashboard/CalendarBlog";
 import ScheduleRadilChart from "../Dashboard/Dashboard/ScheduleRadilChart";
-
-
+import { API_ROOT_URL } from "../../constants";
 
 // api call
 async function getDashboard(token) {
-  return await fetch("http://localhost:8081/api/dashboard/company", {
+  return await fetch(`${API_ROOT_URL}/dashboard/company`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       "x-access-token": token,
-    }
+    },
   }).then((data) => data.json());
 }
-
 
 const CompanyDashboard = () => {
   const token = useSelector((state) => state.auth.auth.token);
   const intitalState = {
-    totalUsers:0,
-    totalInstructors:0,
-    totalInductions:0,
-
-  }
+    totalUsers: 0,
+    totalInstructors: 0,
+    totalInductions: 0,
+  };
   const [companyDB, setCompanyDB] = useState();
   const [loading, setLoading] = useState(true);
 
   const handlepageLoad = async (e) => {
     const response = await getDashboard(token);
-    if("status" in response && response.status === true){
+    if ("status" in response && response.status === true) {
       setCompanyDB(response.data);
-    }else{
+    } else {
       alert(response.message);
     }
   };
 
-
   useEffect(() => {
     //if (loading) {
-      handlepageLoad();
-      //setLoading(false);
+    handlepageLoad();
+    //setLoading(false);
     //}
   }, []);
 

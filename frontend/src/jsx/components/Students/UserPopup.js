@@ -54,7 +54,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
     let formData = new FormData(e.target);
 
     const response = await fetch(
-      "http://localhost:8081/api/users/edit/" + state.userID,
+      "${API_ROOT_URL}/users/edit/" + state.userID,
       {
         method: "PUT",
         body: formData,

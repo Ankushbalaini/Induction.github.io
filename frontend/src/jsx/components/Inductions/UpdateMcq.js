@@ -47,7 +47,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
     data.append('option4', option4);
     data.append('answer', answer);
     const response = await fetch(
-      "http://localhost:8081/api/mcq/edit/" + userID,
+      "${API_ROOT_URL}/mcq/edit/" + userID,
       {
         method: "PUT",
         body: data,

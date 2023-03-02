@@ -5,9 +5,10 @@ import PageTitle from "../../layouts/PageTitle";
 import JoditEditor from "jodit-react";
 import swal from "sweetalert";
 import { Link, useHistory } from "react-router-dom";
+import { API_ROOT_URL } from "../../constants";
 
 const getSlideData = async (id, token) => {
-  return await fetch("http://localhost:8081/api/slides/getbyslideid/" + id, {
+  return await fetch(`${API_ROOT_URL}/slides/getbyslideid/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -17,7 +18,7 @@ const getSlideData = async (id, token) => {
 };
 
 // const updateSlide = async (id, token, data) => {
-//   return await fetch("http://localhost:8081/api/slides/getbyslideid/" + id, {
+//   return await fetch("${API_ROOT_URL}/slides/getbyslideid/" + id, {
 //     method: "GET",
 //     headers: {
 //       "Content-Type": "application/json",
@@ -25,8 +26,6 @@ const getSlideData = async (id, token) => {
 //     },
 //   }).then((data) => data.json());
 // };
-
-
 
 const UpdateSlide = () => {
   const navigate = useHistory();
@@ -39,7 +38,7 @@ const UpdateSlide = () => {
   // intial states
   const intialState = {
     _id: "",
-    slideInductionId:'',
+    slideInductionId: "",
     slideTitle: "",
     slideContent: "",
   };
@@ -48,14 +47,13 @@ const UpdateSlide = () => {
   // on submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch(`http://localhost:8081/api/slides/${id}`, {
+    const response = await fetch(`${API_ROOT_URL}/slides/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "x-access-token": token,
       },
-      body: JSON.stringify(state)
-
+      body: JSON.stringify(state),
     }).then((data) => data.json());
 
     if ("status" in response && response.status == true) {
@@ -65,14 +63,12 @@ const UpdateSlide = () => {
       }).then((value) => {
         return navigate.push(`/update-induction/${state.slideInductionId}`);
       });
-    }else{
-      return swal ("Failed", response.message, "error")
+    } else {
+      return swal("Failed", response.message, "error");
     }
-
-
   };
 
-  // get slide data by id 
+  // get slide data by id
   const callGetApi = async (id, token) => {
     const response = await getSlideData(id, token);
     if ("status" in response && response.status == true) {
@@ -146,15 +142,15 @@ const UpdateSlide = () => {
                     </div>
 
                     <div class="text-end toolbar toolbar-bottom p-2">
-                      <Link class="btn btn-danger sw-btn-next m-3" to={`/update-induction/${state.slideInductionId}`} >
-                            Cancel
+                      <Link
+                        class="btn btn-danger sw-btn-next m-3"
+                        to={`/update-induction/${state.slideInductionId}`}
+                      >
+                        Cancel
                       </Link>
                       <button class="btn btn-success sw-btn-next" type="submit">
                         Update Slide
                       </button>
-
-                      
-
                     </div>
                   </form>
                 </div>

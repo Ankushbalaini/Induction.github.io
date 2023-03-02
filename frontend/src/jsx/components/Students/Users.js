@@ -63,7 +63,7 @@ const Users = () => {
 
   // call api
   const getUserData = async (token) => {
-    var API_URL = "http://localhost:8081/api/students/";
+    var API_URL = "${API_ROOT_URL}/students/";
 
     // company filter adding api URL
     if (companyFilter !== undefined) {

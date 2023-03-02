@@ -70,7 +70,7 @@ const ForgotPassword = ({ history }) => {
   };
 
   async function resetPassword(email) {
-    return fetch("http://localhost:8081/api/users/reset-password", {
+    return fetch("${API_ROOT_URL}/users/reset-password", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

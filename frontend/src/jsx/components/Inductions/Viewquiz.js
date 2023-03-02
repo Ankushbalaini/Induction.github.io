@@ -86,7 +86,7 @@ const ViewMcq = () => {
 
   // api call
 async function getMcq(formValues) {
-  return fetch("http://localhost:8081/api/mcq/" + id, {
+  return fetch("${API_ROOT_URL}/mcq/" + id, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

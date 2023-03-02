@@ -9,7 +9,7 @@ import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
 
 const submitTestApi = async (id, token, dataPass) => {
-  return await fetch("http://localhost:8081/api/mcq/submit/" + id, {
+  return await fetch("${API_ROOT_URL}/mcq/submit/" + id, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

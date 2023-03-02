@@ -109,7 +109,7 @@ const Table = props => {
 //   }).then(async (willChange) => {
 //     if (willChange) {
 
-//       const response = await fetch("http://localhost:8081/api/users/changeUserStatus", {
+//       const response = await fetch("${API_ROOT_URL}/users/changeUserStatus", {
 //         method: "PUT",
 //         headers: {
 //           "Content-Type": "application/json",

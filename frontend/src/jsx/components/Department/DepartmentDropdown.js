@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 // api call
 async function getDepartments(token, parentCompany) {
-    return fetch("http://localhost:8081/api/department/getAllActive", {
+    return fetch("${API_ROOT_URL}/department/getAllActive", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

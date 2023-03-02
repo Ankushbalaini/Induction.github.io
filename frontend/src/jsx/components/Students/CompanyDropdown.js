@@ -4,7 +4,7 @@ import { getData } from "../APIs";
 
 
 async function getDepartments(token, company) {
-    return fetch("http://localhost:8081/api/department/getDepartmentByComp", {
+    return fetch(`${API_ROOT_URL}/department/getDepartmentByComp`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -27,10 +27,10 @@ const CompanyDropdown = ({ selectedVal , selectedDeptVal }) => {
 
     // call to api
     const getCompanyData = async () =>{
-        const response  = await getData("http://localhost:8081/api/company/list", token);
+        const response  = await getData(`${API_ROOT_URL}/company/list`, token);
         if ("status" in response && response.status == true) {
             const rows = response.data.map((row, index) => (
-                <option value={row.userID}>{row.name}</option>
+                <option value={row.userID._id}>{row.name}</option>
             ));
             setOption(rows);
             

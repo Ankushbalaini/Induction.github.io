@@ -7,9 +7,10 @@ import { Button, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
+import { API_ROOT_URL } from "../../../constants";
 
 const AddQuestionAPI = async (token, data) => {
-  return await fetch("http://localhost:8081/api/mcq/add", {
+  return await fetch(`${API_ROOT_URL}/mcq/add`, {
     method: "POST",
     headers: {
       "x-access-token": token,
@@ -91,7 +92,7 @@ const AddQuestion = ({
     //   error = true;
     // }
     setErrors(errorObj1);
-    
+
     if (error) return;
 
     // get Form data directly from form
@@ -117,12 +118,13 @@ const AddQuestion = ({
     setErrors(errorObj);
   }, [isShowAddQuestion]);
 
-
   return (
-    <Modal className="modal fade" show={isShowAddQuestion}
-    size="xl"
-    aria-labelledby="contained-modal-title-vcenter"
-    centered
+    <Modal
+      className="modal fade"
+      show={isShowAddQuestion}
+      size="xl"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
     >
       <div className="modal-content">
         <div className="modal-header">
@@ -152,7 +154,9 @@ const AddQuestion = ({
                     onChange={(e) => {
                       setFormState({ ...formState, question: e.target.value });
                     }}
-                  >{formState.question}</textarea>
+                  >
+                    {formState.question}
+                  </textarea>
                   {errors.question && (
                     <div Style="color:red;font-weight:600">
                       {errors.question}
@@ -250,7 +254,7 @@ const AddQuestion = ({
                   className="btn btn-success mb-3"
                   variant="primary"
                   size="m"
-                  style={{display:"flex",margin:"auto"}}
+                  style={{ display: "flex", margin: "auto" }}
                   type="submit"
                 >
                   {label}

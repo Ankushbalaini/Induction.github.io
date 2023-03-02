@@ -73,7 +73,7 @@ const InstructorDashboard = () =>{
  
  //score of students
  const  handlepageScore = async (e) =>{
-	const response = await fetch ("http://localhost:8081/api/users/inductions/" + testID,{
+	const response = await fetch ("${API_ROOT_URL}/users/inductions/" + testID,{
 	 method:"GET", 
 	 headers:{
 	   "Content-Type": "application/json",
@@ -90,7 +90,7 @@ const InstructorDashboard = () =>{
 	}},[]);
 
  const  handlepageLoad = async (e) =>{
-   const response = await fetch ("http://localhost:8081/api/dashboard/instructor",{
+   const response = await fetch ("${API_ROOT_URL}/dashboard/instructor",{
     method:"GET", 
     headers:{
       "Content-Type": "application/json",

@@ -24,7 +24,7 @@ const LearningActivityChart = () => {
     const handlepageLoad = async (e) => {
             // query string
         const response = await fetch(
-              "http://localhost:8081/api/induction/users",
+              "${API_ROOT_URL}/induction/users",
               {
                 method: "GET",
                 headers: {

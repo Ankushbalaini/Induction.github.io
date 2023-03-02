@@ -18,7 +18,7 @@ import { getInduction } from '../APIs';
 
 
 const getInductionDetailById = async (id, token) => {
-  return await fetch("http://localhost:8081/api/induction/" + id, {
+  return await fetch("${API_ROOT_URL}/induction/" + id, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

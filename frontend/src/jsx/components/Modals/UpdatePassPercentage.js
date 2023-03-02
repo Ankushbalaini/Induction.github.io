@@ -21,7 +21,7 @@ function UpdatePassPercentage(props) {
   const updatePassMarks = async (e) =>{
     e.preventDefault();
 
-    const response = await fetch("http://localhost:8081/api/induction/updatePassingMarks", {
+    const response = await fetch("${API_ROOT_URL}/induction/updatePassingMarks", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

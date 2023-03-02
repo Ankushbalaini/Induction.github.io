@@ -99,7 +99,7 @@ const AddInstructor = () => {
     data.append("address", address);
     data.append("aboutMe", aboutMe);
 
-    const response = await fetch("http://localhost:8081/api/instructor/add", {
+    const response = await fetch("${API_ROOT_URL}/instructor/add", {
       method: "POST",
       headers: {
         "x-access-token": token,

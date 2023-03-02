@@ -37,7 +37,7 @@ const AttemptedInductions = () => {
   };
 
   const handlepageLoad = async (event) => {
-    const response = await fetch("http://localhost:8081/api/users/inductions", {
+    const response = await fetch("${API_ROOT_URL}/users/inductions", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

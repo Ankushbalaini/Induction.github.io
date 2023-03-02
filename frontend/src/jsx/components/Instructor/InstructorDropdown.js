@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState } from "react";
 
 // api call
 async function getInstructor() {
-    return fetch("http://localhost:8081/api/instructor/list", {
+    return fetch("${API_ROOT_URL}/instructor/list", {
         method: "GET",
         headers: {
         "Content-Type": "application/json",

@@ -12,7 +12,7 @@ import logo from "../../images/homedelivery.svg";
 
 // api call
 async function Api_CreatePassword(values) {
-    return fetch('http://localhost:8081/api/users/create-password', {
+    return fetch('${API_ROOT_URL}/users/create-password', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
