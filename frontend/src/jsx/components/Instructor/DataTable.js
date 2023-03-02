@@ -1,34 +1,10 @@
 import React, { useMemo, useState } from "react";
-
 import DataTable from "react-data-table-component";
-
-import DropDownBlog from "../Dashboard/DropDownBlog";
 import ActionDropDown from "../Dashboard/ActionDropDown";
 import FilterComponent from "./FilterComponent";
-import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import swal from "sweetalert";
-import styled from 'styled-components';
-
 import { useSelector } from "react-redux";
-import { tableStyles } from "./Instructor/tableStyles";
-
-
-
-const images = require.context("../../../../../images/profile/", true);
-
-const loadImage = (imageName) => {
-  return images(`./${imageName}`);
-}	
-
-// const profileImageCss = {
-//   height: "3.5rem",
-//   width: "3.5rem",
-//   borderRadius: "0.625rem",
-//   margin: "5px 5px 5px 0"
-// };
-
-
+import { tableStyles } from "./Instructor-1/tableStyles";
 
 const Table = props => {
 
@@ -92,50 +68,7 @@ const Table = props => {
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(true);
 
   const token = useSelector((state) => state.auth.auth.token);
-  //const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
   
-  // change status
-// const changeUserStatusORG = (userID, status) =>{
-
-  
-//   // user id
-//   swal({
-//     title: "Are you sure?",
-//     text:
-//       `Once status Changed, User will get or loss access to account`,
-//     icon: "warning",
-//     buttons: true,
-//     dangerMode: true,
-//   }).then(async (willChange) => {
-//     if (willChange) {
-
-//       const response = await fetch("${API_ROOT_URL}/users/changeUserStatus", {
-//         method: "PUT",
-//         headers: {
-//           "Content-Type": "application/json",
-//           "x-access-token" : token,
-//         },
-//         body: JSON.stringify({ "userID" : userID, "status": status})
-//       }).then((data) => data.json());
-
-
-//       if ("status" in response && response.status == true) {
-//         swal("Poof! Your record has been updated!", {
-//           icon: "success",
-//         }).then(()=>{
-//           setIsUserStatusChanged(true);
-//         });
-        
-//       } else {
-//         return swal("Failed", response.message, "error");
-//       }
-
-//     } else {
-//       swal("Your status is not changed!");
-//     }
-//   })
-// }
-
   const filteredItems = props.data.filter(
     item =>
       JSON.stringify(item)

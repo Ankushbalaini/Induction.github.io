@@ -6,7 +6,7 @@ import TestAcknowledgeModal from "../../Modals/test/TestAcknowledgeModal";
 import TestQuestions from "../../Modals/test/TestQuestions";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { API_ROOT_URL } from "../../../constants";
+import {API_ROOT_URL} from "../../../constants";
 
 const StartTest = () => {
   const navigate = useHistory();
@@ -22,7 +22,7 @@ const StartTest = () => {
 
   // get Questions
   const getQuestions = async () => {
-    const response = await fetch(`${API_ROOT_URL}/mcq/${id}`, {
+    const response = await fetch(${API_ROOT_URL}mcq/" + id, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +49,7 @@ const StartTest = () => {
   }
 
   const startTestApi = async () => {
-    const response = await fetch(`${API_ROOT_URL}/mcq/start/${id}`, {
+    const response = await fetch(${API_ROOT_URL}mcq/start/" + id, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -33,9 +33,9 @@ const DepartmentByCompany = (props) => {
   };
 
   useEffect(() => {
-    //if(loading){
-    callApi(token, props.parentCompany);
-    //}
+    if(props.parentCompany !==''){
+      callApi(token, props.parentCompany);
+    }
   }, [props.parentCompany]);
   const pageContent = loading ? <option>Loading</option> : <>{option}</>;
   return <>{pageContent}</>;

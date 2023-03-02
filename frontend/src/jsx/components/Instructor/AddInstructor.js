@@ -5,9 +5,9 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import CompanyDropdown from "../Companies/CompanyDropdown";
-import DepartmentDropdown from "../Department/DepartmentDropdown";
-
 import DepartmentByCompany from "../Department/DepartmentByCompany";
+
+import { API_ROOT_URL } from "../../constants";
 
 const AddInstructor = () => {
   const navigate = useHistory();
@@ -99,7 +99,7 @@ const AddInstructor = () => {
     data.append("address", address);
     data.append("aboutMe", aboutMe);
 
-    const response = await fetch("${API_ROOT_URL}/instructor/add", {
+    const response = await fetch(`${API_ROOT_URL}/instructor/add`, {
       method: "POST",
       headers: {
         "x-access-token": token,
@@ -319,10 +319,7 @@ const AddInstructor = () => {
                       className="form-control"
                       name="aboutMe"
                       value={aboutMe}
-                      onChange={(e) => setAboutMe(e.target.value)}
-                    >
-                      {aboutMe}
-                    </textarea>
+                      onChange={(e) => setAboutMe(e.target.value)} ></textarea>
                    
                   </div>
                 </div>
@@ -334,13 +331,10 @@ const AddInstructor = () => {
                       className="form-control"
                       type="text"
                       name="address"
-                      
+                      value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       onKeyPress={(e) => handleKeyPress(e)}
-
-                    >
-                      {address}
-                    </textarea>
+                    ></textarea>
                     {errors.address && (
                       <div Style="color:red;font-weight:400">
                         {errors.address}

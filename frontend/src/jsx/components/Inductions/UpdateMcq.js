@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
-import { Last } from "react-bootstrap/esm/PageItem";
 import { useHistory } from "react-router-dom";
-import { useParams } from "react-router";
+import {API_ROOT_URL} from "../../constants";
+
 const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
     console.log(mcqData,"mcqData...");
     const navigate = useHistory();
@@ -47,7 +46,7 @@ const UpdateMcq = ({isModalOpen, trackOnclick, mcqData}) => {
     data.append('option4', option4);
     data.append('answer', answer);
     const response = await fetch(
-      "${API_ROOT_URL}/mcq/edit/" + userID,
+      `${API_ROOT_URL}/mcq/edit/${userID}`,
       {
         method: "PUT",
         body: data,

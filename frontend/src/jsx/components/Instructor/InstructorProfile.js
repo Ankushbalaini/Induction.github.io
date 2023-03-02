@@ -7,6 +7,7 @@ import certificate from "./../../../images/svg/degree-certificate.svg";
 import clock from "./../../../images/svg/clock-1.svg";
 import { useSelector } from "react-redux";
 import UpdateProfile from "./UpdateProfile";
+import { API_ROOT_URL } from "../../constants";
 
 const images = require.context('../../../../../images/profile/', true);
 
@@ -37,7 +38,7 @@ const WidgetBlog = ({ changeImage, title, link, Count }) => {
 
 // api call 
 async function getProfileApi (token){
-  const URL = '${API_ROOT_URL}/users/getProfile';
+  const URL = `${API_ROOT_URL}/users/getProfile`;
 	return fetch(URL, {
       method: "GET",
       headers: {

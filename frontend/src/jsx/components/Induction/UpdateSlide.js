@@ -17,16 +17,6 @@ const getSlideData = async (id, token) => {
   }).then((data) => data.json());
 };
 
-// const updateSlide = async (id, token, data) => {
-//   return await fetch("${API_ROOT_URL}/slides/getbyslideid/" + id, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//       "x-access-token": token,
-//     },
-//   }).then((data) => data.json());
-// };
-
 const UpdateSlide = () => {
   const navigate = useHistory();
   const { id } = useParams(); // this is question id

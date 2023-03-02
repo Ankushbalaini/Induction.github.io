@@ -7,9 +7,10 @@ import swal from "sweetalert";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
+import { API_ROOT_URL } from "../../../constants";
 
 const submitTestApi = async (id, token, dataPass) => {
-  return await fetch("${API_ROOT_URL}/mcq/submit/" + id, {
+  return await fetch(`${API_ROOT_URL}/mcq/submit/${id}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

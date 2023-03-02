@@ -6,7 +6,7 @@ import ActionDropDown from "../Inductions/ActionDropDown";
 import FilterComponent from "./FilterComponent";
 import { Dropdown } from "react-bootstrap";
 
-import { tableStyles } from "../Instructor/Instructor/tableStyles";
+import { tableStyles } from "../Instructor/Instructor-1/tableStyles";
 
 const Table = props => {
 

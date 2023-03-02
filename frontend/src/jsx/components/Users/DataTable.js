@@ -8,7 +8,7 @@ import swal from "sweetalert";
 import { useSelector } from "react-redux";
 import ActionDropDown from "./ActionDropDown";
 
-import { tableStyles } from "../Instructor/Instructor/tableStyles";
+import { tableStyles } from "../Instructor/Instructor-1/tableStyles";
 
 const Table = props => {
   const navigate = useHistory();

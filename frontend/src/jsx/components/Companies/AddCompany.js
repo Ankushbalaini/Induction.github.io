@@ -235,9 +235,8 @@ const AddCompany = () => {
                       name="address"
                       placeholder=""
                       onChange={(e) => setAddress(e.target.value)}
-                    >
-                      {address}
-                    </textarea>
+                      value={address}
+                    ></textarea>
                     {errors.address && (
                       <div Style="color:red;font-weight:400">
                         {errors.address}
@@ -256,9 +255,8 @@ const AddCompany = () => {
                       name="aboutCompany"
                       placeholder=""
                       onChange={(e) => setAboutCompany(e.target.value)}
-                    >
-                      {aboutCompany}
-                    </textarea>
+                      value={aboutCompany}
+                    ></textarea>
                   </div>
                 </div>
 

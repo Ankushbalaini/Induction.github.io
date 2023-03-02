@@ -5,6 +5,7 @@ import swal from "sweetalert";
 import { getData } from "../APIs";
 import Filters from "./Filters";
 import UsersTable from "./UsersTable";
+import { API_ROOT_URL } from "../../constants";
 
 const Users = () => {
   const token = useSelector((state) => state.auth.auth.token);
@@ -63,7 +64,7 @@ const Users = () => {
 
   // call api
   const getUserData = async (token) => {
-    var API_URL = "${API_ROOT_URL}/students/";
+    var API_URL = `${API_ROOT_URL}/students/`;
 
     // company filter adding api URL
     if (companyFilter !== undefined) {

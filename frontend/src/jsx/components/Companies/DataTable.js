@@ -5,7 +5,7 @@ import ActionDropDown from "../Dashboard/ActionDropDown";
 import FilterComponent from "./FilterComponent";
 import { Link } from "react-router-dom";
 
-import { tableStyles } from "../Instructor/Instructor/tableStyles";
+import { tableStyles } from "../Instructor/Instructor-1/tableStyles";
 
 const Table = (props) => {
   const columns = [

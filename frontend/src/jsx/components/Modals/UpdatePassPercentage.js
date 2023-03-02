@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Button, Dropdown, Modal } from "react-bootstrap";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import { API_ROOT_URL } from "../../constants";
 
 function UpdatePassPercentage(props) {
 
@@ -21,7 +22,7 @@ function UpdatePassPercentage(props) {
   const updatePassMarks = async (e) =>{
     e.preventDefault();
 
-    const response = await fetch("${API_ROOT_URL}/induction/updatePassingMarks", {
+    const response = await fetch(`${API_ROOT_URL}/induction/updatePassingMarks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

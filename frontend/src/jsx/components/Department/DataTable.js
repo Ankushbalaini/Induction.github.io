@@ -4,7 +4,7 @@ import DataTable from "react-data-table-component";
 import FilterComponent from "../Companies/FilterComponent";
 import DropDownBlog from "../Dashboard/DropDownBlog";
 import { Link } from "react-router-dom";
-import { tableStyles } from "../Instructor/Instructor/tableStyles";
+import { tableStyles } from "../Instructor/Instructor-1/tableStyles";
 
 const Table = (props) => {
   const columns = [

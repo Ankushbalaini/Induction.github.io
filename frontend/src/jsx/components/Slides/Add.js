@@ -6,10 +6,10 @@ import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { Link, useHistory } from "react-router-dom";
 import { useParams } from "react-router";
-
+import { API_ROOT_URL } from "../../constants";
 // api call
 async function addSlide(formValues, token) {
-  return fetch("${API_ROOT_URL}/slides/", {
+  return fetch(`${API_ROOT_URL}/slides/`, {
     method: "POST",
     headers: {
       "x-access-token": token,

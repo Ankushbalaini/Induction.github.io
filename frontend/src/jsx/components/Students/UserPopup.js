@@ -5,6 +5,8 @@ import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import CompanyDropdown from "./CompanyDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
+import { API_ROOT_URL } from "../../constants";
+
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -54,7 +56,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
     let formData = new FormData(e.target);
 
     const response = await fetch(
-      "${API_ROOT_URL}/users/edit/" + state.userID,
+      `${API_ROOT_URL}/users/edit/${state.userID}`,
       {
         method: "PUT",
         body: formData,

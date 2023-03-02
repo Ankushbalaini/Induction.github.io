@@ -3,6 +3,7 @@ import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
+import { API_ROOT_URL } from "../../constants";
 
 const images = require.context("../../../../../images/profile", true);
 
@@ -70,7 +71,7 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
     // const userID = "63cea890edb762dfb4abb220";
 
     const response = await fetch(
-      "${API_ROOT_URL}/instructor/edit/" + userID,
+      `${API_ROOT_URL}/instructor/edit/${userID}`,
       {
         method: "PUT",
         body: data,

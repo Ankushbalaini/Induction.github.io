@@ -5,6 +5,7 @@ import pic3 from "./../../../images/courses/pic3.jpg";
 import pic2 from "./../../../images/courses/pic2.jpg";
 import pic4 from "./../../../images/courses/pic4.jpg";
 import { useSelector } from "react-redux";
+import { API_ROOT_URL } from "../../constants";
 
 const inductionTableData = [
   {
@@ -54,7 +55,7 @@ const Inductions = () => {
   // api call
   async function getAllInductions() {
     //const id =  '63a5b994d187fa1a5a210934';
-    return fetch("${API_ROOT_URL}/induction/", {
+    return fetch(`${API_ROOT_URL}/induction/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

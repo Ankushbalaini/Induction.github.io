@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getData } from "../APIs";
-
+import { API_ROOT_URL } from "../../constants";
 
 async function getDepartments(token, company) {
     return fetch(`${API_ROOT_URL}/department/getDepartmentByComp`, {

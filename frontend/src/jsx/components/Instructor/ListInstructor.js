@@ -89,7 +89,7 @@ const Instructors = () => {
     }).then(async (willChange) => {
       if (willChange) {
         const response = await fetch(
-          "${API_ROOT_URL}/users/changeUserStatus",
+          `${API_ROOT_URL}/users/changeUserStatus`,
           {
             method: "PUT",
             headers: {
