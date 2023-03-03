@@ -109,8 +109,6 @@ const InstructorDashboard = () =>{
 
 	return(
 		<div>
-		
-		
 			<div className="row">
 			      <div className="col-xl-6 col-lg-6 col-xxl-6 col-sm-6">
                      <div className="widget-stat card bg-primary">

@@ -115,7 +115,7 @@ const Companydashboardlisting = () => {
 
           <div className="card-body">
             <table
-              className="table display mb-4 dataTablesCard order-table card-table text-black application "
+              className="table display mb-4 dataTablesCard order-table card-table text-black application bordered "
               id="application-tbl1_next"
             >
               <thead>
