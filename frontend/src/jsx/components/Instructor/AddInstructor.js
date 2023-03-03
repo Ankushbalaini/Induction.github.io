@@ -15,13 +15,15 @@ const AddInstructor = () => {
   const id = useSelector((state) => state.auth.auth.id);
   const lrole = useSelector((state) => state.auth.auth.role);
   const token = useSelector((state) => state.auth.auth.token);
-
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [role, setRole] = useState("instructor");
   const [name, setName] = useState("");
   const [parentCompany, setParentCompany] = useState("");
   const [parentDepartment, setParentDepartment] = useState("");
+  const [optionList, setOptionList] = useState([]);
+ 
+const [selectedOptions, setSelectedOptions] = useState();
   const [deptID, setDeptID] = useState();
   const [profilePhoto, setProfilePhoto] = useState("dummy-user.png");
   const [image, setImage] = useState({ preview: "", data: "" });
@@ -137,7 +139,7 @@ const AddInstructor = () => {
 }
 
   useEffect(() => {}, [errors]);
-
+console.log(optionList,"....addINst OPT")
   return (
     <Fragment>
       <PageTitle activeMenu="Add Instructor" motherMenu="Instructors" />
@@ -241,19 +243,22 @@ const AddInstructor = () => {
                         Parent Department
                       </label>
                       <div className="col-sm-9">
-                        <select
+                        {/* <select
                           name="parentDepartment"
                           className="form-control"
                           onChange={(e) => setParentDepartment(e.target.value)}
                         >
                           <option value="">Select</option>
-                          {/* <DepartmentDropdown parentCompany={parentCompany}/> */}
-                          <DepartmentByCompany
+                           <DepartmentDropdown parentCompany={parentCompany}/>
+                      
+                        </select> */}
+                        <DepartmentByCompany
                             parentCompany={parentCompany}
-                            prevSelected=""
+                            prevSelected="parentDepartment"
+                            optionList={optionList}
+                            value={deptID}
+                            onChange={(e) => selectedOptions(e.target.value)}
                           />
-                        </select>
-
                         {errors.parentDepartment && (
                           <div Style="color:red;font-weight:400;padding:5px;">
                             {errors.parentDepartment}
@@ -270,7 +275,7 @@ const AddInstructor = () => {
                       Select Department
                     </label>
                     <div className="col-sm-9">
-                      <select
+                      {/* <select
                         name="deptID"
                         className="form-control"
                         onChange={(e) => {
@@ -280,12 +285,14 @@ const AddInstructor = () => {
                         }}
                       >
                         <option value="">Select</option>
-                        <DepartmentByCompany
+                      
+                          
+                      </select> */}
+                      <DepartmentByCompany
                           parentCompany={id}
                           prevSelected=""
+                          optionList={optionList}
                         />
-                      </select>
-
                       {errors.deptID && (
                         <div Style="color:red;font-weight:400;padding:5px;">
                           {errors.deptID}

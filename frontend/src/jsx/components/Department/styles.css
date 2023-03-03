@@ -1,0 +1,11 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 110vh;
+    
+  }
+  .dropdown-container {
+    width: 630px; 
+  }
