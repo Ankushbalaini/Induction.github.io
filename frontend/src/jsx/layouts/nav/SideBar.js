@@ -155,7 +155,7 @@ const SideBar = () => {
                       Dashboard
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       className={`${
                         path === "instructor-profile" ? "mm-active" : ""
@@ -164,7 +164,7 @@ const SideBar = () => {
                     >
                       Profile
                     </Link>
-                  </li>
+                  </li> */}
                 </ul>
               </li>
             </>
@@ -189,7 +189,7 @@ const SideBar = () => {
                     Dashboard
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link
                     className={`${
                       path === "company-profile" ? "mm-active" : ""
@@ -198,7 +198,7 @@ const SideBar = () => {
                   >
                     Profile
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </li>
           ) : null}
@@ -220,7 +220,7 @@ const SideBar = () => {
                   >
                     Companies
                   </Link>
-                </li>
+                </li>   
 
                 <li>
                   <Link

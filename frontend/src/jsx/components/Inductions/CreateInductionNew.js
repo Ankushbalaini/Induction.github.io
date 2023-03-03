@@ -9,16 +9,26 @@ import DepartmentDropdown from "../Department/DepartmentDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 import CompanyDropdown from "../Companies/CompanyDropdown";
 
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
 
 const CreateInduction = () => {
   const navigate = useHistory();
   const [loading, setLoading] = useState(true);
+  const token = useSelector((state) => state.auth.auth.token);
+  const userRole = useSelector((state) => state.auth.auth.role);
+  const id = useSelector((state) => state.auth.auth.id);
   
   const [image, setImage] = useState({preview:'', data:''})
   const [title, setTitle] = useState("");
   const [subTitle, setSubTitle] = useState("");
   const [deptID, setDeptID] = useState("");
   const [parentCompany, setParentCompany] = useState("");
+  const [parentDepartment, setParentDepartment] = useState("");
   const [option, setOption] = useState();
 
 
@@ -30,7 +40,7 @@ const CreateInduction = () => {
   ]);
 
   const editor = useRef(null);
-  const token = useSelector((state) => state.auth.auth.token);
+ 
 
   // validation messages
   let errorsObj = { title: "", subTitle: "", deptID: "" };
@@ -254,7 +264,9 @@ const buttonStyle = {
                   </div>
                 </div>
 
-              <div className="form-group mb-3">
+                {USER_ROLES.SUPER_ADMIN === userRole ? (
+                  <>
+                  <div className="form-group mb-3">
                 <div className="mb-4 row">
                   <label className="col-sm-3 col-form-label">Select Company </label>
                   <div className="col-sm-9">
@@ -288,7 +300,46 @@ const buttonStyle = {
                     {errors.deptID && <div Style="color:red;font-weight:600;padding:5px;">{errors.deptID}</div>}
                     </div>
                   </div>
-              </div>
+               </div>
+                  </>          
+                ): null}
+                   {USER_ROLES.COMPANY === userRole ? (
+                  <>
+                  <div className="form-group mb-3">
+             
+                  <div className="mb-3 row">
+                    <label className="col-sm-3 col-form-label">
+                      Select Department
+                    </label>
+                    <div className="col-sm-9">
+                      <select
+                        name="deptID"
+                        className="form-control"
+                        onChange={(e) => {
+                          // setDeptID(e.target.value);
+                          setParentDepartment(e.target.value);
+                          setParentCompany(id);
+                        }}
+                      >
+                        <option value="">Select</option>
+                        <DepartmentByCompany
+                          parentCompany={id}
+                          prevSelected=""
+                        />
+                      </select>
+
+                      {errors.deptID && (
+                        <div Style="color:red;font-weight:400;padding:5px;">
+                          {errors.deptID}
+                        </div>
+                      )}
+                    </div>
+                    
+                  </div>
+               </div>
+                  </>          
+                ): null}
+              
 
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">

@@ -180,7 +180,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                 <div className="form-group mb-3">
                   <label htmlFor="first_name" className="text-black font-w600">
                     {" "}
-                    First Name <span className="required">*</span>{" "}
+                    First Name  <span className="required">*</span>{" "}
                   </label>
                   <input type="hidden" name="mainID" value={profileData._id} />
                   <input

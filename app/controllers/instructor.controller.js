@@ -8,10 +8,169 @@ const UserInductionResults = db.user_induction_results;
 var jwt = require("jsonwebtoken");
 const { instructor } = require("../models");
 
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
+
 /**
  * For super Admin
  *
  */
+exports.index = (req, res) => {
+  try {
+    const user = req.decoded;
+
+    if (
+      USER_ROLES.COMPANY === user.role &&
+      req.query.deptID !== "" &&
+      req.query.deptID !== "all" &&
+      req.query.deptID !== undefined
+    ) {
+      var deptID = ObjectId(req.query.deptID);
+
+      UserCred.aggregate([
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $eq: ["$role", "instructor"],
+                  $eq: ["$parentCompany", ObjectId(user.userID)],
+                  $eq: ["$deptID", deptID],
+                },
+              ],
+            },
+          },
+        },
+        { $sort: { createdAt: -1 } },
+        {
+          $lookup: {
+            from: "instructors",
+            localField: "_id",
+            foreignField: "userID",
+            as: "profile",
+          },
+        },
+        {
+          $unwind: "$profile",
+        },
+        {
+          $project: {
+            _id: 1,
+            email: 1,
+            role: 1,
+            status: 1,
+            parentCompany: 1,
+            profile: 1,
+            createdAt: 1,
+          },
+        },
+      ])
+        .then((data) => {
+          return res.status(200).send({
+            status: true,
+            message: "All Instuctor Listing for company by department",
+            data: data,
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+            data: {},
+          });
+        });
+    } else {
+      UserCred.aggregate([
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $eq: ["$role", "instructor"],
+                  $eq: ["$parentCompany", ObjectId(user.userID)],
+                },
+              ],
+            },
+          },
+        },
+        { $sort: { createdAt: -1 } },
+        {
+          $lookup: {
+            from: "instructors",
+            localField: "_id",
+            foreignField: "userID",
+            as: "profile",
+          },
+        },
+        {
+          $unwind: "$profile",
+        },
+        {
+          $project: {
+            _id: 1,
+            email: 1,
+            role: 1,
+            status: 1,
+            parentCompany: 1,
+            profile: 1,
+            createdAt: 1,
+          },
+        },
+      ])
+        .then((data) => {
+          return res.status(200).send({
+            status: true,
+            message: "All Instuctor Listing for company",
+            data: data,
+          });
+        })
+        .catch((err) => {
+          return res.status(500).send({
+            status: false,
+            message: err.message,
+            data: {},
+          });
+        });
+    }
+
+    /*
+    UserCred.find({ role: 'instructor' }, { _id:1, email:1, createdAt:1, status:1  })
+    .populate('instructor', { name:1, logo:1 , profilePhoto: 1, aboutMe: 1,address: 1 })
+    .sort({ createdAt: -1})
+    .then((instructors)=>{
+      return res.status(201).send({
+        status: true,
+        message: "All instructor data",
+        data: instructors
+      });
+    })
+    .catch((err)=>{
+      return res.status(500).send({
+        status: false,
+        message: err.message
+      });
+    });
+    */
+  } catch (error) {
+    return res.status(500).send({
+      status: false,
+      message: error.message,
+    });
+  }
+};
+
+/**
+ *
+ * @param {
+ *
+* } req
+* @param {*} res
+* @returns
+*/
 exports.list = (req, res) => {
   UserCred.aggregate([
     {
