@@ -8,7 +8,7 @@ import swal from "sweetalert";
 import { useSelector } from "react-redux";
 import ActionDropDown from "./ActionDropDown";
 
-import { tableStyles } from "../Instructor/Instructor/tableStyles";
+import { tableStyles } from "../Instructor/Instructor-1/tableStyles";
 
 const Table = props => {
   const navigate = useHistory();
@@ -71,11 +71,11 @@ const Table = props => {
       sortable: true,
       hide: "sm",
       cell: row => (
-        <div 
+        <Link 
         className={`badge light ${(row.status)? 'badge-success': 'badge-danger'}`} onClick={() =>props.changeUserStatus(row._id, row.status) } 
         >
           { (row.status) ? 'Active' : 'Inactive'}
-        </div>
+        </Link>
         )
     },
     {

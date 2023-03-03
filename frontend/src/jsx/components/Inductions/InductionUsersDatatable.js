@@ -3,7 +3,7 @@ import React, { Fragment, useMemo, useState } from "react";
 import DataTable from "react-data-table-component";
 import FilterComponent from "../Instructor/FilterComponent";
 import { useSelector } from "react-redux";
-import { tableStyles } from "../Instructor/Instructor/tableStyles";
+import { tableStyles } from "../Instructor/Instructor-1/tableStyles";
 import { Button } from "react-bootstrap";
 
 const Table = (props) => {

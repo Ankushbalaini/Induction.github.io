@@ -2,40 +2,20 @@ import React, {
   useEffect,
   useState,
   useRef,
-  useMemo,
-  useLayoutEffect,
 } from "react";
 import { useLocation, useParams } from "react-router";
-import { Link } from "react-router-dom";
 
-import { Button, Dropdown, Modal } from "react-bootstrap";
 
 import "react-modal-video/css/modal-video.min.css";
 import CurrentSlide from "./components/CurrentSlide";
 import InductionSlidesList from "./components/InductionSlidesList";
 import InductionTitle from "./components/InductionTitle";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+
 import { useSelector } from "react-redux";
 import UpdatePassPercentage from "../Modals/UpdatePassPercentage";
 
 import { getInduction } from "../APIs";
-import SideBar from "../../layouts/nav/SideBar";
 
-const getInductionDetailById = async (id, token) => {
-  return await fetch("http://localhost:8081/api/induction/" + id, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "x-access-token": token,
-    },
-  })
-    .then((data) => data.json())
-    .then((data) => {
-      return data;
-    });
-};
 
 const SingleInductionView = (props) => {
   const [loading, setLoading] = useState(true);

@@ -6,13 +6,12 @@ import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Table from "./DataTable";
-import API from "../API_URLs";
-
+import { API_ROOT_URL } from "../../constants"; 
 
 // api call
 async function getCompanies(token) {
-  return fetch( API.COMPANIES.URL, {
-    method: API.COMPANIES.METHOD,
+  return fetch( `${API_ROOT_URL}/company/list`, {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       "x-access-token": token,
@@ -51,9 +50,9 @@ const Companies = () => {
     }).then(async (willChange) => {
       if (willChange) {
         const response = await fetch(
-          API.CHANGE_STATUS.URL,
+          `${API_ROOT_URL}/users/changeUserStatus`,
           {
-            method: API.CHANGE_STATUS.METHOD,
+            method: "PUT",
             headers: {
               "Content-Type": "application/json",
               "x-access-token": token,
@@ -122,9 +121,9 @@ const Companies = () => {
     data.append("companyID", companyID);
 
     const response = await fetch(
-      API.UPDATE_COMPANY.URL + editID,
+      `${API_ROOT_URL}/company/edit/${editID}`,
       {
-        method: API.UPDATE_COMPANY.METHOD,
+        method: "PUT",
         headers: {
           "x-access-token": token,
         },

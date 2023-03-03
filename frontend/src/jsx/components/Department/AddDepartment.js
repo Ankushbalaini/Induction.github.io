@@ -4,6 +4,7 @@ import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import CompanyDropdown from "../Companies/CompanyDropdown";
 import { useSelector } from "react-redux";
+import { API_ROOT_URL } from "../../constants";
 
 const AddDepartment =() =>{
     const navigate = useHistory();
@@ -71,7 +72,7 @@ const [errors, setErrors] = useState(errorObj);
     //         timer: 2000,
     //       });
     // }
-     return fetch ("http://localhost:8081/api/department/add" ,{
+     return fetch (`${API_ROOT_URL}/department/add` ,{
          method : "POST",
          headers :{
              "Content-Type" : "application/json",

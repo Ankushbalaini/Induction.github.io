@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import CompanyDropdown from "../Companies/CompanyDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 import PageTitle from "../../layouts/PageTitle";
-
+import {API_ROOT_URL} from "../../constants";
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -95,7 +95,7 @@ const Users = () => {
     }).then(async (willChange) => {
       if (willChange) {
         const response = await fetch(
-          "http://localhost:8081/api/users/changeUserStatus",
+          `${API_ROOT_URL}/users/changeUserStatus`,
           {
             method: "PUT",
             headers: {
@@ -132,7 +132,7 @@ const Users = () => {
     if (searchDepartment !== undefined && searchCompany === undefined) {
       str = "?deptID=" + searchDepartment;
     }
-    const response = await fetch("http://localhost:8081/api/students/" + str, {
+    const response = await fetch(`${API_ROOT_URL}/students/${str}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

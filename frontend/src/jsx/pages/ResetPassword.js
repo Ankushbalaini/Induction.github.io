@@ -6,13 +6,13 @@ import BJSLogo from "../../images/BJSLogo.png";
 import swal from 'sweetalert';
 import { useParams, Link } from 'react-router-dom';
 import logo from "../../images/homedelivery.svg";
-
+import { API_ROOT_URL } from "../constants";
 
 
 
 // api call
 async function Api_CreatePassword(values) {
-    return fetch('http://localhost:8081/api/users/create-password', {
+    return fetch(`${API_ROOT_URL}/users/create-password`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

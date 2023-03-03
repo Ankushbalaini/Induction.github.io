@@ -4,6 +4,7 @@ import swal from "sweetalert";
 import { useSelector } from "react-redux";
 import ActionDropDown from "./ActionDropDown";
 import UserPopup from "./UserPopup";
+import { API_ROOT_URL } from "../../constants";
 
 const images = require.context("../../../../../images/profile/", true);
 
@@ -44,17 +45,14 @@ function UsersTable({ filteredUsers, checkUserUpdated, redirectTo }) {
       dangerMode: true,
     }).then(async (willChange) => {
       if (willChange) {
-        const response = await fetch(
-          "http://localhost:8081/api/users/changeUserStatus",
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              "x-access-token": token,
-            },
-            body: JSON.stringify({ userID: userID, status: status }),
-          }
-        ).then((data) => data.json());
+        const response = await fetch(`${API_ROOT_URL}/users/changeUserStatus`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": token,
+          },
+          body: JSON.stringify({ userID: userID, status: status }),
+        }).then((data) => data.json());
 
         if ("status" in response && response.status == true) {
           swal("Poof! Your record has been updated!", {

@@ -6,6 +6,7 @@ const userCredModel = db.user_cred;
 const UserInductionResults = db.user_induction_results;
 const Induction = db.induction;
 
+
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 

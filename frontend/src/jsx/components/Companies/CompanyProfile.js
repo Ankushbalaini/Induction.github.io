@@ -4,16 +4,15 @@ import { Link } from "react-router-dom";
 import ActionDropDown from "../Dashboard/ActionDropDown";
 import swal from "sweetalert";
 
-
 import certificate from "./../../../images/svg/degree-certificate.svg";
 import clock from "./../../../images/svg/clock-1.svg";
 
 import { useSelector } from "react-redux";
 import UpdateCompanyProfile from "./UpdateCompanyProfile";
+import { API_ROOT_URL } from "../../constants";
+const images = require.context("../../../../../images/company/", true);
 
-const images = require.context('../../../../../images/company/', true);
-
-const WidgetBlog = ({ changeImage, title, link , dataCount }) => {
+const WidgetBlog = ({ changeImage, title, link, dataCount }) => {
   return (
     <>
       <div className="col-xl-6 col-lg-6 col-sm-6">
@@ -38,46 +37,43 @@ const WidgetBlog = ({ changeImage, title, link , dataCount }) => {
   );
 };
 
-// api call 
-async function getProfileApi (token){
-  const URL = 'http://localhost:8081/api/users/getProfile';
-	return fetch(URL, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token" : token
-      },
-    }).then((data) => data.json());
+// api call
+async function getProfileApi(token) {
+  const URL = `${API_ROOT_URL}/users/getProfile`;
+  return fetch(URL, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+  }).then((data) => data.json());
 }
 
 const CompanyProfile = () => {
   const token = useSelector((state) => state.auth.auth.token);
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [companyData, setCompanyData] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);	
-  const [profileImg, setProfileImg] = useState('dummy-user.png');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [profileImg, setProfileImg] = useState("dummy-user.png");
 
-  const getProfile = async () =>{
+  const getProfile = async () => {
     const response = await getProfileApi(token);
     if ("status" in response && response.status == true) {
-			setCompanyData(response.data);
-			setLoading(false);
+      setCompanyData(response.data);
+      setLoading(false);
       setProfileImg(response.data.profile.logo);
-      
-		}
-  }
+    }
+  };
 
   // callback function to opdate state
   const trackOnclick = (payload) => {
     setIsModalOpen(payload);
-  }
+  };
 
-  
   const trackDeleteClick = () => {
     swal({
       title: "Are you sure?",
-      text:
-        "Once deleted, you will not be able to recover this record!",
+      text: "Once deleted, you will not be able to recover this record!",
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -89,94 +85,89 @@ const CompanyProfile = () => {
       } else {
         swal("Your record is safe!");
       }
-    })
-  }
+    });
+  };
 
-
-  useEffect(()=>{
+  useEffect(() => {
     //if(loading){
-      getProfile();
+    getProfile();
     //}
-    
   }, [isModalOpen]);
 
-  
   const loadImage = (imageName) => {
     return images(`./${imageName}`);
-  }
+  };
 
-  const pageContent = (loading) ? <h1>Loading</h1> :
-          <>
-           <div className="row">
-              <div className="col-xl-4 col-xxl-5 col-lg-12">
-                <div className="card instructors-box">
-                  <div className="card-header border-0">
-                    <ActionDropDown trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick}/>
-                  </div>
-                  <div className="card-body text-center pb-3">
-                    <div className="instructors-media">
-                      <img src={ loadImage(profileImg)} />
+  const pageContent = loading ? (
+    <h1>Loading</h1>
+  ) : (
+    <>
+      <div className="row">
+        <div className="col-xl-4 col-xxl-5 col-lg-12">
+          <div className="card instructors-box">
+            <div className="card-header border-0">
+              <ActionDropDown
+                trackOnclick={trackOnclick}
+                trackDeleteClick={trackDeleteClick}
+              />
+            </div>
+            <div className="card-body text-center pb-3">
+              <div className="instructors-media">
+                <img src={loadImage(profileImg)} />
 
-                      <div className="instructors-media-info mt-4">
-                        <h4 className="mb-1">{companyData.profile.name}</h4>
-                        <span className="fs-18">Member Since 2023</span>
-                        
-                      </div>
-                    </div>
-                    
-                    <div className="bio text-start my-4">
-                      {/* <h4 className="mb-3">Bio</h4> */}
-                      <div className="bio-content">
-                        <p>
-                          {companyData.profile.aboutCompany}
-                        </p>
-                      </div>
-                    </div>
-
-
-                    <div className="bio text-start my-4">
-                      {/* <h4 className="mb-3">Address</h4> */}
-                      <div className="bio-content">
-                        <p>
-                          {companyData.profile.address}
-                        </p>
-                      </div>
-                    </div>
-
-                  </div>
+                <div className="instructors-media-info mt-4">
+                  <h4 className="mb-1">{companyData.profile.name}</h4>
+                  <span className="fs-18">Member Since 2023</span>
                 </div>
               </div>
-              <div className="col-xl-8 col-xxl-7 col-lg-12 ">
-                <div className="row">
-                  <WidgetBlog changeImage={certificate} title="Instructors" link="instructors" dataCount={companyData.totalInstructors} />
-                  <WidgetBlog changeImage={clock} title="Inductions" link="inductions" dataCount={companyData.totalInductions} />
-                  <div className="widget-heading d-flex justify-content-between align-items-center">
-                    <h3 className="m-0">My Instructors</h3>
-                    <Link to={"./instructors"} className="btn btn-primary btn-sm">
-                      View all
-                    </Link>
-                  </div>
+
+              <div className="bio text-start my-4">
+                {/* <h4 className="mb-3">Bio</h4> */}
+                <div className="bio-content">
+                  <p>{companyData.profile.aboutCompany}</p>
+                </div>
+              </div>
+
+              <div className="bio text-start my-4">
+                {/* <h4 className="mb-3">Address</h4> */}
+                <div className="bio-content">
+                  <p>{companyData.profile.address}</p>
                 </div>
               </div>
             </div>
-            <UpdateCompanyProfile 
-              isModalOpen={isModalOpen} 
-              trackOnclick={trackOnclick} 
-              companyData={companyData}
-              />
-
-          </>
-
-  return (
-
-    <>
-      {pageContent}
-      
-      
-
+          </div>
+        </div>
+        <div className="col-xl-8 col-xxl-7 col-lg-12 ">
+          <div className="row">
+            <WidgetBlog
+              changeImage={certificate}
+              title="Instructors"
+              link="instructors"
+              dataCount={companyData.totalInstructors}
+            />
+            <WidgetBlog
+              changeImage={clock}
+              title="Inductions"
+              link="inductions"
+              dataCount={companyData.totalInductions}
+            />
+            <div className="widget-heading d-flex justify-content-between align-items-center">
+              <h3 className="m-0">My Instructors</h3>
+              <Link to={"./instructors"} className="btn btn-primary btn-sm">
+                View all
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+      <UpdateCompanyProfile
+        isModalOpen={isModalOpen}
+        trackOnclick={trackOnclick}
+        companyData={companyData}
+      />
     </>
-
-    
   );
+
+  return <>{pageContent}</>;
 };
 export default CompanyProfile;

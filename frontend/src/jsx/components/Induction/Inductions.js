@@ -10,6 +10,7 @@ import course1 from "./../../../images/courses/course1.jpg";
 import SideBar from "../../layouts/nav/SideBar";
 import { useSelector } from "react-redux";
 import CompanyDropdown from "../Companies/CompanyDropdown";
+import { API_ROOT_URL } from "../../constants";
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -36,7 +37,7 @@ function Inductions() {
 
   // api call
   async function getAllInductions(page) {
-    return fetch("http://localhost:8081/api/induction?page=" + page, {
+    return fetch(`${API_ROOT_URL}/induction?page=${page}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -47,12 +48,9 @@ function Inductions() {
 
   async function filterInductions(page, companyID) {
     let filterInductionsApi =
-      "http://localhost:8081/api/induction/filter/by/company?page=" +
-      page +
-      "&filterByCompany=" +
-      companyID;
+      `${API_ROOT_URL}/induction/filter/by/company?page=${page}&filterByCompany=${companyID}`;
     if (companyID == "all") {
-      filterInductionsApi = "http://localhost:8081/api/induction?page=" + page;
+      filterInductionsApi = `${API_ROOT_URL}/induction?page=${page}`;
     }
     return fetch(filterInductionsApi, {
       method: "GET",

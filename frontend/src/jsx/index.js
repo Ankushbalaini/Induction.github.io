@@ -61,7 +61,6 @@ import InstructorProfile from "./components/Instructor/InstructorProfile";
 
 import InstructorDashboard from "./components/Instructor/InstructorDashboard";
 import InstructorCourses from "./components/Instructor/InstructorCourses";
-import InstructorStudents from "./components/Instructor/InstructorStudents";
 
 // Students
 // import AllStudents from "./components/Students/AllStudents";
@@ -82,6 +81,9 @@ import ViewMcq from "./components/Inductions/Viewquiz";
 import AttemptQuiz from "./components/Inductions/Attemptquiz";
 import AttemptedInductions from "./components/Inductions/AttemptedInduction";
 import UserAttemptedInductions from "./components/Users/AttemptedInductions";
+
+
+// import ImportInduction from "./components/Induction/ImportInduction";
 
 
 const Markup = () => {
@@ -135,7 +137,6 @@ const Markup = () => {
     { url: "instructor-dashboard", component: InstructorDashboard },
 
     { url: "instructor-courses", component: InstructorCourses },
-    { url: "instructor-students", component: InstructorStudents },
     
     //{ url: "users", component: AllStudents },
     { url: "users", component: Users },
@@ -143,6 +144,8 @@ const Markup = () => {
     { url : "attempted-inductions", component : AttemptedInductions},
     { url: 'unassigned-users', component: UnassignedUsers },
 
+
+    //{ url: 'import-induction', component: ImportInduction },
     // Apps
     // { url: "app-profile", component: AppProfile },
     // { url: "table-filtering", component: FilteringTable}

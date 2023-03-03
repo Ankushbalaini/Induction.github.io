@@ -9,6 +9,7 @@ import PageTitle from "../../layouts/PageTitle";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { useParams } from "react-router";
+import { API_ROOT_URL } from "../../constants";
 
 const AddMcq = (props) => {
   const navigate = useHistory();
@@ -73,7 +74,7 @@ const AddMcq = (props) => {
     const data = new FormData(e.target);
     
     //api call
-    const response = await fetch("http://localhost:8081/api/mcq/add", {
+    const response = await fetch(`${API_ROOT_URL}/mcq/add`, {
       method: "POST",
       headers: {
         "x-access-token": token,
