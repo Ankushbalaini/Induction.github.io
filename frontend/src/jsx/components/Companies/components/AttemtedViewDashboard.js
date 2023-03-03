@@ -1,12 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import swal from "sweetalert";
-import Table from "./InductionUsersDatatable";
+import TableAttempted from "./TableAttemtdInsuct";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
-import PageTitle from "../../layouts/PageTitle";
-import UserAttemptedInductioList from "../Modals/UserAttemptedInductioList";
-import FiltersForAttempts from "./components/FilterForAttempts";
-import {API_ROOT_URL} from "../../constants";
+// import UserAttemptedInductioList from "../Modals/UserAttemptedInductioList";
+import FiltersForAttempts from "../../Inductions/components/FilterForAttempts";
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -27,6 +25,8 @@ const InductionUsers = () => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState([]); // main listing data
   const [userPopupData, setUserPopupData] = useState();
+  const [totalAttempts, setTotalAttempts] = useState();
+  const [uniqueTitle, setUniqueTitle] = useState([]);
 
   // callback function to opdate state
   const trackOnclick = (payload, userData) => {
@@ -52,7 +52,7 @@ const InductionUsers = () => {
     queryStr += inductionFilter ? `&induction=${inductionFilter}` : "";
 
     const response = await fetch(
-      `${API_ROOT_URL}/induction/users${queryStr}`,
+      "http://localhost:8081/api/induction/users" + queryStr,
       {
         method: "GET",
         headers: {
@@ -63,26 +63,29 @@ const InductionUsers = () => {
     ).then((data) => data.json());
     if ("status" in response && response.status == true) {
       setUsers(response.data);
+    //   setUniqueTitle(response.data);
       setLoading(false);
     } else {
       return swal("Failed", response.message, "error");
     }
+    // console.log(users,"inductions-attempts")
+    // console.log(uniqueTitle, "unique title attemted")
+
   };
 
   // use effect
   useEffect(() => {
     handlepageLoad();
   }, [companyFilter, inductionFilter]);
+
+
   //css for button
   const buttonStyle = {
     margin: "auto",
     display: "flex",
   };
 
-  const CompanyFilterHandle = (e) => {
-    setCompanyFilter(e.target.value);
-    setInductionFilter("All");
-  };
+
   const InductionFilterHandle = (e) => {
     setInductionFilter(e.target.value);
   };
@@ -93,19 +96,26 @@ const InductionUsers = () => {
         <h3>Loading</h3>
       ) : (
         <>
-        <PageTitle activeMenu="Attempted Induction" motherMenu="Inductions" />
+        {/* <PageTitle activeMenu="Attempted Induction" motherMenu="Inductions" /> */}
         <div className="row">
           <div className="col-xl-12">
             <div className="card students-list">  
-              <div className="card-header border-0 flex-wrap">
-              <h2>Attempted Inductions</h2>
+              <div className="card-header border-0 flex-wrap pb-9">
+              <h2>Test Attempts</h2>
               <FiltersForAttempts
-                  CompanyFilterHandle={CompanyFilterHandle}
                   InductionFilterHandle={InductionFilterHandle}
-                  companyFilter={companyFilter}
                   inductionFilter={inductionFilter}
                 />
               </div>
+              <div className="card-body">
+                <div className="table-responsive">
+                  <div id="user_wrapper" className="dataTables_wrapper">
+            
+                </div>
+                <TableAttempted data={users} trackOnclick={trackOnclick} />
+              </div>
+         
+            </div>
                 {/* <h3>Induction Users</h3> */}
 
                 {/* 
@@ -237,28 +247,20 @@ const InductionUsers = () => {
 
                
 
-              <div className="card-body py-0">
-                <div className="table-responsive">
-                  <div id="user_wrapper" className="dataTables_wrapper">
-                  
-                </div>
-                <Table data={users} trackOnclick={trackOnclick} />
-              </div>
-              
-            </div>
+             
             </div>
           </div>
         </div>
         </>
       )}
 
-      {isModalOpen ? (
+      {/* {isModalOpen ? (
         <UserAttemptedInductioList
           isModalOpen={isModalOpen}
           hidePopUp={hidePopUp}
           userPopupData={userPopupData}
         />
-      ) : null}
+      ) : null} */}
     </>
   );
 };

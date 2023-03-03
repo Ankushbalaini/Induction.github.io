@@ -9,16 +9,13 @@ const Induction = db.induction;
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
-
 var jwt = require("jsonwebtoken");
-
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
   INSTRUCTOR: "instructor",
   USER: "user",
 };
-
 // Create and Save a new company
 exports.list = (req, res) => {
   companyModel
@@ -42,7 +39,6 @@ exports.list = (req, res) => {
       });
     });
 };
-
 /*
  * @author Singh
  * @method : POST
@@ -54,7 +50,6 @@ exports.add_nk = (req, res) => {
     let logo;
     let uploadPath;
     const { email, password, name, address, aboutCompany } = req.body;
-
     const data = {
       email,
       password,
@@ -64,17 +59,14 @@ exports.add_nk = (req, res) => {
         address,
       },
     };
-
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(500).send({
         status: false,
         message: "Logo is required!",
       });
     }
-
     logo = req.files.logo;
     uploadPath = "images/company/" + logo.name;
-
     logo.mv(uploadPath, function (err) {
       if (err) {
         return res.status(500).send({
@@ -82,10 +74,8 @@ exports.add_nk = (req, res) => {
           message: err.message,
         });
       }
-
       data.company.logo = logo.name;
     });
-
     var user = new userCredModel(data);
     // Create token
     const token = jwt.sign(
@@ -95,7 +85,6 @@ exports.add_nk = (req, res) => {
         expiresIn: "2h",
       }
     );
-
     // save user token
     user.token = token;
     user.status = true;
@@ -115,7 +104,6 @@ exports.add_nk = (req, res) => {
           message: err.message,
         });
       });
-
     return;
   } catch (err) {
     return res.status(500).send({
@@ -125,12 +113,10 @@ exports.add_nk = (req, res) => {
     });
   }
 };
-
 exports.add = async (req, res) => {
   try {
     const { email, password, name, address, companyID, aboutCompany } =
       req.body;
-
     const data = {
       email,
       password,
@@ -139,7 +125,6 @@ exports.add = async (req, res) => {
       companyID,
       aboutCompany,
     };
-
     // logo validation
     if (!req.files || Object.keys(req.files).length === 0) {
       if (req.body.logo === "") {
@@ -151,7 +136,6 @@ exports.add = async (req, res) => {
     } else {
       var Img = req.files.logo;
       var uploadPath = "images/profile/" + Img.name;
-
       Img.mv(uploadPath, function (err) {
         if (err) {
           return res.status(500).send({
@@ -162,7 +146,6 @@ exports.add = async (req, res) => {
       });
       data.logo = Img.name;
     }
-
     // Check if email already exists
     const existingUser = await userCredModel.findOne({ email });
     if (existingUser) {
@@ -171,7 +154,6 @@ exports.add = async (req, res) => {
         message: "Email already exists!",
       });
     }
-
     var user = new userCredModel(data);
     // Create token
     const token = jwt.sign(
@@ -181,26 +163,21 @@ exports.add = async (req, res) => {
         expiresIn: "2h",
       }
     );
-
     // save user token
     user.token = token;
     user.status = true;
     user.role = "company";
-
     data.userID = user._id;
     var company = new companyModel(data);
     user.company = company._id;
-
     user.save().catch((err) => {
       res.status(400).send({
         status: false,
         message: err.message,
       });
     });
-
     //data.userID = user._id;
     //var company = new companyModel(data);
-
     company
       .save()
       .then((data) => {
@@ -234,10 +211,8 @@ exports.add = async (req, res) => {
       data: {},
     });
   }
-
   return;
 };
-
 //Edit the Company
 /**
  * @description: Finding company by their ID and then updating the credentials
@@ -254,7 +229,6 @@ exports.edit = (req, res) => {
     address: req.body.address,
     aboutCompany: req.body.aboutCompany,
   };
-
   // empty field validations
   if (
     saveData.name === "" ||
@@ -266,11 +240,9 @@ exports.edit = (req, res) => {
       message: "Data to be edit can't be empty!",
     });
   }
-
   if (req.body.companyID !== "") {
     saveData.companyID = req.body.companyID;
   }
-
   // logo validation
   if (!req.files || Object.keys(req.files).length === 0) {
     if (req.body.logo_previous === "") {
@@ -282,7 +254,6 @@ exports.edit = (req, res) => {
   } else {
     var Img = req.files.logo;
     var uploadPath = "images/company/" + Img.name;
-
     Img.mv(uploadPath, function (err) {
       if (err) {
         return res.status(500).send({
@@ -293,7 +264,6 @@ exports.edit = (req, res) => {
     });
     saveData.logo = Img.name;
   }
-
   // Check for duplicate email
   companyModel.findOne(
     { email: saveData.email },
@@ -304,14 +274,12 @@ exports.edit = (req, res) => {
           message: "Some error occurred while checking for duplicate email!",
         });
       }
-
       if (existingCompany && existingCompany._id.toString() !== id) {
         return res.status(400).send({
           status: false,
           message: "Email already exists!",
         });
       }
-
       companyModel
         .findByIdAndUpdate(id, { ...saveData }, { useFindAndModify: true })
         .then(function (user) {
@@ -337,7 +305,6 @@ exports.edit = (req, res) => {
     }
   );
 };
-
 /**
  *
  * @param {*} req
@@ -348,7 +315,6 @@ exports.update = (req, res) => {
     const id = req.params.id;
     // 63cea890edb762dfb4abb21f
     // 63cea890edb762dfb4abb220
-
     var saveData = {
       name: req.body.name,
       email: req.body.email,
@@ -356,7 +322,6 @@ exports.update = (req, res) => {
       address: req.body.address,
       aboutCompany: req.body.aboutCompany,
     };
-
     // empty field validations
     if (
       saveData.name === "" ||
@@ -368,7 +333,6 @@ exports.update = (req, res) => {
         message: "Data to be edit can't be empty!",
       });
     }
-
     // logo validation
     if (!req.files || Object.keys(req.files).length === 0) {
       if (req.body.logo === "") {
@@ -380,7 +344,6 @@ exports.update = (req, res) => {
     } else {
       var Img = req.files.image;
       var uploadPath = "images/company/" + Img.name;
-
       Img.mv(uploadPath, function (err) {
         if (err) {
           return res.status(500).send({
@@ -391,7 +354,6 @@ exports.update = (req, res) => {
       });
       saveData.logo = Img.name;
     }
-
     companyModel
       .findByIdAndUpdate(id, { ...saveData }, { useFindAndModify: true })
       .then(function (user) {
@@ -423,7 +385,6 @@ exports.update = (req, res) => {
     });
   }
 };
-
 exports.companyDropdownList = (req, res) => {
   userCredModel
     .find(

@@ -115,9 +115,10 @@ const UpdateInduction = () => {
     }).then((data) => data.json());
 
     if ("status" in response && response.status == true) {
-      return swal("Success", response.message, "success", {
+      return swal("Success!", response.message, "success", {
         buttons: false,
         timer: 2000,
+        icon: "success",
       }).then((value) => {
         // return <Navigate to="/inductions" />;
         navigate.push("/inductions");

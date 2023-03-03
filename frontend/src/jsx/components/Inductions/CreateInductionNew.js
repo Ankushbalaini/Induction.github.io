@@ -10,6 +10,13 @@ import DepartmentByCompany from "../Department/DepartmentByCompany";
 import CompanyDropdown from "../Companies/CompanyDropdown";
 import { API_ROOT_URL } from "../../constants";
 
+const USER_ROLES = {
+  SUPER_ADMIN: "super_admin",
+  COMPANY: "company",
+  INSTRUCTOR: "instructor",
+  USER: "user",
+};
+
 const CreateInduction = () => {
   const navigate = useHistory();
   const [loading, setLoading] = useState(true);
@@ -17,6 +24,7 @@ const CreateInduction = () => {
 
   const [image, setImage] = useState({ preview: "", data: "" });
   const [title, setTitle] = useState("");
+  const [searchDepartment, setSearchDepartment] = useState();
   const [subTitle, setSubTitle] = useState("");
   const [deptID, setDeptID] = useState("");
   const [parentCompany, setParentCompany] = useState("");
@@ -31,7 +39,8 @@ const CreateInduction = () => {
   ]);
 
   const editor = useRef(null);
- 
+  const id = useSelector((state) => state.auth.auth.id);
+  const role = useSelector((state) => state.auth.auth.role);
 
   // validation messages
   let errorsObj = { title: "", subTitle: "", deptID: "" };
@@ -49,6 +58,11 @@ const CreateInduction = () => {
     let newFormValues = [...formValues];
     newFormValues[i][e.target.name] = e.target.value;
     setFormValues(newFormValues);
+  };
+
+  // change department
+  const DepartmentChangeFilter = (e) => {
+    setSearchDepartment(e.target.value);
   };
 
   const handleJoditEditorChange = (index, newContent) => {
@@ -242,44 +256,71 @@ const CreateInduction = () => {
                     />
                   </div>
                 </div>
+                {USER_ROLES.SUPER_ADMIN === role ? (
+                  <div className="form-group mb-3">
+                    <div className="mb-4 row">
+                      <label className="col-sm-3 col-form-label">
+                        Select Company{" "}
+                      </label>
+                      <div className="col-sm-9">
+                        <select
+                          name="parentCompany"
+                          className="form-control"
+                          onChange={handleCompanyChange}
+                          value={parentCompany}
+                          onKeyPress={(e) => handleKeyPress(e)}
+                        >
+                          <option>Select</option>
+                          <CompanyDropdown prevSelected={parentCompany} />
+                        </select>
+                        {errors.parentCompany && (
+                          <div Style="color:red;font-weight:600;padding:5px;">
+                            {errors.parentCompany}
+                          </div>
+                        )}
+                      </div>
+                    </div>
 
-                <div className="form-group mb-3">
-                  <div className="mb-4 row">
-                    <label className="col-sm-3 col-form-label">
-                      Select Company{" "}
-                    </label>
-                    <div className="col-sm-9">
-                      <select
-                        name="parentCompany"
-                        className="form-control"
-                        onChange={handleCompanyChange}
-                        value={parentCompany}
-                        onKeyPress={(e) => handleKeyPress(e)}
-                      >
-                        <option>Select</option>
-                        <CompanyDropdown prevSelected={parentCompany} />
-                      </select>
-                      {errors.parentCompany && (
-                        <div Style="color:red;font-weight:600;padding:5px;">
-                          {errors.parentCompany}
-                        </div>
-                      )}
+                    <div className="mb-4 row">
+                      <label className="col-sm-3 col-form-label">
+                        Select Department
+                      </label>
+                      <div className="col-sm-9">
+                        <select
+                          name="deptID"
+                          className="form-control"
+                          onChange={(e) => setDeptID(e.target.value)}
+                          value={deptID}
+                          onKeyPress={(e) => handleKeyPress(e)}
+                        >
+                          <option>Select</option>
+                          {option}
+                        </select>
+
+                        {errors.deptID && (
+                          <div Style="color:red;font-weight:600;padding:5px;">
+                            {errors.deptID}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
+                ) : null}
+                {USER_ROLES.COMPANY === role ? (
                   <div className="mb-4 row">
                     <label className="col-sm-3 col-form-label">
                       Select Department
                     </label>
                     <div className="col-sm-9">
                       <select
+                        className="btn btn-white col-xl-12 border-light"
+                        style={{ borderRadius: "7px", marginRight: "20px" }}
                         name="deptID"
-                        className="form-control"
                         onChange={(e) => setDeptID(e.target.value)}
                         value={deptID}
-                        onKeyPress={(e) => handleKeyPress(e)}
                       >
                         <option>Select</option>
-                        {option}
+                        <DepartmentByCompany parentCompany={id} />
                       </select>
                       {errors.deptID && (
                         <div Style="color:red;font-weight:600;padding:5px;">
@@ -288,8 +329,32 @@ const CreateInduction = () => {
                       )}
                     </div>
                   </div>
-                </div>
+                ) : null}
 
+                {USER_ROLES.INSTRUCTOR === role ? (
+                  <div className="mb-4 row">
+                    <label className="col-sm-3 col-form-label">
+                      Select Department
+                    </label>
+                    <div className="col-sm-9">
+                      <select
+                        className="btn btn-white col-xl-12 border-light"
+                        style={{ borderRadius: "7px", marginRight: "20px" }}
+                        name="deptID"
+                        onChange={(e) => setDeptID(e.target.value)}
+                        value={deptID}
+                      >
+                        <option>Select</option>
+                        <DepartmentByCompany parentCompany={id} />
+                      </select>
+                      {errors.deptID && (
+                        <div Style="color:red;font-weight:600;padding:5px;">
+                          {errors.deptID}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : null}
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">
                     About induction
