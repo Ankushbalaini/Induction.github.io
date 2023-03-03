@@ -81,10 +81,10 @@ const Companydashboardlisting = () => {
     }
     return acc;
   }, []);
-  console.log(totalAttempts, "function call.......");
+  // console.log(totalAttempts, "function call.......");
 
-  console.log(totalAttempts, "totalAttempt");
-  console.log(dataset2, "total dataset2");
+  // console.log(totalAttempts, "totalAttempt");
+  // console.log(dataset2, "total dataset2");
 
   function removeDuplicates() {
     let unique = [];
