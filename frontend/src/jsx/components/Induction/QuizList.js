@@ -2,6 +2,7 @@ import React, { useRef, Fragment, useEffect, useState } from "react";
 import ActionDropDown from "../Inductions/ActionDropDown";
 import swal from "sweetalert";
 import UpdateMcq from "../Inductions/UpdateMcq";
+import { API_ROOT_URL } from "../../constants";
 
 const QuizList = ({ inductionID, updateQuesHandler }) => {
   const [questions, setQuestions] = useState();
@@ -37,7 +38,7 @@ const QuizList = ({ inductionID, updateQuesHandler }) => {
 
   const handlepageLoad = async (e) => {
     const response = await fetch(
-      "http://localhost:8081/api/mcq/" + inductionID,
+      `${API_ROOT_URL}/mcq/${inductionID}`,
       {
         method: "GET",
       }

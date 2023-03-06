@@ -11,6 +11,7 @@ import CompanyDropdown from "../Companies/CompanyDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 import swal from "sweetalert";
 import { Link, useHistory } from "react-router-dom";
+import { API_ROOT_URL } from "../../constants";
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -63,7 +64,7 @@ const UpdateInduction = () => {
     // call api to fetch departments
     setParentCompany(e.target.value);
     const response = await fetch(
-      "http://localhost:8081/api/department/getDepartmentByComp",
+      `${API_ROOT_URL}/department/getDepartmentByComp`,
       {
         method: "POST",
         headers: {
@@ -100,11 +101,11 @@ const UpdateInduction = () => {
       thumbnail: induction.thumbnail,
       content: induction.content,
       passPercentage: induction.passPercentage,
-      status: induction.status
+      status: induction.status,
     };
 
     // call to API
-    const response = await fetch("http://localhost:8081/api/induction/" + id, {
+    const response = await fetch(`${API_ROOT_URL}/induction/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -127,13 +128,48 @@ const UpdateInduction = () => {
     }
   };
 
+  const changeSlideStatus = (id, status) => {
+    swal({
+      title: "Are you sure?",
+      text: `Once status Changed, Slide will not show inside slide listing for Users`,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (willChange) => {
+      if (willChange) {
+        const response = await fetch(
+          `${API_ROOT_URL}/slides/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": token,
+            },
+            body: JSON.stringify({ status: (status) ? false : true }),
+          }
+        ).then((data) => data.json());
+        if ("status" in response && response.status == true) {
+          swal("Poof! Your slide status has been updated!", {
+            icon: "success",
+          }).then(() => {
+             setLoading(true);
+            // navigate.push(`/update-induction/${inductionID}`);
+          });
+        } else {
+          return swal("Failed", response.message, "error");
+        }
+      } else {
+        swal("Your status is not changed!");
+      }
+    });
+  };
+
+
   // Add question Modal POPUP
   const onClickHandler = () => {
     setIsShowAddQuestion(false);
     setLoading(true);
   };
-
-
 
   useEffect(() => {
     // get induction by id
@@ -143,11 +179,8 @@ const UpdateInduction = () => {
       callingAPI(id, token);
     }
 
-
-
+    console.log("rendering Update induction ");
   }, [loading, parentCompany, deptID]);
-
-  
 
   const pageContent = loading ? (
     <h1>Loading</h1>
@@ -295,10 +328,12 @@ const UpdateInduction = () => {
                     type="submit"
                     value="publish"
                     className="me-2 btn btn-success light"
-                    onClick={(e)=> setInduction({
-                      ...induction,
-                      status: true,
-                    })}
+                    onClick={(e) =>
+                      setInduction({
+                        ...induction,
+                        status: true,
+                      })
+                    }
                   >
                     Update & Publish
                   </button>
@@ -307,10 +342,12 @@ const UpdateInduction = () => {
                     type="submit"
                     value="draft"
                     className="me-2 btn btn-warning light"
-                    onClick={(e)=> setInduction({
-                      ...induction,
-                      status: false,
-                    })}
+                    onClick={(e) =>
+                      setInduction({
+                        ...induction,
+                        status: false,
+                      })
+                    }
                   >
                     Save as Draft
                   </button>
@@ -340,7 +377,7 @@ const UpdateInduction = () => {
                 {/* <button className="btn btn-danger">Add New Slide</button> */}
               </div>
 
-              <SlidesList Slides={slides} inductionID={id} />
+              <SlidesList Slides={slides} inductionID={id} changeSlideStatus={changeSlideStatus}/>
 
               <div className="card-header">
                 <h4 className="card-title">Quiz</h4>

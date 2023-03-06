@@ -18,6 +18,7 @@ module.exports = function (app) {
   });
 
   // list all instructors
+
   router.get("/list", instructor.list);
   
   router.get("/listByCompany", instructor.listByCompany);
@@ -46,7 +47,7 @@ module.exports = function (app) {
     }
   });
   
-
+  router.get("/", instructor.index);
   // router.use(
   //   acl.authorize.unless({
   //     path: ["/login"],

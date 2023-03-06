@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { Last } from "react-bootstrap/esm/PageItem";
 import { useHistory } from "react-router-dom";
+import { API_ROOT_URL } from "../../constants";
+
 const images = require.context("../../../../../images/profile", true);
 
 const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
@@ -65,13 +67,10 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
 
     // const userID = "63cea890edb762dfb4abb220";
 
-    const response = await fetch(
-      "http://localhost:8081/api/company/edit/" + userID,
-      {
-        method: "PUT",
-        body: data,
-      }
-    ).then((data) => data.json());
+    const response = await fetch(`${API_ROOT_URL}/company/edit/${userID}`, {
+      method: "PUT",
+      body: data,
+    }).then((data) => data.json());
 
     if ("status" in response && response.status == true) {
       return swal("Success", response.message, "success", {
@@ -88,15 +87,17 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
   };
 
   return (
-    <Modal className="modal fade" show={isModalOpen}
-     size="xl"
+    <Modal
+      className="modal fade"
+      show={isModalOpen}
+      size="xl"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title">Update Profile</h5>
-          
+
           <Button
             variant=""
             type="button"
@@ -104,7 +105,6 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
             data-dismiss="modal"
             onClick={handleCallback}
           ></Button>
-
         </div>
         <div className="modal-body">
           <form className="update-form" onSubmit={handleSubmit}>
@@ -203,7 +203,7 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
               <div className="col-lg-12">
                 <div className="form-group mb-3">
                   <input
-                  style={{display:"flex",margin:"auto"}}
+                    style={{ display: "flex", margin: "auto" }}
                     type="submit"
                     value="Update Profile"
                     className="submit btn btn-primary"

@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import CompanyDropdown from "../Companies/CompanyDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 import PageTitle from "../../layouts/PageTitle";
-
+import {API_ROOT_URL} from "../../constants";
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -95,7 +95,7 @@ const Users = () => {
     }).then(async (willChange) => {
       if (willChange) {
         const response = await fetch(
-          "http://localhost:8081/api/users/changeUserStatus",
+          `${API_ROOT_URL}/users/changeUserStatus`,
           {
             method: "PUT",
             headers: {
@@ -132,7 +132,7 @@ const Users = () => {
     if (searchDepartment !== undefined && searchCompany === undefined) {
       str = "?deptID=" + searchDepartment;
     }
-    const response = await fetch("http://localhost:8081/api/students/" + str, {
+    const response = await fetch(`${API_ROOT_URL}/students/${str}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -172,7 +172,7 @@ const Users = () => {
             <div className="col-xl-12">
               <div className="card students-list">
                 <div className="card-header border-0 ">
-                  <h2>Assigned Users</h2>
+                  <h2>ASSIGNED USERS</h2>
                   {USER_ROLES.SUPER_ADMIN === userRole ? (
                     <div className="row">
                       <div
@@ -275,8 +275,9 @@ const Users = () => {
                         <div className="col-xl-3 d-flex float-right">
                           <label style={{fontWeight:600,margin:"auto",display:"flex", justifyContent:"end" }}> Select Deparment</label>
                           <select
+                         
                            className="btn"
-                           style={{padding:10, margin:3}}
+                           style={{padding:10, margin:3,borderRadius: "8px"}}
                             name="search_department"
                             onChange={(e) => DepartmentChangeFilter(e)}
                           >

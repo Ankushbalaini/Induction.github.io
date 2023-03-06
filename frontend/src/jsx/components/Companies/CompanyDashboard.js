@@ -2,30 +2,29 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import CalendarBlog from "../Dashboard/Dashboard/CalendarBlog";
 import ScheduleRadilChart from "../Dashboard/Dashboard/ScheduleRadilChart";
+import { API_ROOT_URL } from "../../constants";
 import LearningActivityChart from "./LearningActivityChart";
 // import AttemtedViewDashboard from "./components/AttemtedViewDashboard"
 import Companydashboardlisting from "./components/Companydashboardlisting";
 
 // api call
 async function getDashboard(token) {
-  return await fetch("http://localhost:8081/api/dashboard/company", {
+  return await fetch(`${API_ROOT_URL}/dashboard/company`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       "x-access-token": token,
-    }
+    },
   }).then((data) => data.json());
 }
-
 
 const CompanyDashboard = () => {
   const token = useSelector((state) => state.auth.auth.token);
   const intitalState = {
-    totalUsers:0,
-    totalInstructors:0,
-    totalInductions:0,
-
-  }
+    totalUsers: 0,
+    totalInstructors: 0,
+    totalInductions: 0,
+  };
   const [companyDB, setCompanyDB] = useState();
   const [loading, setLoading] = useState(true);
   const [averageData, setAverageData] = useState();
@@ -33,18 +32,17 @@ const CompanyDashboard = () => {
   console.log(averageData)
   const handlepageLoad = async (e) => {
     const response = await getDashboard(token);
-    if("status" in response && response.status === true){
+    if ("status" in response && response.status === true) {
       setCompanyDB(response.data);
-    }else{
+    } else {
       alert(response.message);
     }
   };
 
-
   useEffect(() => {
     //if (loading) {
-      handlepageLoad();
-      //setLoading(false);
+    handlepageLoad();
+    //setLoading(false);
     //}
   }, []);
 
@@ -52,7 +50,7 @@ const CompanyDashboard = () => {
     <>
       <div className="row">
         <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-          <div className="widget-stat card bg-primary">
+          <div className="widget-stat card bg-primary shadow">
             <div className="card-body  p-4">
               <div className="media">
                 <span className="me-3">
@@ -75,7 +73,7 @@ const CompanyDashboard = () => {
         </div>
 
         <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-          <div className="widget-stat card bg-secondary">
+          <div className="widget-stat card bg-secondary shadow">
             <div className="card-body p-4">
               <div className="media">
                 <span className="me-3">
@@ -98,7 +96,7 @@ const CompanyDashboard = () => {
         </div>
 
         <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-          <div className="widget-stat card bg-danger">
+          <div className="widget-stat card bg-info shadow">
             <div className="card-body p-4">
               <div className="media">
                 <span className="me-3">
@@ -122,10 +120,9 @@ const CompanyDashboard = () => {
 
         <div className="col-xl-12">
                 <div className="card">
-                  <div className="card-header border-0 flex-wrap">
+                  {/* <div className="card-header border-0 flex-wrap">
                     <h3>Test Average Score</h3>
                     <div className="d-flex align-items-center">
-                      
                       <div className="d-flex align-items-center ms-3">
                         <span className="work-ic">
                           <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -139,10 +136,10 @@ const CompanyDashboard = () => {
                       </div>
                     </div>	
                   </div>
-          
-                  <div className="card-body">
+           */}
+                  {/* <div className="card-body">
                   <LearningActivityChart averageData={averageData} setAverageData={setAverageData} />
-                  </div>
+                  </div> */}
 
                 </div>
               </div>
@@ -153,6 +150,8 @@ const CompanyDashboard = () => {
                   <div className="col-xl-12">
                   <Companydashboardlisting />
                   </div>
+
+                  
       </div>
     </>
   );

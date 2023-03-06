@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 
 import { Button, Dropdown, Modal } from "react-bootstrap";
 import UpdateProfile from "./UpdateProfile";
+import { API_ROOT_URL } from "../../constants";
 
 const images = require.context("../../../../../images/profile", true);
 
@@ -52,7 +53,7 @@ const WidgetBlog = ({ changeImage, title, link, nos }) => {
 
 // api call
 async function getProfileApi(token) {
-  const URL = "http://localhost:8081/api/users/getProfile";
+  const URL = `${API_ROOT_URL}/users/getProfile`;
   return fetch(URL, {
     method: "GET",
     headers: {

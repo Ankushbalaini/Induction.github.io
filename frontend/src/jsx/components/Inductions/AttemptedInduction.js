@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import PageTitle from "../../layouts/PageTitle";
 import UserAttemptedInductioList from "../Modals/UserAttemptedInductioList";
 import FiltersForAttempts from "./components/FilterForAttempts";
+import {API_ROOT_URL} from "../../constants";
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -51,7 +52,7 @@ const InductionUsers = () => {
     queryStr += inductionFilter ? `&induction=${inductionFilter}` : "";
 
     const response = await fetch(
-      "http://localhost:8081/api/induction/users" + queryStr,
+      `${API_ROOT_URL}/induction/users${queryStr}`,
       {
         method: "GET",
         headers: {
@@ -95,16 +96,18 @@ const InductionUsers = () => {
         <PageTitle activeMenu="Attempted Induction" motherMenu="Inductions" />
         <div className="row">
           <div className="col-xl-12">
+        
             <div className="card students-list">  
               <div className="card-header border-0 flex-wrap">
-              <h2>Attempted Inductions</h2>
-              <FiltersForAttempts
+              <h2>ATTEMPTED INDUCTIONS</h2>
+               <FiltersForAttempts
                   CompanyFilterHandle={CompanyFilterHandle}
                   InductionFilterHandle={InductionFilterHandle}
                   companyFilter={companyFilter}
                   inductionFilter={inductionFilter}
                 />
               </div>
+            
                 {/* <h3>Induction Users</h3> */}
 
                 {/* 

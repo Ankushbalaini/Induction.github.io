@@ -3,6 +3,7 @@ import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { API_ROOT_URL } from "../../constants";
 
 const AddCompany = () => {
   const navigate = useHistory();
@@ -83,7 +84,7 @@ const AddCompany = () => {
     data.append("address", address);
     data.append("aboutCompany", aboutCompany);
     // let formData = new FormData();
-    const response = await fetch("http://localhost:8081/api/company/add", {
+    const response = await fetch(`${API_ROOT_URL}/company/add`, {
       method: "POST",
       headers: {
         "x-access-token" : token
@@ -237,9 +238,8 @@ const AddCompany = () => {
                       name="address"
                       placeholder=""
                       onChange={(e) => setAddress(e.target.value)}
-                    >
-                      {address}
-                    </textarea>
+                      value={address}
+                    ></textarea>
                     {errors.address && (
                       <div Style="color:red;font-weight:400">
                         {errors.address}
@@ -258,9 +258,8 @@ const AddCompany = () => {
                       name="aboutCompany"
                       placeholder=""
                       onChange={(e) => setAboutCompany(e.target.value)}
-                    >
-                      {aboutCompany}
-                    </textarea>
+                      value={aboutCompany}
+                    ></textarea>
                   </div>
                 </div>
 

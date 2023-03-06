@@ -294,7 +294,60 @@ exports.getDepartmentByComp = async (req, res) => {
   } catch (err) {
     return res.status(500).send({
       status: false,
-      message: err.message || "Some error occurred.",
+      message:  "Somme error occurred.",
     });
   }
 };
+
+// exports.getDepartmentByComp = async (req, res) => {
+//   try {
+//     const user = req.decoded;
+
+//     if (user.role === "company") {
+//       const data = await Department.find({
+//         status: 1,
+//         parentCompany: ObjectId(user.userID),
+//       });
+//       return res.status(200).send({
+//         status: true,
+//         message: "Successfully Getting Data",
+//         data: data,
+//       });
+//     }  else if (user.role === "instructor") {
+//       const data = await Department.find({
+//         status: 1,
+//         parentCompany: ObjectId(user.parentCompany),
+//       });
+//       return res.status(200).send({
+//         status: true,
+//         message: "Successfully Getting Data",
+//         data: data,
+//       });
+//     } else {
+//       if (req.query.parentCompany === "All") {
+//         const data = await Department.find({ status: 1 });
+//         return res.status(200).send({
+//           status: true,
+//           message: "Successfully Getting Data",
+//           data: data,
+//         });
+//       } else {
+//         // super admin
+//         const data = await Department.find({
+//           status: 1,
+//           parentCompany: ObjectId(req.query.parentCompany),
+//         });
+//         return res.status(200).send({
+//           status: true,
+//           message: "Successfully Getting Data",
+//           data: data,
+//         });
+//       }
+//     }
+//   } catch (err) {
+//     return res.status(500).send({
+//       status: false,
+//       message: err.message || "Some error occurred.",
+//     });
+//   }
+// };

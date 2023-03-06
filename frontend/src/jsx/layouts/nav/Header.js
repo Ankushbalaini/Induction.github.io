@@ -5,6 +5,8 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import LogoutPage from "./Logout";
 import avatar from "../../../images/avatar/1.jpg";
 import { useSelector } from "react-redux";
+import { API_ROOT_URL } from "../../constants";
+
 const images = require.context("../../../../../images/profile", true);
 
 const NotificationBlog = ({ classChange }) => {
@@ -47,7 +49,7 @@ const NotificationBlog = ({ classChange }) => {
 
 // api call
 async function getProfileApi(token) {
-  const URL = "http://localhost:8081/api/users/getProfile";
+  const URL = `${API_ROOT_URL}/users/getProfile`;
   return fetch(URL, {
     method: "GET",
     headers: {

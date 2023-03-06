@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import swal from "sweetalert";
 import { useSelector } from "react-redux";
 import PageTitle from "../../layouts/PageTitle";
+import { API_ROOT_URL } from "../../constants";
 
 const AttemptedInductions = () => {
   const token = useSelector((state) => state.auth.auth.token);
@@ -37,7 +38,7 @@ const AttemptedInductions = () => {
   };
 
   const handlepageLoad = async (event) => {
-    const response = await fetch("http://localhost:8081/api/users/inductions", {
+    const response = await fetch(`${API_ROOT_URL}/users/inductions`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

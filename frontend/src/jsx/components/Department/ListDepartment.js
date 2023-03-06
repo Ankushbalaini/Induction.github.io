@@ -6,10 +6,10 @@ import Table from "./DataTable";
 import DropDownBlog from "./../Dashboard/DropDownBlog";
 import { Button, Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
-
+import { API_ROOT_URL } from "../../constants";
 // api call
 async function getDepartments(token) {
-  return fetch("http://localhost:8081/api/department/getall", {
+  return fetch(`${API_ROOT_URL}/department/getall`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const onSubmitHandle = async (e) => {
   //data.append("status", status);
   // data.append('companyID', companyID)
   const response = await fetch(
-    "http://localhost:8081/api/department/edit/" + editID,
+    `${API_ROOT_URL}/department/edit/${editID}`,
     {
       method: "PUT",
       headers: {
@@ -81,9 +81,6 @@ const onSubmitHandle = async (e) => {
   }
 };
 
-
-
-
   const handlepageLoad = async (event) => {
     const response = await getDepartments(token);
     if ("status" in response && response.status == true) {
@@ -92,9 +89,6 @@ const onSubmitHandle = async (e) => {
       return swal("Failed", "Error message", "error");
     }
   };
-
-  
-
 
   useEffect(() => {
     handlepageLoad();
@@ -112,7 +106,7 @@ const onSubmitHandle = async (e) => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h2>Department List</h2>
+              <h2>DEPARTMENT LIST</h2>
             </div>
             <div className="card-body">
               <div className="table-responsive">
@@ -144,7 +138,6 @@ const onSubmitHandle = async (e) => {
        size="xl"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      
       >
         <div className="modal-content">
           <div className="modal-header">

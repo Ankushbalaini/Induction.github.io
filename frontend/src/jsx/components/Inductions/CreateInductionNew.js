@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import DepartmentDropdown from "../Department/DepartmentDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 import CompanyDropdown from "../Companies/CompanyDropdown";
+import { API_ROOT_URL } from "../../constants";
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -19,6 +20,7 @@ const USER_ROLES = {
 const CreateInduction = () => {
   const navigate = useHistory();
   const [loading, setLoading] = useState(true);
+  const token = useSelector((state) => state.auth.auth.token);
 
   const [image, setImage] = useState({ preview: "", data: "" });
   const [title, setTitle] = useState("");
@@ -26,6 +28,7 @@ const CreateInduction = () => {
   const [subTitle, setSubTitle] = useState("");
   const [deptID, setDeptID] = useState("");
   const [parentCompany, setParentCompany] = useState("");
+  const [parentDepartment, setParentDepartment] = useState("");
   const [option, setOption] = useState();
 
   const [inductionDesc, setInductionDesc] = useState(
@@ -36,7 +39,6 @@ const CreateInduction = () => {
   ]);
 
   const editor = useRef(null);
-  const token = useSelector((state) => state.auth.auth.token);
   const id = useSelector((state) => state.auth.auth.id);
   const role = useSelector((state) => state.auth.auth.role);
 
@@ -96,10 +98,10 @@ const CreateInduction = () => {
       errorObj.deptID = "Department is Required";
       error = true;
     }
-    // if (parentCompany==''){
-    //   errorObj.parentCompany = "Parent Company is Required";
-    //   error = true;
-    // }
+    if (parentCompany == "") {
+      errorObj.parentCompany = "Parent Company is Required";
+      error = true;
+    }
 
     setErrors(errorObj);
     if (error) return;
@@ -123,7 +125,7 @@ const CreateInduction = () => {
     }
     formData.append("slides", JSON.stringify(slides_json));
 
-    const response = await fetch("http://localhost:8081/api/induction/store", {
+    const response = await fetch(`${API_ROOT_URL}/induction/store`, {
       method: "POST",
       headers: {
         "x-access-token": token,
@@ -148,9 +150,8 @@ const CreateInduction = () => {
     // call api to fetch departments
     setParentCompany(e.target.value);
     setOption("");
-
     const response = await fetch(
-      "http://localhost:8081/api/department/getDepartmentByComp",
+      `${API_ROOT_URL}/department/getDepartmentByComp`,
       {
         method: "POST",
         headers: {
@@ -188,18 +189,6 @@ const CreateInduction = () => {
   useEffect(() => {
     setLoading(false);
   }, []);
-
-  // api call
-  async function saveInduction(formValues) {
-    return fetch("http://localhost:8081/api/induction/store", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token,
-      },
-      body: JSON.stringify(formValues),
-    }).then((data) => data.json());
-  }
 
   const pageContent = loading ? (
     <i className="fas fa-atom fa-spin"></i>

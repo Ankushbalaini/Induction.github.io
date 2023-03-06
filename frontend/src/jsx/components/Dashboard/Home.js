@@ -1,121 +1,135 @@
-import React,{useContext, useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
+import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import loadable from "@loadable/component";
 import pMinDelay from "p-min-delay";
-import {Dropdown} from 'react-bootstrap';
+import { Dropdown } from "react-bootstrap";
 
 //Import Components
 import { ThemeContext } from "../../../context/ThemeContext";
-import DropDownBlog from './DropDownBlog';
-import CourseBlog from './Dashboard/CourseBlog';
-import CalendarBlog from './Dashboard/CalendarBlog';
+import DropDownBlog from "./DropDownBlog";
+import CourseBlog from "./Dashboard/CourseBlog";
+import CalendarBlog from "./Dashboard/CalendarBlog";
 
 //images
-import Educat from './../../../images/egucation-girl.png';
-import Calpng from './../../../images/vector/calpng.png';
-import Book from './../../../images/vector/book.png';
+import Educat from "./../../../images/egucation-girl.png";
+import Calpng from "./../../../images/vector/calpng.png";
+import Book from "./../../../images/vector/book.png";
 import { useSelector } from "react-redux";
+import { API_ROOT_URL } from "../../constants";
 
 const LearningActivityChart = loadable(() =>
-	pMinDelay(import("./Dashboard/LearningActivityChart"), 1000)
+  pMinDelay(import("./Dashboard/LearningActivityChart"), 1000)
 );
 
-
-
 const Home = () => {
-	const { changeBackground } = useContext(ThemeContext);
-	const [loading, setLoading] = useState(true);
-	const [dashboard, setDashboard] = useState();
-	const token = useSelector((state) => state.auth.auth.token);
-	
-	// 
-	const getDashboardData = async () => {
-		var ApiURL = "http://localhost:8081/api/dashboard/";
-		const response = await fetch(ApiURL, {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json",
-				"x-access-token" : token,
-			  },
-		  }).then((data) => data.json());
+  const { changeBackground } = useContext(ThemeContext);
+  const [loading, setLoading] = useState(true);
+  const [dashboard, setDashboard] = useState();
+  const token = useSelector((state) => state.auth.auth.token);
 
-		if ("status" in response && response.status == true) {
-			setDashboard(response.data);
-			setLoading(false);
-		}
-	}
+  //
+  const getDashboardData = async () => {
+    var ApiURL = `${API_ROOT_URL}/dashboard/`;
+    const response = await fetch(ApiURL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    }).then((data) => data.json());
 
-	useEffect(() => {
+    if ("status" in response && response.status == true) {
+      setDashboard(response.data);
+      setLoading(false);
+    }
+  };
 
-		getDashboardData();
-		changeBackground({ value: "light", label: "Light" });
+  useEffect(() => {
+    getDashboardData();
+    changeBackground({ value: "light", label: "Light" });
+  }, [loading]);
 
-	}, [loading]);
+  const [dropSelect, setDropSelect] = useState("This Month");
+  return (
+    <div>
+      {loading ? (
+        <i className="fas fa-atom fa-spin"></i>
+      ) : (
+        <div className="row">
+          <div className="col-xl-12 col-xxl-12">
+            <div className="row">
+              <div className="col-xl-12 col-xxl-6">
+                <div className="card dlab-join-card h-auto">
+                  <div className="card-body">
+                    <div className="dlab-media d-flex justify-content-between">
+                      <div className="dlab-content">
+                        <h4>Join Now and Get Discount Voucher Up To 20%</h4>
+                        <p>
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit, sed do eiusmod tempor incididunt.{" "}
+                        </p>
+                      </div>
+                      <div className="dlab-img">
+                        <img src={Educat} height="250px" width="100px" alt="" />
+                      </div>
+                      <div className="dlab-icon">
+                        <img src={Calpng} alt="" className="cal-img" />
+                        <img src={Book} alt="" className="book-img" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-xl-12 bt-order">
+                <CourseBlog dashboard={dashboard} />
+              </div>
 
-	
+              <div className="row">
+                {/* <div className="col-xl-6 col-xxl-6">
+                  <div className="card score-active">
+                    <div className="card-header border-0 flex-wrap">
+                      <h4>Learning Activity</h4>
+                      <ul className="d-flex">
+                        <li>
+                          <svg
+                            className="me-2"
+                            width="12"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              x="1.5"
+                              y="1.5"
+                              width="9"
+                              height="9"
+                              rx="4.5"
+                              fill="white"
+                              stroke="var(--secondary)"
+                              strokeWidth="3"
+                            />
+                          </svg>
+                          Last Month
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="card-body pb-1 custome-tooltip style-1 py-0 ">
+                      <LearningActivityChart />
+                    </div>
+                  </div>
+                </div> */}
+                <div className="col-xl-12 col-lg-8">
+                  <div className="card">
+                    <div className="card-body card-calendar home-calendar">
+                      <CalendarBlog />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-	const [dropSelect, setDropSelect] = useState('This Month');
-	return(
-		<div>
-			{ (loading) ? <i className="fas fa-atom fa-spin"></i> : <div className="row">
-				<div className="col-xl-12 col-xxl-12">
-					<div className="row">
-						<div className="col-xl-12 col-xxl-6">
-							<div className="card dlab-join-card h-auto">
-								<div className="card-body">
-									<div className="dlab-media d-flex justify-content-between">
-										<div className="dlab-content">
-											<h4>Join Now and Get Discount Voucher Up To 20%</h4>
-											<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt. </p>
-										</div>	
-										<div className="dlab-img">
-										<img src={Educat} height="250px" width="100px" alt=""/>
-										</div>	
-										<div className="dlab-icon">
-											<img src={Calpng} alt="" className="cal-img" />
-											<img src={Book} alt="" className="book-img" />
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="col-xl-12 bt-order">
-							<CourseBlog dashboard={dashboard}/> 
-						</div>
-						
-						
-						<div className="row">
-					 <div className="col-xl-6 col-xxl-6">
-							<div className="card score-active">
-								<div className="card-header border-0 flex-wrap">
-									<h4>Learning Activity</h4>
-									<ul className="d-flex">
-										
-										<li>
-											<svg className="me-2" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<rect x="1.5" y="1.5" width="9" height="9" rx="4.5" fill="white" stroke="var(--secondary)" strokeWidth="3"/>
-											</svg>
-											Last Month
-										</li>
-									</ul>
-								</div>
-								<div className="card-body pb-1 custome-tooltip style-1 py-0 ">
-									<LearningActivityChart />
-								</div>
-							</div>
-						</div> 
-						<div className="col-xl-6 col-lg-8">
-							<div className="card">
-								<div className="card-body card-calendar home-calendar">								
-									<CalendarBlog />
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				
-					
-						{/* <div className="col-xl-12">
+            {/* <div className="col-xl-12">
 							<div className="card score-active">
 								<div className="card-header border-0 pb-2 flex-wrap">
 									<h4>Score Activity</h4>
@@ -150,7 +164,7 @@ const Home = () => {
 								</div>
 							</div>
 						</div> */}
-						{/* <div className="col-xl-4 col-lg-6">
+            {/* <div className="col-xl-4 col-lg-6">
 							<div className="card">
 								<div className="card-body pt-3">									
 									<ProgressChart />
@@ -162,15 +176,10 @@ const Home = () => {
 								</div>
 							</div>
 						</div> */}
-						
-					</div>
-				</div>
-				
-				
-			
-			
-			}
-		</div>
-	)
-}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 export default Home;

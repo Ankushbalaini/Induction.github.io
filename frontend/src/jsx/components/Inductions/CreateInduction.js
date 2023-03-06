@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import JoditEditor from "jodit-react";
 import { useSelector } from "react-redux";
 import DepartmentDropdown from "../Department/DepartmentDropdown";
+import { API_ROOT_URL } from "../../constants";
 
 const CreateInduction = () => {
   const navigate = useHistory();
@@ -102,8 +103,8 @@ const CreateInduction = () => {
   }, []);
 
   // api call
-  async function saveInduction(token) {
-    return fetch("http://localhost:8081/api/induction/store", {
+  async function saveInduction(formValues) {
+    return fetch(`${API_ROOT_URL}/induction/store`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

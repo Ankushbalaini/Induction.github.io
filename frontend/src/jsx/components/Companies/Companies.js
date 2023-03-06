@@ -6,10 +6,11 @@ import { Button, Dropdown, Modal } from "react-bootstrap";
 import { useHistory, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Table from "./DataTable";
+import { API_ROOT_URL } from "../../constants"; 
 
 // api call
 async function getCompanies(token) {
-  return fetch("http://localhost:8081/api/company/list", {
+  return fetch( `${API_ROOT_URL}/company/list`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -25,7 +26,7 @@ const Companies = () => {
   const [loading, setLoading] = useState(true);
   const [companies, setCompanies] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalData, setModalData] = useState({ name: "" });
+  //const [modalData, setModalData] = useState({ name: "" });
 
   // model popup usestate
   const [name, setName] = useState();
@@ -36,25 +37,49 @@ const Companies = () => {
   const [aboutCompany, setAboutCompany] = useState();
   const [editID, setEditID] = useState();
   const [companyID, setCompanyID] = useState();
+  const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
 
-  const actionHandler = (company) => {
-    setIsModalOpen(true);
-    setModalData(company);
-    setName(company.name);
-    setEmail(company.email);
-    setLogo(company.logo);
-    setAddress(company.address);
-    setAboutCompany(company.aboutCompany);
-    setCompanyID(company.companyID);
-    setEditID(company._id);
-    // set values
+
+  const changeCompanyStatus = (userID, status) => {
+    swal({
+      title: "Are you sure?",
+      text: `Once status Changed, User will get or loss access to account`,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (willChange) => {
+      if (willChange) {
+        const response = await fetch(
+          `${API_ROOT_URL}/users/changeUserStatus`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": token,
+            },
+            body: JSON.stringify({ userID: userID, status: status }),
+          }
+        ).then((data) => data.json());
+        if ("status" in response && response.status == true) {
+          swal("Poof! Your record has been updated!", {
+            icon: "success",
+          }).then(() => {
+            setIsUserStatusChanged(!isUserStatusChanged);
+          });
+        } else {
+          return swal("Failed", response.message, "error");
+        }
+      } else {
+        swal("Your status is not changed!");
+      }
+    });
   };
 
   // callback function to opdate state
   const trackOnclick = (payload, company) => {
     setIsModalOpen(payload);
     if (payload) {
-      setModalData(company);
+      //setModalData(company);
       setName(company.name);
       setEmail(company.email);
       setLogo(company.logo);
@@ -96,7 +121,7 @@ const Companies = () => {
     data.append("companyID", companyID);
 
     const response = await fetch(
-      "http://localhost:8081/api/company/edit/" + editID,
+      `${API_ROOT_URL}/company/edit/${editID}`,
       {
         method: "PUT",
         headers: {
@@ -126,7 +151,7 @@ const Companies = () => {
   // re-render page on every update
   useEffect(() => {
     handlepageLoad();
-  }, [loading, isModalOpen]);
+  }, [loading, isModalOpen, isUserStatusChanged]);
 
   // on List companies page first render
   const handlepageLoad = async (event) => {
@@ -160,6 +185,7 @@ const Companies = () => {
                   data={companies}
                   trackOnclick={trackOnclick}
                   trackDeleteClick={trackDeleteClick}
+                  changeCompanyStatus={changeCompanyStatus}
                 />
               </div>
             </div>

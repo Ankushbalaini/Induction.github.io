@@ -3,16 +3,14 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ActionDropDown from "./ActionDropDown";
 import UpdateProfile from "../Instructor/UpdateProfile";
-
+import { API_ROOT_URL } from "../../constants";
 const images = require.context("../../../../../images/profile/", true);
 
 // api call
 async function getInstructorApi(role, companyID) {
-  var getInstructorsApi = "http://localhost:8081/api/instructor/list";
+  var getInstructorsApi = `${API_ROOT_URL}/instructor/list`;
   if (role == "company") {
-    var getInstructorsApi =
-      "http://localhost:8081/api/instructor/listByCompany?role=company&parentCompany=" +
-      companyID;
+    var getInstructorsApi = `${API_ROOT_URL}/instructor/listByCompany?role=company&parentCompany=${companyID}`;
   }
   return fetch(getInstructorsApi, {
     method: "GET",
@@ -29,7 +27,16 @@ const Instructors = (props) => {
   const [loading, setLoading] = useState(true);
   const [instructorsData, setInstructorsData] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [instructorData, setInstructorData] = useState({profile: {name:'', email:'',aboutMe:'',address:'',logo:'',_id:''} });
+  const [instructorData, setInstructorData] = useState({
+    profile: {
+      name: "",
+      email: "",
+      aboutMe: "",
+      address: "",
+      logo: "",
+      _id: "",
+    },
+  });
 
   const getInstructors = async (e) => {
     const response = await getInstructorApi(role, parentCompany);
@@ -54,14 +61,12 @@ const Instructors = (props) => {
 
   // callback function to opdate state
   const trackOnclick = (payload, userData) => {
-    setIsModalOpen(payload);  
-    if(payload){
+    setIsModalOpen(payload);
+    if (payload) {
       console.log(userData);
       setInstructorData(userData);
     }
-    
-  }
-
+  };
 
   const PageContent = loading ? (
     <i className="fas fa-atom fa-spin"></i>
@@ -108,10 +113,15 @@ const Instructors = (props) => {
     </>
   );
 
-  return <div className="row">
-    {PageContent} 
-    <UpdateProfile isModalOpen={isModalOpen} trackOnclick={trackOnclick} instructorData={instructorData}></UpdateProfile>
-    
-    </div>;
+  return (
+    <div className="row">
+      {PageContent}
+      <UpdateProfile
+        isModalOpen={isModalOpen}
+        trackOnclick={trackOnclick}
+        instructorData={instructorData}
+      ></UpdateProfile>
+    </div>
+  );
 };
 export default Instructors;

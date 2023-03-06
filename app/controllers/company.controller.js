@@ -5,6 +5,8 @@ const userModel = db.users;
 const userCredModel = db.user_cred;
 const UserInductionResults = db.user_induction_results;
 const Induction = db.induction;
+
+
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 var jwt = require("jsonwebtoken");
@@ -17,7 +19,8 @@ const USER_ROLES = {
 // Create and Save a new company
 exports.list = (req, res) => {
   companyModel
-    .find({})
+    .find({}, { _id:1, name:1, email:1, companyID:1, logo:1,address:1,aboutCompany:1, userID: 1 })
+    .populate('userID', 'status')
     .sort({ createdAt: -1 })
     .then(function (result) {
       if (result) {

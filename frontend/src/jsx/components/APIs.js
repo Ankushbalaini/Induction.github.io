@@ -1,11 +1,12 @@
 import { useSelector } from "react-redux";
+import { API_ROOT_URL } from "../constants";
 
 
 // get Induction By ID 
 export async function getInduction(id, token){
     // const token = useSelector((state) => state.auth.auth.token);
 
-    return await fetch("http://localhost:8081/api/induction/" + id, {
+    return await fetch(`${API_ROOT_URL}/induction/${id}`, {
         method: "GET",
         headers: {
         "Content-Type": "application/json",
@@ -21,7 +22,7 @@ export async function getInduction(id, token){
 
 export async function getUsers(token) {
 
-    return await fetch("http://localhost:8081/api/students/" , {
+    return await fetch(`${API_ROOT_URL}/students/` , {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

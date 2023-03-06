@@ -11,6 +11,7 @@ import swal from 'sweetalert';
 import BJSLogo from "../../images/BJSLogo.png";
 import loginbg from "../../images/bg-1.jpg";
 
+import { API_ROOT_URL } from "../constants";
 
 const ForgotPassword = ({ history }) => {
   const [email, setEmail] = useState();
@@ -70,7 +71,7 @@ const ForgotPassword = ({ history }) => {
   };
 
   async function resetPassword(email) {
-    return fetch("http://localhost:8081/api/users/reset-password", {
+    return fetch(`${API_ROOT_URL}/users/reset-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

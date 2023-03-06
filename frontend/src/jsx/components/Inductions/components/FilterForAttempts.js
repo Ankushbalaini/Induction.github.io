@@ -25,10 +25,11 @@ function FiltersForAttempts({
 
   return (
     <>
-      <div className="input-group d-flex justify-content-end">
+      <div className="input-group d-flex justify-content-end ">
+      
         {USER_ROLES.SUPER_ADMIN == role ? (
           <>
-            
+
             <label htmlFor="company_filter"  style={{
               marginTop:30,
                fontSize: 15, 
@@ -65,7 +66,7 @@ function FiltersForAttempts({
         ) : null}
 
         {USER_ROLES.COMPANY === role ? (
-          <div className="row d-flex justify-content-end">
+          <div className="row mb-4">
             <div className="col-m-3">
               <label for="induction_filter" 
               style={{
@@ -115,6 +116,7 @@ function FiltersForAttempts({
             </div>
           </div>
         ) : null}
+        
       </div>
     </>
   );

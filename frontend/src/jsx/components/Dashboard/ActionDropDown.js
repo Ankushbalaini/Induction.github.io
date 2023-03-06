@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
 
 export default function ActionDropDown(props) {
-    
   const handleCallback = () => {
     props.trackOnclick(true, props.userData);
-    
-  }
+  };
 
   const trackDeleteClick = () => {
     props.trackDeleteClick();
-  }
+  };
 
   return (
     <>

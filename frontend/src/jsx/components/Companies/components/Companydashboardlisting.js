@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import FiltersForAttempts from "../../Inductions/components/FilterForAttempts";
 
+
+
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -12,6 +14,7 @@ const USER_ROLES = {
 };
 
 const Companydashboardlisting = () => {
+  // const {averageData, setAverageData} = props;
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
   const loginUser = useSelector((state) => state.auth.auth.id);
@@ -20,6 +23,8 @@ const Companydashboardlisting = () => {
   const [users, setUsers] = useState([]); // main listing data
   const [companyFilter, setCompanyFilter] = useState();
   const [inductionFilter, setInductionFilter] = useState();
+  const [resScore, setResScore] = useState();
+  
 
   const handlepageLoad = async (e) => {
     // query string
@@ -52,10 +57,8 @@ const Companydashboardlisting = () => {
     } else {
       return swal("Failed", response.message, "error");
     }
-    console.log(users, "inductions-attempts in new........");
-    // console.log(uniqueTitle, "unique title attemted")
   };
-
+  console.log(users, "inductions-attempts in new........");
   // use effect
   useEffect(() => {
     handlepageLoad();
@@ -67,21 +70,80 @@ const Companydashboardlisting = () => {
 
   const dataset1 = [];
   const dataset2 = [];
+  const dataset3 = [];
 
-  const allTitles = users.map((i) => dataset1.push(i.inductions.title));
-  //   const totalAttempts = users.map(i=>dataset2.push(i.total,i.inductions._id,i.inductions.title))
+  // //users scores 
+  // const resultscore = users.map((i,index)=>dataset3.push(i.result))
+//   const scores = [];
+
+// for (let i = 0; i < dataset3.length; i++) {
+//   const subArray = dataset3[i];
+//   for (let j = 0; j < subArray.length; j++) {
+//     const score = subArray[j].score;
+//     const inductionID = subArray[j].inductionID
+//     scores.push(score);
+//     scores.push(inductionID);
+//   }
+// }
+// console.log(scores,"scores in funtion"); 
+
+// const totals = []
+
+
+// const totals = {};
+
+// users.forEach((user) => {
+//   const { _id, title, scores } = user.inductions;
+//   scores.forEach((score) => {
+//     const { inductionID, score: userScore } = score;
+//     if (!totals[inductionID]) {
+//       totals[inductionID] = { title, total: userScore };
+//     } else {
+//       totals[inductionID].total += userScore;
+//     }
+//   });
+// });
+
+// console.log(totals, "here are total");
+
+//users scores 
+const resultscore = users.map((i,index)=>dataset3.push(i.result))
+
+const scores = dataset3.reduce((totals, subArray) => {
+  subArray.forEach((item) => {
+    const { score, inductionID } = item;
+    const scoreAsNumber = parseInt(score);
+    if (!totals[inductionID]) {
+      totals[inductionID] = 0;
+    }
+    totals[inductionID] += scoreAsNumber;
+  });
+  return totals;
+}, {});
+
+console.log(scores, "scores in function");
+
+
+
+    const allTitles = users.map((i) => dataset1.push(i.inductions.title));
+    const totalScores = users.map(i=>dataset2.push(i.inductions._id,i.inductions.title))
+
+    
+    // console.log(totalScores, "total scores.........");
+    console.log(resultscore, "result score");
+    console.log(dataset3, "scores dataset3")
 
   const totalAttempts = users.reduce((acc, user) => {
-    const { _id, title } = user.inductions;
+    const { _id, title  } = user.inductions;
     const index = acc.findIndex((entry) => entry._id === _id);
     if (index !== -1) {
       acc[index].total += user.total;
     } else {
-      acc.push({ _id, title, total: user.total });
+      acc.push({ _id, title, total: user.total});
     }
     return acc;
   }, []);
-  // console.log(totalAttempts, "function call.......");
+  
 
   // console.log(totalAttempts, "totalAttempt");
   // console.log(dataset2, "total dataset2");
@@ -99,13 +161,28 @@ const Companydashboardlisting = () => {
 
   const uniqueTitles = removeDuplicates(dataset1);
 
+  // const updatedTotalAttempts = totalAttempts.map((item) => {
+  //   const { _id, total } = item;
+  //   const attempts = scores[_id] || 0; // get the total score for the current induction ID, default to 0 if not found
+  //   return { _id, title: item.title, total: attempts, totalCount: item.total };
+  // });
+
+  const updatedTotalAttempts = totalAttempts.map((item) => {
+    const { _id, total } = item;
+    const attempts = scores[_id] || 0; // get the total score for the current induction ID, default to 0 if not found
+    const averageScore = total > 0 ? attempts / total : 0; // calculate the average score, or set it to 0 if total is 0
+    return { _id, title: item.title, total: attempts, totalCount: item.total, averageScore };
+  });
+
+ 
   return (
     <div>
        <div className="row">
       <div className="col-xl-12">
         <div className="card">
           <div className="card-header border-0 flex-wrap pb-0">
-            <h2>Test Attempts</h2>
+            <h2>TEST ATTEMPTS </h2>
+          
             <FiltersForAttempts
               InductionFilterHandle={InductionFilterHandle}
               inductionFilter={inductionFilter}
@@ -114,19 +191,21 @@ const Companydashboardlisting = () => {
           </div>
 
           <div className="card-body">
-            <table
+            <table 
               className="table display mb-4 dataTablesCard order-table card-table text-black application bordered "
               id="application-tbl1_next"
             >
-              <thead>
+              <thead style={{backgroundColor:"#58bad7 ",color:"white", fontSize:"500px"}}>
                 <tr>
-                  <th>Sr.No</th>
+                  <th >Sr.No</th>
                   <th>Induction Title</th>
                   <th>Total Attempts</th>
+                  {/* <th>Total Scores</th> */}
+                  <th>Average Score</th>
                 </tr>
               </thead>
-              <tbody>
-                {totalAttempts.map((user, index) => (
+              <tbody >
+                {updatedTotalAttempts.map((user, index) => (
                   <tr key={user}>
                     <td>{index + 1}</td>
                     <td>
@@ -134,9 +213,17 @@ const Companydashboardlisting = () => {
                         <h4 className="mb-0 fs-16 font-w500">{user.title}</h4>
                       </div>
                     </td>
-                    <td>{user.total}</td>
+                    <td>
+                    <div className="d-flex align-items-center">
+                        <h4 className="mb-0 fs-16 font-w500"> {user.totalCount}</h4>
+                      </div>
+                     </td>
+                    {/* <td>{user.total}</td> */}
+                    <td style={{fontSize:"18px"}}><span className="badge bg-info " style={{color:"white",fontFamily:"sans-serif"}}>{user.averageScore} %</span></td>
+                    
                   </tr>
                 ))}
+              
               </tbody>
             </table>
           </div>

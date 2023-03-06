@@ -506,16 +506,14 @@ exports.getProfile = async (req, res) => {
   try {
     const userRole = req.decoded.role;
     switch (userRole) {
-      case "instructor":
-        var totalInductions;
 
-        await Inductions.find({ createdBy: ObjectId(req.decoded.userID) })
-          .then((induction) => {
-            totalInductions = induction.length;
-          })
-          .catch((err) => {
-            err;
-          });
+      case "instructor":
+
+      
+
+        var totalInductions = await Inductions.find({ createdBy: ObjectId(req.decoded.userID) });
+
+
 
         UserCred.aggregate([
           {
@@ -545,12 +543,13 @@ exports.getProfile = async (req, res) => {
           },
         ])
           .then((data) => {
-            data[0].totalInductions = totalInductions;
+            
+            // data[0].totalInductions = totalInductions;
 
             return res.status(200).send({
               status: true,
               message: "User profile",
-              data: data[0],
+              data: data,
             });
           })
           .catch((err) => {

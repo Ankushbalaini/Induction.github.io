@@ -1,9 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { API_ROOT_URL } from "../../constants";
 
 // api call
 async function getAllInductions(token) {
-  return fetch("http://localhost:8081/api/induction/", {
+  return fetch(`${API_ROOT_URL}/induction/`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

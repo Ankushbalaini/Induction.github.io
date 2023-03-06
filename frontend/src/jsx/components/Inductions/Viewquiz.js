@@ -1,19 +1,17 @@
 import React, { useRef, Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import ActionDropDown from "./ActionDropDown";
 import swal from "sweetalert";
 import { useParams } from "react-router";
 import PageTitle from "../../layouts/PageTitle";
-
 import UpdateMcq from "./UpdateMcq";
-
-import Table from './DataTable';
+import Table from "./DataTable";
+import { API_ROOT_URL } from "../../constants";
 
 const ViewMcq = () => {
   const navigate = useHistory();
   const [test, settest] = useState(0);
-  
+
   const [data, setData] = useState(
     document.querySelectorAll("#student_wrapper tbody tr")
   );
@@ -23,15 +21,14 @@ const ViewMcq = () => {
 
   const { id } = useParams();
   const [question, setQuestion] = useState();
-  
+
   const [mcqData, setMcqData] = useState({
     question: "",
-    option1:"",
-    option2:"",
-    option3:"",
-    option4:"",
-    answer:"",
-    
+    option1: "",
+    option2: "",
+    option3: "",
+    option4: "",
+    answer: "",
   });
 
   const [tableData, setTableData] = useState([]);
@@ -51,24 +48,19 @@ const ViewMcq = () => {
   //   }
   // };
 
- 
-    // callback function to update state
-    const trackOnclick = (payload, userData) => {
-     
-      setIsModalOpen(payload);
-      if (userData) {
-        setMcqData(userData);
-      } 
-      
-    };
-    
- 
+  // callback function to update state
+  const trackOnclick = (payload, userData) => {
+    setIsModalOpen(payload);
+    if (userData) {
+      setMcqData(userData);
+    }
+  };
+
   // callback function to opdate state
   const trackDeleteClick = () => {
     swal({
       title: "Are you sure?",
-      text:
-        "Once deleted, you will not be able to recover this record!",
+      text: "Once deleted, you will not be able to recover this record!",
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -80,24 +72,20 @@ const ViewMcq = () => {
       } else {
         swal("Your record is safe!");
       }
-    })
-  }
-  
+    });
+  };
 
   // api call
-async function getMcq(formValues) {
-  return fetch("http://localhost:8081/api/mcq/" + id, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formValues),
-  }).then((data) => data.json());
-}
+  async function getMcq(formValues) {
+    return fetch(`${API_ROOT_URL}/mcq/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formValues),
+    }).then((data) => data.json());
+  }
 
-
-
-  
   // on List mcq page first render
   const handlepageLoad = async (event) => {
     const response = await getMcq();
@@ -111,15 +99,16 @@ async function getMcq(formValues) {
 
   useEffect(() => {
     // setLoading(false);
-      handlepageLoad();
-     setData(document.querySelectorAll("#student_wrapper tbody tr"));
-  }, [loading,isModalOpen]);
-
+    handlepageLoad();
+    setData(document.querySelectorAll("#student_wrapper tbody tr"));
+  }, [loading, isModalOpen]);
 
   // console.log(tableData, "tabledata")
-    const pageContent = (loading) ? <h1>loading</h1>: 
+  const pageContent = loading ? (
+    <h1>loading</h1>
+  ) : (
     <Fragment>
-    <PageTitle activeMenu="View Quiz" motherMenu="Inductions" />
+      <PageTitle activeMenu="View Quiz" motherMenu="Inductions" />
 
       <ol className="breadcrumb">
         <li className="breadcrumb-item active">
@@ -143,38 +132,36 @@ async function getMcq(formValues) {
           </Link>
         </li>
       </ol>
-     
-        <div className="row">
-          <div className="col-xl-12">
-            <div className="card students-list">
-              <div className="card-header border-0 flex-wrap pb-0">
-                <h2 className="mb-3">MCQ LIST</h2>
-              </div>
-              <div className="card-body">
-                <div className="table-responsive">
-                  <div className="dataTables_wrapper ">
 
-                  </div>
-                  <Table data={tableData} trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick} />
-
-                </div>
+      <div className="row">
+        <div className="col-xl-12">
+          <div className="card students-list">
+            <div className="card-header border-0 flex-wrap pb-0">
+              <h2 className="mb-3">MCQ LIST</h2>
+            </div>
+            <div className="card-body">
+              <div className="table-responsive">
+                <div className="dataTables_wrapper "></div>
+                <Table
+                  data={tableData}
+                  trackOnclick={trackOnclick}
+                  trackDeleteClick={trackDeleteClick}
+                />
               </div>
             </div>
           </div>
         </div>
-      
+      </div>
+
       <UpdateMcq
         isModalOpen={isModalOpen}
         trackOnclick={trackOnclick}
         trackDeleteClick={trackDeleteClick}
         mcqData={mcqData}
-
       />
-
     </Fragment>
-    return (
-      <div>{pageContent}</div>
-    );
+  );
+  return <div>{pageContent}</div>;
 };
 
 export default ViewMcq;
