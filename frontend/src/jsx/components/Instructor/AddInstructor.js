@@ -15,15 +15,13 @@ const AddInstructor = () => {
   const id = useSelector((state) => state.auth.auth.id);
   const lrole = useSelector((state) => state.auth.auth.role);
   const token = useSelector((state) => state.auth.auth.token);
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [role, setRole] = useState("instructor");
   const [name, setName] = useState("");
   const [parentCompany, setParentCompany] = useState("");
   const [parentDepartment, setParentDepartment] = useState("");
-  const [optionList, setOptionList] = useState([]);
- 
-const [selectedOptions, setSelectedOptions] = useState();
   const [deptID, setDeptID] = useState();
   const [profilePhoto, setProfilePhoto] = useState("dummy-user.png");
   const [image, setImage] = useState({ preview: "", data: "" });
@@ -110,7 +108,7 @@ const [selectedOptions, setSelectedOptions] = useState();
     }).then((user) => user.json());
 
     if ("status" in response && response.status === true) {
-      return swal("Success!", response.message, "success", {
+      return swal("Instructor has been added successfully!", response.message, "success", {
         buttons: false,
         timer: 2000,
         icon: "success",
@@ -139,7 +137,7 @@ const [selectedOptions, setSelectedOptions] = useState();
 }
 
   useEffect(() => {}, [errors]);
-console.log(optionList,"....addINst OPT")
+
   return (
     <Fragment>
       <PageTitle activeMenu="Add Instructor" motherMenu="Instructors" />
@@ -243,22 +241,19 @@ console.log(optionList,"....addINst OPT")
                         Parent Department
                       </label>
                       <div className="col-sm-9">
-                        {/* <select
+                        <select
                           name="parentDepartment"
                           className="form-control"
                           onChange={(e) => setParentDepartment(e.target.value)}
                         >
                           <option value="">Select</option>
-                           <DepartmentDropdown parentCompany={parentCompany}/>
-                      
-                        </select> */}
-                        <DepartmentByCompany
+                          {/* <DepartmentDropdown parentCompany={parentCompany}/> */}
+                          <DepartmentByCompany
                             parentCompany={parentCompany}
-                            prevSelected="parentDepartment"
-                            optionList={optionList}
-                            value={deptID}
-                            onChange={(e) => selectedOptions(e.target.value)}
+                            prevSelected=""
                           />
+                        </select>
+
                         {errors.parentDepartment && (
                           <div Style="color:red;font-weight:400;padding:5px;">
                             {errors.parentDepartment}
@@ -275,7 +270,7 @@ console.log(optionList,"....addINst OPT")
                       Select Department
                     </label>
                     <div className="col-sm-9">
-                      {/* <select
+                      <select
                         name="deptID"
                         className="form-control"
                         onChange={(e) => {
@@ -285,14 +280,12 @@ console.log(optionList,"....addINst OPT")
                         }}
                       >
                         <option value="">Select</option>
-                      
-                          
-                      </select> */}
-                      <DepartmentByCompany
+                        <DepartmentByCompany
                           parentCompany={id}
                           prevSelected=""
-                          optionList={optionList}
                         />
+                      </select>
+
                       {errors.deptID && (
                         <div Style="color:red;font-weight:400;padding:5px;">
                           {errors.deptID}
