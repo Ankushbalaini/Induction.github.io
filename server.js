@@ -9,8 +9,6 @@ app.use(fileupload());
 // parse requests of content-type - application/json
 app.use(express.json());
 
-// require("dotenv").config();
-
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
@@ -20,7 +18,7 @@ db.mongoose.set("strictQuery", false);
 db.mongoose
   .connect(
     process.env.ATLAS_URL ||
-    `mongodb+srv://bjsadmin:admin@bjs-homedelivery.ql49p3z.mongodb.net/induction?retryWrites=true&w=majority&tls=true`,
+    `mongodb+srv://bjsadmin:admin@bjs-homedelivery.ql49p3z.mongodb.net/?retryWrites=true&w=majority&tls=true`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
