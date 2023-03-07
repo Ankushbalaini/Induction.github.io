@@ -3,9 +3,11 @@ import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
 import { API_ROOT_URL } from "../../constants";
+import { useSelector } from "react-redux";
 
 const AddCompany = () => {
   const navigate = useHistory();
+  const token = useSelector((state) => state.auth.auth.token);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -85,6 +87,9 @@ const AddCompany = () => {
     // let formData = new FormData();
     const response = await fetch(`${API_ROOT_URL}/company/add`, {
       method: "POST",
+      headers: {
+        "x-access-token": token,
+      },
       body: data,
     }).then((data) => data.json());
     if ("status" in response && response.status == true) {
