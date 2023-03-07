@@ -123,14 +123,14 @@ const SideBar = () => {
                   <span className="nav-text">Dashboard</span>
                 </Link>
                 <ul>
-                  {/* <li>
+                  <li>
                     <Link
                       className={`${path === "dashboard" ? "mm-active" : ""}`}
                       to="/dashboard"
                     >
                       Dashboard
                     </Link>
-                  </li> */}
+                  </li>
                 </ul>
               </li>
             </>
