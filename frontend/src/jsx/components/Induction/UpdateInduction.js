@@ -193,12 +193,12 @@ const UpdateInduction = () => {
           <div className="card-body">
             <div className="basic-form">
               <div className="card-header">
-                <h4 className="card-title">Update Induction</h4>
+                <h4 className="card-title ">Update Induction</h4>
               </div>
               <form onSubmit={handleSubmit}>
                 {USER_ROLES.SUPER_ADMIN === userRole ? (
                   <>
-                    <div className="mb-3 row mt-3">
+                    <div className="mb-3 row mt-3 ">
                       <label className="col-sm-3 col-form-label">
                         Parent Company
                       </label>

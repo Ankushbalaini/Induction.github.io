@@ -50,9 +50,6 @@ async function filterInstructorApi(companyID, deptID) {
   }).then((data) => data.json());
 }
 
-
-
-
 const Instructors = () => {
   const userID = useSelector((state) => state.auth.auth.id);
   const role = useSelector((state) => state.auth.auth.role);
@@ -183,13 +180,8 @@ const Instructors = () => {
     } else {
       return swal("Failed", "Error message", "error");
     }
-
-
   };
 
-
-
-    
   // use effect
   useEffect(() => {
     const handlepageLoad = async (event) => {
@@ -209,14 +201,15 @@ const Instructors = () => {
       <PageTitle activeMenu="Instructor List" motherMenu="Instructors" />
       <div className="row">
         <div className="col-xl-12">
-          <div className="card students-list">
-            <div className="card-header border-0 flex-wrap pb-0">
+          <div className="card students-list form-inline">
+            <div className="card-header border-0  pb-0">
               <h2>INSTRUCTOR LIST</h2>
-              <div className="col-sm-2 d-flex justify-content-end">
                 { USER_ROLES.SUPER_ADMIN === role ?
                 (
                   <>
-                  <label style={{fontWeight:"bold"}}>Select Company </label>
+                  
+                   <div className="col-sm-2 ">
+                  <label style={{fontWeight:"bold"}}>Select Company</label>
                 <select
                   name="parentCompany"
                   className="form-cdeptIDontrol btn border-light"
@@ -225,6 +218,7 @@ const Instructors = () => {
                   <option value="all">All</option>
                   <CompanyDropdown/>
                 </select> 
+                </div>
                 </>
                 ) : 
                 USER_ROLES.COMPANY === role ?
@@ -232,7 +226,7 @@ const Instructors = () => {
                   <>
                   <div className="row">
                     <div className="col-m-3">
-                    <label className="m-auto" style={{fontWeight:"bold"}}>Select Department</label>
+                    <label className="" style={{fontWeight:"bold"}}>Select Department</label>
                     <select
                       name="deptID"
                       className="form-control btn border-light"
@@ -247,7 +241,7 @@ const Instructors = () => {
                   </>
                 )
                 : null  }
-              </div>
+             
             </div>
             <div className="card-body ">
               <div className="table-responsive">
@@ -265,8 +259,6 @@ const Instructors = () => {
           </div>
         </div>
       </div>
-
-    
       { isModalOpen  ? 
       <UpdateProfile
         isModalOpen={isModalOpen}

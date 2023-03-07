@@ -7,6 +7,18 @@ import { Link } from "react-router-dom";
 
 import { tableStyles } from "../Instructor/Instructor-1/tableStyles";
 
+// const tableCustomStyles = {
+//   headCells: {
+//     style: {
+//       fontSize: '15px',
+//       // fontWeight: 'bold',
+//       // paddingLeft: '0 8px',
+//       // justifyContent: 'center',
+//       backgroundColor: '#ff6a59',
+//     },
+//   },
+// }
+
 const Table = (props) => {
   const columns = [
     {
@@ -99,6 +111,7 @@ const Table = (props) => {
       subHeader
       subHeaderComponent={subHeaderComponent}
       customStyles={tableStyles}
+      // customStyles={tableCustomStyles}
     />
   );
 };

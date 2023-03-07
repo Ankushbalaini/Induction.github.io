@@ -119,7 +119,7 @@ const UnassignedUsers = () => {
             <div className="col-xl-12">
               <div className="card students-list">
                 <div className="card-header border-0 flex-wrap pb-6">
-                  <h2>UNASSIGNED USERS LIST</h2>
+                  <h3>UNASSIGNED USERS LIST</h3>
 
                   <div class="input-group search-area w-auto pb-3">
                     <span class="input-group-text">

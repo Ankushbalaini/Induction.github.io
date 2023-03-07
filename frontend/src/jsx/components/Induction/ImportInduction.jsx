@@ -6,14 +6,6 @@ const PDFJS = window.pdfjsLib;
 const ImportInduction = () => {
   const [induction, setInduction] = useState();
 
-
-
-
-
-
-
-
-
   const [isLoading, setIsLoading] = useState(false);
   const [pdf, setPdf] = useState("");
   const [width, setWidth] = useState(0);
