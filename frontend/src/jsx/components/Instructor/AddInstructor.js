@@ -108,7 +108,7 @@ const AddInstructor = () => {
     }).then((user) => user.json());
 
     if ("status" in response && response.status === true) {
-      return swal("Instructor has been added successfully!", response.message, "success", {
+      return swal("Success", response.message, "success", {
         buttons: false,
         timer: 2000,
         icon: "success",
