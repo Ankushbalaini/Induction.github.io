@@ -12,7 +12,7 @@ ReactDOM.render(
 	<React.StrictMode>
 		<Provider store = {store}>
             <SimpleReactLightbox>
-                <BrowserRouter basename='http://bjsinduction.com/v1/'>
+                <BrowserRouter basename='/'>
                     <ThemeContext>
                         <App />
                     </ThemeContext>  
