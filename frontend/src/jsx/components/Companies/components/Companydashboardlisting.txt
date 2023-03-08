@@ -5,8 +5,6 @@ import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import FiltersForAttempts from "../../Inductions/components/FilterForAttempts";
 
-
-
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",

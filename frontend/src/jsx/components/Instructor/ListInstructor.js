@@ -207,10 +207,10 @@ const Instructors = () => {
                 { USER_ROLES.SUPER_ADMIN === role ?
                 (
                   <>
-                  
-                   <div className="col-sm-2 ">
-                  <label style={{fontWeight:"bold"}}>Select Company</label>
+                   <div className="col-m-2" style={{marginRight:"20px"}}>
+                  <label style={{fontWeight:"bold", marginRight:"30px"}}>Select Company</label>
                 <select
+              
                   name="parentCompany"
                   className="form-cdeptIDontrol btn border-light"
                   onChange={(e) => filterByCompany(e.target.value)}

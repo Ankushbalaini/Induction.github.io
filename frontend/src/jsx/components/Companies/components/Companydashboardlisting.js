@@ -77,6 +77,11 @@ const resultscore = users.map((i)=>dataset3.push(i.result))
 
 console.log(dataset3, "dataset3");
 
+// const Maxscore = users.map((i)=>dataset4.push(i.result.correctAnswers))
+
+// console.log(Maxscore, "maxscore.........correct wrong");
+// console.log(dataset4, "dataset4..........correct wrong");
+
 const allscores = dataset3.map((i)=>dataset4.push(i.correctAnswers, i.wrongAnswers))
 console.log(dataset4, "................dataset4")
 
@@ -92,6 +97,24 @@ const scores = dataset3.reduce((totals, subArray) => {
   return totals;
 
 }, {});
+console.log(scores, "total scores")
+
+
+const scoresAll = dataset3.reduce((total, subArray) => {
+  subArray.forEach((item) => {
+    const { correctAnswers,wrongAnswers, inductionID, } = item;
+    const scoreAsNumber = parseInt(correctAnswers);
+    const otherscoreAsNumber = parseInt(wrongAnswers);
+    if (!total[inductionID]) {
+      total[inductionID] = 0;
+    }
+    total[inductionID] = scoreAsNumber + otherscoreAsNumber;
+  });
+  return total;
+  
+}, {});
+
+console.log(scoresAll, "here we have totals")
 
 //for max scores
 const totalAttemptsAll = users.reduce((acc, user) => {
@@ -99,10 +122,10 @@ const totalAttemptsAll = users.reduce((acc, user) => {
   const index = acc.findIndex((entry) => entry.inductionID === inductionID );
   if (index !== -1) {
 
-    acc[index].result = acc[index].result + correctAnswers + wrongAnswers;
+    acc[index].result = correctAnswers + wrongAnswers;
   } else {
    
-    acc.push({ inductionID: user._id, total: correctAnswers + wrongAnswers });
+    acc.push({ inductionID: user._id, totalMax: correctAnswers + wrongAnswers });
   }
   return acc;
 }, []);
@@ -171,7 +194,7 @@ console.log(totalAttemptsAll, ".....total");
                 </tr>
               </thead>
               <tbody >
-                {updatedTotalAttempts.map((user, index) => (
+                {updatedTotalAttempts.map((user, index) => ( 
                   <tr key={user}>
                     <td>{index + 1}</td>
                     <td>
