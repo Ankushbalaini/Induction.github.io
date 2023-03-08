@@ -66,15 +66,15 @@ function FiltersForAttempts({
         ) : null}
 
         {USER_ROLES.COMPANY === role ? (
-          <div className="row mb-4">
-            <div className="col-m-3">
+          <div className="row mb-3" style={{display:"flex", justifyContent:"end"}}>
+            <div className="col-sm-6">
               <label for="induction_filter" 
               style={{
                       fontWeight: "bold",
                             }}
               className="">Select Induction </label>
             </div>
-            <div className="col-m-2">
+            <div className="col-sm-8">
               <select
                 className="form-control"
                 name="induction_filter"

@@ -3,12 +3,11 @@ const fileupload = require('express-fileupload');
 const cors = require("cors");
 const db = require("./app/models");
 const app = express();
+
 app.use(cors());
 app.use(fileupload());
 // parse requests of content-type - application/json
 app.use(express.json());
-
-// require("dotenv").config();
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
@@ -18,7 +17,8 @@ db.mongoose.set("strictQuery", false);
 // db.url
 db.mongoose
   .connect(
-    "mongodb+srv://bjsadmin:admin@bjs-homedelivery.ql49p3z.mongodb.net/induction?retryWrites=true&w=majority&tls=true",
+    process.env.ATLAS_URL ||
+    `mongodb+srv://bjsadmin:admin@bjs-homedelivery.ql49p3z.mongodb.net/induction?retryWrites=true&w=majority&tls=true`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,

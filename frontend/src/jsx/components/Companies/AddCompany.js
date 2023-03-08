@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { API_ROOT_URL } from "../../constants";
 
+
 const AddCompany = () => {
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);

@@ -201,8 +201,8 @@ const Instructors = () => {
       <PageTitle activeMenu="Instructor List" motherMenu="Instructors" />
       <div className="row">
         <div className="col-xl-12">
-          <div className="card students-list form-inline">
-            <div className="card-header border-0  pb-0">
+          <div className="card students-list">
+            <div className="card-header border-0 flex-wrap pb-0">
               <h2>INSTRUCTOR LIST</h2>
                 { USER_ROLES.SUPER_ADMIN === role ?
                 (

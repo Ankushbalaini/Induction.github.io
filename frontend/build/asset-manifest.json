@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.e79c9388.css",
-    "main.js": "/static/js/main.2f5a3f48.js",
+    "main.js": "/static/js/main.bdeb68bf.js",
     "static/js/591.79f0e04c.chunk.js": "/static/js/591.79f0e04c.chunk.js",
     "static/js/405.44460b7d.chunk.js": "/static/js/405.44460b7d.chunk.js",
     "static/js/815.6e6b3640.chunk.js": "/static/js/815.6e6b3640.chunk.js",
@@ -128,7 +128,7 @@
     "static/media/degree-certificate.svg": "/static/media/degree-certificate.b8ef6795670622d5e7ffa1ddf4f7fbde.svg",
     "index.html": "/index.html",
     "main.e79c9388.css.map": "/static/css/main.e79c9388.css.map",
-    "main.2f5a3f48.js.map": "/static/js/main.2f5a3f48.js.map",
+    "main.bdeb68bf.js.map": "/static/js/main.bdeb68bf.js.map",
     "591.79f0e04c.chunk.js.map": "/static/js/591.79f0e04c.chunk.js.map",
     "405.44460b7d.chunk.js.map": "/static/js/405.44460b7d.chunk.js.map",
     "815.6e6b3640.chunk.js.map": "/static/js/815.6e6b3640.chunk.js.map",
@@ -139,6 +139,6 @@
   },
   "entrypoints": [
     "static/css/main.e79c9388.css",
-    "static/js/main.2f5a3f48.js"
+    "static/js/main.bdeb68bf.js"
   ]
 }
