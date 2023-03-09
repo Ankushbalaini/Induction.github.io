@@ -4,7 +4,7 @@ import loadable from "@loadable/component";
 import pMinDelay from "p-min-delay";
 import { Dropdown } from "react-bootstrap";
 import Loading from 'react-fullscreen-loading';
-import FullPageLoader from "./FullPageLoader";
+
 import Spinner from 'react-bootstrap/Spinner';
 // import LoadingOverlay from "react-loading-overlay";
 // import BounceLoader from "react-spinners/BounceLoader";
