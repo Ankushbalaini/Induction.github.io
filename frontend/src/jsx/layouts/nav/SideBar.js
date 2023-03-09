@@ -123,14 +123,14 @@ const SideBar = () => {
                   <span className="nav-text">Dashboard</span>
                 </Link>
                 <ul>
-                  <li>
+                  {/* <li>
                     <Link
                       className={`${path === "dashboard" ? "mm-active" : ""}`}
                       to="/dashboard"
                     >
                       Dashboard
                     </Link>
-                  </li>
+                  </li> */}
                 </ul>
               </li>
             </>
@@ -155,7 +155,7 @@ const SideBar = () => {
                       Dashboard
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       className={`${
                         path === "instructor-profile" ? "mm-active" : ""
@@ -164,7 +164,7 @@ const SideBar = () => {
                     >
                       Profile
                     </Link>
-                  </li>
+                  </li> */}
                 </ul>
               </li>
             </>
@@ -189,7 +189,7 @@ const SideBar = () => {
                     Dashboard
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link
                     className={`${
                       path === "company-profile" ? "mm-active" : ""
@@ -198,31 +198,9 @@ const SideBar = () => {
                   >
                     Profile
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </li>
-          ) : null}
-
-          {/* Dashboards - Super Admin */}
-          {USER_ROLES.USER == role ? (
-            <>
-              <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
-                <Link className="" to="#">
-                  <i className="bi bi-grid"></i>
-                  <span className="nav-text">Dashboard</span>
-                </Link>
-                <ul>
-                  <li>
-                    <Link
-                      className={`${path === "profile" ? "mm-active" : ""}`}
-                      to="/profile"
-                    >
-                      Profile
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-            </>
           ) : null}
 
           {/*  Company Module - Visible to Only Super Admin*/}
@@ -231,7 +209,7 @@ const SideBar = () => {
             <li className={`${companies.includes(path) ? "mm-active" : ""}`}>
               <Link className="has-arrow" to="#">
                 {" "}
-                <i class="bi bi-building"></i>{" "}
+                <i className="bi bi-building"></i>{" "}
                 <span className="nav-text">Company</span>
               </Link>
               <ul>
@@ -242,7 +220,7 @@ const SideBar = () => {
                   >
                     Companies
                   </Link>
-                </li>
+                </li>   
 
                 <li>
                   <Link
@@ -317,37 +295,26 @@ const SideBar = () => {
             </li>
           ) : null}
 
-          <li className={`${inductions.includes(path) ? "mm-active" : ""}`}>
-            <Link className="has-arrow" to="inductions">
-              <i className="bi bi-book"></i>
-              <span className="nav-text">Inductions</span>
-            </Link>
-            <ul>
-              {USER_ROLES.SUPER_ADMIN === role ||
-              USER_ROLES.COMPANY === role ||
-              USER_ROLES.INSTRUCTOR === role ? (
-                <>
-                  {/* <li>
-                    <Link
-                      className={`${
-                        path === "create-induction" ? "mm-active" : ""
-                      }`}
-                      to="/create-induction"
-                    >
-                      Create Induction{" "}
-                    </Link>
-                  </li> */}
-                  <li>
-                    <Link
-                      className={`${
-                        path === "create-induction" ? "mm-active" : ""
-                      }`}
-                      to="/create-induction"
-                    >
-                      Create Induction{" "}
-                    </Link>
-                  </li>
-                  <li>
+          {USER_ROLES.SUPER_ADMIN === role ||
+          USER_ROLES.COMPANY === role ||
+          USER_ROLES.INSTRUCTOR === role ? (
+            <li className={`${inductions.includes(path) ? "mm-active" : ""}`}>
+              <Link className="has-arrow" to="inductions">
+                <i className="bi bi-book"></i>
+                <span className="nav-text">Inductions</span>
+              </Link>
+              <ul>
+                <li>
+                  <Link
+                    className={`${
+                      path === "create-induction" ? "mm-active" : ""
+                    }`}
+                    to="/create-induction"
+                  >
+                    Create Induction{" "}
+                  </Link>
+                </li>
+                <li>
                     <Link
                       className={`${
                         path === "import-induction" ? "mm-active" : ""
@@ -357,80 +324,80 @@ const SideBar = () => {
                       Import Induction{" "}
                     </Link>
                   </li>
-
-                  {/* <li>
-                    <Link
-                      className={`${
-                        path === "add-induction" ? "mm-active" : ""
-                      }`}
-                      to="/add-induction"
-                    >
-                      Add Induction{" "}
-                    </Link>
-                  </li> */}
-
-                  {/* <li>
-                    <Link
-                      className={`${
-                        path === "add-induction" ? "mm-active" : ""
-                      }`}
-                      to="/add-slide"
-                    >
-                      Add Slide{" "}
-                    </Link>
-                  </li> */}
-
-                  {/* <li>
-                    <Link
-                      className={`${
-                        path === "update-induction" ? "mm-active" : ""
-                      }`}
-                      to="/update-induction/63ef91f59c145e113579da4b"
-                    >
-                      Update Induction{" "}
-                    </Link>
-                  </li> */}
-                  <li>
-                    <Link
-                      className={`${
-                        path === "attempted-inductions" ? "mm-active" : ""
-                      }`}
-                      to="/attempted-inductions"
-                    >
-                      Attempted Induction{" "}
-                    </Link>
-                  </li>
-                </>
-              ) : null}
-
-              <li>
-                <Link
-                  className={`${path === "inductions" ? "mm-active" : ""}`}
-                  to="/inductions"
-                >
-                  Inductions{" "}
-                </Link>
-              </li>
-
-              {USER_ROLES.USER === role ? (
-                <>
-                
-
                 <li>
-                <Link
-                  className={`${
-                    path === "user-inductions" ? "mm-active" : ""
-                  }`}
-                  to="/user-inductions"
-                >
-                  Inductions Attempts{" "}
-                </Link>
+                  <Link
+                    className={`${
+                      path === "attempted-inductions" ? "mm-active" : ""
+                    }`}
+                    to="/attempted-inductions"
+                  >
+                    Attempted Inducton{" "}
+                  </Link>
                 </li>
-                </>
+                <li>
+                  <Link
+                    className={`${path === "inductions" ? "mm-active" : ""}`}
+                    to="/inductions"
+                  >
+                    Inductions{" "}
+                  </Link>
+                </li>
+              </ul>
+            </li>
+          ) : null}
 
-              ) : null}
-            </ul>
-          </li>
+          {USER_ROLES.USER === role ? (
+            <>
+            <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
+               <Link className="" to="#">
+                 <i className="bi bi-grid"></i>
+                 <span className="nav-text">Dashboard</span>
+               </Link>
+               <ul>
+                 <li>
+                   <Link
+                     className={`${path === "profile" ? "mm-active" : ""}`}
+                     to="/profile"
+                   >
+                     Profile
+                   </Link>
+                 </li>
+               </ul>
+             </li>
+
+            <li
+              className={`${
+                inductions.includes(path) ? "mm-active" : "mm-active"
+              }`}
+            >
+              <Link className="has-arrow" to="inductions">
+                <i className="bi bi-book"></i>
+                <span className="nav-text">Inductions</span>
+              </Link>
+              <ul>
+              <li>
+                  <Link
+                    className={`${path === "inductions" ? "mm-active" : ""}`}
+                    to="/inductions"
+                  >
+                    Inductions{" "}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={`${
+                      path === "user-inductions" ? "mm-active" : ""
+                    }`}
+                    to="/user-inductions"
+                  >
+                    Inductions Attempts{" "}
+                  </Link>
+                </li>
+              </ul>
+            </li>
+            </>
+               
+          ) : null}
 
           {USER_ROLES.USER !== role ? (
             <li className={`${students.includes(path) ? "mm-active" : ""}`}>

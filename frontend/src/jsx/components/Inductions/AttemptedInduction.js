@@ -7,6 +7,8 @@ import PageTitle from "../../layouts/PageTitle";
 import UserAttemptedInductioList from "../Modals/UserAttemptedInductioList";
 import FiltersForAttempts from "./components/FilterForAttempts";
 import {API_ROOT_URL} from "../../constants";
+import Loading from 'react-fullscreen-loading';
+
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -90,14 +92,25 @@ const InductionUsers = () => {
   return (
     <>
       {loading ? (
-        <h3>Loading</h3>
+        <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000"/>
+
       ) : (
         <>
         <PageTitle activeMenu="Attempted Induction" motherMenu="Inductions" />
         <div className="row">
           <div className="col-xl-12">
+        
             <div className="card students-list">  
-              <div className="card-header border-0 ">
+              <div className="card-header border-0 flex-wrap">
+              <h2>ATTEMPTED INDUCTIONS</h2>
+               <FiltersForAttempts
+                  CompanyFilterHandle={CompanyFilterHandle}
+                  InductionFilterHandle={InductionFilterHandle}
+                  companyFilter={companyFilter}
+                  inductionFilter={inductionFilter}
+                />
+              </div>
+            
                 {/* <h3>Induction Users</h3> */}
 
                 {/* 
@@ -125,7 +138,7 @@ const InductionUsers = () => {
                         >
                           {" "}
                           Select Company{" "}
-                        </label>
+                        </label>63fcce682cbf90615f5b06ec
 
                         <select
                           className="btn btn-white col-sm-2 border-light"
@@ -227,20 +240,17 @@ const InductionUsers = () => {
                 ) : null}
                */}
 
-                <FiltersForAttempts
-                  CompanyFilterHandle={CompanyFilterHandle}
-                  InductionFilterHandle={InductionFilterHandle}
-                  companyFilter={companyFilter}
-                  inductionFilter={inductionFilter}
-                />
-              </div>
+               
 
-              <div className="card-body">
+              <div className="card-body py-0">
                 <div className="table-responsive">
-                  <div id="user_wrapper" className="dataTables_wrapper"></div>
-                  <Table data={users} trackOnclick={trackOnclick} />
+                  <div id="user_wrapper" className="dataTables_wrapper">
+                  
                 </div>
+                <Table data={users} trackOnclick={trackOnclick} />
               </div>
+           
+            </div>
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ import React, {
   useRef,
 } from "react";
 import { useLocation, useParams } from "react-router";
-
+import Loading from 'react-fullscreen-loading';
 
 import "react-modal-video/css/modal-video.min.css";
 import CurrentSlide from "./components/CurrentSlide";
@@ -98,7 +98,8 @@ const SingleInductionView = (props) => {
   }, [loading, props.setShowSidebar]);
 
   const PageContent = loading ? (
-    <i className="fas fa-atom fa-spin"></i>
+    <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000"/>
+
   ) : (
     <>
       <div className="col-xl-8 col-xxl-7">

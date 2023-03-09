@@ -6,7 +6,7 @@ module.exports = mongoose => {
           userID: {type: mongoose.Schema.Types.ObjectId, required: true},
           testID: {type: mongoose.Schema.Types.ObjectId},
           inductionID : {type: mongoose.Schema.Types.ObjectId, required: true, ref:'induction'},
-          score:{type: String},
+          score:{type: Number},
           correctAnswers:{type: Number, min: 0, max: 1000},
           wrongAnswers:{type: Number, min: 0, max: 1000},
           testStatus:{type:String},

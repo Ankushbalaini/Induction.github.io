@@ -7,7 +7,7 @@ import { useHistory, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Table from "./DataTable";
 import { API_ROOT_URL } from "../../constants"; 
-
+import Loading from 'react-fullscreen-loading';
 // api call
 async function getCompanies(token) {
   return fetch( `${API_ROOT_URL}/company/list`, {
@@ -165,7 +165,7 @@ const Companies = () => {
   };
 
   const pageContent = loading ? (
-    <h1>loading</h1>
+    <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000" />
   ) : (
     <Fragment>
       <PageTitle activeMenu="All Companies" motherMenu="Company" />
@@ -174,7 +174,7 @@ const Companies = () => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h2>Company List</h2>
+              <h2>COMPANY LIST</h2>
             </div>
             <div className="card-body">
               <div className="table-responsive">
@@ -273,7 +273,7 @@ const Companies = () => {
                   <div className="form-group mb-3">
                     <label htmlFor="author" className="text-black font-w600">
                       {" "}
-                      Company Logo<span className="required">*</span> ({logo})
+                      Company Logo<span className="required">*</span>{" "}
                       <input type="hidden" name="logo-img" value={logo} />
                     </label>
 

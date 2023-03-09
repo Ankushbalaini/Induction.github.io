@@ -5,9 +5,10 @@ import FilterComponent from "./FilterComponent";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { tableStyles } from "./Instructor-1/tableStyles";
+import { Button } from "react-bootstrap";
+
 
 const Table = props => {
-
 
   const columns = [
     {

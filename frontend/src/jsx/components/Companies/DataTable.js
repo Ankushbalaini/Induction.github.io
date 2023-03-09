@@ -7,30 +7,42 @@ import { Link } from "react-router-dom";
 
 import { tableStyles } from "../Instructor/Instructor-1/tableStyles";
 
+// const tableCustomStyles = {
+//   headCells: {
+//     style: {
+//       fontSize: '15px',
+//       // fontWeight: 'bold',
+//       // paddingLeft: '0 8px',
+//       // justifyContent: 'center',
+//       backgroundColor: '#ff6a59',
+//     },
+//   },
+// }
+
 const Table = (props) => {
   const columns = [
     {
       name: "Name",
-      selector: "name",
+      selector: (row) => row.name,    
       sortable: true,
       grow: 1,
       className: "col-3",
     },
     {
       name: "Email",
-      selector: "email",
+      selector: (row) => row.email,
       sortable: true,
-      hide: "sm",
+      hide: "sm",          
     },
     {
       name: "Slug",
-      selector: "companyID",
+      selector: (row) => row.companyID,
       sortable: true,
       hide: "sm",
-    },
+    },  
     {
       name: "Status",
-      selector: "status",
+      selector: (row) => row.status,
       sortable: true,
       cell: (row) => (
         <div>
@@ -99,6 +111,7 @@ const Table = (props) => {
       subHeader
       subHeaderComponent={subHeaderComponent}
       customStyles={tableStyles}
+      // customStyles={tableCustomStyles}
     />
   );
 };

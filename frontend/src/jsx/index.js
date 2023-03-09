@@ -83,7 +83,7 @@ import AttemptedInductions from "./components/Inductions/AttemptedInduction";
 import UserAttemptedInductions from "./components/Users/AttemptedInductions";
 
 
-import ImportInduction from "./components/Induction/ImportInduction";
+ import ImportInduction from "./components/Induction/ImportInduction";
 
 
 const Markup = () => {

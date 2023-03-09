@@ -6,6 +6,7 @@ import { getData } from "../APIs";
 import UsersTable from "./UsersTable";
 import PageTitle from "../../layouts/PageTitle";
 import { API_ROOT_URL } from "../../constants";
+import Loading from 'react-fullscreen-loading';
 
 const UnassignedUsers = () => {
   const token = useSelector((state) => state.auth.auth.token);
@@ -111,18 +112,19 @@ const UnassignedUsers = () => {
   return (
     <>
       {loading ? (
-        <h3>Loading</h3>
+                <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000"/>
+
       ) : (
         <>
           <PageTitle activeMenu="Unassigned Users" motherMenu="Users" />
           <div className="row">
             <div className="col-xl-12">
               <div className="card students-list">
-                <div className="card-header border-0 flex-wrap pb-0">
-                  <h4>Unassigned Users List</h4>
+                <div className="card-header border-0 flex-wrap pb-6">
+                  <h3>UNASSIGNED USERS LIST</h3>
 
-                  <div class="input-group search-area w-auto">
-                    <span class="input-group-text">
+                  <div className="input-group search-area w-auto pb-3">
+                    <span className="input-group-text">
                       <a href="/react/demo/instructor-students">
                         <svg
                           width="24"
@@ -142,7 +144,7 @@ const UnassignedUsers = () => {
                       type="text"
                       name="search"
                       id="search"
-                      class="form-control"
+                      className="form-control"
                       placeholder="Search here..."
                       onChange={(e) => searchFilter(e)}
                     />

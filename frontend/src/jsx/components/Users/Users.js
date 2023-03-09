@@ -9,6 +9,8 @@ import CompanyDropdown from "../Companies/CompanyDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 import PageTitle from "../../layouts/PageTitle";
 import {API_ROOT_URL} from "../../constants";
+import Loading from 'react-fullscreen-loading';
+
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -163,7 +165,8 @@ const Users = () => {
   return (
     <>
       {loading ? (
-        <h3>Loading</h3>
+        <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000"/>
+
       ) : (
         <>
           <PageTitle activeMenu="Users List" motherMenu="Users" />
@@ -172,7 +175,7 @@ const Users = () => {
             <div className="col-xl-12">
               <div className="card students-list">
                 <div className="card-header border-0 ">
-                  <h2>Assigned Users</h2>
+                  <h2>ASSIGNED USERS</h2>
                   {USER_ROLES.SUPER_ADMIN === userRole ? (
                     <div className="row">
                       <div
@@ -236,7 +239,7 @@ const Users = () => {
                           </select>
                         </div>
                       </div>
-                    </div>
+                      </div>
                   ) : null}
                 </div>
                 <div className="card-body">
@@ -245,10 +248,22 @@ const Users = () => {
                       {/* CompanyChangeFilter */}
                       {/* <label Style="margin:20px">Filter Users</label> */}
                       {USER_ROLES.COMPANY === userRole ? (
-                        <div>
-                          <label> Select Deparment</label>
+                        <div style={{display:"flex", justifyContent:"end", paddingBottom:"50px"}}>
+                          <label
+                          
+                           style={{
+                             paddingRight: "10px",
+                             fontWeight: "bold",
+                             paddingTop: "12px",
+                             paddingBottom:"30px",
+                           }}
+                           className="pb-0"
+                      
+                          > 
+                          Select Deparment</label>
                           <select
-                            Style="margin:20px; font-size: 16px;"
+                            className="btn btn-white col-xl-2 border-light"
+                            style={{ borderRadius: "8px", marginRight:"20px" }}
                             name="search_department"
                             onChange={(e) => DepartmentChangeFilter(e)}
                           >
@@ -256,18 +271,23 @@ const Users = () => {
                             <DepartmentByCompany parentCompany={id} />
                           </select>
                         </div>
+                        
                       ) : null}
                       {USER_ROLES.INSTRUCTOR === userRole ? (
-                        <div className="col-sm-3">
-                          <label> Select Deparment</label>
+                        <div style={{display:"flex",justifyContent:"end"}}>
+                        <div className="col-xl-3 d-flex float-right">
+                          <label style={{fontWeight:600,margin:"auto",display:"flex", justifyContent:"end" }}> Select Deparment</label>
                           <select
-                            Style="margin:30px; font-size: 15px;"
+                         
+                           className="btn"
+                           style={{padding:10, margin:3,borderRadius: "8px"}}
                             name="search_department"
                             onChange={(e) => DepartmentChangeFilter(e)}
                           >
                             <option value="All">All</option>
                             <DepartmentByCompany parentCompany={id} />
                           </select>
+                        </div>
                         </div>
                       ) : null}
 

@@ -11,7 +11,6 @@ import {
 import loginbg from "../../images/bg-1.jpg";
 import BJSLogo from "../../images/BJSLogo.png";
 
-
 function Login(props) {
   const [email, setEmail] = useState("super@admin.com");
 
@@ -75,7 +74,10 @@ function Login(props) {
                       <div>
                         <div
                           className="text-center my-5"
-                          Style="margin-top:15% !important"
+                          // Style="margin-top:15% !important"
+                          style={{
+                            marginTop: "15% !important",
+                          }}
                         >
                           <img width="400" src={BJSLogo} alt="" />
                         </div>

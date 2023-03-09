@@ -2,13 +2,13 @@ import React, { Fragment, useState, useRef, useEffect } from "react";
 import PageTitle from "../../layouts/PageTitle";
 import swal from "sweetalert";
 import { useHistory } from "react-router-dom";
-import { API_ROOT_URL } from "../../constants";
 import { useSelector } from "react-redux";
+import { API_ROOT_URL } from "../../constants";
+
 
 const AddCompany = () => {
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -88,8 +88,8 @@ const AddCompany = () => {
     const response = await fetch(`${API_ROOT_URL}/company/add`, {
       method: "POST",
       headers: {
-        "x-access-token": token,
-      },
+        "x-access-token" : token
+        },
       body: data,
     }).then((data) => data.json());
     if ("status" in response && response.status == true) {
@@ -97,7 +97,6 @@ const AddCompany = () => {
         buttons: false,
         timer: 2000,
       }).then((value) => {
-        // return <Navigate to="/inductions" />;
         navigate.push("/companies");
       });
     } else {
@@ -135,7 +134,7 @@ const AddCompany = () => {
               <form
                 onSubmit={(e) => handleSubmit(e)}
                 method="POST"
-                enctype="multipart/form-data"
+                encType="multipart/form-data"
               >
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">

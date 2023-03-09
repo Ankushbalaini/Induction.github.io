@@ -8,6 +8,7 @@ import Table from "./DataTable";
 import PageTitle from "../../layouts/PageTitle";
 import { API_ROOT_URL } from "../../constants";
 
+
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -50,9 +51,6 @@ async function filterInstructorApi(companyID, deptID) {
   }).then((data) => data.json());
 }
 
-
-
-
 const Instructors = () => {
   const userID = useSelector((state) => state.auth.auth.id);
   const role = useSelector((state) => state.auth.auth.role);
@@ -61,9 +59,8 @@ const Instructors = () => {
 
   const [companyID, setCompanyID] = useState();
   const [deptID, setDeptID] = useState();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [loading, setLoading] = useState(true);
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
   const [instructorData, setInstructorData] = useState({
     profile: {
@@ -148,6 +145,7 @@ const Instructors = () => {
 
       if ("status" in response && response.status == true) {
         setInstructosList(response.data);
+        setLoading(false);
       } else {
         return swal(
           "Failed",
@@ -183,13 +181,8 @@ const Instructors = () => {
     } else {
       return swal("Failed", "Error message", "error");
     }
-
-
   };
 
-
-
-    
   // use effect
   useEffect(() => {
     const handlepageLoad = async (event) => {
@@ -206,38 +199,52 @@ const Instructors = () => {
 
   return (
     <>
+   
       <PageTitle activeMenu="Instructor List" motherMenu="Instructors" />
+     
       <div className="row">
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h2>Instructor List</h2>
-              <div className="col-sm-3">
+              <h2>INSTRUCTOR LIST</h2>
                 { USER_ROLES.SUPER_ADMIN === role ?
-                (<select
+                (
+                  <>
+                   <div className="col-m-2" style={{marginRight:"20px"}}>
+                  <label style={{fontWeight:"bold", marginRight:"30px"}}>Select Company</label>
+                <select
+              
                   name="parentCompany"
-                  className="form-cdeptIDontrol"
+                  className="form-cdeptIDontrol btn border-light"
                   onChange={(e) => filterByCompany(e.target.value)}
                 >
                   <option value="all">All</option>
                   <CompanyDropdown/>
-                </select> ) : 
+                </select> 
+                </div>
+                </>
+                ) : 
                 USER_ROLES.COMPANY === role ?
+                (
                   <>
-                    <label>Select Department </label>
+                  <div className="row">
+                    <div className="col-m-3">
+                    <label className="" style={{fontWeight:"bold"}}>Select Department</label>
                     <select
                       name="deptID"
-                      className="form-control"
+                      className="form-control btn border-light"
                       value={deptID}
                       onChange={(e) => filterByDepartment(e) }
                     >
                       <option value="all">All</option>
                       <DepartmentByCompany parentCompany={userID} />
                     </select>
+                    </div>
+                    </div>
                   </>
-                
+                )
                 : null  }
-              </div>
+             
             </div>
             <div className="card-body ">
               <div className="table-responsive">
@@ -255,8 +262,7 @@ const Instructors = () => {
           </div>
         </div>
       </div>
-
-    
+        
       { isModalOpen  ? 
       <UpdateProfile
         isModalOpen={isModalOpen}
@@ -264,7 +270,9 @@ const Instructors = () => {
         instructorData={instructorData}
       ></UpdateProfile>
       : null }
+    
     </>
+    
   );
 };
 export default Instructors;

@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 import loadable from "@loadable/component";
 import pMinDelay from "p-min-delay";
 import { Dropdown } from "react-bootstrap";
+import Loading from 'react-fullscreen-loading';
 
+import Spinner from 'react-bootstrap/Spinner';
+// import LoadingOverlay from "react-loading-overlay";
+// import BounceLoader from "react-spinners/BounceLoader";
+// import Loader from 'react-spinners-loading';
 //Import Components
 import { ThemeContext } from "../../../context/ThemeContext";
 import DropDownBlog from "./DropDownBlog";
@@ -50,10 +55,15 @@ const Home = () => {
   }, [loading]);
 
   const [dropSelect, setDropSelect] = useState("This Month");
+
+
+
   return (
-    <div>
+    <div className="App">
+ 
       {loading ? (
-        <i className="fas fa-atom fa-spin"></i>
+        <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000"/>
+        // <FullPageLoader />
       ) : (
         <div className="row">
           <div className="col-xl-12 col-xxl-12">
@@ -85,7 +95,7 @@ const Home = () => {
               </div>
 
               <div className="row">
-                <div className="col-xl-6 col-xxl-6">
+                {/* <div className="col-xl-6 col-xxl-6">
                   <div className="card score-active">
                     <div className="card-header border-0 flex-wrap">
                       <h4>Learning Activity</h4>
@@ -118,8 +128,8 @@ const Home = () => {
                       <LearningActivityChart />
                     </div>
                   </div>
-                </div>
-                <div className="col-xl-6 col-lg-8">
+                </div> */}
+                <div className="col-xl-12 col-lg-8">
                   <div className="card">
                     <div className="card-body card-calendar home-calendar">
                       <CalendarBlog />

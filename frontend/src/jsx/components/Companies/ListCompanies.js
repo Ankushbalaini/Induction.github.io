@@ -147,7 +147,7 @@ const Companies = () => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h2>Company List</h2>
+              <h2>COMPANY LIST</h2>
             </div>
             <div className="card-body">
               <div className="table-responsive">

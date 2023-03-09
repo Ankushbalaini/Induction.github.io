@@ -6,6 +6,7 @@ import { getData } from "../APIs";
 import Filters from "./Filters";
 import UsersTable from "./UsersTable";
 import { API_ROOT_URL } from "../../constants";
+import Loading from 'react-fullscreen-loading';
 
 const Users = () => {
   const token = useSelector((state) => state.auth.auth.token);
@@ -153,7 +154,8 @@ const Users = () => {
   return (
     <>
       {loading ? (
-        <h3>Loading</h3>
+    <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000"/>
+
       ) : (
 
 

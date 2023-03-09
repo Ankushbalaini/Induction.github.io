@@ -81,9 +81,6 @@ const onSubmitHandle = async (e) => {
   }
 };
 
-
-
-
   const handlepageLoad = async (event) => {
     const response = await getDepartments(token);
     if ("status" in response && response.status == true) {
@@ -92,9 +89,6 @@ const onSubmitHandle = async (e) => {
       return swal("Failed", "Error message", "error");
     }
   };
-
-  
-
 
   useEffect(() => {
     handlepageLoad();
@@ -112,7 +106,7 @@ const onSubmitHandle = async (e) => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h2>Department List</h2>
+              <h2>DEPARTMENT LIST</h2>
             </div>
             <div className="card-body">
               <div className="table-responsive">
@@ -144,7 +138,6 @@ const onSubmitHandle = async (e) => {
        size="xl"
       aria-labelledby="contained-modal-title-vcenter"
       centered
-      
       >
         <div className="modal-content">
           <div className="modal-header">
@@ -161,11 +154,12 @@ const onSubmitHandle = async (e) => {
             <form className="company-form" onSubmit={(e) => onSubmitHandle(e)}>
               <div className="row">
                 <div className="col-lg-12">
-                  <div className="form-group mb-3">
-                    <label htmlFor="name" className="text-black font-w600">
+                  <div className="mb-3 row">
+                    <label htmlFor="name" className="text-black font-w600 col-sm-3 col-form-label">
                       {" "}
                       Name <span className="required">*</span>
                     </label>
+                    <div className="col-sm-9">
                     <input
                       type="text"
                       className="form-control"
@@ -174,14 +168,16 @@ const onSubmitHandle = async (e) => {
                       onChange={(e) => setName(e.target.value)}
                       required
                     />
+                    </div>
                   </div>
                 </div>
                 <div className="col-lg-12">
-                  <div className="form-group mb-3">
-                    <label htmlFor="author" className="text-black font-w600">
+                  <div className="mb-3 row">
+                    <label htmlFor="author" className="text-black font-w600 col-sm-3 col-form-label">
                       {" "}
                       Department Status  { status ? 'Active': 'Inactive' }<span className="required"></span>{" "}
                     </label>
+                    <div className="col-sm-9">
                     <select
                       className="form-control"
                       name="status"
@@ -191,10 +187,11 @@ const onSubmitHandle = async (e) => {
                       <option value={1}>Active</option>
                       <option value={0}>Inactive</option>
                     </select>
+                    </div>
                   </div>
                 </div>
                 <div className="col-lg-12">
-                  <div className="form-group mb-3">
+                  <div className="form-group m-auto">
                     <Button
                       style={buttonsty}
                       type="submit"

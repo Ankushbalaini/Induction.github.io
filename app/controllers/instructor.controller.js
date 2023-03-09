@@ -167,70 +167,68 @@ exports.index = (req, res) => {
  *
  * @param {
  *
- * } req
- * @param {*} res
- * @returns
- */
+* } req
+* @param {*} res
+* @returns
+*/
 exports.list = (req, res) => {
-  try {
-    UserCred.aggregate([
-      {
-        $match: {
-          $expr: {
-            $and: [
-              {
-                $eq: ["$role", "instructor"],
-              },
-            ],
-          },
+  UserCred.aggregate([
+    {
+      $match: {
+        $expr: {
+          $and: [
+            {
+              $eq: ["$role", "instructor"],
+            },
+          ],
         },
       },
-      { $sort: { createdAt: -1 } },
-      {
-        $lookup: {
-          from: "instructors",
-          localField: "_id",
-          foreignField: "userID",
-          as: "profile",
-        },
+    },
+    { $sort: { createdAt: -1 } },
+    {
+      $lookup: {
+        from: "instructors",
+        localField: "_id",
+        foreignField: "userID",
+        as: "profile",
       },
-      {
-        $unwind: "$profile",
+    },
+    {
+      $unwind: "$profile",
+    },
+    {
+      $project: {
+        _id: 1,
+        email: 1,
+        role: 1,
+        status: 1,
+        parentCompany: 1,
+        profile: 1,
+        createdAt: 1,
       },
-      {
-        $project: {
-          _id: 1,
-          email: 1,
-          role: 1,
-          status: 1,
-          parentCompany: 1,
-          profile: 1,
-          createdAt: 1,
-        },
-      },
-    ])
-      .then((data) => {
-        res.status(200).send({
-          status: true,
-          message: "All Instuctor Listing",
-          data: data,
-        });
-      })
-      .catch((err) => {
-        res.status(500).send({
+    },
+  ])
+    .then((data) => {
+      res.status(200).send({
+        status: true,
+        message: "All Instuctor Listing",
+        data: data,
+      });
+    })
+    .catch((err) => {
+      if (err.code === 11000) { // Handle duplicate email error
+        return res.status(400).send({
           status: false,
-          message: err.message,
+          message: "Email already exists.",
           data: {},
         });
+      }
+      res.status(500).send({
+        status: false,
+        message: err.message,
+        data: {},
       });
-    return;
-  } catch (err) {
-    res.status(500).send({
-      status: false,
-      message: err.message,
-      data: {},
     });
-  }
 };
 
 /**
@@ -418,33 +416,42 @@ exports.add = (req, res) => {
         : ObjectId(req.body.parentCompany);
     //console.log(req.body); return;
     req.body.deptID = ObjectId(req.body.deptID);
-    var InstructorCred = new UserCred(req.body);
 
-    req.body.userID = ObjectId(InstructorCred._id);
-    var instructorData = new InstructorTable(req.body);
-
-    InstructorCred.instructor = instructorData._id;
-    InstructorCred.save();
-
-    instructorData.profilePhoto = Img.name;
-
-    instructorData
-      .save()
-      .then((response) => {
-        return res.status(200).send({
-          status: true,
-          message: "Success",
-          data: response,
-        });
-      })
-
-      .catch((err) => {
+    UserCred.findOne({ email: email }).then((existingUser) => {
+      if (existingUser) {
         return res.status(400).send({
           status: false,
-          message: err.message,
-          data: req.body,
+          message: "Email already exists!",
         });
-      });
+      }
+
+      //Create new user  
+      var InstructorCred = new UserCred(req.body);
+      InstructorCred.save();
+
+      req.body.userID = ObjectId(InstructorCred._id);
+      var instructorData = new InstructorTable(req.body);
+
+      instructorData.profilePhoto = Img.name;
+
+      instructorData
+        .save()
+        .then((response) => {
+          return res.status(200).send({
+            status: true,
+            message: "Instructor Has been added Successfully!",
+            data: response,
+          });
+        })
+
+        .catch((err) => {
+          return res.status(400).send({
+            status: false,
+            message: err.message,
+            data: req.body,
+          });
+        });
+    });
   } catch (e) {
     return res.status(400).send({
       status: false,
@@ -488,57 +495,32 @@ exports.edit = (req, res) => {
       req.body.profilePhoto = Img.name;
     }
 
-    InstructorTable.updateOne(
-      { _id: id },
-      { $set: req.body },
-      { multi: false },
-      function (err, user) {
-        if (err) {
-          return res.status(500).send({
-            status: false,
-            message: err.message,
-          });
-        }
+    InstructorTable.findByIdAndUpdate(
+      id,
+      { ...req.body },
+      { useFindAndModify: true }
+    )
+      .then(function (user) {
         if (!user) {
-          return res.status(500).send({
-            status: false,
+          res.status(404).send({
             message: "Instructor not found!",
+            status: false,
           });
         } else {
           return res.status(200).send({
+            message: "Instructor has been updated successfully!",
             status: true,
-            message: "Instructor has been updated!",
             data: user,
           });
         }
-      }
-    );
-
-    /*
-  InstructorTable
-    .findByIdAndUpdate(id, { ...req.body }, { useFindAndModify: true })
-    .then(function (user) {
-      if (!user) {
-        res.status(404).send({
-          message: "Instructor not found!",
+      })
+      .catch((err) => {
+        res.status(500).send({
           status: false,
+          message:
+            err.message || "Some error occurred while creating the Instructor.",
         });
-      } else {
-        return res.status(200).send({
-          message: "Instructor has been updated successfully!",
-          status: true,
-          data: user,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        status: false,
-        message:
-          err.message || "Some error occurred while creating the Deparment.",
       });
-    });
-    */
   } catch (err) {
     res.status(500).send({
       status: false,

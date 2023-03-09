@@ -67,7 +67,7 @@ exports.index = async (req, res) => {
             _id: 1,
             title: "$title",
             subTitle: "$subTitle",
-            thumbnail: "$thumbnail",
+            thumbnail: "$thumbnail", 
             description: 1,
             deptID: 1,
             parentCompany: 1,
@@ -80,7 +80,7 @@ exports.index = async (req, res) => {
         .then((data) => {
           return res.status(200).send({
             status: true,
-            message: "Inductions",
+            message: "Inductions", 
             data: data,
             pagination: {
               totalRecords: data.length,
@@ -686,9 +686,7 @@ exports.findOne = (req, res) => {
  */
 exports.store = async (req, res) => {
   try {
-    //console.log('req body', req.body);
     const user = req.decoded;
-    //console.log('user', user);
 
     let iData = JSON.parse(req.body.induction);
     iData.deptID = ObjectId(iData.deptID);
@@ -710,9 +708,7 @@ exports.store = async (req, res) => {
       iData.parentCompany = ObjectId(user.parentCompany);
     }
 
-    //iData.parentCompany = (user.role ==='company')? ObjectId(user.userID) :ObjectId(user.parentCompany);
-    //console.log('company', iData.parentCompany); return;
-    const thumbnail = uploadThumbnail(req, res);
+    const thumbnail = await uploadThumbnail(req, res); // wait for thumbnail upload
     iData.thumbnail = thumbnail;
 
     var idata = new Induction(iData);
@@ -731,7 +727,7 @@ exports.store = async (req, res) => {
       .then((data) => {
         //slides.save();
         slidesData.forEach((row) => {
-          row.slideInductionId = data._id;
+          row.slideInductionId = data._id;  
           var slide = new SlideModel(row);
           slide.save();
         });
@@ -759,34 +755,41 @@ exports.store = async (req, res) => {
 };
 
 /**
- * @param files-object
+ * @param files-object 
  *
  * @returns img-name
  */
-function uploadThumbnail(req, res) {
-  // logo validation
-  if (!req.files || Object.keys(req.files).length === 0) {
-    return res.status(500).send({
-      status: false,
-      message: "Thumbnail is required!",
-    });
-  } else {
-    var Img = req.files.thumbnail;
-    var extension = path.extname(Img.name);
-    var file_name = "img-" + Date.now() + extension;
-    var uploadPath = UPLOADS.INDUCTIONS + file_name;
+function uploadThumbnail(req) {
+  return new Promise((resolve, reject) => {
+    // logo validation
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return reject({
+        status: false,
+        message: "Thumbnail is required!",
+      });
+    } else {
+      var Img = req.files.thumbnail;
+      var extension = path.extname(Img.name);
+      var file_name = "img-" + Date.now() + extension;
+      var uploadPath = UPLOADS.INDUCTIONS + file_name;
 
-    Img.mv(uploadPath, file_name, function (err) {
-      if (err) {
-        return res.status(500).send({
-          status: false,
-          message: err.message,
+      Img.mv(uploadPath, function (err) {
+        if (err) {
+          return reject({
+            status: false,
+            message: err.message,
+          });
+        }
+        return resolve({
+          status: true,
+          message: "Thumbnail uploaded successfully!",
+          file_name: file_name
         });
-      }
-    });
-    return file_name;
-  }
+      });
+    }
+  });
 }
+
 
 exports.updatePassingMarks = (req, res) => {
   // req.body.inductionID
@@ -1322,7 +1325,7 @@ exports.update = (req, res) => {
         }else{
           return res.status(200).send({
             status: true,
-            message: "",
+            message: "Updated Successfully!",
             data: induction
           });
         }

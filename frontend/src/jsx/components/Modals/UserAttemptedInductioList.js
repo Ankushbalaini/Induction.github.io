@@ -14,6 +14,7 @@ const UserAttemptedInductioList = ({
       show={isModalOpen}
       Style="width:80% !important"
     >
+    
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title"> User Result </h5>
@@ -25,7 +26,7 @@ const UserAttemptedInductioList = ({
             onClick={hidePopUp}
           ></Button>
         </div>
-        <div className="modal-body">
+        <div className="modal-body" style={{ maxHeight: "900px", overflowY: "scroll" }}>
           <h4>
             User :{" "}
             {userPopupData.profile.first_name +
@@ -82,6 +83,7 @@ const UserAttemptedInductioList = ({
           </table>
         </div>
       </div>
+     
     </Modal>
   );
 };

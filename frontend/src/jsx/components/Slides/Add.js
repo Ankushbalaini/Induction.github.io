@@ -33,8 +33,34 @@ const Add = () => {
   const [state, setState] = useState(intialState);
   const editor = useRef(null);
 
+  //Validation messages
+  let errorsObj = { slideTitle: "", slideContent: "" };
+  const [errors, setErrors] = useState(errorsObj);
+
+  // on click validation remove function
+  function handleKeyPress(e) {
+    var key = e.key;
+    if (key == key) {
+      setErrors(errorsObj == false);
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let error = false;
+    const errorObj = { ...errorsObj };
+    if (state.slideTitle === "") {
+      errorObj.slideTitle = "Title is Required!";
+      error = true;
+    }
+    if (state.slideContent === "") {
+      errorObj.slideContent = "Slide Content is Required!";
+      error = true;
+    }
+
+    setErrors(errorObj);
+    if (error) return;
+
     const formData = new FormData(e.target);
     const response = await addSlide(formData, token);
 
@@ -107,7 +133,13 @@ const Add = () => {
                         }
                         name="slideTitle"
                         value={state.slideTitle}
+                        onKeyPress={(e) => handleKeyPress(e)}
                       />
+                      {errors.slideTitle && (
+                        <div Style="color:red;font-weight:400">
+                          {errors.slideTitle}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="mb-3 row">
@@ -127,7 +159,13 @@ const Add = () => {
                         onChange={(newContent) =>
                           setState({ ...state, slideContent: newContent })
                         }
+                        onKeyPress={(e) => handleKeyPress(e)}
                       />
+                      {errors.slideContent && (
+                        <div Style="color:red;font-weight:400">
+                          {errors.slideContent}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

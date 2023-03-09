@@ -95,7 +95,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
     setState(intialValue);
   }, [isModalOpen]);
   return (
-    <Modal className="modal fade" show={isModalOpen}>
+    <Modal className="modal fade" show={isModalOpen} >
       <div className="modal-content">
         <div className="modal-header">
           <h5 className="modal-title">Update Profile </h5>
@@ -181,7 +181,7 @@ const UserPopup = ({ isModalOpen, trackOnclick, profileData }) => {
                 <div className="form-group mb-3">
                   <label htmlFor="first_name" className="text-black font-w600">
                     {" "}
-                    First Name <span className="required">*</span>{" "}
+                    First Name  <span className="required">*</span>{" "}
                   </label>
                   <input type="hidden" name="mainID" value={profileData._id} />
                   <input

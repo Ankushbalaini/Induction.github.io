@@ -122,13 +122,6 @@ const   UpdateProfile = ({ isModalOpen, trackOnclick, instructorData }) => {
           <form className="update-form" onSubmit={handleSubmit}>
 
           <div className="row">
-                
-
-
-
-
-
-
                 <div className="col-lg-6">
                   <div className="form-group mb-3">
                     <label htmlFor="name" className="text-black font-w600">
