@@ -53,7 +53,7 @@ const CompanyDashboard = () => {
     <>
       <div className="row">
         <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-          <div className="widget-stat card bg-primary">
+          <div className="widget-stat card bg-primary shadow">
             <div className="card-body  p-4">
               <div className="media">
                 <span className="me-3">
@@ -64,7 +64,7 @@ const CompanyDashboard = () => {
                   <h3 className="text-white">{companyDB?.totalUsers}</h3>
                   <div className="progress mb-2 bg-secondary">
                     <div
-                      className="progress-bar progress-animated bg-light"
+                      className="progress-bar progress-animated bg-white"
                       style={{ width: companyDB?.totalUsers + "%" }}
                     ></div>
                   </div>
@@ -76,7 +76,7 @@ const CompanyDashboard = () => {
         </div>
 
         <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-          <div className="widget-stat card bg-secondary">
+          <div className="widget-stat card bg-secondary shadow">
             <div className="card-body p-4">
               <div className="media">
                 <span className="me-3">
@@ -87,7 +87,7 @@ const CompanyDashboard = () => {
                   <h3 className="text-white">{companyDB?.totalInstructors}</h3>
                   <div className="progress mb-2 bg-primary">
                     <div
-                      className="progress-bar progress-animated bg-light"
+                      className="progress-bar progress-animated bg-white"
                       style={{ width: companyDB?.totalInstructors + "%" }}
                     ></div>
                   </div>
@@ -99,7 +99,7 @@ const CompanyDashboard = () => {
         </div>
 
         <div className="col-xl-4 col-lg-4 col-xxl-4 col-sm-4">
-          <div className="widget-stat card bg-danger">
+          <div className="widget-stat card bg-info shadow">
             <div className="card-body p-4">
               <div className="media">
                 <span className="me-3">
@@ -110,7 +110,7 @@ const CompanyDashboard = () => {
                   <h3 className="text-white">{companyDB?.totalInductions}</h3>
                   <div className="progress mb-2 bg-primary">
                     <div
-                      className="progress-bar progress-animated bg-light"
+                      className="progress-bar progress-animated bg-white"
                       style={{ width: companyDB?.totalInductions + "%" }}
                     ></div>
                   </div>
@@ -121,12 +121,11 @@ const CompanyDashboard = () => {
           </div>
         </div>
 
-        {/* <div className="col-xl-12">
+        <div className="col-xl-12">
                 <div className="card">
                   <div className="card-header border-0 flex-wrap">
                     <h3>Test Average Score</h3>
                     <div className="d-flex align-items-center">
-                      
                       <div className="d-flex align-items-center ms-3">
                         <span className="work-ic">
                           <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -141,19 +140,21 @@ const CompanyDashboard = () => {
                     </div>	
                   </div>
           
-                  {/* <div className="card-body">
+                 <div className="card-body">
                   <LearningActivityChart averageData={averageData} setAverageData={setAverageData} />
-                  </div> *
+                  </div> 
 
                 </div>
-              </div> */}
+              </div> 
 
               {/* <div className="col-xl-12">
                   <AttemtedViewDashboard />
                   </div> */}
-                  {/* <div className="col-xl-12">
+                 <div className="col-xl-12">
                   <Companydashboardlisting />
-                  </div> */}
+                  </div>
+
+                  
       </div>
     </>
   );

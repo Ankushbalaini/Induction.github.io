@@ -4,9 +4,9 @@ const InductionSubTiltle = (props) => {
   const [inductionSubTiltle, setInductionSubTiltle] = useState("");
   useEffect(() => {
     setInductionSubTiltle(props.title);
-  }, );
+  }, [props.title]);
   console.log(props, "propps");
-  console.log(props.title,"...props.title...")
+  console.log(props.title,"...props.title...")  
   console.log(inductionSubTiltle, "....inductionSlideTiltle...");
   return (
     <div className="course-content d-flex justify-content-between flex-wrap">
