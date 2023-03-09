@@ -122,7 +122,7 @@ const SideBar = () => {
                   <i className="bi bi-grid"></i>
                   <span className="nav-text">Dashboard</span>
                 </Link>
-                <ul>
+                {/* <ul>
                   <li>
                     <Link
                       className={`${path === "dashboard" ? "mm-active" : ""}`}
@@ -131,7 +131,7 @@ const SideBar = () => {
                       Dashboard
                     </Link>
                   </li>
-                </ul>
+                </ul> */}
               </li>
             </>
           ) : null}
@@ -144,7 +144,7 @@ const SideBar = () => {
                   <i className="bi bi-grid"></i>
                   <span className="nav-text">Dashboard</span>
                 </Link>
-                <ul>
+                {/* <ul>
                   <li>
                     <Link
                       className={`${
@@ -164,8 +164,8 @@ const SideBar = () => {
                     >
                       Profile
                     </Link>
-                  </li> */}
-                </ul>
+                  </li> 
+                </ul> */}
               </li>
             </>
           ) : null}
@@ -177,7 +177,7 @@ const SideBar = () => {
                 <i className="bi bi-grid"></i>
                 <span className="nav-text">Dashboard</span>
               </Link>
-              <ul>
+              {/* <ul>
                 <li>
                   <Link
                     className={`${
@@ -189,7 +189,7 @@ const SideBar = () => {
                     Dashboard
                   </Link>
                 </li>
-                {/* <li>
+                <li>
                   <Link
                     className={`${
                       path === "company-profile" ? "mm-active" : ""
@@ -198,8 +198,8 @@ const SideBar = () => {
                   >
                     Profile
                   </Link>
-                </li> */}
-              </ul>
+                </li> 
+              </ul> */}
             </li>
           ) : null}
 
