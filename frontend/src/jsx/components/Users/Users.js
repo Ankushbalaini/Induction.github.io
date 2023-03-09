@@ -9,6 +9,8 @@ import CompanyDropdown from "../Companies/CompanyDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 import PageTitle from "../../layouts/PageTitle";
 import {API_ROOT_URL} from "../../constants";
+import Loading from 'react-fullscreen-loading';
+
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -163,7 +165,8 @@ const Users = () => {
   return (
     <>
       {loading ? (
-        <h3>Loading</h3>
+        <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000"/>
+
       ) : (
         <>
           <PageTitle activeMenu="Users List" motherMenu="Users" />

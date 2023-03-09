@@ -7,6 +7,8 @@ import PageTitle from "../../layouts/PageTitle";
 import UserAttemptedInductioList from "../Modals/UserAttemptedInductioList";
 import FiltersForAttempts from "./components/FilterForAttempts";
 import {API_ROOT_URL} from "../../constants";
+import Loading from 'react-fullscreen-loading';
+
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -90,7 +92,8 @@ const InductionUsers = () => {
   return (
     <>
       {loading ? (
-        <h3>Loading</h3>
+        <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000"/>
+
       ) : (
         <>
         <PageTitle activeMenu="Attempted Induction" motherMenu="Inductions" />
@@ -246,7 +249,7 @@ const InductionUsers = () => {
                 </div>
                 <Table data={users} trackOnclick={trackOnclick} />
               </div>
-              
+           
             </div>
             </div>
           </div>

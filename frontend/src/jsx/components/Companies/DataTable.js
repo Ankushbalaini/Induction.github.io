@@ -23,26 +23,26 @@ const Table = (props) => {
   const columns = [
     {
       name: "Name",
-      selector: "name",
+      selector: (row) => row.name,    
       sortable: true,
       grow: 1,
       className: "col-3",
     },
     {
       name: "Email",
-      selector: "email",
+      selector: (row) => row.email,
       sortable: true,
-      hide: "sm",
+      hide: "sm",          
     },
     {
       name: "Slug",
-      selector: "companyID",
+      selector: (row) => row.companyID,
       sortable: true,
       hide: "sm",
-    },
+    },  
     {
       name: "Status",
-      selector: "status",
+      selector: (row) => row.status,
       sortable: true,
       cell: (row) => (
         <div>

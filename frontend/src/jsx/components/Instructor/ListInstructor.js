@@ -8,6 +8,7 @@ import Table from "./DataTable";
 import PageTitle from "../../layouts/PageTitle";
 import { API_ROOT_URL } from "../../constants";
 
+
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -58,9 +59,8 @@ const Instructors = () => {
 
   const [companyID, setCompanyID] = useState();
   const [deptID, setDeptID] = useState();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [loading, setLoading] = useState(true);
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
   const [instructorData, setInstructorData] = useState({
     profile: {
@@ -145,6 +145,7 @@ const Instructors = () => {
 
       if ("status" in response && response.status == true) {
         setInstructosList(response.data);
+        setLoading(false);
       } else {
         return swal(
           "Failed",
@@ -198,7 +199,9 @@ const Instructors = () => {
 
   return (
     <>
+   
       <PageTitle activeMenu="Instructor List" motherMenu="Instructors" />
+     
       <div className="row">
         <div className="col-xl-12">
           <div className="card students-list">
@@ -259,6 +262,7 @@ const Instructors = () => {
           </div>
         </div>
       </div>
+        
       { isModalOpen  ? 
       <UpdateProfile
         isModalOpen={isModalOpen}
@@ -266,7 +270,9 @@ const Instructors = () => {
         instructorData={instructorData}
       ></UpdateProfile>
       : null }
+    
     </>
+    
   );
 };
 export default Instructors;

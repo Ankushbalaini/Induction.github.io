@@ -115,33 +115,26 @@ const ImportInduction = () => {
       setIsLoading(false);
       const imagesList = [];
       imagesList.push(img);
-
       console.log(imagesList);
 
     });
   };
-
-
-
-
   return (
     <div className="App">
-      <h2
-        style={{
-          justifyContent: "center",
-          display: "flex",
-          marginBottom: "50px",
-        }}
-      >
-        <marquee direction="left" style={{ color: "black", fontSize: "2em" }}>
-          PDF to PPT Convertor
-        </marquee>
-      </h2>
+      <div className="col-xl-12">
+        <div className="card">
+        
+        <div className="card-header">
+            <h1 className="card-title">PDF TO PPT CONVERTER</h1>
+          </div>
+            <label className = "mt-4" style={{fontWeight:"bold", fontSize:"18px", marginLeft:"50px"}}>Select PDF</label>
+            
       <button
-        className="btn btn-primary d-flex m-auto mb-3"
+        className="btn btn-outline-light d-flex mx-5"
         onClick={() => document.getElementById("file-to-upload").click()}
       >
-        Select PDF
+        <i className="fa fa-folder mx-1 my-1"></i>
+         Upload PDF
       </button>
       <input
         type="file"
@@ -150,6 +143,7 @@ const ImportInduction = () => {
         hidden
         onChange={showPdf}
       />
+     
       <div id="pdf-main-container">
         <div id="pdf-loader" hidden={!pdfRendering}>
           Loading document ...
@@ -191,8 +185,10 @@ const ImportInduction = () => {
         text.map((item) => (
           <div style={{ border: "2px solid black" }}>{item.data.text}</div>
         ))}
+         </div>
+    
     </div>
-    //Jo test nu alag alag kkrn wala kam aa oh ithe hoya aa Upper
+    </div>
   );
 };
 export default ImportInduction;

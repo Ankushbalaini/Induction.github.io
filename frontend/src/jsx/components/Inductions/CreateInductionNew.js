@@ -9,6 +9,7 @@ import DepartmentDropdown from "../Department/DepartmentDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 import CompanyDropdown from "../Companies/CompanyDropdown";
 import { API_ROOT_URL } from "../../constants";
+import Loading from 'react-fullscreen-loading';
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -191,7 +192,8 @@ const CreateInduction = () => {
   }, []);
 
   const pageContent = loading ? (
-    <i className="fas fa-atom fa-spin"></i>
+    <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000"/>
+
   ) : (
     <Fragment>
       <PageTitle activeMenu="Create Induction" motherMenu="Inductions" />

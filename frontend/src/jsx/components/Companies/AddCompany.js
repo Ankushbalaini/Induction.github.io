@@ -134,7 +134,7 @@ const AddCompany = () => {
               <form
                 onSubmit={(e) => handleSubmit(e)}
                 method="POST"
-                enctype="multipart/form-data"
+                encType="multipart/form-data"
               >
                 <div className="mb-3 row">
                   <label className="col-sm-3 col-form-label">

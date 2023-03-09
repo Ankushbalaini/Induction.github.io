@@ -209,7 +209,7 @@ const SideBar = () => {
             <li className={`${companies.includes(path) ? "mm-active" : ""}`}>
               <Link className="has-arrow" to="#">
                 {" "}
-                <i class="bi bi-building"></i>{" "}
+                <i className="bi bi-building"></i>{" "}
                 <span className="nav-text">Company</span>
               </Link>
               <ul>
@@ -314,6 +314,16 @@ const SideBar = () => {
                     Create Induction{" "}
                   </Link>
                 </li>
+                <li>
+                    <Link
+                      className={`${
+                        path === "import-induction" ? "mm-active" : ""
+                      }`}
+                      to="/import-induction"
+                    >
+                      Import Induction{" "}
+                    </Link>
+                  </li>
                 <li>
                   <Link
                     className={`${

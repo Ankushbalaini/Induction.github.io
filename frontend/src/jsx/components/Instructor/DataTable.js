@@ -10,7 +10,6 @@ import { Button } from "react-bootstrap";
 
 const Table = props => {
 
-
   const columns = [
     {
       name: "Name",

@@ -30,7 +30,7 @@ const CompanyDropdown = ({ selectedVal , selectedDeptVal }) => {
         const response  = await getData(`${API_ROOT_URL}/company/list`, token);
         if ("status" in response && response.status == true) {
             const rows = response.data.map((row, index) => (
-                <option value={row.userID._id}>{row.name}</option>
+                <option key={index} value={row.userID._id}>{row.name}</option>
             ));
             setOption(rows);
             
@@ -41,7 +41,7 @@ const CompanyDropdown = ({ selectedVal , selectedDeptVal }) => {
             if ("status" in resp && resp.status == true) {
 
                 const rows = resp.data.map((row, index) => (
-                    <option value={row._id} >{row.name}</option>
+                    <option key={index} value={row._id} >{row.name}</option>
                 ));
                 setDeptOption(rows);
                 setLoading(false);
@@ -61,7 +61,7 @@ const CompanyDropdown = ({ selectedVal , selectedDeptVal }) => {
         const response = await getDepartments(token, selectedCompany);
         if ("status" in response && response.status == true) {
             const rows = response.data.map((row, index) => (
-                <option value={row._id}>{row.name}</option>
+                <option key={index} value={row._id}>{row.name}</option>
             ));
             setDeptOption(rows);
         }

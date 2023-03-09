@@ -4,6 +4,7 @@ import "swiper/css";
 import { Dropdown, Button } from "react-bootstrap";
 import swal from "sweetalert";
 import PageTitle from "../../layouts/PageTitle";
+import Loading from 'react-fullscreen-loading';
 
 //images
 import course1 from "./../../../images/courses/course1.jpg";
@@ -168,7 +169,8 @@ function Inductions() {
   // };
 
   const content = loading ? (
-    <h1>Loading</h1>
+    <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000"/>
+
   ) : (
     <>
       <PageTitle activeMenu="Inductions" motherMenu="Inductions" />

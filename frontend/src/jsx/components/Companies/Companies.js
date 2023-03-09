@@ -7,7 +7,7 @@ import { useHistory, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Table from "./DataTable";
 import { API_ROOT_URL } from "../../constants"; 
-
+import Loading from 'react-fullscreen-loading';
 // api call
 async function getCompanies(token) {
   return fetch( `${API_ROOT_URL}/company/list`, {
@@ -165,7 +165,7 @@ const Companies = () => {
   };
 
   const pageContent = loading ? (
-    <h1>loading</h1>
+    <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000" />
   ) : (
     <Fragment>
       <PageTitle activeMenu="All Companies" motherMenu="Company" />

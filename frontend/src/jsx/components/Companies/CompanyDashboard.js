@@ -61,7 +61,7 @@ const CompanyDashboard = () => {
                   <h3 className="text-white">{companyDB?.totalUsers}</h3>
                   <div className="progress mb-2 bg-secondary">
                     <div
-                      className="progress-bar progress-animated bg-light"
+                      className="progress-bar progress-animated bg-white"
                       style={{ width: companyDB?.totalUsers + "%" }}
                     ></div>
                   </div>
@@ -84,7 +84,7 @@ const CompanyDashboard = () => {
                   <h3 className="text-white">{companyDB?.totalInstructors}</h3>
                   <div className="progress mb-2 bg-primary">
                     <div
-                      className="progress-bar progress-animated bg-light"
+                      className="progress-bar progress-animated bg-white"
                       style={{ width: companyDB?.totalInstructors + "%" }}
                     ></div>
                   </div>
@@ -107,7 +107,7 @@ const CompanyDashboard = () => {
                   <h3 className="text-white">{companyDB?.totalInductions}</h3>
                   <div className="progress mb-2 bg-primary">
                     <div
-                      className="progress-bar progress-animated bg-light"
+                      className="progress-bar progress-animated bg-white"
                       style={{ width: companyDB?.totalInductions + "%" }}
                     ></div>
                   </div>

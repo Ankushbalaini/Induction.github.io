@@ -24,7 +24,7 @@ const CompanyDropdown = (props) => {
     const response = await getCompanies(token);
     if ("status" in response && response.status == true) {
       const rows = response.data.map((row, index) => (
-        <option value={row._id}>{row?.company?.name ?? row._id}</option>
+        <option key={index} value={row._id}>{row?.company?.name ?? row._id}</option>
       ));
       setOption(rows);
       setLoading(false);

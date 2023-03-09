@@ -121,9 +121,9 @@ const InstructorDashboard = () => {
                   <h3 className="text-white">
                     {instructorDB?.totalInductions}
                   </h3>
-                  <div className="progress mb-2 bg-secondary">
+                  <div className="progress mb-2 bg-light">
                     <div
-                      className="progress-bar progress-animated bg-light"
+                      className="progress-bar progress-animated bg-white"
                       style={{ width: "80%" }}
                     ></div>
                   </div>
@@ -146,7 +146,7 @@ const InstructorDashboard = () => {
                   <h3 className="text-white">{instructorDB?.totalUsers}</h3>
                   <div className="progress mb-2 bg-primary">
                     <div
-                      className="progress-bar progress-animated bg-light"
+                      className="progress-bar progress-animated bg-white"
                       style={{ width: "76%" }}
                     ></div>
                   </div>
