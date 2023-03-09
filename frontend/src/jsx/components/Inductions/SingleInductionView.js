@@ -10,6 +10,7 @@ import "react-modal-video/css/modal-video.min.css";
 import CurrentSlide from "./components/CurrentSlide";
 import InductionSlidesList from "./components/InductionSlidesList";
 import InductionTitle from "./components/InductionTitle";
+import InductionSubTiltle from './components/InductionSubTiltle'
 
 import { useSelector } from "react-redux";
 import UpdatePassPercentage from "../Modals/UpdatePassPercentage";
@@ -86,7 +87,9 @@ const SingleInductionView = (props) => {
     setCurrentSlideContent(newSlide);
     return;
   };
-
+// console.log(slideData,"slidesData")
+// console.log(inductionData,"inductionData...")
+// console.log(currentSlideContent,"currentSlideContent....")
   // On every render
   useEffect(() => {
     if (loading) {
@@ -106,7 +109,7 @@ const SingleInductionView = (props) => {
           <div className="card-body">
             {/* induction title and stats */}
             <InductionTitle title={inductionData.title} />
-
+             <InductionSubTiltle title={currentSlideContent.slideTitle}/>
             {/* Slide content area and onclick changeable */}
 
             <CurrentSlide currentSlideContent={currentSlideContent} />

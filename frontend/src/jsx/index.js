@@ -83,7 +83,7 @@ import AttemptedInductions from "./components/Inductions/AttemptedInduction";
 import UserAttemptedInductions from "./components/Users/AttemptedInductions";
 
 
-// import ImportInduction from "./components/Induction/ImportInduction";
+import ImportInduction from "./components/Induction/ImportInduction";
 
 
 const Markup = () => {
@@ -145,7 +145,7 @@ const Markup = () => {
     { url: 'unassigned-users', component: UnassignedUsers },
 
 
-    //{ url: 'import-induction', component: ImportInduction },
+    { url: 'import-induction', component: ImportInduction },
     // Apps
     // { url: "app-profile", component: AppProfile },
     // { url: "table-filtering", component: FilteringTable}
