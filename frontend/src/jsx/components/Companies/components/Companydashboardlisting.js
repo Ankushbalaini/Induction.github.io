@@ -233,8 +233,6 @@ console.log(scoresAll, "here we have totals")
                     </td> */}
                   </tr>
                 ))}
-                 
-              
               </tbody>
             </table>
           </div>

@@ -81,7 +81,7 @@ function UsersTable({ filteredUsers, checkUserUpdated, redirectTo }) {
             <th>Email</th>
             <th>Join Date</th>
             <th>Status</th>
-            <th Style="text-align: end">Action</th>
+            <th style={{textAlign: "end"}}>Action</th>
           </tr>
         </thead>
         <tbody>

@@ -71,8 +71,6 @@ const ImportInduction = () => {
     generatePresentation(imagesList);
   }
 
-
-
   useEffect(() => {
     pdf && renderPage();
     // eslint-disable-next-line
@@ -128,9 +126,10 @@ const ImportInduction = () => {
             <h1 className="card-title">PDF TO PPT CONVERTER</h1>
           </div>
             <label className = "mt-4" style={{fontWeight:"bold", fontSize:"18px", marginLeft:"50px"}}>Select PDF</label>
+            <h5 className="mx-5">Select a pdf file you want to convert into ppt</h5>
             
       <button
-        className="btn btn-outline-light d-flex mx-5"
+        className="btn btn-outline-secondary d-flex mx-5 mb-3"
         onClick={() => document.getElementById("file-to-upload").click()}
       >
         <i className="fa fa-folder mx-1 my-1"></i>
@@ -171,19 +170,22 @@ const ImportInduction = () => {
         <div id="page-loader" hidden={!pageRendering}>
           Loading page ...
         </div>
-        <br />
+       
+        <label className = "mt-4" style={{fontWeight:"bold", fontSize:"18px", marginLeft:"50px" }}>Extract TEXT</label>
         <button
-          className="btn btn-primary d-flex m-auto mb-3"
+        style={{paddingLeft:"200px",paddingRight:"200px"}}
+          className="btn btn-outline-secondary d-flex mx-5 mb-5"
           onClick={handleSubmit}
           type="button"
         >
-          Extract{" "}
+          Extract Text{" "}
         </button>
       </div>
+     
 
       {text &&
         text.map((item) => (
-          <div style={{ border: "2px solid black" }}>{item.data.text}</div>
+          <div style={{ border: "2px solid black"}}>{item.data.text}</div>
         ))}
          </div>
     

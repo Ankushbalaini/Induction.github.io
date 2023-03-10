@@ -200,8 +200,9 @@ const Users = () => {
                         id="application-tbl1_paginate"
                       >
                         <Link
-                          className="paginate_button previous "
+                          
                           to="/users"
+                          className="paginate_button previous "
                           onClick={() =>
                             activePag.current > 0 &&
                             onClick(activePag.current - 1)

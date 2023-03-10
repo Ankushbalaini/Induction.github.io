@@ -430,7 +430,7 @@ const SideBar = () => {
           ) : null}
         </MM>
 
-        <div className="copyright" Style="position: absolute;bottom: 0px;">
+        <div className="copyright" style={{position: "absolute", bottom:"0px"}}>
           <p></p>
           <p className="fs-12">
             Made with <span className="heart"></span> by BJS
