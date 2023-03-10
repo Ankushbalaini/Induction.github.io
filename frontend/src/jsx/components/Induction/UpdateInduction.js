@@ -85,7 +85,7 @@ const UpdateInduction = () => {
 
   /**
    *
-   * @param {*} e
+   * @param {*} 
    * Update Induction main submit function
    *
    */
@@ -128,6 +128,21 @@ const UpdateInduction = () => {
     }
   };
 
+  const deleteResource = (id) => {
+    fetch(`${API_ROOT_URL}/slides/delete/${id}`, {
+      method: 'DELETE'
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        // Handle successful response
+      })
+      .catch(error => {
+        console.error('There was a problem deleting the resource:', error);
+      });
+  }
+
   const changeSlideStatus = (id, status) => {
     swal({
       title: "Are you sure?",
@@ -162,6 +177,7 @@ const UpdateInduction = () => {
         swal("Your status is not changed!");
       }
     });
+    console.log(id,"id...")
   };
 
 
@@ -377,7 +393,7 @@ const UpdateInduction = () => {
                 {/* <button className="btn btn-danger">Add New Slide</button> */}
               </div>
 
-              <SlidesList Slides={slides} inductionID={id} changeSlideStatus={changeSlideStatus}/>
+              <SlidesList Slides={slides} inductionID={id} changeSlideStatus={changeSlideStatus} />
 
               <div className="card-header">
                 <h4 className="card-title">Quiz</h4>

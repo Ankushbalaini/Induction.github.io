@@ -1,3 +1,5 @@
+const { id } = require("date-fns/locale");
+
 module.exports = (app) => {
   const slide = require("../controllers/slide.controller.js");
 
@@ -10,7 +12,7 @@ module.exports = (app) => {
   router.post("/", slide.add); // add
   
   router.put("/:id", slide.update); // edit
-  // router.delete()
+ // router.delete("/delete/:id",slide.delete); //delete 
 
   router.get("/getbyslideid/:id", slide.getBySlideId); // here id is slide ID
 

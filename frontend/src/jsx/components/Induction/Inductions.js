@@ -86,6 +86,7 @@ function Inductions() {
       setLimit(response.pagination.limit);
 
       setData(document.querySelectorAll("#student_wrapper .cardDiv"));
+      // console.log(response,"RESPONSE")
     }
   };
   const [data, setData] = useState(

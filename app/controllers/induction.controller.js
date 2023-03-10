@@ -652,7 +652,7 @@ exports.findOne = (req, res) => {
           .status(404)
           .send({ message: "Not found Induction with id " + id });
       } else {
-        SlideModel.find({ slideInductionId: id })
+        SlideModel.find({ slideInductionId: id ,status:true})
           .then((slides) => {
             if (!slides) {
               return res
