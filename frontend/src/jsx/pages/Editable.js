@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 const Editable = ({editFormData, handleEditFormChange, handleCancelClick}) =>{
     return(
-        <>
+      
             <>
 				<td></td>
                 <td>
@@ -50,7 +50,7 @@ const Editable = ({editFormData, handleEditFormChange, handleCancelClick}) =>{
 					</div>
                 </td>
             </>
-        </>
+      
     )
 }
 export default Editable;

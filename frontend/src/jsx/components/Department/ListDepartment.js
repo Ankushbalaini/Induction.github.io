@@ -24,7 +24,7 @@ const ListDepartments = () => {
   const [status, setStatus] = useState();
   const [parentCompany, setParentCompany] = useState();
   const [departments, setDepartments] = useState();
-  const [deptData, setdeptData] = useState([{ name: "noora" }]);
+  const [deptData, setdeptData] = useState([{ name: "" }]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({ name: "" });
   const [editID, setEditID] = useState();

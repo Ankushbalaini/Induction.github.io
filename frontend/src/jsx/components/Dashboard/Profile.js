@@ -198,7 +198,7 @@ const Profile = () => {
                 <WidgetBlog
                   changeImage={clock}
                   title="Users"
-                  link="students"
+                  link="users"
                   nos={profileData.totalUsers}
                 />
               </>

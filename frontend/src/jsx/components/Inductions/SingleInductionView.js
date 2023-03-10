@@ -10,6 +10,7 @@ import "react-modal-video/css/modal-video.min.css";
 import CurrentSlide from "./components/CurrentSlide";
 import InductionSlidesList from "./components/InductionSlidesList";
 import InductionTitle from "./components/InductionTitle";
+import InductionSubTiltle from './components/InductionSubTiltle'
 
 import { useSelector } from "react-redux";
 import UpdatePassPercentage from "../Modals/UpdatePassPercentage";
@@ -86,7 +87,9 @@ const SingleInductionView = (props) => {
     setCurrentSlideContent(newSlide);
     return;
   };
-
+// console.log(slideData,"slidesData")
+// console.log(inductionData,"inductionData...")
+// console.log(currentSlideContent,"currentSlideContent....")
   // On every render
   useEffect(() => {
     if (loading) {
@@ -97,6 +100,8 @@ const SingleInductionView = (props) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [loading, props.setShowSidebar]);
 
+
+
   const PageContent = loading ? (
     <Loading loading background-color="rgba(255, 255, 255, 0.1)" loaderColor="#000000"/>
 
@@ -105,9 +110,10 @@ const SingleInductionView = (props) => {
       <div className="col-xl-8 col-xxl-7">
         <div className="card">
           <div className="card-body">
+        
             {/* induction title and stats */}
             <InductionTitle title={inductionData.title} />
-
+             <InductionSubTiltle title={currentSlideContent.slideTitle}/>
             {/* Slide content area and onclick changeable */}
 
             <CurrentSlide currentSlideContent={currentSlideContent} />
@@ -124,8 +130,8 @@ const SingleInductionView = (props) => {
           </div>
         </div>
       </div> */}
-
       <div className="col-xl-4 col-xxl-5">
+    
         <InductionSlidesList
           setStateOfParent={setStateOfParent}
           setCurrentSlideContent={setCurrentSlideContent}
