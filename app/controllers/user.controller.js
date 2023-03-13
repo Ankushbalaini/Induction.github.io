@@ -4,6 +4,7 @@ const User = db.users;
 const CompanyDB = db.company;
 const UserInductionResults = db.user_induction_results;
 const Inductions = db.induction;
+const bcrypt = require('bcrypt');
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -154,59 +155,76 @@ exports.login = (req, res) => {
 
   UserCred.findOne({
     email: email,
-    password: password,
   })
     .then(function (user) {
       // checking user status
-      if (user.status === false) {
+      if (user && !user.status) {
         return res.status(500).send({
           status: false,
           message: "USER_DISABLED",
           data: {},
         });
       }
+
       if (user) {
-        // create a new token
-        const user_cred = new UserCred(user);
-        // Create token
-        const token = jwt.sign(
-          {
-            userID: user_cred._id,
-            email: user_cred.email,
-            role: user_cred.role,
-            deptID: user_cred.deptID,
-            parentCompany: user_cred.parentCompany,
-          },
-          "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
-          {
-            expiresIn: "2h",
-          }
-        );
-        user_cred.token = token;
+        bcrypt.compare(password, user.password)
+          .then(match => {
+            if (match) {
+              // create a new token
+              const user_cred = new UserCred(user);
+              // Create token
+              const token = jwt.sign(
+                {
+                  userID: user_cred._id,
+                  email: user_cred.email,
+                  role: user_cred.role,
+                  deptID: user_cred.deptID,
+                  parentCompany: user_cred.parentCompany,
+                },
+                "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
+                {
+                  expiresIn: "2h",
+                }
+              );
+              user_cred.token = token;
 
-        user_cred.save().catch((err) => {
-          res.status(500).send({
-            status: false,
-            message: err.message,
+              user_cred.save().catch((err) => {
+                res.status(500).send({
+                  status: false,
+                  message: err.message,
+                });
+              });
+
+              return res.status(200).send({
+                status: true,
+                message: "Login Successful",
+                data: {
+                  id: user._id,
+                  email: user.email,
+                  token: user_cred.token,
+                  role: user.role,
+                  parentCompany: user.parentCompany,
+                  expiresIn: new Date(Date.now() + 2 * (60 * 60 * 1000)),
+                },
+              });
+            } else {
+              return res.status(403).send({
+                status: false,
+                message: "INVALID_PASSWORD",
+                data: {},
+              });
+            }
+          })
+          .catch(err => {
+            return res.status(500).send({
+              status: false,
+              message: "INVALID_PASSWORD",
+            });
           });
-        });
-
-        return res.status(200).send({
-          status: true,
-          message: "Login Successful",
-          data: {
-            id: user._id,
-            email: user.email,
-            token: user_cred.token,
-            role: user.role,
-            parentCompany: user.parentCompany,
-            expiresIn: new Date(Date.now() + 2 * (60 * 60 * 1000)),
-          },
-        });
       } else {
         return res.status(403).send({
           status: false,
-          message: "INVALID_PASSWORD",
+          message: "INVALID_EMAIL",
           data: {},
         });
       }
@@ -214,10 +232,11 @@ exports.login = (req, res) => {
     .catch((err) => {
       return res.status(500).send({
         status: false,
-        message: "INVALID_PASSWORD",
+        message: "INVALID_EMAIL",
       });
     });
 };
+
 
 /**
  *
