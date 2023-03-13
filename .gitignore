@@ -4,6 +4,7 @@ notes
 .env
 /frontend/node_modules/
 /frontend/node_modules/
+/frontend/build/
 /frontend/src/jsx/components/Modals/test/images/sample.txt
 /playground.js
 frontend/src/jsx/components/Courses/CoursesMain-27Feb.js
