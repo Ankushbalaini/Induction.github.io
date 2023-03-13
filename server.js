@@ -49,7 +49,6 @@ require("./app/routes/instructor.routes")(app);
 require("./app/routes/students.route")(app);
 require("./app/routes/dashboard.routes")(app);
 require("./app/routes/mcq.routes")(app);
-require("./app/routes/auth.routes")(app);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
