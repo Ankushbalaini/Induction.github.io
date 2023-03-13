@@ -11,11 +11,9 @@ import CourseBlog from "./Dashboard/CourseBlog";
 import CalendarBlog from "./Dashboard/CalendarBlog";
 
 //images
-import Educat from "./../../../images/egucation-girl.png";
-import Calpng from "./../../../images/vector/calpng.png";
-import Book from "./../../../images/vector/book.png";
 import { useSelector } from "react-redux";
 import { API_ROOT_URL } from "../../constants";
+import LoadingSpinner from "../../pages/LoadingSpinner";
 
 const LearningActivityChart = loadable(() =>
   pMinDelay(import("./Dashboard/LearningActivityChart"), 1000)
@@ -53,12 +51,12 @@ const Home = () => {
   return (
     <div>
       {loading ? (
-        <i className="fas fa-atom fa-spin"></i>
+        <LoadingSpinner />
       ) : (
         <div className="row">
           <div className="col-xl-12 col-xxl-12">
             <div className="row">
-              <div className="col-xl-12 col-xxl-6">
+              {/* <div className="col-xl-12 col-xxl-6">
                 <div className="card dlab-join-card h-auto">
                   <div className="card-body">
                     <div className="dlab-media d-flex justify-content-between">
@@ -79,7 +77,7 @@ const Home = () => {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="col-xl-12 bt-order">
                 <CourseBlog dashboard={dashboard} />
               </div>

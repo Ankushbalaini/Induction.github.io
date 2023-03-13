@@ -8,10 +8,18 @@ import { useSelector } from "react-redux";
 import DepartmentDropdown from "../Department/DepartmentDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 import CompanyDropdown from "../Companies/CompanyDropdown";
-import { API_ROOT_URL } from "../../constants";
+import { API_ROOT_URL, USER_ROLES } from "../../constants";
+
+
+
 
 const CreateInduction = () => {
   const navigate = useHistory();
+  const userRole = useSelector((state) => state.auth.auth.role);
+  const token = useSelector((state) => state.auth.auth.token);
+  const userID = useSelector((state) => state.auth.auth.id);
+  const userParentCompany = useSelector((state) => state.auth.auth.parentCompany);
+
   const [loading, setLoading] = useState(true);
 
   const [image, setImage] = useState({ preview: "", data: "" });
@@ -20,16 +28,13 @@ const CreateInduction = () => {
   const [deptID, setDeptID] = useState("");
   const [parentCompany, setParentCompany] = useState("");
   const [option, setOption] = useState();
-
-  const [inductionDesc, setInductionDesc] = useState(
-    "<h1>Induction description</h1>"
-  );
+  const [inductionDesc, setInductionDesc] = useState("");
   const [formValues, setFormValues] = useState([
     { slideTitle: "", slideContent: "" },
   ]);
 
   const editor = useRef(null);
-  const token = useSelector((state) => state.auth.auth.token);
+  
 
   // validation messages
   let errorsObj = { title: "", subTitle: "", deptID: "" };
@@ -156,6 +161,29 @@ const CreateInduction = () => {
     }
   };
 
+  const handleDepartmentDropdown = async () => {
+    const response = await fetch(
+      `${API_ROOT_URL}/department/getDepartmentByComp`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": token,
+        },
+        body: JSON.stringify({ parentCompany: parentCompany }),
+      }
+    ).then((data) => data.json());
+
+    if ("status" in response && response.status == true) {
+      const rows = response.data.map((row, index) => (
+        <option value={row._id}>{row.name}</option>
+      ));
+      setOption(rows);
+    }
+  };
+
+
+
   // on click validation remove function
   function handleKeyPress(e) {
     var key = e.key;
@@ -170,9 +198,21 @@ const CreateInduction = () => {
     float: "right",
   };
 
+
   useEffect(() => {
-    setLoading(false);
-  }, []);
+    if(loading){
+      if(userRole === USER_ROLES.COMPANY){
+        setParentCompany(userID);
+      }
+      if(userRole === USER_ROLES.INSTRUCTOR){
+        setParentCompany(userParentCompany); 
+      }
+      if(parentCompany){
+        handleDepartmentDropdown();
+      }
+      setLoading(false);
+    }
+  }, [parentCompany]);
 
   const pageContent = loading ? (
     <i className="fas fa-atom fa-spin"></i>
@@ -195,7 +235,7 @@ const CreateInduction = () => {
                       type="text"
                       className="form-control"
                       name="title"
-                      placeholder="Fullstack Developer"
+                      placeholder=""
                       onChange={(e) => setTitle(e.target.value)}
                       value={title}
                       onKeyPress={(e) => handleKeyPress(e)}
@@ -215,7 +255,7 @@ const CreateInduction = () => {
                       type="text"
                       className="form-control"
                       name="subTitle"
-                      placeholder="nodejs, mongo, react , express...."
+                      placeholder=""
                       onChange={(e) => setSubTitle(e.target.value)}
                       value={subTitle}
                       onKeyPress={(e) => handleKeyPress(e)}
@@ -240,8 +280,10 @@ const CreateInduction = () => {
                     />
                   </div>
                 </div>
-
                 <div className="form-group mb-3">
+                
+                { USER_ROLES.SUPER_ADMIN === userRole ? 
+                
                   <div className="mb-4 row">
                     <label className="col-sm-3 col-form-label">
                       Select Company{" "}
@@ -264,6 +306,8 @@ const CreateInduction = () => {
                       )}
                     </div>
                   </div>
+                  : <input type="hidden" value={parentCompany} name="parentCompany" />  
+                   }
                   <div className="mb-4 row">
                     <label className="col-sm-3 col-form-label">
                       Select Department

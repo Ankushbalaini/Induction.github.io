@@ -7,9 +7,8 @@ import certificate from "./../../../images/svg/degree-certificate.svg";
 import clock from "./../../../images/svg/clock-1.svg";
 import { useSelector } from "react-redux";
 import UpdateProfile from "./UpdateProfile";
-import { API_ROOT_URL } from "../../constants";
-
-const images = require.context('../../../../../images/profile/', true);
+import { API_ROOT_URL, PROFILE_ASSETS_URL } from "../../constants";
+import LoadingSpinner from "../../pages/LoadingSpinner";
 
 const WidgetBlog = ({ changeImage, title, link, Count }) => {
   return (
@@ -36,46 +35,42 @@ const WidgetBlog = ({ changeImage, title, link, Count }) => {
   );
 };
 
-// api call 
-async function getProfileApi (token){
+// api call
+async function getProfileApi(token) {
   const URL = `${API_ROOT_URL}/users/getProfile`;
-	return fetch(URL, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token" : token
-      },
-    }).then((data) => data.json());
+  return fetch(URL, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+  }).then((data) => data.json());
 }
 
-
 const InstructorProfile = () => {
-
   const token = useSelector((state) => state.auth.auth.token);
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [instructorData, setInstructorData] = useState();
-  const [isModalOpen, setIsModalOpen] = useState(false);	
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const getProfile = async () =>{
+  const getProfile = async () => {
     const response = await getProfileApi(token);
     if ("status" in response && response.status == true) {
-			setInstructorData(response.data);
-			setLoading(false);
-		}
-  }
+      setInstructorData(response.data[0]);
+      setLoading(false);
+    }
+  };
 
   // callback function to opdate state
   const trackOnclick = (payload) => {
     setIsModalOpen(payload);
-  }
-  
+  };
 
   // callback function to opdate state
   const trackDeleteClick = () => {
     swal({
       title: "Are you sure?",
-      text:
-        "Once deleted, you will not be able to recover this record!",
+      text: "Once deleted, you will not be able to recover this record!",
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -87,40 +82,44 @@ const InstructorProfile = () => {
       } else {
         swal("Your record is safe!");
       }
-    })
-  }
+    });
+  };
 
+  useEffect(() => {
+    getProfile();
+  }, [loading, isModalOpen]);
 
-  const loadImage = (imageName) => {
-    return images(`./${imageName}`);
-  }
-
-  useEffect(()=>{
-    if(loading){
-      getProfile();
-    }
-  }, [instructorData]);
-
-  const pageContent = (loading) ? <h1>Loading</h1> :
+  const pageContent = loading ? (
+    <LoadingSpinner />
+  ) : (
     <div className="row">
       <div className="col-xl-4 col-xxl-5 col-lg-12">
         <div className="card instructors-box">
           <div className="card-header border-0">
             {/* <DropDownBlog /> */}
-            <ActionDropDown trackOnclick={trackOnclick} trackDeleteClick={trackDeleteClick}/>
+            <ActionDropDown
+              trackOnclick={trackOnclick}
+              trackDeleteClick={trackDeleteClick}
+            />
           </div>
           <div className="card-body text-center pb-3">
             <div className="instructors-media">
-              
-              { 
-              (typeof instructorData.profile.profilePhoto  !== 'undefined' ||  instructorData.profile.profilePhoto !== '') ?  
-              <img src={loadImage(instructorData.profile.profilePhoto)} />  : <img src={loadImage('dummy-user.png')} /> 
-              }
-              
+              {typeof instructorData.profile.profilePhoto !== undefined ||
+              instructorData.profile.profilePhoto !== "" ? (
+                <img
+                  src={`${PROFILE_ASSETS_URL}/${instructorData.profile.profilePhoto}`}
+                  alt={instructorData.profile.profilePhoto}
+                />
+              ) : (
+                <img src={`${PROFILE_ASSETS_URL}/dummy-user.png`} />
+              )}
 
               <div className="instructors-media-info mt-4">
                 <h4 className="mb-1">{instructorData.profile.name}</h4>
-                <span className="fs-18">Member Since1 {new Date(instructorData.createdAt).getFullYear()}</span>
+                <span className="fs-18">
+                  Member Since{" "}
+                  {new Date(instructorData.createdAt).getFullYear()}
+                </span>
               </div>
             </div>
 
@@ -148,7 +147,12 @@ const InstructorProfile = () => {
             link="instructors"
             Count={instructorData.totalInductions}
           /> */}
-          <WidgetBlog changeImage={clock} title="Inductions" link="inductions" Count={instructorData.totalInductions}/>
+          <WidgetBlog
+            changeImage={clock}
+            title="Inductions"
+            link="inductions"
+            Count={instructorData.totalInductions}
+          />
           <div className="widget-heading d-flex justify-content-between align-items-center">
             <h3 className="m-0">My Inductions</h3>
             <Link to={"./inductions"} className="btn btn-primary btn-sm">
@@ -158,19 +162,14 @@ const InstructorProfile = () => {
         </div>
       </div>
 
-      <UpdateProfile isModalOpen={isModalOpen} trackOnclick={trackOnclick} instructorData={instructorData} />
+      <UpdateProfile
+        isModalOpen={isModalOpen}
+        trackOnclick={trackOnclick}
+        instructorData={instructorData}
+      />
     </div>
+  );
 
-
-
-  return(
-    <>
-    {pageContent}
-
-    
-
-    </>
-  )
-  
+  return <>{pageContent}</>;
 };
 export default InstructorProfile;

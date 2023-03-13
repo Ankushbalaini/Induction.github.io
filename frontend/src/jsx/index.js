@@ -94,6 +94,7 @@ const Markup = () => {
   var routes = [
     /// Dashboard
     { url: "", component: Home },
+    { url: "forgot-password", component: Home},
     { url: "dashboard", component: Home },
     { url: "profile", component: Profile },
     { url: "company-profile", component: CompanyProfile},

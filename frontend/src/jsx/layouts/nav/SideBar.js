@@ -122,7 +122,7 @@ const SideBar = () => {
                   <i className="bi bi-grid"></i>
                   <span className="nav-text">Dashboard</span>
                 </Link>
-                <ul>
+                {/* <ul>
                   <li>
                     <Link
                       className={`${path === "dashboard" ? "mm-active" : ""}`}
@@ -131,7 +131,7 @@ const SideBar = () => {
                       Dashboard
                     </Link>
                   </li>
-                </ul>
+                </ul> */}
               </li>
             </>
           ) : null}
@@ -144,7 +144,7 @@ const SideBar = () => {
                   <i className="bi bi-grid"></i>
                   <span className="nav-text">Dashboard</span>
                 </Link>
-                <ul>
+                {/* <ul>
                   <li>
                     <Link
                       className={`${
@@ -165,7 +165,7 @@ const SideBar = () => {
                       Profile
                     </Link>
                   </li>
-                </ul>
+                </ul> */}
               </li>
             </>
           ) : null}
@@ -177,7 +177,7 @@ const SideBar = () => {
                 <i className="bi bi-grid"></i>
                 <span className="nav-text">Dashboard</span>
               </Link>
-              <ul>
+              {/* <ul>
                 <li>
                   <Link
                     className={`${
@@ -199,7 +199,7 @@ const SideBar = () => {
                     Profile
                   </Link>
                 </li>
-              </ul>
+              </ul> */}
             </li>
           ) : null}
 
@@ -207,11 +207,11 @@ const SideBar = () => {
           {USER_ROLES.USER == role ? (
             <>
               <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
-                <Link className="" to="#">
+                <Link className="" to="/profile">
                   <i className="bi bi-grid"></i>
                   <span className="nav-text">Dashboard</span>
                 </Link>
-                <ul>
+                {/* <ul>
                   <li>
                     <Link
                       className={`${path === "profile" ? "mm-active" : ""}`}
@@ -220,7 +220,7 @@ const SideBar = () => {
                       Profile
                     </Link>
                   </li>
-                </ul>
+                </ul> */}
               </li>
             </>
           ) : null}
@@ -318,7 +318,7 @@ const SideBar = () => {
           ) : null}
 
           <li className={`${inductions.includes(path) ? "mm-active" : ""}`}>
-            <Link className="has-arrow" to="inductions">
+            <Link className="has-arrow" to="/inductions">
               <i className="bi bi-book"></i>
               <span className="nav-text">Inductions</span>
             </Link>
@@ -347,7 +347,7 @@ const SideBar = () => {
                       Create Induction{" "}
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       className={`${
                         path === "import-induction" ? "mm-active" : ""
@@ -356,7 +356,7 @@ const SideBar = () => {
                     >
                       Import Induction{" "}
                     </Link>
-                  </li>
+                  </li> */}
 
                   {/* <li>
                     <Link

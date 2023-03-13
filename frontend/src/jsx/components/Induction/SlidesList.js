@@ -44,7 +44,6 @@ const SlidesList = ({ Slides, inductionID , changeSlideStatus }) => {
             <td>{index + 1}</td>
             <td>
               <div className="d-flex align-items-center">
-                {/* <img src={loadImage(user.profile.profilePhoto)} alt="" /> */}
                 <h4 className="mb-0 fs-16 font-w500">{row.slideTitle}</h4>
               </div>
             </td>

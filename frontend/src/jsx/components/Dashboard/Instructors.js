@@ -80,7 +80,12 @@ const Instructors = (props) => {
             </div>
             <div className="card-body text-center pb-3">
               <div className="instructors-media">
-                <img src={loadImage(user.profile.profilePhoto)} alt="" />
+                
+                <img
+                  className="img-fluid"
+                  src={`${PROFILE_ASSETS_URL}/${user.profile.profilePhoto}`}
+                  alt={user.profile.profilePhoto}
+                />
 
                 {/* <img src={ loadImage(user.profile.profilePhoto) } alt="" /> */}
 

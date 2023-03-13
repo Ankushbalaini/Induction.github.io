@@ -12,13 +12,13 @@ import { API_ROOT_URL } from "../constants";
 
 // api call
 async function Api_CreatePassword(values) {
-    return fetch(`${API_ROOT_URL}/users/create-password`, {
+  return fetch(`${API_ROOT_URL}/users/create-password`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        'token' : values.resetPasswordToken,
+        'token' : values.token,
         'password' : values.newPassword
       })
     })
@@ -27,21 +27,21 @@ async function Api_CreatePassword(values) {
 
 
 function ResetPassword(){
-    const [resetPasswordToken, setResetPasswordToken] = useState(0);
-    const [newPassword, setNewPassword] = useState();
 
     const { token } = useParams();
+    const [newPassword, setNewPassword] = useState();
 
-    useEffect(()=>{
-      setResetPasswordToken(token);
-    },[]);
+    //const [resetPasswordToken, setResetPasswordToken] = useState(token);
+    // useEffect(()=>{
+    //   setResetPasswordToken(token);
+    // },[]);
     
     const handleFormSubmit = async (e) =>{
         e.preventDefault();
         
         // setResetPasswordToken(token);
 
-        const response = await Api_CreatePassword({ resetPasswordToken, newPassword });
+        const response = await Api_CreatePassword({ token, newPassword });
       
         if ('status' in response && response.status == true) {
           swal("Success", response.message , "success", {
@@ -49,7 +49,6 @@ function ResetPassword(){
             timer: 2000,
           })
           .then((value) => {
-            
             window.location.href = "/login";
           });
     
@@ -78,7 +77,7 @@ function ResetPassword(){
                             <form onSubmit={handleFormSubmit} method="post">
                               <div className="form-group  mb-4">
                                 <label className="">
-                                  <strong>Enter New Password</strong>
+                                  <strong>Enter New Password </strong>
                                 </label>
                                 <input
                                   type="password"
@@ -109,6 +108,9 @@ function ResetPassword(){
                                 </button>
                               </div>
                             </form>
+                            {/* <p>
+                              {token}
+                            </p> */}
                           </div>
                         </div>
                       </div>

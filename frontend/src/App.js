@@ -3,7 +3,7 @@ import { lazy, Suspense, useEffect } from 'react';
 /// Components
 import Index from "./jsx";
 import { connect, useDispatch } from 'react-redux';
-import {  Route, Switch, withRouter } from 'react-router-dom';
+import { useParams, Route, Switch, withRouter, useLocation } from 'react-router-dom';
 // action
 import { checkAutoLogin } from './services/AuthService';
 import { isAuthenticated } from './store/selectors/AuthSelectors';
@@ -11,6 +11,7 @@ import { isAuthenticated } from './store/selectors/AuthSelectors';
 import "./vendor/bootstrap-select/dist/css/bootstrap-select.min.css";
 import "./css/style.css";
 
+// import ForgotPassword from "./jsx/pages/ForgotPassword";
 
 const SignUp = lazy(() => import('./jsx/pages/Registration'));
 const ForgotPassword = lazy(() => import('./jsx/pages/ForgotPassword'));
@@ -24,17 +25,26 @@ const Login = lazy(() => {
 
 function App (props) {
     const dispatch = useDispatch();
+    const location = useLocation();
+    const currentPageURL = location.pathname.slice(0, location.pathname.lastIndexOf('/'));
+
     useEffect(() => {
-         checkAutoLogin(dispatch, props.history);
+        if(currentPageURL === '/reset-password' || currentPageURL === 'reset-password'){
+            // continue
+        }else{
+            checkAutoLogin(dispatch, props.history);
+        }
+
     }, [dispatch, props.history]);
+    /*
     
-    let routes = (  
+    */
+    let routes = (
         <Switch>
-            <Route path='/login' component={Login} />
+            <Route path='/login' component={Login}/>
             <Route path='/page-register' component={SignUp} />
-            <Route path='/forgot-password' component={ForgotPassword} />
+            <Route path='/forgot-password/' component={ForgotPassword} />
             <Route path='/reset-password/:token' component={ResetPassword} />
-            
         </Switch>
     );
     if (props.isAuthenticated) {
@@ -58,6 +68,7 @@ function App (props) {
 	}else{
 		return (
 			<div className="vh-100">
+                
                 <Suspense fallback={
                     <div id="preloader">
                         <div className="sk-three-bounce">
