@@ -97,7 +97,7 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
             </Accordion.Header>
             {data.id === SIDE_LISTS.ID ? (
               <Accordion.Collapse eventKey={`${i}`} id="collapseOne">
-                <div className="accordion-body card-body pt-0">
+                <div className="accordion-body card-body pt-0" style={{ maxHeight: "650px", overflowY: "scroll"}}>
                   {props.slides.map((slide, j) => {
                     return (
                       <div
