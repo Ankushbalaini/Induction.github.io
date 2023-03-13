@@ -1,9 +1,9 @@
-import { maxTime } from "date-fns";
+
 import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import swal from "sweetalert";
-import FiltersForAttempts from "../../Inductions/components/FilterForAttempts";
+
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -22,7 +22,7 @@ const Companydashboardlisting = () => {
   const [users, setUsers] = useState([]); // main listing data
   const [companyFilter, setCompanyFilter] = useState();
   const [inductionFilter, setInductionFilter] = useState();
-  const [resScore, setResScore] = useState();
+
   
 
   const handlepageLoad = async (e) => {
@@ -117,22 +117,6 @@ const scoresAll = dataset3.reduce((total, subArray) => {
 console.log(scoresAll, "here we have totals")
 
 
-// //for max scores
-// const totalAttemptsAll = users.reduce((acc, user) => {
-//   const { inductionID, correctAnswers, wrongAnswers} = user.result;
-//   const index = acc.findIndex((entry) => entry.inductionID === inductionID );
-//   if (index !== -1) {
-
-//     acc[index].result = correctAnswers + wrongAnswers;
-//   } else {
-   
-//     acc.push({ inductionID: user._id, totalMax: correctAnswers + wrongAnswers });
-//   }
-//   return acc;
-// }, []);
-
-// console.log(totalAttemptsAll, ".....total");
-
   const allTitles = users.map((i) => dataset1.push(i.inductions.title));
   const Details = users.map(i=>dataset2.push(i.inductions._id,i.inductions.title))
 
@@ -160,28 +144,35 @@ console.log(scoresAll, "here we have totals")
 
   const uniqueTitles = removeDuplicates(dataset1);
 
-  const updatedTotalAttempts = totalAttempts.map((item) => {
-    const { _id, total} = item;
-    const attempts = scores[_id] || 0; 
-    const averageScore = total > 0 ? (attempts / total) : 0; 
-
-    // const scoresAll = dataset3.reduce((total, subArray) => {
-    //   subArray.forEach((item) => {
-    //     const { correctAnswers,wrongAnswers, inductionID, } = item;
-    //     const scoreAsNumber = parseInt(correctAnswers);
-    //     const otherscoreAsNumber = parseInt(wrongAnswers);
-    //     // if (!total[inductionID]) {
-    //     //   total[inductionID] = 0;
-    //     // }
-    //     total = scoreAsNumber + otherscoreAsNumber;
-        
-    //   });
-    //   return total;
-      
-    // }, {});
+  // const updatedTotalAttempts = totalAttempts.map((item) => {
+  //   const { _id, total} = item;
+  //   const attempts = scores[_id] || 0; 
+  //   const averageScore = total > 0 ? (attempts / total) : 0; 
     
-    return { _id, title: item.title, total: attempts, totalCount: item.total, averageScore };
+  //   return { _id, title: item.title, total: attempts, totalCount: item.total, averageScore };
+  // });
+
+  const correctsofAll = {};
+  dataset3.forEach((subArray) => {
+    subArray.forEach((item) => {
+      const { correctAnswers, inductionID } = item;
+      const scoreAsNumber = parseInt(correctAnswers);
+      if (!correctsofAll[inductionID]) {
+        correctsofAll[inductionID] = 0;
+      }
+      correctsofAll[inductionID] += scoreAsNumber;
+    });
   });
+  console.log(correctsofAll, "here we have total corrects");
+
+  const updatedTotalAttempts = totalAttempts.map((item) => {
+    const { _id, total } = item;
+    const attempts = scoresAll[_id] || 0;
+    const totalCorrect = correctsofAll[_id] || 0;
+    const averageScore = total > 0 ? (totalCorrect / total) : 0;
+    return { _id, title: item.title, total: attempts, totalCount: item.total, averageScore, totalCorrect };
+  });
+  console.log(updatedTotalAttempts, "updated total attempts with scoresAll and correctsofAll");
 
   return (
     <div>
@@ -207,7 +198,7 @@ console.log(scoresAll, "here we have totals")
                   <th>Induction Title</th>
                   <th>Total Attempts</th>
                   <th>Average Score</th>
-                  {/* <th>Max Score</th> */}
+                  <th>Total Ques</th>
                 </tr>
               </thead>
               <tbody >
@@ -225,12 +216,12 @@ console.log(scoresAll, "here we have totals")
                       </div>
                      </td>
                     {/* <td>{user.total}</td> */}
-                    <td style={{fontSize:"18px"}}><span className="badge bg-info " style={{color:"white",fontFamily:"sans-serif"}}>{user.averageScore.toFixed(1)}</span></td>
-                    {/* <td>
+                    <td style={{fontSize:"18px"}}><span className="badge bg-info " style={{color:"white",fontFamily:"sans-serif"}}>{user.averageScore}</span></td>
+                    <td>
                       <div className="d-flex align-items-center">
-                        <h4 className="mb-0 fs-16 font-w500">{user.scoresAll}</h4>
+                        <h4 className="mb-0 fs-16 font-w500">{user.total}</h4>
                       </div>
-                    </td> */}
+                    </td>
                   </tr>
                 ))}
               </tbody>

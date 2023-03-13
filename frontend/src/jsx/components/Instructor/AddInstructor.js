@@ -29,7 +29,7 @@ const AddInstructor = () => {
   const [aboutMe, setAboutMe] = useState();
 
   // validation messages
-  let errorsObj = {
+  let errorObj = {
     email: "",
     password: "",
     name: "",
@@ -37,7 +37,7 @@ const AddInstructor = () => {
     parentDepartment: "",
     address:""
   };
-  const [errors, setErrors] = useState(errorsObj);
+  const [errors, setErrors] = useState(errorObj);
 
   const handleFileChange = async (e) => {
     const img = {
@@ -47,44 +47,67 @@ const AddInstructor = () => {
     setImage(img);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    let error = false;
-    const errorObj1 = { ...errorsObj }
+  //   let error = false;
+  //   const errorObj1 = { ...errorsObj }
 
-    if (email === "") {
-      errorObj1.email = "Email is required";
-      error = true;
-    }
-    if (password === "") {
-      errorObj1.password = "Password is required";
-      error = true;
-    }
-    if (name === "") {
-      errorObj1.name = "Name is required";
-      error = true;
-    }
-    if (parentCompany === "") {
-      errorObj1.parentCompany = "Parent company is required";
-      error = true;
-    }
-    if (parentDepartment === "") {
-      errorObj1.parentDepartment = "Parent Department is required";
-      error = true;
-    }
-    if (profilePhoto === "") {
-      errorObj1.profilePhoto = "Profile Picture is required";
-      error = true;
-    }
-    if (address === "") {
-      errorObj1.address = "Address is required";
-      error = true;
-    }
+  //   if (email === "") {
+  //     errorObj1.email = "Email is required";
+  //     error = true;
+  //   }
+  //   if (password === "") {
+  //     errorObj1.password = "Password is required";
+  //     error = true;
+  //   }
+  //   if (name === "") {
+  //     errorObj1.name = "Name is required";
+  //     error = true;
+  //   }
+  //   if (parentCompany === "") {
+  //     errorObj1.parentCompany = "Parent company is required";
+  //     error = true;
+  //   }
+  //   if (parentDepartment === "") {
+  //     errorObj1.parentDepartment = "Parent Department is required";
+  //     error = true;
+  //   }
+  //   if (profilePhoto === "") {
+  //     errorObj1.profilePhoto = "Profile Picture is required";
+  //     error = true;
+  //   }
+  //   if (address === "") {
+  //     errorObj1.address = "Address is required";
+  //     error = true;
+  //   }
     
-    setErrors(errorObj1);
+  //   setErrors(errorObj1);
 
-    if (error) return ;
+  //   if (error) return ;
+
+  let handleSubmit = async (e) => {
+    e.preventDefault();
+    let error = false;
+    const errorObj1 = { ...errorObj };
+    const fields = [
+      { inputV: "email", message: "Email is required" },
+      { inputV: "password", message: "Password is required" },
+      { inputV: "name", message: "Name is required" },
+      { inputV: "profilePhoto", message: "Profile Picture is required" },
+      { inputV: "address", message: "Instructor address is required" },
+      { inputV: "parentCompany", message:  "Parent company is required"},
+      { inputV: "parentDepartment", message: "Parent Department is required" },
+    ];
+    fields.forEach(({ inputV, message }) => {
+      if (eval(inputV) === "") {
+        errorObj1[inputV] = message;
+        error = true;
+      }
+    });
+    setErrors(errorObj1);
+    if (error) return;
+  // };
     
 
     const data = new FormData();
@@ -132,7 +155,7 @@ const AddInstructor = () => {
   function handleKeyPress(e) {
     var key = e.key;
    if (key == key) {
-        setErrors((errorsObj == false))
+        setErrors((errorObj == false))
     }
 }
 

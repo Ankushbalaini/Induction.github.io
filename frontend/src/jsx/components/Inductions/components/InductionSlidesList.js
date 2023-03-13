@@ -3,9 +3,8 @@ import { Tab, Nav, Accordion, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { TiTick } from "react-icons/ti";
-import { useKeyPressEvent } from "react-use";
 import swal from "sweetalert";
-import InductionTitle from "./InductionTitle";
+
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -139,7 +138,7 @@ const percentageforProgressbar = ((currentStep/totalSlides) *100) + "%";
                               <div class="d-flex justify-content-between align-items-center">
                                 <span className="acc-icon">
                                   {j < currentStep || complete ? (
-                                    <TiTick size={30} />
+                                    <TiTick style={{color: "#FF6A59", fontSize: '25px'}} />
                                   ) : (
                                     <svg
                                       width="16"
@@ -205,7 +204,7 @@ const percentageforProgressbar = ((currentStep/totalSlides) *100) + "%";
                 <div class="card accordion-item">
                   {currentStep === props.slides.length - 1 ? (
                     <Link
-                      className="btn btn-secondary"
+                      className="btn btn-success"
                       to={`/start-test/${inductionID}`}
                     >
                       Start Test

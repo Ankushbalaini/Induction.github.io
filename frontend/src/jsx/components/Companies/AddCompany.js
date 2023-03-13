@@ -41,40 +41,62 @@ const AddCompany = () => {
   };
 
   // on form submit
+  // let handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   let error = false;
+  //   const errorObj1 = { ...errorObj };
+
+  //   if (email === "") {
+  //     errorObj1.email = "Email is required";
+  //     error = true;
+  //   }
+  //   if (password === "") {
+  //     errorObj1.password = "Password is required";
+  //     error = true;
+  //   }
+  //   if (name === "") {
+  //     errorObj1.name = "Name is required";
+  //     error = true;
+  //   }
+  //   if (companyID === "") {
+  //     errorObj1.companyID = "Slug is required";
+  //     error = true;
+  //   }
+  //   if (image === "") {
+  //     errorObj1.image = "Logo is required";
+  //     error = true;
+  //   }
+  //   if (address === "") {
+  //     errorObj1.address = "Company address is required";
+  //     error = true;
+  //   }
+
+  //   setErrors(errorObj1);
+
+  //   if (error) return;
+
   let handleSubmit = async (e) => {
     e.preventDefault();
-
     let error = false;
     const errorObj1 = { ...errorObj };
-
-    if (email === "") {
-      errorObj1.email = "Email is required";
-      error = true;
-    }
-    if (password === "") {
-      errorObj1.password = "Password is required";
-      error = true;
-    }
-    if (name === "") {
-      errorObj1.name = "Name is required";
-      error = true;
-    }
-    if (companyID === "") {
-      errorObj1.companyID = "Slug is required";
-      error = true;
-    }
-    if (image === "") {
-      errorObj1.image = "Logo is required";
-      error = true;
-    }
-    if (address === "") {
-      errorObj1.address = "Company address is required";
-      error = true;
-    }
-
+    const fields = [
+      { inputV: "email", message: "Email is required" },
+      { inputV: "password", message: "Password is required" },
+      { inputV: "name", message: "Name is required" },
+      { inputV: "companyID", message: "Slug is required" },
+      { inputV: "image", message: "Logo is required" },
+      { inputV: "address", message: "Company address is required" },
+    ];
+    fields.forEach(({ inputV, message }) => {
+      if (eval(inputV) === "") {
+        errorObj1[inputV] = message;
+        error = true;
+      }
+    });
     setErrors(errorObj1);
-
     if (error) return;
+  // };
 
     const data = new FormData();
     data.append("name", name);
@@ -240,6 +262,7 @@ const AddCompany = () => {
                       placeholder=""
                       onChange={(e) => setAddress(e.target.value)}
                       value={address}
+                      onKeyPress={(e) => handleKeyPress(e)}
                     ></textarea>
                     {errors.address && (
                       <div Style="color:red;font-weight:400">

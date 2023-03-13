@@ -219,7 +219,7 @@ const CreateInduction = () => {
                       onKeyPress={(e) => handleKeyPress(e)}
                     />
                     {errors.title && (
-                      <div Style="color:red;font-weight:600;padding:5px;">
+                      <div Style="color:red;font-weight:400;padding:5px;">
                         {errors.title}
                       </div>
                     )}
@@ -239,7 +239,7 @@ const CreateInduction = () => {
                       onKeyPress={(e) => handleKeyPress(e)}
                     />
                     {errors.subTitle && (
-                      <div Style="color:red;font-weight:600;padding:5px;">
+                      <div Style="color:red;font-weight:400;padding:5px;">
                         {errors.subTitle}
                       </div>
                     )}
@@ -276,7 +276,7 @@ const CreateInduction = () => {
                           <CompanyDropdown prevSelected={parentCompany} />
                         </select>
                         {errors.parentCompany && (
-                          <div Style="color:red;font-weight:600;padding:5px;">
+                          <div Style="color:red;font-weight:400;padding:5px;">
                             {errors.parentCompany}
                           </div>
                         )}
@@ -300,7 +300,7 @@ const CreateInduction = () => {
                         </select>
 
                         {errors.deptID && (
-                          <div Style="color:red;font-weight:600;padding:5px;">
+                          <div Style="color:red;font-weight:400;padding:5px;">
                             {errors.deptID}
                           </div>
                         )}
@@ -325,7 +325,7 @@ const CreateInduction = () => {
                         <DepartmentByCompany parentCompany={id} />
                       </select>
                       {errors.deptID && (
-                        <div Style="color:red;font-weight:600;padding:5px;">
+                        <div Style="color:red;font-weight:400;padding:5px;">
                           {errors.deptID}
                         </div>
                       )}
@@ -350,7 +350,7 @@ const CreateInduction = () => {
                         <DepartmentByCompany parentCompany={id} />
                       </select>
                       {errors.deptID && (
-                        <div Style="color:red;font-weight:600;padding:5px;">
+                        <div Style="color:red;font-weight:400;padding:5px;">
                           {errors.deptID}
                         </div>
                       )}
