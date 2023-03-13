@@ -1,32 +1,35 @@
 const express = require("express");
-const fileupload = require('express-fileupload');
+const fileupload = require("express-fileupload");
 const cors = require("cors");
 const db = require("./app/models");
 const app = express();
+require("dotenv").config();
 
 app.use(cors());
+// app.use(allowCrossDomain);
+
 app.use(fileupload());
 // parse requests of content-type - application/json
 app.use(express.json());
 
-require("dotenv").config();
+//
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
-
 
 db.mongoose.set("strictQuery", false);
 // db.url
 db.mongoose
   .connect(
-    process.env.MONGODB_CONNECTION_STRING ,
+    process.env.MONGODB_CONNECTION_STRING ||
+      `mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }
   )
   .then(() => {
-    console.log(`Connected to the database! = env ${process.env.HOST}`);
+    console.log("Connected to the database!");
   })
   .catch((err) => {
     console.log("Cannot connect to the database!", err);
@@ -34,7 +37,7 @@ db.mongoose
   });
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 4000;
 
 // require("./app/routes/acl.routes")(app);
 require("./app/routes/users.routes")(app);
@@ -43,10 +46,10 @@ require("./app/routes/slide.routes")(app);
 require("./app/routes/company.routes")(app);
 require("./app/routes/department.routes")(app);
 require("./app/routes/instructor.routes")(app);
-
 require("./app/routes/students.route")(app);
 require("./app/routes/dashboard.routes")(app);
 require("./app/routes/mcq.routes")(app);
+require("./app/routes/auth.routes")(app);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);

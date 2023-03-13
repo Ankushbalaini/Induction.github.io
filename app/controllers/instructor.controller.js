@@ -7,6 +7,7 @@ const UserInductionResults = db.user_induction_results;
 
 var jwt = require("jsonwebtoken");
 const { instructor } = require("../models");
+var path = require("path");
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -388,6 +389,7 @@ exports.add = (req, res) => {
     // check who is adding instructor
     const user = req.decoded;
     const { email } = req.body;
+    var file_name ="";
     // logo validation
 
     if (!req.files || Object.keys(req.files).length === 0) {
@@ -399,7 +401,10 @@ exports.add = (req, res) => {
       }
     } else {
       var Img = req.files.profilePhoto;
-      var uploadPath = "images/profile/" + Img.name;
+      var extension = path.extname(Img.name);
+      var file_name = "ins-" + Date.now() + extension;
+
+      var uploadPath = "images/profile/" + file_name;
 
       Img.mv(uploadPath, function (err) {
         if (err) {
@@ -426,7 +431,7 @@ exports.add = (req, res) => {
     InstructorCred.instructor = instructorData._id;
     InstructorCred.save();
 
-    instructorData.profilePhoto = Img.name;
+    instructorData.profilePhoto = file_name;
 
     instructorData
       .save()
@@ -475,7 +480,10 @@ exports.edit = (req, res) => {
       }
     } else {
       var Img = req.files.image;
-      var uploadPath = "images/profile/" + Img.name;
+      var extension = path.extname(Img.name);
+      var file_name = "ins-" + Date.now() + extension;
+
+      var uploadPath = "images/profile/" + file_name;
 
       Img.mv(uploadPath, function (err) {
         if (err) {
@@ -485,7 +493,7 @@ exports.edit = (req, res) => {
           });
         }
       });
-      req.body.profilePhoto = Img.name;
+      req.body.profilePhoto = file_name;
     }
 
     InstructorTable.updateOne(

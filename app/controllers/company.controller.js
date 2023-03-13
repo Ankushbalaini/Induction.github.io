@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 var jwt = require("jsonwebtoken");
-
+var path = require("path");
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -44,91 +44,6 @@ exports.list = (req, res) => {
 };
 
 
-
-
-/*
- * @author Singh
- * @method : POST
- * @response JSON
- */
-exports.add_nk = (req, res) => {
-  // console.log(req.files);
-  try {
-    let logo;
-    let uploadPath;
-    const { email, password, name, address, aboutCompany } = req.body;
-
-    const data = {
-      email,
-      password,
-      company: {
-        name,
-        aboutCompany,
-        address,
-      },
-    };
-
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(500).send({
-        status: false,
-        message: "Logo is required!",
-      });
-    }
-
-    logo = req.files.logo;
-    uploadPath = "images/company/" + logo.name;
-
-    logo.mv(uploadPath, function (err) {
-      if (err) {
-        return res.status(500).send({
-          status: false,
-          message: err.message,
-        });
-      }
-
-      data.company.logo = logo.name;
-    });
-
-    var user = new userCredModel(data);
-    // Create token
-    const token = jwt.sign(
-      { _id: user._id, email: email, role: "company" },
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-      {
-        expiresIn: "2h",
-      }
-    );
-
-    // save user token
-    user.token = token;
-    user.status = true;
-    user.role = "company";
-    user
-      .save()
-      .then((user) => {
-        res.status(200).send({
-          status: true,
-          message: "company added successfully!",
-          data: user,
-        });
-      })
-      .catch((err) => {
-        res.status(400).send({
-          status: false,
-          message: err.message,
-        });
-      });
-
-    return;
-  } catch (err) {
-    return res.status(500).send({
-      status: false,
-      message: err.message,
-      data: req.files.logo,
-    });
-  }
-};
-
 exports.add = async (req, res) => {
   try {
     const { email, password, name, address, companyID, aboutCompany } =
@@ -153,7 +68,9 @@ exports.add = async (req, res) => {
       }
     } else {
       var Img = req.files.logo;
-      var uploadPath = "images/profile/" + Img.name;
+      var extension = path.extname(Img.name);
+      var file_name = "company-" + Date.now() + extension;
+      var uploadPath = "images/profile/" + file_name;
 
       Img.mv(uploadPath, function (err) {
         if (err) {
@@ -163,7 +80,7 @@ exports.add = async (req, res) => {
           });
         }
       });
-      data.logo = Img.name;
+      data.logo = file_name;
     }
 
     // Check if email already exists
@@ -179,7 +96,7 @@ exports.add = async (req, res) => {
     // Create token
     const token = jwt.sign(
       { userID: user._id, email: email, role: "company" },
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+      process.env.JWT_SECREAT_KEY,
       {
         expiresIn: "2h",
       }
@@ -284,7 +201,10 @@ exports.edit = (req, res) => {
     }
   } else {
     var Img = req.files.logo;
-    var uploadPath = "images/company/" + Img.name;
+
+    var extension = path.extname(Img.name);
+    var file_name = "company-" + Date.now() + extension;
+    var uploadPath = "images/company/" + file_name;
 
     Img.mv(uploadPath, function (err) {
       if (err) {
@@ -294,7 +214,7 @@ exports.edit = (req, res) => {
         });
       }
     });
-    saveData.logo = Img.name;
+    saveData.logo = file_name;
   }
 
   // Check for duplicate email
@@ -382,7 +302,9 @@ exports.update = (req, res) => {
       }
     } else {
       var Img = req.files.image;
-      var uploadPath = "images/company/" + Img.name;
+      var extension = path.extname(Img.name);
+      var file_name = "company-" + Date.now() + extension;
+      var uploadPath = "images/company/" + file_name;
 
       Img.mv(uploadPath, function (err) {
         if (err) {
@@ -392,7 +314,7 @@ exports.update = (req, res) => {
           });
         }
       });
-      saveData.logo = Img.name;
+      saveData.logo = file_name;
     }
 
     companyModel
