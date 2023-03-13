@@ -13,7 +13,7 @@ const USER_ROLES = {
   INSTRUCTOR: "instructor",
   USER: "user",
 };
- 
+
 const SIDE_LISTS = {
   ID: 101,
 };
@@ -75,8 +75,13 @@ function InductionSlidesList({ setCurrentSlideContent, ...props }) {
       }
     }
   };
-  
-const percentageforProgressbar = ((currentStep/totalSlides) *100) + "%";
+
+  let percentageforProgressbar = (currentStep / totalSlides) * 100 + "%";
+  if (percentageforProgressbar.includes(".")) {
+    percentageforProgressbar = percentageforProgressbar.trim();
+  }
+  const percentageAsNumber = parseFloat(percentageforProgressbar);
+
   //
   useEffect(() => {
     document.addEventListener("keydown", keyPress);
@@ -89,22 +94,27 @@ const percentageforProgressbar = ((currentStep/totalSlides) *100) + "%";
       <div className="card h-auto">
         <div className="card-header border-0 pb-0">
           <h4>Progress</h4>
-          <span className="font-w600">{percentageforProgressbar}</span>
+          <span className="font-w600">{percentageAsNumber}</span>
         </div>
         <div className="card-body pt-0">
           <div className="progress-box">
             <div className="progress ">
-
               <div
                 className="progress-bar bg-primary"
-                style={{ width:percentageforProgressbar, height: "12px", borderRadius: "4px" }}
+                style={{
+                  width: percentageforProgressbar,
+                  height: "12px",
+                  borderRadius: "4px",
+                }}
                 role="progressbar"
               ></div>
             </div>
 
             <div className="d-flex align-items-center justify-content-between">
               {/* <h1> title  </h1> */}
-              <span className="font-w600">{currentStep+1}/{totalSlides+1}</span>
+              <span className="font-w600">
+                {currentStep + 1}/{totalSlides + 1}
+              </span>
             </div>
           </div>
         </div>

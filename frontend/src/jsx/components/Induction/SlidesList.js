@@ -5,69 +5,31 @@ import { useSelector } from "react-redux";
 import ActionDropDown from "../Induction/components/ActionDropDownSlides";
 import { API_ROOT_URL } from "../../constants";
 
-const SlidesList = ({ Slides, inductionID ,changeSlideStatus  }) => {
+const SlidesList = ({
+  Slides,
+  inductionID,
+  changeSlideStatus,
+  deleteSlide,
+}) => {
   const navigate = useHistory();
   const token = useSelector((state) => state.auth.auth.token);
   const [loading, setLoading] = useState(true);
-  const { id } = useParams(); // this is induction id   
-
+  const { id } = useParams(); // this is induction id
 
   const trackOnclick = (payload, data) => {
     // console.log(data, ' edit ------');
     return navigate.push(`../update-slide/${data._id}`);
   };
 
-  const trackDeleteClick = (data,status) => {
-    changeSlideStatus(data._id, status);
-  };
-
-  // const changeSlideStatus = (id, status) => {
-  //   swal({
-  //     title: "Are you sure?",
-  //     text: `Once status Changed, Slide will not show inside slide listing for Users`,
-  //     icon: "warning",
-  //     buttons: true,
-  //     dangerMode: true,
-  //   }).then(async (willChange) => {
-  //     if (willChange) {
-  //       const response = await fetch(
-  //         `${API_ROOT_URL}/slides/${id}`,
-  //         {
-  //           method: "PUT",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             "x-access-token": token,
-  //           },
-  //           body: JSON.stringify({ status: (status) ? false : true }),
-  //         }
-  //       ).then((data) => data.json());
-  //       if ("status" in response && response.status == true) {
-  //         swal("Poof! Your slide status has been updated!", {
-  //           icon: "success",
-  //         }).then(() => {
-  //            setLoading(true);
-  //           // navigate.push(`/update-induction/${inductionID}`);
-  //         });
-  //       } else {
-  //         return swal("Failed", response.message, "error");
-  //       }
-  //     } else {
-  //       swal("Your status is not changed!");
-  //     }
-  //   });
-  // };
-  
-  useEffect(()=>{
-    console.log("rendering slide listing ...")
-  },[]);
-  
+  useEffect(() => {
+    console.log("rendering slide listing ...");
+  }, []);
 
   return (
     <table
       className="table display mb-4 dataTablesCard order-table card-table text-black application "
       id="application-tbl1_next"
     >
-      
       <thead>
         <tr>
           <th>Sr. No.</th>
@@ -96,7 +58,6 @@ const SlidesList = ({ Slides, inductionID ,changeSlideStatus  }) => {
                 className={`badge light ${
                   row.status ? "badge-success" : "badge-danger"
                 }`}
-                
                 onClick={() => changeSlideStatus(row._id, row.status)}
               >
                 {row.status ? "Active" : "Inactive"}
@@ -117,6 +78,7 @@ const SlidesList = ({ Slides, inductionID ,changeSlideStatus  }) => {
                 profileData={row}
                 //trackDeleteClick={trackDeleteClick}
                 changeSlideStatus={changeSlideStatus}
+                deleteSlide={deleteSlide}
               />
             </td>
           </tr>

@@ -85,7 +85,7 @@ const UpdateInduction = () => {
 
   /**
    *
-   * @param {*} 
+   * @param {*}
    * Update Induction main submit function
    *
    */
@@ -128,21 +128,6 @@ const UpdateInduction = () => {
     }
   };
 
-  const deleteResource = (id) => {
-    fetch(`${API_ROOT_URL}/slides/delete/${id}`, {
-      method: 'DELETE'
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        // Handle successful response
-      })
-      .catch(error => {
-        console.error('There was a problem deleting the resource:', error);
-      });
-  }
-
   const changeSlideStatus = (id, status) => {
     swal({
       title: "Are you sure?",
@@ -152,22 +137,19 @@ const UpdateInduction = () => {
       dangerMode: true,
     }).then(async (willChange) => {
       if (willChange) {
-        const response = await fetch(
-          `${API_ROOT_URL}/slides/${id}`,
-          {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-              "x-access-token": token,
-            },
-            body: JSON.stringify({ status: (status) ? false : true }),
-          }
-        ).then((data) => data.json());
+        const response = await fetch(`${API_ROOT_URL}/slides/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": token,
+          },
+          body: JSON.stringify({ status: status ? false : true }),
+        }).then((data) => data.json());
         if ("status" in response && response.status == true) {
           swal("Poof! Your slide status has been updated!", {
             icon: "success",
           }).then(() => {
-             setLoading(true);
+            setLoading(true);
             // navigate.push(`/update-induction/${inductionID}`);
           });
         } else {
@@ -177,9 +159,42 @@ const UpdateInduction = () => {
         swal("Your status is not changed!");
       }
     });
-    console.log(id,"id...")
+    console.log(id, "id...");
   };
 
+  // Deleteing Slides
+  const deleteSlide = (id) => {
+    swal({
+      title: "Are you sure?",
+      text: `Once Slide Deleted, Slide will not show inside slide listing for Users`,
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (willChange) => {
+      if (willChange) {
+        const response = await fetch(`${API_ROOT_URL}/slides/delete/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": token,
+          },
+        }).then((data) => data.json());
+        if ("status" in response && response.status == true) {
+          swal("Poof! Your slide has been Deleted!", {
+            icon: "success",
+          }).then(() => {
+            setLoading(true);
+            // navigate.push(`/update-induction/${inductionID}`);
+          });
+        } else {
+          return swal("Failed", response.message, "error");
+        }
+      } else {
+        swal("Your Slide is not Deleted!");
+      }
+    });
+    console.log(id, "id...");
+  };
 
   // Add question Modal POPUP
   const onClickHandler = () => {
@@ -393,7 +408,12 @@ const UpdateInduction = () => {
                 {/* <button className="btn btn-danger">Add New Slide</button> */}
               </div>
 
-              <SlidesList Slides={slides} inductionID={id} changeSlideStatus={changeSlideStatus} />
+              <SlidesList
+                Slides={slides}
+                inductionID={id}
+                changeSlideStatus={changeSlideStatus}
+                deleteSlide={deleteSlide}
+              />
 
               <div className="card-header">
                 <h4 className="card-title">Quiz</h4>

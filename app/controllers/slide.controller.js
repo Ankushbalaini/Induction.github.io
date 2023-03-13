@@ -146,3 +146,39 @@ exports.getBySlideId = (req, res) => {
     return res.status(404).send({ status: false, message: error.message });
   }
 };
+
+
+  exports.delete = (req, res) => {
+    const id = req.params.id;
+    if (!id) {
+      res.status(400).send({
+        status: false,
+        message: "Invalid ID",
+      });
+      return;
+    }
+  
+    SlideModel.findByIdAndRemove(id)
+      .then((data) => {
+        if (!data) {
+          res.status(404).send({
+            status: false,
+            message: "Slide not found",
+          });
+        } else {
+          res.send({
+            status:true,
+            message: "Slide Deleted Successfully !",
+            data: data,
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(500).send({
+          status: false,
+          message: err.message,
+        });
+      });
+  };
+  
+  

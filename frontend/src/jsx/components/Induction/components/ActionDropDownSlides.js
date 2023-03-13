@@ -9,11 +9,15 @@ export default function ActionDropDown(props) {
     console.log(props.profileData, "props.profileData...");
   };
 
-  const trackDeleteClick = () => {
-    props.changeSlideStatus(props.profileData._id, props.profileData.status);
-    // console.log(props.profileData._id,props.profileData.status,"props.idprops.id....")
-  };
-
+  // const trackDeleteClick = () => {
+  //   props.changeSlideStatus(props.profileData._id, props.profileData.status);
+  //   // console.log(props.profileData._id,props.profileData.status,"props.idprops.id....")
+  // };
+  
+    const trackDeleteClick =()=>{
+      props.deleteSlide(props.profileData._id)
+      console.log(props.profileData._id,"props.profileData._id...");
+    };
   return (
     <>
       <Dropdown>
