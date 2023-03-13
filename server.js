@@ -9,6 +9,8 @@ app.use(fileupload());
 // parse requests of content-type - application/json
 app.use(express.json());
 
+require("dotenv").config();
+
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
@@ -17,15 +19,14 @@ db.mongoose.set("strictQuery", false);
 // db.url
 db.mongoose
   .connect(
-    process.env.ATLAS_URL ||
-    `mongodb+srv://bjsadmin:admin@bjs-homedelivery.ql49p3z.mongodb.net/?retryWrites=true&w=majority&tls=true`,
+    process.env.MONGODB_CONNECTION_STRING ,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }
   )
   .then(() => {
-    console.log("Connected to the database!");
+    console.log(`Connected to the database! = env ${process.env.HOST}`);
   })
   .catch((err) => {
     console.log("Cannot connect to the database!", err);
