@@ -5,6 +5,7 @@ import { Dropdown, Button } from "react-bootstrap";
 import swal from "sweetalert";
 import PageTitle from "../../layouts/PageTitle";
 import LoadingSpinner from "../../pages/LoadingSpinner";
+//images
 import course1 from "./../../../images/courses/course1.jpg";
 import SideBar from "../../layouts/nav/SideBar";
 import { useSelector } from "react-redux";
@@ -18,7 +19,7 @@ const USER_ROLES = {
   USER: "user",
 };
 
- const images = require.context("../../../../../images/inductions/", true);
+// const images = require.context("../../../../../images/inductions/", true);
 
 function Inductions() {
   const navigate = useHistory();
@@ -84,7 +85,6 @@ function Inductions() {
       setLimit(response.pagination.limit);
 
       setData(document.querySelectorAll("#student_wrapper .cardDiv"));
-      // console.log(response,"RESPONSE")
     }
   };
   const [data, setData] = useState(
