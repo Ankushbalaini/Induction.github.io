@@ -23,11 +23,94 @@ const USER_ROLES = {
 exports.getMyInductionsCount = (req, res) => {};
 
 /**
+ *
+ * @param {*} req
+ * @param {*} res
+ * @returns
+ */
+exports.index = (req, res) => {
+  try {
+    const user = req.decoded;
+    var matchQuery = {};
+
+    switch (user.role) {
+      case USER_ROLES.SUPER_ADMIN:
+        matchQuery = {};
+        break;
+      case USER_ROLES.COMPANY:
+        matchQuery = {
+          $expr: { $eq: ["$parentCompany", ObjectId(user.userID)] },
+        };
+        break;
+      case USER_ROLES.INSTRUCTOR:
+        matchQuery = { $expr: { $eq: ["$createdBy", ObjectId(user.userID)] } };
+        break;
+      default:
+        matchQuery = {
+          $expr: { $eq: ["$parentCompany", ObjectId(user.parentCompany)] },
+        };
+        break;
+    }
+
+    Induction.aggregate([
+      {
+        $match: matchQuery,
+      },
+      {
+        $lookup: {
+          from: "induction_slides",
+          localField: "_id",
+          foreignField: "slideInductionId",
+          as: "slides",
+        },
+      },
+      {
+        $unwind: "$_id",
+      },
+      {
+        $project: {
+          _id: 1,
+          title: "$title",
+          subTitle: "$subTitle",
+          thumbnail: "$thumbnail",
+          description: 1,
+          deptID: 1,
+          parentCompany: 1,
+          createdBy: 1,
+          numOfSlides: { $size: "$slides" },
+        },
+      },
+    ])
+      .then((data) => {
+        return res.status(200).send({
+          status: true,
+          message: "All Inductions",
+          data: data,
+          pagination: {
+            totalRecords: data.length,
+          },
+        });
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          status: false,
+          message: err.message,
+        });
+      });
+  } catch (err) {
+    return res.status(403).send({
+      status: false,
+      message: err.message,
+    });
+  }
+};
+
+/**
  * @method get
  *
  * @author Singh
  */
-exports.index = async (req, res) => {
+exports.index_org = async (req, res) => {
   // get token
   // verify token
 
@@ -365,7 +448,6 @@ exports.filterByCompany = async (req, res) => {
           parentCompany: 1,
           createdBy: 1,
           numOfSlides: { $size: "$slides" },
-          slides: "$slides",
         },
       },
     ])
@@ -1297,12 +1379,6 @@ exports.update = (req, res) => {
   try {
     const inductionID = req.params.id;
 
-
-    // return res.status(500).send({
-    //   status: false,
-    //   message: req.body,
-    // });
-    
     Induction.updateOne(
       { _id: inductionID },
       { $set: req.body },
@@ -1319,16 +1395,15 @@ exports.update = (req, res) => {
             status: false,
             message: "Induction not found!",
           });
-        }else{
+        } else {
           return res.status(200).send({
             status: true,
-            message: "",
-            data: induction
+            message: "Induction updated successfully!",
+            data: induction,
           });
         }
       }
     );
-
   } catch (err) {
     return res.status(500).send({
       status: false,
@@ -1336,3 +1411,9 @@ exports.update = (req, res) => {
     });
   }
 };
+
+
+
+
+
+

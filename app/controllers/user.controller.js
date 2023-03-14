@@ -1,10 +1,12 @@
+const Utility = require('./utility.controller');
+
 const db = require("../models");
 const UserCred = db.user_cred;
 const User = db.users;
 const CompanyDB = db.company;
 const UserInductionResults = db.user_induction_results;
 const Inductions = db.induction;
-
+const fs = require('fs');
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 require("dotenv").config();
@@ -13,6 +15,8 @@ var path = require("path");
 var jwt = require("jsonwebtoken");
 var nodemailer = require("nodemailer");
 const e = require("express");
+
+
 
 var transport = nodemailer.createTransport({
   host: process.env.MAIL_HOST, // "smtp.mailtrap.io",
@@ -68,7 +72,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a Tutorial by the id in the request
+// Update a User by the id in the request
 exports.update = (req, res) => {
   var userEmail = req.decoded.email; // get from auth token
   var role = req.decoded.role;
@@ -451,67 +455,6 @@ exports.signUp = (req, res) => {
   return;
 };
 
-exports.signUp_org = (req, res) => {
-  const { first_name, last_name, email, password, role } = req.body;
-
-  // Validate request
-  if (!first_name || !last_name || !email || !password) {
-    res.status(500).send({
-      status: false,
-      message: "Fields can not be empty!",
-    });
-  } else {
-    // Save entry in user cred table
-
-    const user_cred = new UserCred({ ...req.body });
-    const token = jwt.sign(
-      { userID: user_cred._id, email: user_cred.email, role: user_cred.role },
-      process.env.JWT_SECREAT_KEY,
-      {
-        expiresIn: "2h",
-      }
-    );
-
-    req.body.userID = user_cred._id;
-    const user_detail = req.body;
-    const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
-    const newuser = new User(userWithoutPwd);
-    user_cred.profile = newuser._id;
-
-    // here call save function
-    user_cred
-      .save()
-      .then((user) => {
-        //const user_detail = req.body;
-        //const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
-        //const newuser = new User(userWithoutPwd);
-
-        newuser
-          .save()
-          .then((data) => {
-            return res.status(200).send({
-              status: true,
-              message: "User registered successfully!",
-              data: user_cred,
-            });
-          })
-          .catch((err) => {
-            return res.status(400).send({
-              status: false,
-              message: err.message,
-            });
-          });
-      })
-      .catch((err) => {
-        return res.status(400).send({
-          status: false,
-          message: err.message,
-        });
-      });
-  }
-  return;
-};
-
 /**
  *
  * @param {req} req
@@ -767,28 +710,58 @@ exports.getProfile = async (req, res) => {
  * @param req
  * @param res
  */
-exports.edit = async (req, res) => {
+exports.edit = (req, res) => {
+
   const id = req.params.id; // user id who needs to update
-  if (!req.files || Object.keys(req.files).length === 0) {
+  /*
+  if (! req.files || Object.keys(req.files).length === 0) {
     if (req.body.profilePhoto === "") {
       return res.status(500).send({
         status: false,
         message: "Profile image is required!",
       });
     }
+  }else{
+    const response = Utility.uploadFile(req.files, req.body.profilePhoto);
+    if(!response){
+      return res.status(500).send({
+        status: false,
+        message: "Profile image is required!",
+      });
+    }
+    req.body.profilePhoto = response;
+  }
+  */
+
+  if (! req.files || Object.keys(req.files).length === 0) {
+    if (req.body.profilePhoto === "") {
+      return res.status(500).send({
+        status: false,
+        message: "Profile image is required!",
+      });
+    }
+
   } else {
     let Img = req.files.image;
     var extension = path.extname(Img.name);
-    var file_name = "user-" + Date.now() + extension;
+    var file_name = `user-${Date.now()}${extension}`;
+    let uploadPath = `${process.env.UPLOADS_PATH}/profile/${file_name}`;
+    const oldProfilePic =  req.body.profilePhoto;
 
-    let uploadPath = "images/profile/" + file_name;
+
     Img.mv(uploadPath, function (err) {
       if (err) {
-        return res.status(500).send({
+        return res.status(403).send({
           status: false,
           message: err.message,
         });
       }
+
+      if (req.body.profilePhoto !== "" && req.body.profilePhoto!=='dummy-user.png') {
+        // delete previous profile image
+        Utility.unlinkFile(oldProfilePic);
+      }
+
     });
     req.body.profilePhoto = file_name;
   }
@@ -982,7 +955,3 @@ exports.changeUserStatus = (req, res) => {
 };
 
 
-
-function revokeAccessToken (token) {
-
-}
