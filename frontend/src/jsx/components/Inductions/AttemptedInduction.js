@@ -7,6 +7,7 @@ import PageTitle from "../../layouts/PageTitle";
 import UserAttemptedInductioList from "../Modals/UserAttemptedInductioList";
 import FiltersForAttempts from "./components/FilterForAttempts";
 import {API_ROOT_URL} from "../../constants";
+import LoadingSpinner from "../../pages/LoadingSpinner";
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -90,7 +91,7 @@ const InductionUsers = () => {
   return (
     <>
       {loading ? (
-        <h3>Loading</h3>
+        <LoadingSpinner />
       ) : (
         <>
         <PageTitle activeMenu="Attempted Induction" motherMenu="Inductions" />

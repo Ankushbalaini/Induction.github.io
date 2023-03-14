@@ -6,6 +6,7 @@ import { getData } from "../APIs";
 import UsersTable from "./UsersTable";
 import PageTitle from "../../layouts/PageTitle";
 import { API_ROOT_URL } from "../../constants";
+import LoadingSpinner from "../../pages/LoadingSpinner";
 
 const UnassignedUsers = () => {
   const token = useSelector((state) => state.auth.auth.token);
@@ -111,7 +112,7 @@ const UnassignedUsers = () => {
   return (
     <>
       {loading ? (
-        <h3>Loading</h3>
+        <LoadingSpinner/>
       ) : (
         <>
           <PageTitle activeMenu="Unassigned Users" motherMenu="Users" />
@@ -123,7 +124,7 @@ const UnassignedUsers = () => {
 
                   <div class="input-group search-area w-auto">
                     <span class="input-group-text">
-                      <a href="/react/demo/instructor-students">
+                      <Link to="/unassigned-users">
                         <svg
                           width="24"
                           height="24"
@@ -136,7 +137,7 @@ const UnassignedUsers = () => {
                             fill="var(--primary)"
                           ></path>
                         </svg>
-                      </a>
+                      </Link>
                     </span>
                     <input
                       type="text"

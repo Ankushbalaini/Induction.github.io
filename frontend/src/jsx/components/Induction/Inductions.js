@@ -4,13 +4,12 @@ import "swiper/css";
 import { Dropdown, Button } from "react-bootstrap";
 import swal from "sweetalert";
 import PageTitle from "../../layouts/PageTitle";
-
-//images
+import LoadingSpinner from "../../pages/LoadingSpinner";
 import course1 from "./../../../images/courses/course1.jpg";
 import SideBar from "../../layouts/nav/SideBar";
 import { useSelector } from "react-redux";
 import CompanyDropdown from "../Companies/CompanyDropdown";
-import { API_ROOT_URL } from "../../constants";
+import { API_ROOT_URL, INDUCTION_ASSETS_URL } from "../../constants";
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -19,7 +18,7 @@ const USER_ROLES = {
   USER: "user",
 };
 
-const images = require.context("../../../../../images/inductions/", true);
+ const images = require.context("../../../../../images/inductions/", true);
 
 function Inductions() {
   const navigate = useHistory();
@@ -47,8 +46,7 @@ function Inductions() {
   }
 
   async function filterInductions(page, companyID) {
-    let filterInductionsApi =
-      `${API_ROOT_URL}/induction/filter/by/company?page=${page}&filterByCompany=${companyID}`;
+    let filterInductionsApi = `${API_ROOT_URL}/induction/filter/by/company?page=${page}&filterByCompany=${companyID}`;
     if (companyID == "all") {
       filterInductionsApi = `${API_ROOT_URL}/induction?page=${page}`;
     }
@@ -61,17 +59,17 @@ function Inductions() {
     }).then((data) => data.json());
   }
 
-  const loadImage = (imageName) => {
-    return images(`./${imageName}`);
-  };
+  // const loadImage = (imageName) => {
+  //   return images(`./${imageName}`);
+  // };
 
   const filterByCompany = async (companyID) => {
+    setloading(true);
     setSource("filter");
     setFilterCompany(companyID);
     const response = await filterInductions(page, companyID);
     if ("status" in response && response.status == true) {
       setInductions(response.data);
-      //return;
       setloading(false);
       setData(document.querySelectorAll("#student_wrapper .cardDiv"));
     }
@@ -98,14 +96,7 @@ function Inductions() {
   const [profileData, setProfileData] = useState();
   const [isUserStatusChanged, setIsUserStatusChanged] = useState(false);
 
-  // use effect
-  useEffect(() => {
-    if (source == "filter") {
-      filterByCompany(filterCompany);
-    } else {
-      handleGetInduction(page);
-    }
-  }, [page, loading, totalRecords]);
+  
 
   const [test, settest] = useState(0);
   const sort = 6;
@@ -168,8 +159,19 @@ function Inductions() {
   //   setKeyarr(event.code === 'ArrowUp' ? "up arrow" : "nothing");
   // };
 
+  // use effect
+  useEffect(() => {
+    console.log("-------- here -----");
+    if (source == "filter") {
+      filterByCompany(filterCompany);
+    } else {
+      handleGetInduction(page);
+    }
+  }, [page, totalRecords]);
+  
   const content = loading ? (
-    <h1>Loading</h1>
+    <LoadingSpinner />
+
   ) : (
     <>
       <PageTitle activeMenu="Inductions" motherMenu="Inductions" />
@@ -184,7 +186,7 @@ function Inductions() {
               className="form-control"
               onChange={(e) => filterByCompany(e.target.value)}
             >
-              <option value="all">All</option>
+              <option value="all">All Companies</option>
               <CompanyDropdown />
             </select>
           </div>
@@ -233,11 +235,17 @@ function Inductions() {
                 <div className="courses-bx">
                   <div className="dlab-media">
                     {data.thumbnail !== "" ? (
+                      // <img
+                      //   className="img-fluid"
+                      //   src={loadImage(data.thumbnail)}
+                      //   alt=""
+                      // />
                       <img
                         className="img-fluid"
-                        src={loadImage(data.thumbnail)}
-                        alt=""
+                        src={`${INDUCTION_ASSETS_URL}/${data.thumbnail}`}
+                        alt={data.thumbnail}
                       />
+
                     ) : (
                       <img className="img-fluid" src={course1} />
                     )}

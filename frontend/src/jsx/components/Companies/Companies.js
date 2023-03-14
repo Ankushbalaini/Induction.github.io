@@ -7,6 +7,7 @@ import { useHistory, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Table from "./DataTable";
 import { API_ROOT_URL } from "../../constants"; 
+import LoadingSpinner from "../../pages/LoadingSpinner";
 
 // api call
 async function getCompanies(token) {
@@ -165,7 +166,8 @@ const Companies = () => {
   };
 
   const pageContent = loading ? (
-    <h1>loading</h1>
+    <LoadingSpinner />
+    
   ) : (
     <Fragment>
       <PageTitle activeMenu="All Companies" motherMenu="Company" />
@@ -174,7 +176,7 @@ const Companies = () => {
         <div className="col-xl-12">
           <div className="card students-list">
             <div className="card-header border-0 flex-wrap pb-0">
-              <h2>Company List</h2>
+            <h4 className="card-tAdditlhandleSubmite">Company List</h4>
             </div>
             <div className="card-body">
               <div className="table-responsive">

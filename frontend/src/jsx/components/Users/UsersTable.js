@@ -4,9 +4,9 @@ import swal from "sweetalert";
 import { useSelector } from "react-redux";
 import ActionDropDown from "./ActionDropDown";
 import UserPopup from "./UserPopup";
-import { API_ROOT_URL } from "../../constants";
+import { API_ROOT_URL, PROFILE_ASSETS_URL } from "../../constants";
 
-const images = require.context("../../../../../images/profile/", true);
+// const images = require.context("../../../../../images/profile/", true);
 
 /**
  * User Table Used in Unassigned User listing
@@ -19,9 +19,9 @@ function UsersTable({ filteredUsers, checkUserUpdated, redirectTo }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profileData, setProfileData] = useState();
 
-  const loadImage = (imageName) => {
-    return images(`./${imageName}`);
-  };
+  // const loadImage = (imageName) => {
+  //   return images(`./${imageName}`);
+  // };
 
   const trackDeleteClick = () => {};
 
@@ -89,7 +89,12 @@ function UsersTable({ filteredUsers, checkUserUpdated, redirectTo }) {
             <tr key={index}>
               <td>
                 <div className="d-flex align-items-center">
-                  <img src={loadImage(user?.profile?.profilePhoto)} alt="" />
+                  {/* <img src={loadImage(user?.profile?.profilePhoto)} alt="" /> */}
+
+                  <img
+                    src={`${PROFILE_ASSETS_URL}/${user.profile.profilePhoto}`}
+                    alt={user?.profile?.profilePhoto}
+                  />
                   <h4 className="mb-0 fs-16 font-w500">
                     {user.profile?.first_name} {user.profile?.last_name}
                   </h4>

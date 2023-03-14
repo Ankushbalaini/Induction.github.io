@@ -7,6 +7,7 @@ import DepartmentByCompany from "../Department/DepartmentByCompany";
 import Table from "./DataTable";
 import PageTitle from "../../layouts/PageTitle";
 import { API_ROOT_URL } from "../../constants";
+import LoadingSpinner from "../../pages/LoadingSpinner";
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -59,7 +60,7 @@ const Instructors = () => {
   const token = useSelector((state) => state.auth.auth.token);
   const parentCompany = useSelector((state) => state.auth.auth.id);
 
-  const [companyID, setCompanyID] = useState();
+  const [loading, setLoading] = useState(true);
   const [deptID, setDeptID] = useState();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -181,7 +182,7 @@ const Instructors = () => {
       /* Prepare data for instructor data-table list, start */
       setInstructosList(response.data);
     } else {
-      return swal("Failed", "Error message", "error");
+      return swal("Failed", response.message, "error");
     }
 
 
@@ -197,66 +198,70 @@ const Instructors = () => {
       if ("status" in response && response.status == true) {
         /* Prepare data for instructor data-table list, start */
         setInstructosList(response.data);
+        setLoading(false);
       } else {
-        return swal("Failed", "Error message", "error");
+        setLoading(false);
+        return swal("Failed", response.message , "error");
       }
     };
     handlepageLoad();
-  }, [isModalOpen, isUserStatusChanged]);
+  }, [isModalOpen, isUserStatusChanged, loading]);
 
-  return (
+
+  const pageContent = loading ? ( <LoadingSpinner /> ) : (
     <>
-      <PageTitle activeMenu="Instructor List" motherMenu="Instructors" />
-      <div className="row">
-        <div className="col-xl-12">
-          <div className="card students-list">
-            <div className="card-header border-0 flex-wrap pb-0">
-              <h2>Instructor List</h2>
-              <div className="col-sm-3">
-                { USER_ROLES.SUPER_ADMIN === role ?
-                (<select
-                  name="parentCompany"
-                  className="form-cdeptIDontrol"
-                  onChange={(e) => filterByCompany(e.target.value)}
-                >
-                  <option value="all">All</option>
-                  <CompanyDropdown/>
-                </select> ) : 
-                USER_ROLES.COMPANY === role ?
-                  <>
-                    <label>Select Department </label>
-                    <select
-                      name="deptID"
-                      className="form-control"
-                      value={deptID}
-                      onChange={(e) => filterByDepartment(e) }
-                    >
-                      <option value="all">All</option>
-                      <DepartmentByCompany parentCompany={userID} />
-                    </select>
-                  </>
-                
-                : null  }
-              </div>
+    <PageTitle activeMenu="Instructor List" motherMenu="Instructors" />
+    <div className="row">
+      <div className="col-xl-12">
+        <div className="card students-list">
+          <div className="card-header border-0 flex-wrap pb-0">
+
+            <h4 className="card-titlhandleSubmite">Instructor List</h4>
+            <div className="col-sm-3">
+              { USER_ROLES.SUPER_ADMIN === role ?
+              (<select
+                name="parentCompany"
+                className="form-cdeptIDontrol"
+                onChange={(e) => filterByCompany(e.target.value)}
+              >
+                <option value="all">All</option>
+                <CompanyDropdown/>
+              </select> ) : 
+              USER_ROLES.COMPANY === role ?
+                <>
+                  <label>Select Department </label>
+                  <select
+                    name="deptID"
+                    className="form-control"
+                    value={deptID}
+                    onChange={(e) => filterByDepartment(e) }
+                  >
+                    <option value="all">All</option>
+                    <DepartmentByCompany parentCompany={userID} />
+                  </select>
+                </>
+              
+              : null  }
             </div>
-            <div className="card-body ">
-              <div className="table-responsive">
-                <div id="student_wrapper" className="dataTables_wrapper ">
-                  {/* <Table data={data} click={clickhandler} /> */}
-                </div>
-                <Table
-                  data={instructorsList}
-                  trackOnclick={trackOnclick}
-                  trackDeleteClick={trackDeleteClick}
-                  changeUserStatus={changeUserStatus}
-                />
+          </div>
+          <div className="card-body ">
+            <div className="table-responsive">
+              <div id="student_wrapper" className="dataTables_wrapper ">
+                {/* <Table data={data} click={clickhandler} /> */}
               </div>
+              <Table
+                data={instructorsList}
+                trackOnclick={trackOnclick}
+                trackDeleteClick={trackDeleteClick}
+                changeUserStatus={changeUserStatus}
+              />
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-    
+  
       { isModalOpen  ? 
       <UpdateProfile
         isModalOpen={isModalOpen}
@@ -265,6 +270,10 @@ const Instructors = () => {
       ></UpdateProfile>
       : null }
     </>
+    );
+
+  return (
+    <>{pageContent}</>
   );
 };
 export default Instructors;

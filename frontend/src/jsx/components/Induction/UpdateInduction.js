@@ -12,6 +12,7 @@ import DepartmentByCompany from "../Department/DepartmentByCompany";
 import swal from "sweetalert";
 import { Link, useHistory } from "react-router-dom";
 import { API_ROOT_URL } from "../../constants";
+import LoadingSpinner from "../../pages/LoadingSpinner";
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -214,7 +215,7 @@ const UpdateInduction = () => {
   }, [loading, parentCompany, deptID]);
 
   const pageContent = loading ? (
-    <h1>Loading</h1>
+    <LoadingSpinner />
   ) : (
     <>
       <PageTitle activeMenu="Update Induction" motherMenu="Induction" />

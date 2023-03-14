@@ -10,6 +10,7 @@ const Induction = db.induction;
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 var jwt = require("jsonwebtoken");
+var path = require("path");
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -135,7 +136,10 @@ exports.add = async (req, res) => {
       }
     } else {
       var Img = req.files.logo;
-      var uploadPath = "images/profile/" + Img.name;
+      var extension = path.extname(Img.name);
+      var file_name = "company-" + Date.now() + extension;
+      var uploadPath = "images/profile/" + file_name;
+
       Img.mv(uploadPath, function (err) {
         if (err) {
           return res.status(500).send({
@@ -144,7 +148,7 @@ exports.add = async (req, res) => {
           });
         }
       });
-      data.logo = Img.name;
+      data.logo = file_name;
     }
     // Check if email already exists
     const existingUser = await userCredModel.findOne({ email });
@@ -158,7 +162,7 @@ exports.add = async (req, res) => {
     // Create token
     const token = jwt.sign(
       { userID: user._id, email: email, role: "company" },
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+      process.env.JWT_SECREAT_KEY,
       {
         expiresIn: "2h",
       }
@@ -253,7 +257,11 @@ exports.edit = (req, res) => {
     }
   } else {
     var Img = req.files.logo;
-    var uploadPath = "images/company/" + Img.name;
+
+    var extension = path.extname(Img.name);
+    var file_name = "company-" + Date.now() + extension;
+    var uploadPath = "images/company/" + file_name;
+
     Img.mv(uploadPath, function (err) {
       if (err) {
         return res.status(500).send({
@@ -262,7 +270,7 @@ exports.edit = (req, res) => {
         });
       }
     });
-    saveData.logo = Img.name;
+    saveData.logo = file_name;
   }
   // Check for duplicate email
   companyModel.findOne(
@@ -343,7 +351,10 @@ exports.update = (req, res) => {
       }
     } else {
       var Img = req.files.image;
-      var uploadPath = "images/company/" + Img.name;
+      var extension = path.extname(Img.name);
+      var file_name = "company-" + Date.now() + extension;
+      var uploadPath = "images/company/" + file_name;
+
       Img.mv(uploadPath, function (err) {
         if (err) {
           return res.status(500).send({
@@ -352,7 +363,7 @@ exports.update = (req, res) => {
           });
         }
       });
-      saveData.logo = Img.name;
+      saveData.logo = file_name;
     }
     companyModel
       .findByIdAndUpdate(id, { ...saveData }, { useFindAndModify: true })

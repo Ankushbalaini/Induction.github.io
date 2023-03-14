@@ -11,9 +11,8 @@ import { useSelector } from "react-redux";
 
 import { Button, Dropdown, Modal } from "react-bootstrap";
 import UpdateProfile from "./UpdateProfile";
-import { API_ROOT_URL } from "../../constants";
-
-const images = require.context("../../../../../images/profile", true);
+import { API_ROOT_URL, PROFILE_ASSETS_URL } from "../../constants";
+import LoadingSpinner from "../../pages/LoadingSpinner";
 
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
@@ -40,7 +39,7 @@ const WidgetBlog = ({ changeImage, title, link, nos }) => {
                   <span>{title}</span>
                 </div>
               </div>
-              <Link to={link}>
+              <Link to={`/${link}`}>
                 <i className="las la-angle-right text-primary"></i>
               </Link>
             </div>
@@ -79,12 +78,10 @@ const Profile = () => {
     setIsModalOpen(payload);
   };
 
-  
   const trackDeleteClick = () => {
     swal({
       title: "Are you sure?",
-      text:
-        "Once deleted, you will not be able to recover this record!",
+      text: "Once deleted, you will not be able to recover this record!",
       icon: "warning",
       buttons: true,
       dangerMode: true,
@@ -96,13 +93,12 @@ const Profile = () => {
       } else {
         swal("Your record is safe!");
       }
-    })
-  }
-
-
-  const loadImage = (imageName) => {
-    return images(`./${imageName}`);
+    });
   };
+
+  // const loadImage = (imageName) => {
+  //   return images(`./${imageName}`);
+  // };
 
   // hook
   useEffect(() => {
@@ -119,7 +115,7 @@ const Profile = () => {
   };
 
   const pageContent = loading ? (
-    <h2>Loading</h2>
+    <LoadingSpinner />
   ) : (
     <>
       <div className="row">
@@ -133,7 +129,11 @@ const Profile = () => {
             </div>
             <div className="card-body text-center pb-3">
               <div className="instructors-media">
-                <img src={loadImage(profileData.profile.profilePhoto)} alt="" />
+                {/* <img src={loadImage(profileData.profile.profilePhoto)} alt="" /> */}
+                <img
+                  src={`${PROFILE_ASSETS_URL}/${profileData.profile.profilePhoto}`}
+                  alt={profileData.profile.profilePhoto}
+                />
 
                 <div className="instructors-media-info mt-4">
                   <h4 className="mb-1">
@@ -202,7 +202,7 @@ const Profile = () => {
                   nos={profileData.totalUsers}
                 />
               </>
-            ) : null }
+            ) : null}
 
             {USER_ROLES.SUPER_ADMIN === role ? (
               <>

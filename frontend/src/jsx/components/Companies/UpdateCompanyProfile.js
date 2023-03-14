@@ -7,7 +7,7 @@ import { Last } from "react-bootstrap/esm/PageItem";
 import { useHistory } from "react-router-dom";
 import { API_ROOT_URL } from "../../constants";
 
-const images = require.context("../../../../../images/profile", true);
+// const images = require.context("../../../../../images/profile", true);
 
 const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
   const navigate = useHistory();
@@ -32,9 +32,9 @@ const UpdateCompanyProfile = ({ isModalOpen, trackOnclick, companyData }) => {
     trackOnclick(false);
   };
 
-  const loadImage = (imageName) => {
-    return images(`./${imageName}`);
-  };
+  // const loadImage = (imageName) => {
+  //   return images(`./${imageName}`);
+  // };
 
   const handleFileChange = async (e) => {
     const img = {

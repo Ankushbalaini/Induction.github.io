@@ -5,9 +5,9 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import LogoutPage from "./Logout";
 import avatar from "../../../images/avatar/1.jpg";
 import { useSelector } from "react-redux";
-import { API_ROOT_URL } from "../../constants";
+import { API_ROOT_URL, PROFILE_ASSETS_URL} from "../../constants";
 
-const images = require.context("../../../../../images/profile", true);
+// const images = require.context("../../../../../images/profile", true);
 
 const NotificationBlog = ({ classChange }) => {
   return (
@@ -61,6 +61,7 @@ async function getProfileApi(token) {
 
 const Header = ({ onNote }) => {
   const [rightSelect, setRightSelect] = useState("Eng");
+  const [loading, setloading] = useState(true);
   const token = useSelector((state) => state.auth.auth.token);
   const role = useSelector((state) => state.auth.auth.role);
   const [img, setImg] = useState("dummy-user.png");
@@ -73,27 +74,40 @@ const Header = ({ onNote }) => {
       if (role === "company") {
         setImg(response.data.profile.logo);
         setProfileLink("company-profile");
+        
       } else if (role === "instructor") {
         setImg(response.data.profile.profilePhoto);
         setProfileLink("instructor-profile");
+        
       } else {
         setImg(response.data.profile.profilePhoto);
         setProfileLink("profile");
       }
     }
+    setloading(false);
   };
 
-  const loadImage = (imageName) => {
-    return images(`./${imageName}`);
-  };
+  // const loadImage = (imageName) => {
+  //   return images(`./${imageName}`);
+  // };
 
   //For fix header
   const [headerFix, setheaderFix] = useState(false);
   useEffect(() => {
+    console.log("header loaded");
+
     window.addEventListener("scroll", () => {
       setheaderFix(window.scrollY > 50);
     });
+
     getProfile();
+
+    return () => {
+      window.removeEventListener("scroll", () => {
+        setheaderFix(window.scrollY > 50);
+      });
+    }
+
   }, []);
 
   //const [searchBut, setSearchBut] = useState(false);
@@ -473,14 +487,87 @@ const Header = ({ onNote }) => {
                       as="a"
                       className="nav-link i-false c-pointer"
                     >
-                      <img src={loadImage(img)} width={20} alt="" />
+                      {/* <img src={loadImage(img)} width={20} alt="" /> */}
+                      <img src={`${PROFILE_ASSETS_URL}/${img}`} alt={img} width={20}/>
                     </Dropdown.Toggle>
                     <Dropdown.Menu
                       align="right"
                       className="dropdown-menu dropdown-menu-end"
                     >
+
+
+                    {
+                    (role === "company") ? 
                       <Link
-                        to={`/${profileLink}`}
+                    to={`/company-profile`}
+                    className="dropdown-item ai-icon" >
+                      <svg
+                          id="icon-user1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="text-primary me-1"
+                          width={18}
+                          height={18}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                          <circle cx={12} cy={7} r={4} />
+                        </svg>
+                        <span className="ms-2">Profile</span>
+                    </Link>
+                    : (role === "instructor") ? 
+                   
+                    <Link
+                    to={`/instructor-profile`}
+                    className="dropdown-item ai-icon" >
+                      <svg
+                          id="icon-user1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="text-primary me-1"
+                          width={18}
+                          height={18}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                          <circle cx={12} cy={7} r={4} />
+                        </svg>
+                        <span className="ms-2">Profile </span>
+                    </Link>
+
+                    : <Link
+                    to={`/profile`}
+                    className="dropdown-item ai-icon" >
+                      <svg
+                          id="icon-user1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="text-primary me-1"
+                          width={18}
+                          height={18}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                          <circle cx={12} cy={7} r={4} />
+                        </svg>
+                        <span className="ms-2">Profile</span>
+                    </Link>
+                    }
+
+                      {/* <Link
+                        to={`/${profileLink || "undefined link"}`}
                         className="dropdown-item ai-icon"
                       >
                         <svg
@@ -499,8 +586,8 @@ const Header = ({ onNote }) => {
                           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                           <circle cx={12} cy={7} r={4} />
                         </svg>
-                        <span className="ms-2">Profile</span>
-                      </Link>
+                        <span className="ms-2">Profile {profileLink}</span>
+                      </Link> */}
 
                       <Link to={`/setting`} className="dropdown-item ai-icon">
                         <svg

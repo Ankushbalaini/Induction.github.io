@@ -11,14 +11,14 @@ import {
 import loginbg from "../../images/bg-1.jpg";
 import BJSLogo from "../../images/BJSLogo.png";
 
-
 function Login(props) {
-  const [email, setEmail] = useState("super@admin.com");
+  
 
   let errorsObj = { email: "", password: "" };
   const [errors, setErrors] = useState(errorsObj);
 
-  const [password, setPassword] = useState("admin");
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const [userType, setUserType] = useState("user");
 
   // const [highlight, setHighlight] = useState("");
@@ -29,16 +29,16 @@ function Login(props) {
     let error = false;
     const errorObj = { ...errorsObj };
     if (email === "") {
-      errorObj.email = "Email is Required";
+      errorObj.email = "Email is Required!";
       error = true;
     }
     if (password === "") {
-      errorObj.password = "Password is Required";
+      errorObj.password = "Password is Required!";
       error = true;
     }
     setErrors(errorObj);
     if (error) {
-      return;
+      return false;
     }
     dispatch(loadingToggleAction(true));
     dispatch(loginAction(userType, email, password, props.history));
@@ -131,7 +131,7 @@ function Login(props) {
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
                               onKeyPress={(e) => handleKeyPress(e)}
-                              // style={{border: highlight}}
+                              required={true}
                             />
                             {errors.email && (
                               <div Style="color:red;font-weight:400">
@@ -149,6 +149,7 @@ function Login(props) {
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
                               onKeyPress={(e) => handleKeyPress(e)}
+                              required={true}
                             />
                             {errors.password && (
                               <div Style="color:red;font-weight:400">

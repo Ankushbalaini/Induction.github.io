@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import ActionDropDown from "./ActionDropDown";
 
 import { tableStyles } from "../Instructor/Instructor-1/tableStyles";
+import { PROFILE_ASSETS_URL } from "../../constants";
 
 const Table = props => {
   const navigate = useHistory();
@@ -39,7 +40,8 @@ const Table = props => {
       <>
        <div className="d-flex align-items-center">
           <div >
-            {row.profile?.first_name}{" "}
+            <img src={`${PROFILE_ASSETS_URL}/${row.profile.profilePhoto}`} alt={row?.profile?.profilePhoto} width={50} className="img-thumbnail" /> 
+            {" "}{row.profile?.first_name}{" "}
             {row.profile?.last_name}
           </div>
         </div>

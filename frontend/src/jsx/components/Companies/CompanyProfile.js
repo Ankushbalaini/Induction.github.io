@@ -9,8 +9,9 @@ import clock from "./../../../images/svg/clock-1.svg";
 
 import { useSelector } from "react-redux";
 import UpdateCompanyProfile from "./UpdateCompanyProfile";
-import { API_ROOT_URL } from "../../constants";
-const images = require.context("../../../../../images/company/", true);
+import { API_ROOT_URL , PROFILE_ASSETS_URL } from "../../constants";
+import LoadingSpinner from "../../pages/LoadingSpinner";
+// const images = require.context("../../../../../images/company/", true);
 
 const WidgetBlog = ({ changeImage, title, link, dataCount }) => {
   return (
@@ -26,7 +27,7 @@ const WidgetBlog = ({ changeImage, title, link, dataCount }) => {
                   <span>{title}</span>
                 </div>
               </div>
-              <Link to={link}>
+              <Link to={`/${link}`}>
                 <i className="las la-angle-right text-primary"></i>
               </Link>
             </div>
@@ -94,12 +95,12 @@ const CompanyProfile = () => {
     //}
   }, [isModalOpen]);
 
-  const loadImage = (imageName) => {
-    return images(`./${imageName}`);
-  };
+  // const loadImage = (imageName) => {
+  //   return images(`./${imageName}`);
+  // };
 
   const pageContent = loading ? (
-    <h1>Loading</h1>
+    <LoadingSpinner />
   ) : (
     <>
       <div className="row">
@@ -113,7 +114,13 @@ const CompanyProfile = () => {
             </div>
             <div className="card-body text-center pb-3">
               <div className="instructors-media">
-                <img src={loadImage(profileImg)} />
+                {/* <img src={loadImage(profileImg)} /> */}
+                
+                <img
+                  className="img-fluid"
+                  src={`${PROFILE_ASSETS_URL}/${profileImg}`}
+                  alt={profileImg}
+                />
 
                 <div className="instructors-media-info mt-4">
                   <h4 className="mb-1">{companyData.profile.name}</h4>
@@ -153,7 +160,7 @@ const CompanyProfile = () => {
             />
             <div className="widget-heading d-flex justify-content-between align-items-center">
               <h3 className="m-0">My Instructors</h3>
-              <Link to={"./instructors"} className="btn btn-primary btn-sm">
+              <Link to={`/instructors`} className="btn btn-primary btn-sm">
                 View all
               </Link>
             </div>

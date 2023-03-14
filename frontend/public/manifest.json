@@ -1,6 +1,6 @@
 {
-  "short_name": "GetSkills",
-  "name": "GetSkills  : React Online Learning  Admin Template ",
+  "short_name": "BJS Induction",
+  "name": "BJS Induction",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "favicon.ico",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "favicon.ico",
       "type": "image/png",
       "sizes": "512x512"
     }

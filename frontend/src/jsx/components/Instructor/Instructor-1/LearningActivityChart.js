@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import swal from "sweetalert";
 import { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
+import { API_ROOT_URL } from "../../../constants";
+
 const LearningActivityChart = () => {
     const token = useSelector((state) => state.auth.auth.token);
     const [loading, setLoading] = useState(true);
@@ -24,7 +26,7 @@ const LearningActivityChart = () => {
     const handlepageLoad = async (e) => {
             // query string
         const response = await fetch(
-              "${API_ROOT_URL}/induction/users",
+              `${API_ROOT_URL}/induction/users`,
               {
                 method: "GET",
                 headers: {
@@ -40,7 +42,7 @@ const LearningActivityChart = () => {
               return swal("Failed", response.message, "error");
             }
             // console.log(response.data, "response data....")
-            console.log(users, "users data under api res")
+            // console.log(users, "users data under api res")
           };
           //average function
           const arr1 = [10, 22, 33, 45, 57];
@@ -49,12 +51,12 @@ const LearningActivityChart = () => {
           sum += number
          }
           let average = sum/arr1.length
-           console.log("average "+average)
+          // console.log("average "+average)
  // use effect
   useEffect(() => {
     handlepageLoad();
   }, []);
-  console.log("set-users",users)
+  //console.log("set-users",users)
 //   console.log("dataset1 scores",dataset1.score)
 
 // arrays to push data
@@ -63,8 +65,8 @@ const dataset2 = [];
 
 for(const val of users){
     dataset1.push(val.result)
-    console.log(dataset1,"dataset1 array...")
-    console.log(dataset1.map(i=>i.testStatus),"test status mapping")
+    //console.log(dataset1,"dataset1 array...")
+    //console.log(dataset1.map(i=>i.testStatus),"test status mapping")
     // console.log(dataset1.testStatus, "dataset1 teststatus")
 }
 const state = {

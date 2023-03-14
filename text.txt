@@ -24,3 +24,8 @@ const moduleAccess = [
 ACL ========================
 
 npm install express-acl --save
+
+checlist 
+
+1. Env files 
+2. Constants in frontend

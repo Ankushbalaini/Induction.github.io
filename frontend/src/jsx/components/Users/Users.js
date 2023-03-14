@@ -9,6 +9,8 @@ import CompanyDropdown from "../Companies/CompanyDropdown";
 import DepartmentByCompany from "../Department/DepartmentByCompany";
 import PageTitle from "../../layouts/PageTitle";
 import {API_ROOT_URL} from "../../constants";
+import LoadingSpinner from "../../pages/LoadingSpinner";
+
 const USER_ROLES = {
   SUPER_ADMIN: "super_admin",
   COMPANY: "company",
@@ -163,7 +165,7 @@ const Users = () => {
   return (
     <>
       {loading ? (
-        <h3>Loading</h3>
+        <LoadingSpinner />
       ) : (
         <>
           <PageTitle activeMenu="Users List" motherMenu="Users" />
@@ -172,7 +174,7 @@ const Users = () => {
             <div className="col-xl-12">
               <div className="card students-list">
                 <div className="card-header border-0 ">
-                  <h2>Assigned Users</h2>
+                  <h4 className="card-titlhandleSubmite">Assigned Users</h4>
                   {USER_ROLES.SUPER_ADMIN === userRole ? (
                     <div className="row">
                       <div

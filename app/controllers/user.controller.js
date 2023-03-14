@@ -8,17 +8,19 @@ const bcrypt = require('bcrypt');
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+require("dotenv").config();
 
+var path = require("path");
 var jwt = require("jsonwebtoken");
 var nodemailer = require("nodemailer");
 const e = require("express");
 
 var transport = nodemailer.createTransport({
-  host: "smtp.mailtrap.io",
-  port: 2525,
+  host: process.env.MAIL_HOST, // "smtp.mailtrap.io",
+  port: process.env.MAIL_PORT,
   auth: {
-    user: "d3c0c1af43828c",
-    pass: "44f8d55e6acb74",
+    user: process.env.MAIL_AUTH_USER,
+    pass: process.env.MAIL_AUTH_PASS,
   },
 });
 
@@ -81,7 +83,9 @@ exports.update = (req, res) => {
     }
   } else {
     let Img = req.files.image;
-    let uploadPath = "images/profile/" + Img.name;
+    var extension = path.extname(Img.name);
+    var file_name = "user-" + Date.now() + extension;
+    let uploadPath = "images/profile/" + file_name;
 
     Img.mv(uploadPath, function (err) {
       if (err) {
@@ -91,7 +95,7 @@ exports.update = (req, res) => {
         });
       }
     });
-    req.body.profilePhoto = Img.name;
+    req.body.profilePhoto = file_name;
   }
 
   switch (role) {
@@ -244,67 +248,71 @@ exports.login = (req, res) => {
  * @param {*} res
  */
 exports.resetPassword = (req, res) => {
-  const { email } = req.body;
+  try {
+    const { email } = req.body;
 
-  UserCred.findOne({ email: email }).then(function (user) {
-    if (user) {
-      const token = jwt.sign(
-        { _id: user._id, email },
-        "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1ey",
-        {
-          expiresIn: "2h",
-        }
-      );
-      // save user token
-      //user.token = token;
+    UserCred.findOne({ email: email })
+      .then((user) => {
+        const token = jwt.sign(
+          { _id: user._id, email },
+          process.env.JWT_RESET_PWD_SECREAT_KEY,
+          {
+            expiresIn: "2h",
+          }
+        );
 
-      // save user token
-      var link = "http://localhost:3000/reset-password/" + token;
+        // save user token
+        var link = `${process.env.SITE_URL}/reset-password/${token}`;
 
-      // sending email code
-      var mailOptions = {
-        from: "bjs-induction@gmail.com",
-        to: "developer3030@gmail.com",
-        subject: "BJS-Induction - Reset password",
-        text: "Click here to change password == " + link,
-      };
+        // sending email code
+        var mailOptions = {
+          from: `${process.env.ADMIN_EMAIL}`,
+          to: `${email}`,
+          subject: "BJS-Induction - Reset password",
+          text: "Click here to change password == " + link,
+        };
 
-      transport.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("Email sent: " + info.response);
-        }
+        transport.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log("Email sent: " + info.response);
+          }
+        });
+
+        return res.status(200).send({
+          status: true,
+          message: "Please check your email and reset password.",
+          token: token,
+        });
+
+      })
+      .catch((err) => {
+        return res.status(500).send({
+          status: false,
+          message: err.message
+        });
+
       });
-
-      return res.status(200).send({
-        status: true,
-        message: "Please check your email and rest password.",
-        token: token,
-      });
-    } else {
-      return res.status(404).send({
-        status: false,
-        message: "User email not registered with our system.",
-      });
-    }
-  });
-  return;
+  } catch (err) {
+    return res.status(500).send({
+      status: false,
+      message: "Catch Exception -" + err.message,
+    });
+  }
 };
 
 /**
- *
- * @param {*} req
- * @param {*} res
- * @returns
+ * 
+ * @param {*} req 
+ * @param {*} res 
  */
-
 exports.createPassword = (req, res) => {
   const { token, password } = req.body;
 
   const decoded = jwt.verify(
     token,
-    "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1ey",
+    process.env.JWT_RESET_PWD_SECREAT_KEY,
     function (err, decoded) {
       if (err) {
         return res.status(200).send({
@@ -318,7 +326,8 @@ exports.createPassword = (req, res) => {
   );
 
   // find user and update password
-  UserCred.findOne({ email: req.user.email }).then(function (user) {
+  UserCred.findOne({ email: req.user.email })
+  .then(function (user) {
     if (user) {
       UserCred.updateOne(
         { email: req.user.email },
@@ -343,7 +352,16 @@ exports.createPassword = (req, res) => {
         message: "Invalid link",
       });
     }
+  })
+  .catch((err)=>{
+    return res.status(404).send({
+      status: false,
+      message: err.message,
+    });
   });
+
+
+
 };
 
 exports.profile = (req, res) => {
@@ -408,7 +426,7 @@ exports.signUp = (req, res) => {
     const user_cred = new UserCred({ ...req.body });
     const token = jwt.sign(
       { userID: user_cred._id, email: user_cred.email, role: user_cred.role },
-      "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
+      process.env.JWT_SECREAT_KEY,
       {
         expiresIn: "2h",
       }
@@ -418,7 +436,7 @@ exports.signUp = (req, res) => {
     const user_detail = req.body;
     const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
     const newuser = new User(userWithoutPwd);
-    user_cred.profile =  newuser._id;
+    user_cred.profile = newuser._id;
     // here call save function
     user_cred
       .save()
@@ -467,7 +485,7 @@ exports.signUp_org = (req, res) => {
     const user_cred = new UserCred({ ...req.body });
     const token = jwt.sign(
       { userID: user_cred._id, email: user_cred.email, role: user_cred.role },
-      "eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1eyJhbGciOiJIUzI1",
+      process.env.JWT_SECREAT_KEY,
       {
         expiresIn: "2h",
       }
@@ -477,14 +495,12 @@ exports.signUp_org = (req, res) => {
     const user_detail = req.body;
     const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
     const newuser = new User(userWithoutPwd);
-    user_cred.profile =  newuser._id;
-    
+    user_cred.profile = newuser._id;
+
     // here call save function
     user_cred
       .save()
       .then((user) => {
-        
-
         //const user_detail = req.body;
         //const { ["password"]: pwd, ...userWithoutPwd } = user_detail;
         //const newuser = new User(userWithoutPwd);
@@ -525,14 +541,10 @@ exports.getProfile = async (req, res) => {
   try {
     const userRole = req.decoded.role;
     switch (userRole) {
-
       case "instructor":
-
-      
-
-        var totalInductions = await Inductions.find({ createdBy: ObjectId(req.decoded.userID) });
-
-
+        var totalInductions = await Inductions.find({
+          createdBy: ObjectId(req.decoded.userID),
+        });
 
         UserCred.aggregate([
           {
@@ -562,7 +574,6 @@ exports.getProfile = async (req, res) => {
           },
         ])
           .then((data) => {
-            
             // data[0].totalInductions = totalInductions;
 
             return res.status(200).send({
@@ -775,27 +786,30 @@ exports.getProfile = async (req, res) => {
  * @param req
  * @param res
  */
-exports.edit = async (req, res) => {     
-  const id = req.params.id; // user id who needs to update                       
-  if (!req.files || Object.keys(req.files).length === 0) {                    
-    if (req.body.profilePhoto === "") {                
-      return res.status(500).send({                     
-        status: false,                   
-        message: "Profile image is required!",                   
-      });                                              
-    }                                                 
-  } else {                                                                               
-    let Img = req.files.image;                          
-    let uploadPath = "images/profile/" + Img.name;                     
-    Img.mv(uploadPath, function (err) {                                                  
-      if (err) {                    
-        return res.status(500).send({                     
-          status: false,                                  
-          message: err.message,              
-        });                   
-      }              
-    });                  
-    req.body.profilePhoto = Img.name;                                              
+exports.edit = async (req, res) => {
+  const id = req.params.id; // user id who needs to update
+  if (!req.files || Object.keys(req.files).length === 0) {
+    if (req.body.profilePhoto === "") {
+      return res.status(500).send({
+        status: false,
+        message: "Profile image is required!",
+      });
+    }
+  } else {
+    let Img = req.files.image;
+    var extension = path.extname(Img.name);
+    var file_name = "user-" + Date.now() + extension;
+
+    let uploadPath = "images/profile/" + file_name;
+    Img.mv(uploadPath, function (err) {
+      if (err) {
+        return res.status(500).send({
+          status: false,
+          message: err.message,
+        });
+      }
+    });
+    req.body.profilePhoto = file_name;
   }
 
   // check request token values
@@ -885,9 +899,9 @@ exports.setting = (req, res) => {
             data: user.value,
           });
         } else {
-          return res.status(500).send({
+          return res.status(401).send({
             status: false,
-            message: "Invalid details",
+            message: "Unauthorized",
           });
         }
       }
@@ -985,3 +999,9 @@ exports.changeUserStatus = (req, res) => {
     });
   }
 };
+
+
+
+function revokeAccessToken (token) {
+
+}
